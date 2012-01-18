@@ -10,6 +10,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -25,6 +26,8 @@ import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
+import com.google.gwt.view.client.Range;
+import com.google.gwt.view.client.RangeChangeEvent;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -66,10 +69,11 @@ public class Comanda_peter implements EntryPoint {
 		// Focus the cursor on the name field when the app loads
 		nameField.setFocus(true);
 		
+		VerticalPanel panel = new VerticalPanel();
 		CellTable<String> cellTable = new CellTable<String>();
-		rootPanel.add(cellTable, 10, 80);
+		rootPanel.add(panel);
+		panel.add(cellTable);
 		cellTable.setSize("213px", "150px");
-		nameField.selectAll();
 
 		// Add a text column to show the name.
 	    TextColumn<String> nameColumn = new TextColumn<String>() {
@@ -102,6 +106,12 @@ public class Comanda_peter implements EntryPoint {
 	      provider.addDataDisplay(cellTable);
 	      provider.updateRowCount(200, false);
 	      AsyncHandler columnSortHandler = new AsyncHandler(cellTable);
+	      
+	      final TextBox textBox = new TextBox();
+	      rootPanel.add(textBox, 10, 236);
+	      
+	      final Button btnPlaceOrder = new Button("Place order");
+	      rootPanel.add(btnPlaceOrder, 197, 236);
 	      cellTable.addColumnSortHandler(columnSortHandler);
 	    
 		// Create the popup dialog box
@@ -128,19 +138,21 @@ public class Comanda_peter implements EntryPoint {
 			public void onClick(ClickEvent event) {
 				dialogBox.hide();
 				sendButton.setEnabled(true);
+				btnPlaceOrder.setEnabled(true);
 				sendButton.setFocus(true);
 			}
 		});
 
 		// Create a handler for the sendButton and nameField
-		class MyHandler implements ClickHandler, KeyUpHandler {
+		abstract class MyHandler implements ClickHandler, KeyUpHandler {
+			
+			
 			/**
 			 * Fired when the user clicks on the sendButton.
 			 */
 			public void onClick(ClickEvent event) {
 				sendNameToServer();
 			}
-
 			/**
 			 * Fired when the user types in the nameField.
 			 */
@@ -149,11 +161,19 @@ public class Comanda_peter implements EntryPoint {
 					sendNameToServer();
 				}
 			}
+			
+			protected abstract void sendNameToServer();
+			
+		}
+
+		
+		class AddMenuItemHandler extends MyHandler {
+			
 
 			/**
 			 * Send the name from the nameField to the server and wait for a response.
 			 */
-			private void sendNameToServer() {
+			protected void sendNameToServer() {
 				// First, we validate the input.
 				errorLabel.setText("");
 				String textToServer = nameField.getText();
@@ -183,7 +203,52 @@ public class Comanda_peter implements EntryPoint {
 								dialogBox.setText("Remote Procedure Call");
 								serverResponseLabel
 										.removeStyleName("serverResponseLabelError");
-								serverResponseLabel.setHTML("Added");
+								serverResponseLabel.setHTML("Item added");
+								dialogBox.center();
+								closeButton.setFocus(true);
+							}
+						});
+			}
+		}
+
+		
+		class PlaceOrderHandler extends MyHandler {
+			
+
+			/**
+			 * Send the name from the nameField to the server and wait for a response.
+			 */
+			protected void sendNameToServer() {
+				// First, we validate the input.
+				errorLabel.setText("");
+				String textToServer = textBox.getText();
+				if (!FieldVerifier.isValidName(textToServer)) {
+					errorLabel.setText("Please enter at least four characters");
+					return;
+				}
+
+				// Then, we send the input to the server.
+				btnPlaceOrder.setEnabled(false);
+				textToServerLabel.setText(textToServer);
+				serverResponseLabel.setText("");
+				greetingService.placeOrder(textToServer,
+						new AsyncCallback<Void>() {
+							public void onFailure(Throwable caught) {
+								// Show the RPC error message to the user
+								dialogBox
+										.setText("Remote Procedure Call - Failure");
+								serverResponseLabel
+										.addStyleName("serverResponseLabelError");
+								serverResponseLabel.setHTML(SERVER_ERROR);
+								dialogBox.center();
+								closeButton.setFocus(true);
+							}
+
+							public void onSuccess(Void result) {
+								dialogBox.setText("Remote Procedure Call");
+								serverResponseLabel
+										.removeStyleName("serverResponseLabelError");
+								serverResponseLabel.setHTML("Order placed");
 								dialogBox.center();
 								closeButton.setFocus(true);
 							}
@@ -192,8 +257,70 @@ public class Comanda_peter implements EntryPoint {
 		}
 
 		// Add a handler to send the name to the server
-		MyHandler handler = new MyHandler();
-		sendButton.addClickHandler(handler);
-		nameField.addKeyUpHandler(handler);
+		MyHandler newMenuItemHandler = new AddMenuItemHandler();
+		sendButton.addClickHandler(newMenuItemHandler);
+		nameField.addKeyUpHandler(newMenuItemHandler);
+		
+		MyHandler placeOrderHandler = new PlaceOrderHandler();
+		btnPlaceOrder.addClickHandler(placeOrderHandler);
+		textBox.addKeyUpHandler(placeOrderHandler);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		final CellTable<String> ordersTable = new CellTable<String>();
+		panel.add(ordersTable);
+		ordersTable.setSize("213px", "150px");
+
+		// Add a text column to show the name.
+	    TextColumn<String> orderNameColumn = new TextColumn<String>() {
+	      @Override
+	      public String getValue(String object) {
+	        return object;
+	      }
+	    };
+	    ordersTable.addColumn(orderNameColumn, "OrderName");
+		
+	    final AsyncDataProvider<String> ordersProvider = new AsyncDataProvider<String>() {
+	        @Override
+	        protected void onRangeChanged(HasData<String> display) {
+	          final int start = display.getVisibleRange().getStart();
+	          int length = display.getVisibleRange().getLength();
+	          AsyncCallback<List<String>> callback = new AsyncCallback<List<String>>() {
+	              @Override
+	              public void onFailure(Throwable caught) {
+	                Window.alert(caught.getMessage());
+	              }
+	              @Override
+	              public void onSuccess(List<String> result) {
+	                updateRowData(start, result);
+	              }
+	            };
+	            // The remote service that should be implemented
+	            greetingService.getOrders(start, length, callback);
+	        }
+	      };
+	      ordersProvider.addDataDisplay(ordersTable);
+	      ordersProvider.updateRowCount(200, false);
+	      AsyncHandler ordersColumnSortHandler = new AsyncHandler(ordersTable);
+	      
+	      class MyTimer extends Timer{
+	    	  
+	    	  public void run(){
+	    		  Range range = ordersTable.getVisibleRange();
+	    		  RangeChangeEvent.fire(ordersTable, range);
+	    	  }
+	      }
+	      
+	      Timer timer = new MyTimer();
+	      
+	     timer.scheduleRepeating(3000);
 	}
 }

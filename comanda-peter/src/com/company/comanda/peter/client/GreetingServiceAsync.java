@@ -11,4 +11,6 @@ public interface GreetingServiceAsync {
 	void greetServer(String input, AsyncCallback<Void> callback)
 			throws IllegalArgumentException;
 	void getMenuItemNames(int start, int length, AsyncCallback<List<String>> callback);
+	void getOrders(int start, int length, AsyncCallback<List<String>> callback);
+	void placeOrder(String itemName, AsyncCallback<Void> callback);
 }

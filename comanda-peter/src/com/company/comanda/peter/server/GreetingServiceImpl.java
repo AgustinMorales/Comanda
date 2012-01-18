@@ -8,6 +8,7 @@ import javax.jdo.Query;
 
 import com.company.comanda.peter.client.GreetingService;
 import com.company.comanda.peter.server.model.MenuItem;
+import com.company.comanda.peter.server.model.Order;
 import com.company.comanda.peter.shared.FieldVerifier;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -38,6 +39,55 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 			      finally{ pm.close(); }
 	}
 	
+	public List<String> getOrders(int start, int length){
+		PersistenceManager pm = null;
+		ArrayList<String> result = new ArrayList<String>();
+	    try{
+	    	pm = PMF.get().getPersistenceManager();
+		    Query query = pm.newQuery("select from " + Order.class.getName());
+		    @SuppressWarnings("unchecked")
+			List<Order> orders = (List<Order>) query.execute();
+		    result.ensureCapacity(orders.size());
+		    int count = 0;
+		    for(Order orderElement: orders){
+		    	result.add(orderElement.getName());
+		    	count++;
+		    	if(count == length){
+		    		break;
+		    	}
+		    }
+	    }
+	    finally{
+	    	if(pm != null){
+	    		pm.close();
+	    	}
+	    }
+		return result;
+	}
+	
+	public void placeOrder(String menuItemName){
+		PersistenceManager pm = null;
+		try{
+			pm = PMF.get().getPersistenceManager();
+		    Query query = pm.newQuery("select from " + MenuItem.class.getName() +
+	                " where name == nameParam " +
+	                "parameters String nameParam ");
+		    @SuppressWarnings("unchecked")
+			List<MenuItem> menuItems = (List<MenuItem>)query.execute(menuItemName);
+		    if(menuItems.size() !=1 ){
+		    	throw new IllegalArgumentException("!= 1 while placing order");
+		    }
+		    MenuItem menuItem = menuItems.get(0);
+		    
+		    Order newOrder = new Order(menuItem.getName());
+		    pm.makePersistent(newOrder);
+		}
+		finally{
+			if (pm != null){
+				pm.close();
+			}
+		}
+	}
 	
 	public List<String> getMenuItemNames(int start, int length){
 		ArrayList<String> result = new ArrayList<String>();
