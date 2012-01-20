@@ -11,9 +11,18 @@
     <servlet-class>com.company.comanda.peter.server.GreetingServiceImpl</servlet-class>
   </servlet>
   
+  <servlet>
+    <servlet-name>xmlMenuItems</servlet-name>
+    <servlet-class>com.company.comanda.peter.server.GetItemsServlet</servlet-class>
+  </servlet>
+  
   <servlet-mapping>
     <servlet-name>greetServlet</servlet-name>
     <url-pattern>/comanda_peter/greet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>xmlMenuItems</servlet-name>
+    <url-pattern>/menuitems</url-pattern>
   </servlet-mapping>
   
   <!-- Default page to serve -->

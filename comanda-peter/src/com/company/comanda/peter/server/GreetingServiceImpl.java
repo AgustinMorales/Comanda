@@ -19,6 +19,8 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 public class GreetingServiceImpl extends RemoteServiceServlet implements
 		GreetingService {
 
+	//TODO: This should be done with dependency injection or something similar
+	protected ItemsManager itemsManager = new ItemsManager();
 	
 	public void greetServer(String input) throws IllegalArgumentException {
 		// Verify that the input is valid. 
@@ -91,28 +93,19 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 	
 	public List<String> getMenuItemNames(int start, int length){
 		ArrayList<String> result = new ArrayList<String>();
-		
-	    PersistenceManager pm = null;
-	    try{
-	    	pm = PMF.get().getPersistenceManager();
-		    Query query = pm.newQuery("select from " + MenuItem.class.getName());
-		    @SuppressWarnings("unchecked")
-			List<MenuItem> items = (List<MenuItem>) query.execute();
-		    result.ensureCapacity(items.size());
-		    int count = 0;
-		    for(MenuItem item: items){
-		    	result.add(item.getName());
-		    	count++;
-		    	if(count == length){
-		    		break;
-		    	}
-		    }
-	    }
-	    finally{
-	    	if(pm != null){
-	    		pm.close();
-	    	}
-	    }
+
+
+		List<MenuItem> items = itemsManager.getMenuItems();
+		result.ensureCapacity(items.size());
+		int count = 0;
+		for(MenuItem item: items){
+			result.add(item.getName());
+			count++;
+			if(count == length){
+				break;
+			}
+		}
+
 		return result;
 	}
 	
