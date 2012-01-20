@@ -29,4 +29,11 @@
             android:ellipsize="marquee"
         android:layout_width="wrap_content"/>
     </LinearLayout>
+
+    <Button
+        android:id="@+id/placeorderbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:text="Button" />
+
 </LinearLayout>

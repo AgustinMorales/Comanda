@@ -3,22 +3,34 @@ package com.company.comanda.brian;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.company.comanda.brian.model.FoodMenuItem;
@@ -140,6 +152,42 @@ public class ComandaActivity extends ListActivity
     //         }
     //     }    
 
+    
+    private class PlaceOrderTask extends AsyncTask<String, Void, String> {
+        protected String doInBackground(String... names) {
+            assert names.length == 1;
+            String name = names[0];
+            
+            
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpPost httppost = new HttpPost("http://pgmtestapp.appspot.com/placeOrder");
+
+            try {
+                // Add your data
+                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+                nameValuePairs.add(new BasicNameValuePair("name", name));
+                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+                // Execute HTTP Post Request
+                HttpResponse response = httpclient.execute(httppost);
+                
+            } catch (ClientProtocolException e) {
+                name = "ERROR!!!";
+            } catch (IOException e) {
+                name = "ERROR!!!";
+            }
+            
+            
+            return name;
+        }
+
+
+        protected void onPostExecute(Long result) {
+//            showDialog();
+        }
+    }
+    
+    
     /*
      * PRIVATE ADAPTER CLASS. Assigns data to be displayed on the listview
      */
@@ -153,7 +201,7 @@ public class ComandaActivity extends ListActivity
                 ArrayList<FoodMenuItem> items) 
         {
             super(context, textViewResourceId, items);
-            this.items = items;
+            this.items = items;// TODO Auto-generated catch block
         }
         //This method returns the actual view
         //that is displayed as a row (we will inflate with row.xml)
@@ -177,14 +225,24 @@ public class ComandaActivity extends ListActivity
 //                ImageView icon = (ImageView) v.findViewById(R.id.icon);
                 TextView tt = (TextView) v.findViewById(R.id.toptext);
                 TextView bt = (TextView) v.findViewById(R.id.bottomtext);
+                Button placeOrderButton = (Button)v.findViewById(R.id.placeorderbutton);
+                final String menuItemName = o.getName();
                 if (tt != null)
                 {
-                    tt.setText("Name: "+o.getName());   
+                    tt.setText("Name: " + menuItemName);   
                 }
                 if(bt != null)
                 {
                     bt.setText("No description");
                 }
+                placeOrderButton.setOnClickListener(new OnClickListener() {
+                    
+                    @Override
+                    public void onClick(View v) {
+                        (new PlaceOrderTask()).execute(menuItemName);
+                        
+                    }
+                });
                 //                      if(icon != null)
                 //                      {
                 //                          URL imageURL = null;
