@@ -20,7 +20,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		GreetingService {
 
 	//TODO: This should be done with dependency injection or something similar
-	protected ItemsManager itemsManager = new ItemsManager();
+	private ItemsManager itemsManager = new ItemsManager();
 	
 	public void greetServer(String input) throws IllegalArgumentException {
 		// Verify that the input is valid. 
@@ -68,27 +68,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 	}
 	
 	public void placeOrder(String menuItemName){
-		PersistenceManager pm = null;
-		try{
-			pm = PMF.get().getPersistenceManager();
-		    Query query = pm.newQuery("select from " + MenuItem.class.getName() +
-	                " where name == nameParam " +
-	                "parameters String nameParam ");
-		    @SuppressWarnings("unchecked")
-			List<MenuItem> menuItems = (List<MenuItem>)query.execute(menuItemName);
-		    if(menuItems.size() !=1 ){
-		    	throw new IllegalArgumentException("!= 1 while placing order");
-		    }
-		    MenuItem menuItem = menuItems.get(0);
-		    
-		    Order newOrder = new Order(menuItem.getName());
-		    pm.makePersistent(newOrder);
-		}
-		finally{
-			if (pm != null){
-				pm.close();
-			}
-		}
+		itemsManager.placeOrder(menuItemName);
 	}
 	
 	public List<String> getMenuItemNames(int start, int length){

@@ -16,13 +16,24 @@
     <servlet-class>com.company.comanda.peter.server.GetItemsServlet</servlet-class>
   </servlet>
   
+  <servlet>
+    <servlet-name>placeOrder</servlet-name>
+    <servlet-class>com.company.comanda.peter.server.PlaceOrderServlet</servlet-class>
+  </servlet>
+  
   <servlet-mapping>
     <servlet-name>greetServlet</servlet-name>
     <url-pattern>/comanda_peter/greet</url-pattern>
   </servlet-mapping>
+  
   <servlet-mapping>
     <servlet-name>xmlMenuItems</servlet-name>
     <url-pattern>/menuitems</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>placeOrder</servlet-name>
+    <url-pattern>/placeOrder</url-pattern>
   </servlet-mapping>
   
   <!-- Default page to serve -->
