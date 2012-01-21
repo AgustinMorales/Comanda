@@ -49,14 +49,11 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		    Query query = pm.newQuery("select from " + Order.class.getName());
 		    @SuppressWarnings("unchecked")
 			List<Order> orders = (List<Order>) query.execute();
+		    orders = cutList(orders, start, length);
 		    result.ensureCapacity(orders.size());
-		    int count = 0;
+		    
 		    for(Order orderElement: orders){
 		    	result.add(orderElement.getName());
-		    	count++;
-		    	if(count == length){
-		    		break;
-		    	}
 		    }
 	    }
 	    finally{
@@ -67,6 +64,14 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		return result;
 	}
 	
+	protected List cutList(List list, int start, int length){
+	    int size = list.size();
+        start = Math.min(start, size - 1);
+        length = Math.min(length, size - start);
+        
+        list = list.subList(start, start + length);
+        return list;
+	}
 	public void placeOrder(String menuItemName){
 		itemsManager.placeOrder(menuItemName);
 	}
@@ -76,16 +81,13 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 
 
 		List<MenuItem> items = itemsManager.getMenuItems();
+		//Implement the paging inside ItemsManager
+        items = cutList(items, start, length);
 		result.ensureCapacity(items.size());
-		int count = 0;
+		
 		for(MenuItem item: items){
 			result.add(item.getName());
-			count++;
-			if(count == length){
-				break;
-			}
 		}
-
 		return result;
 	}
 	
