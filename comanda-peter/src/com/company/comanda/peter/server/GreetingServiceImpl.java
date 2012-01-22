@@ -41,19 +41,21 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 			      finally{ pm.close(); }
 	}
 	
-	public List<String> getOrders(int start, int length){
+	public PagedResult<String> getOrders(int start, int length){
 		PersistenceManager pm = null;
-		ArrayList<String> result = new ArrayList<String>();
+		ArrayList<String> resultList = new ArrayList<String>();
+		int total;
 	    try{
 	    	pm = PMF.get().getPersistenceManager();
 		    Query query = pm.newQuery("select from " + Order.class.getName());
 		    @SuppressWarnings("unchecked")
 			List<Order> orders = (List<Order>) query.execute();
+		    total = orders.size();
 		    orders = cutList(orders, start, length);
-		    result.ensureCapacity(orders.size());
+		    resultList.ensureCapacity(orders.size());
 		    
 		    for(Order orderElement: orders){
-		    	result.add(orderElement.getName());
+		        resultList.add(orderElement.getName());
 		    }
 	    }
 	    finally{
@@ -61,7 +63,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 	    		pm.close();
 	    	}
 	    }
-		return result;
+		return new PagedResult<String>(resultList,total);
 	}
 	
 	protected List cutList(List list, int start, int length){
@@ -76,19 +78,20 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		itemsManager.placeOrder(menuItemName);
 	}
 	
-	public List<String> getMenuItemNames(int start, int length){
-		ArrayList<String> result = new ArrayList<String>();
-
+	public PagedResult<String> getMenuItemNames(int start, int length){
+		ArrayList<String> resultList = new ArrayList<String>();
+		int total;
 
 		List<MenuItem> items = itemsManager.getMenuItems();
+		total = items.size();
 		//Implement the paging inside ItemsManager
         items = cutList(items, start, length);
-		result.ensureCapacity(items.size());
+        resultList.ensureCapacity(items.size());
 		
 		for(MenuItem item: items){
-			result.add(item.getName());
+		    resultList.add(item.getName());
 		}
-		return result;
+		return new PagedResult<String>(resultList, total);
 	}
 	
 	/**

@@ -2,6 +2,7 @@ package com.company.comanda.peter.client;
 
 import java.util.List;
 
+import com.company.comanda.peter.server.PagedResult;
 import com.company.comanda.peter.shared.FieldVerifier;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -102,14 +103,15 @@ public class Comanda_peter implements EntryPoint {
             protected void onRangeChanged(HasData<String> display) {
                 final int start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
-                AsyncCallback<List<String>> callback = new AsyncCallback<List<String>>() {
+                AsyncCallback<PagedResult<String>> callback = new AsyncCallback<PagedResult<String>>() {
                     @Override
                     public void onFailure(Throwable caught) {
                         Window.alert(caught.getMessage());
                     }
                     @Override
-                    public void onSuccess(List<String> result) {
-                        updateRowData(start, result);
+                    public void onSuccess(PagedResult<String> result) {
+                        updateRowData(start, result.getList());
+                        updateRowCount(result.getTotal(), true);
                     }
                 };
                 // The remote service that should be implemented
@@ -117,7 +119,6 @@ public class Comanda_peter implements EntryPoint {
             }
         };
         provider.addDataDisplay(cellTable);
-        provider.updateRowCount(200, false);
         AsyncHandler columnSortHandler = new AsyncHandler(cellTable);
 
         final TextBox textBox = new TextBox();
@@ -314,14 +315,15 @@ public class Comanda_peter implements EntryPoint {
             protected void onRangeChanged(HasData<String> display) {
                 final int start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
-                AsyncCallback<List<String>> callback = new AsyncCallback<List<String>>() {
+                AsyncCallback<PagedResult<String>> callback = new AsyncCallback<PagedResult<String>>() {
                     @Override
                     public void onFailure(Throwable caught) {
                         Window.alert(caught.getMessage());
                     }
                     @Override
-                    public void onSuccess(List<String> result) {
-                        updateRowData(start, result);
+                    public void onSuccess(PagedResult<String> result) {
+                        updateRowData(start, result.getList());
+                        updateRowCount(result.getTotal(), true);
                     }
                 };
                 // The remote service that should be implemented
@@ -329,7 +331,6 @@ public class Comanda_peter implements EntryPoint {
             }
         };
         ordersProvider.addDataDisplay(ordersTable);
-        ordersProvider.updateRowCount(200, false);
         AsyncHandler ordersColumnSortHandler = new AsyncHandler(ordersTable);
 
         class MyTimer extends Timer{

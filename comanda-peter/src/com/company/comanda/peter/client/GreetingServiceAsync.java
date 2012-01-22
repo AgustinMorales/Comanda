@@ -1,7 +1,6 @@
 package com.company.comanda.peter.client;
 
-import java.util.List;
-
+import com.company.comanda.peter.server.PagedResult;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
@@ -10,7 +9,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public interface GreetingServiceAsync {
 	void greetServer(String input, AsyncCallback<Void> callback)
 			throws IllegalArgumentException;
-	void getMenuItemNames(int start, int length, AsyncCallback<List<String>> callback);
-	void getOrders(int start, int length, AsyncCallback<List<String>> callback);
+	void getMenuItemNames(int start, int length, AsyncCallback<PagedResult<String>> callback);
+	void getOrders(int start, int length, AsyncCallback<PagedResult<String>> callback);
 	void placeOrder(String itemName, AsyncCallback<Void> callback);
 }
