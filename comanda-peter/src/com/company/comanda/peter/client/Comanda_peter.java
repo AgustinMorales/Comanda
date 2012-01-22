@@ -2,8 +2,8 @@ package com.company.comanda.peter.client;
 
 import java.util.List;
 
-import com.company.comanda.peter.server.PagedResult;
 import com.company.comanda.peter.shared.FieldVerifier;
+import com.company.comanda.peter.shared.PagedResult;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;

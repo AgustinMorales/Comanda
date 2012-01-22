@@ -54,18 +54,18 @@ public class ComandaPeterViewOrders implements EntryPoint {
 	        protected void onRangeChanged(HasData<String> display) {
 	          final int start = display.getVisibleRange().getStart();
 	          int length = display.getVisibleRange().getLength();
-	          AsyncCallback<List<String>> callback = new AsyncCallback<List<String>>() {
-	              @Override
-	              public void onFailure(Throwable caught) {
-	                Window.alert(caught.getMessage());
-	              }
-	              @Override
-	              public void onSuccess(List<String> result) {
-	                updateRowData(start, result);
-	              }
-	            };
-	            // The remote service that should be implemented
-	            greetingService.getOrders(start, length, callback);
+//	          AsyncCallback<List<String>> callback = new AsyncCallback<List<String>>() {
+//	              @Override
+//	              public void onFailure(Throwable caught) {
+//	                Window.alert(caught.getMessage());
+//	              }
+//	              @Override
+//	              public void onSuccess(List<String> result) {
+//	                updateRowData(start, result);
+//	              }
+//	            };
+//	            // The remote service that should be implemented
+//	            greetingService.getOrders(start, length, callback);
 	        }
 	      };
 	      provider.addDataDisplay(cellTable);

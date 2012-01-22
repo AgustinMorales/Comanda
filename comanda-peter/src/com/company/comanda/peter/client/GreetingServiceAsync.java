@@ -1,6 +1,6 @@
 package com.company.comanda.peter.client;
 
-import com.company.comanda.peter.server.PagedResult;
+import com.company.comanda.peter.shared.PagedResult;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
