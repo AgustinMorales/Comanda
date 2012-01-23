@@ -15,4 +15,5 @@ public interface GreetingService extends RemoteService {
 	PagedResult<String> getMenuItemNames(int start, int length);
 	PagedResult<String> getOrders(int start, int length);
 	void placeOrder(String itemName);
+	public String getUploadUrl();
 }

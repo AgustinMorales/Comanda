@@ -11,6 +11,8 @@ import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Order;
 import com.company.comanda.peter.shared.FieldVerifier;
 import com.company.comanda.peter.shared.PagedResult;
+import com.google.appengine.api.blobstore.BlobstoreService;
+import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
@@ -23,23 +25,27 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 	//TODO: This should be done with dependency injection or something similar
 	private ItemsManager itemsManager = new ItemsManager();
 	
-	public void greetServer(String input) throws IllegalArgumentException {
-		// Verify that the input is valid. 
-				if (!FieldVerifier.isValidName(input)) {
-					// If the input is not valid, throw an IllegalArgumentException back to
-					// the client.
-					throw new IllegalArgumentException(
-							"Name must be at least 4 characters long");
-				}
+	private BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 
-				// Escape data from the client to avoid cross-site script vulnerabilities.
-				input = escapeHtml(input);
-				
-				PersistenceManager pm = PMF.get().getPersistenceManager();   
-			      MenuItem item = new MenuItem(input, "");
-			   //persist
-			      try{ pm.makePersistent(item); }
-			      finally{ pm.close(); }
+	
+	public void greetServer(String input) throws IllegalArgumentException {
+		// Verify that the input is valid.
+	    throw new UnsupportedOperationException();
+//				if (!FieldVerifier.isValidName(input)) {
+//					// If the input is not valid, throw an IllegalArgumentException back to
+//					// the client.
+//					throw new IllegalArgumentException(
+//							"Name must be at least 4 characters long");
+//				}
+//
+//				// Escape data from the client to avoid cross-site script vulnerabilities.
+//				input = escapeHtml(input);
+//				
+//				PersistenceManager pm = PMF.get().getPersistenceManager();   
+//			      MenuItem item = new MenuItem(input, "");
+//			   //persist
+//			      try{ pm.makePersistent(item); }
+//			      finally{ pm.close(); }
 	}
 	
 	public PagedResult<String> getOrders(int start, int length){
@@ -108,5 +114,9 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		}
 		return html.replaceAll("&", "&amp;").replaceAll("<", "&lt;")
 				.replaceAll(">", "&gt;");
+	}
+	
+	public String getUploadUrl(){
+	    return blobstoreService.createUploadUrl("/newMenuItem");
 	}
 }

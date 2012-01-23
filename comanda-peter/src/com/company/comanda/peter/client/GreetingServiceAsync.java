@@ -12,4 +12,5 @@ public interface GreetingServiceAsync {
 	void getMenuItemNames(int start, int length, AsyncCallback<PagedResult<String>> callback);
 	void getOrders(int start, int length, AsyncCallback<PagedResult<String>> callback);
 	void placeOrder(String itemName, AsyncCallback<Void> callback);
+	void getUploadUrl(AsyncCallback<String> callback);
 }

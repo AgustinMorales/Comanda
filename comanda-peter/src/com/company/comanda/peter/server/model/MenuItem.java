@@ -15,12 +15,15 @@ public class MenuItem
     @Persistent
     private String name;
     @Persistent
-    private String description;    
+    private String description;
+    @Persistent
+    private String imageString;
 
-    public MenuItem(String name, String desc)
+    public MenuItem(String name, String desc, String imageString)
     {
         this.name = name;
         this.description = desc;
+        this.imageString = imageString;
     }
     public Key getKey() 
     {
@@ -41,5 +44,13 @@ public class MenuItem
     public void setDescription(String d)
     {
      this.description = d;
+    }
+    public String getImageString() {
+        return imageString;
+    }
+    public void setImageString(String imageString) {
+        this.imageString = imageString;
     } 
+    
+    
 }

@@ -16,12 +16,19 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.FileUpload;
+import com.google.gwt.user.client.ui.FormPanel;
+import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
+import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteHandler;
+import com.google.gwt.user.client.ui.FormPanel.SubmitHandler;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.AsyncHandler;
 import com.google.gwt.user.cellview.client.SimplePager;
@@ -53,13 +60,14 @@ public class Comanda_peter implements EntryPoint {
      * This is the entry point method.
      */
     public void onModuleLoad() {
-        final Button sendButton = new Button("Add menu item");
-        final TextBox nameField = new TextBox();
-        nameField.setText("GWT User");
+        final Button addMenuItemButton = new Button("Add menu item");
+        final TextBox newMenuItemNameTextField = new TextBox();
+        newMenuItemNameTextField.setText("GWT User");
+        newMenuItemNameTextField.setName("itemName");
         final Label errorLabel = new Label();
 
         // We can add style names to widgets
-        sendButton.addStyleName("sendButton");
+        addMenuItemButton.addStyleName("sendButton");
 
         // Add the nameField and sendButton to the RootPanel
         // Use RootPanel.get() to get the entire body element
@@ -71,15 +79,36 @@ public class Comanda_peter implements EntryPoint {
         VerticalPanel secondVerticalPanel = new VerticalPanel();
         horizontalPanel.add(firstVerticalPanel);
         horizontalPanel.add(secondVerticalPanel);
-        firstVerticalPanel.add(nameField);
-        firstVerticalPanel.add(sendButton);
-        firstVerticalPanel.add(errorLabel);
-
         rootPanel.add(mainVerticalPanel);
 
-        // Focus the cursor on the name field when the app loads
-        nameField.setFocus(true);
+        final FormPanel addMenuItemFormPanel = new FormPanel();
+        addMenuItemFormPanel.setAction("/newMenuItem");
 
+        // Because we're going to add a FileUpload widget, we'll need to set the
+        // form to use the POST method, and multipart MIME encoding.
+        addMenuItemFormPanel.setEncoding(FormPanel.ENCODING_MULTIPART);
+        addMenuItemFormPanel.setMethod(FormPanel.METHOD_POST);
+        
+        FileUpload menuItemImageFile = new FileUpload();
+        menuItemImageFile.setName("itemImage");
+        
+        VerticalPanel newMenuItemElementsPanel = new VerticalPanel();
+        HorizontalPanel menuItemImageHP = new HorizontalPanel();
+        menuItemImageHP.add(new Label("Image file: "));
+        menuItemImageHP.add(menuItemImageFile);
+        addMenuItemFormPanel.setWidget(newMenuItemElementsPanel);
+        newMenuItemElementsPanel.add(newMenuItemNameTextField);
+        newMenuItemElementsPanel.add(menuItemImageHP);
+        newMenuItemElementsPanel.add(addMenuItemButton);
+        newMenuItemElementsPanel.add(errorLabel);
+        
+        
+
+        firstVerticalPanel.add(addMenuItemFormPanel);
+        // Focus the cursor on the name field when the app loads
+        newMenuItemNameTextField.setFocus(true);
+
+        
         CellTable<String> cellTable = new CellTable<String>();
         firstVerticalPanel.add(cellTable);
         cellTable.setSize("213px", "300px");
@@ -154,9 +183,9 @@ public class Comanda_peter implements EntryPoint {
         closeButton.addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent event) {
                 dialogBox.hide();
-                sendButton.setEnabled(true);
+                addMenuItemButton.setEnabled(true);
                 btnPlaceOrder.setEnabled(true);
-                sendButton.setFocus(true);
+                addMenuItemButton.setFocus(true);
             }
         });
 
@@ -183,48 +212,72 @@ public class Comanda_peter implements EntryPoint {
 
         }
 
-
-        class AddMenuItemHandler extends MyHandler {
-
-
-            /**
-             * Send the name from the nameField to the server and wait for a response.
-             */
-            protected void sendNameToServer() {
-                // First, we validate the input.
+        addMenuItemFormPanel.addSubmitHandler(new SubmitHandler() {
+            
+            @Override
+            public void onSubmit(SubmitEvent event) {
+             // First, we validate the input.
                 errorLabel.setText("");
-                String textToServer = nameField.getText();
+                String textToServer = newMenuItemNameTextField.getText();
                 if (!FieldVerifier.isValidName(textToServer)) {
                     errorLabel.setText("Please enter at least four characters");
-                    return;
+                    event.cancel();
                 }
+                else{
+                 // Then, we send the input to the server.
+                    addMenuItemButton.setEnabled(false);
+                    textToServerLabel.setText(textToServer);
+                    serverResponseLabel.setText("");
+                }
+                
+            }
+        });
 
-                // Then, we send the input to the server.
-                sendButton.setEnabled(false);
-                textToServerLabel.setText(textToServer);
-                serverResponseLabel.setText("");
-                greetingService.greetServer(textToServer,
-                        new AsyncCallback<Void>() {
+        addMenuItemFormPanel.addSubmitCompleteHandler(new SubmitCompleteHandler() {
+            
+            @Override
+            public void onSubmitComplete(SubmitCompleteEvent event) {
+//                if(event.getResults().equals("SUCCESS")){
+//                    dialogBox.setText("Form submission");
+//                    serverResponseLabel
+//                    .removeStyleName("serverResponseLabelError");
+//                    serverResponseLabel.setHTML("Item added");
+//                    dialogBox.center();
+//                    closeButton.setFocus(true);
+//                }
+//                else{
+//                    dialogBox
+//                    .setText("Form submission - Failure");
+//                    serverResponseLabel
+//                    .addStyleName("serverResponseLabelError");
+//                    serverResponseLabel.setHTML(SERVER_ERROR);
+//                    dialogBox.center();
+//                    closeButton.setFocus(true);
+//                }
+                
+            }
+        });
+        
+        class AddMenuItemHandler implements ClickHandler {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                greetingService.getUploadUrl(new AsyncCallback<String>() {
+
+                    @Override
                     public void onFailure(Throwable caught) {
-                        // Show the RPC error message to the user
-                        dialogBox
-                        .setText("Remote Procedure Call - Failure");
-                        serverResponseLabel
-                        .addStyleName("serverResponseLabelError");
-                        serverResponseLabel.setHTML(SERVER_ERROR);
-                        dialogBox.center();
-                        closeButton.setFocus(true);
+                        Window.alert("Error while getting upload URL");
+                        
                     }
 
-                    public void onSuccess(Void result) {
-                        dialogBox.setText("Remote Procedure Call");
-                        serverResponseLabel
-                        .removeStyleName("serverResponseLabelError");
-                        serverResponseLabel.setHTML("Item added");
-                        dialogBox.center();
-                        closeButton.setFocus(true);
+                    @Override
+                    public void onSuccess(String result) {
+                        addMenuItemFormPanel.setAction(result);
+                        addMenuItemFormPanel.submit();
+                        
                     }
                 });
+                
             }
         }
 
@@ -274,9 +327,7 @@ public class Comanda_peter implements EntryPoint {
         }
 
         // Add a handler to send the name to the server
-        MyHandler newMenuItemHandler = new AddMenuItemHandler();
-        sendButton.addClickHandler(newMenuItemHandler);
-        nameField.addKeyUpHandler(newMenuItemHandler);
+        addMenuItemButton.addClickHandler(new AddMenuItemHandler());
 
         MyHandler placeOrderHandler = new PlaceOrderHandler();
         btnPlaceOrder.addClickHandler(placeOrderHandler);
@@ -344,5 +395,95 @@ public class Comanda_peter implements EntryPoint {
         Timer timer = new MyTimer();
 
         timer.scheduleRepeating(3000);
+        
+        
+        
+     
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+     // Create a FormPanel and point it at a service.
+        final FormPanel form = new FormPanel();
+        form.setAction("/newMenuItem");
+
+        // Because we're going to add a FileUpload widget, we'll need to set the
+        // form to use the POST method, and multipart MIME encoding.
+        form.setEncoding(FormPanel.ENCODING_MULTIPART);
+        form.setMethod(FormPanel.METHOD_POST);
+
+        // Create a panel to hold all of the form widgets.
+        VerticalPanel panel = new VerticalPanel();
+        form.setWidget(panel);
+
+        // Create a TextBox, giving it a name so that it will be submitted.
+        final TextBox tb = new TextBox();
+        tb.setName("itemName");
+        panel.add(tb);
+
+        // Create a ListBox, giving it a name and some values to be associated with
+        // its options.
+        ListBox lb = new ListBox();
+        lb.setName("listBoxFormElement");
+        lb.addItem("foo", "fooValue");
+        lb.addItem("bar", "barValue");
+        lb.addItem("baz", "bazValue");
+        panel.add(lb);
+
+        // Create a FileUpload widget.
+        FileUpload upload = new FileUpload();
+        upload.setName("uploadFormElement");
+        panel.add(upload);
+
+        // Add a 'submit' button.
+        panel.add(new Button("Submit", new ClickHandler() {
+          public void onClick(ClickEvent event) {
+              greetingService.getUploadUrl(new AsyncCallback<String>() {
+
+                @Override
+                public void onFailure(Throwable caught) {
+                    Window.alert("Error while getting upload URL");
+                    
+                }
+
+                @Override
+                public void onSuccess(String result) {
+                    form.setAction(result);
+                    form.submit();
+                    
+                }
+            });
+            
+          }
+        }));
+
+        // Add an event handler to the form.
+        form.addSubmitHandler(new FormPanel.SubmitHandler() {
+          public void onSubmit(SubmitEvent event) {
+            // This event is fired just before the form is submitted. We can take
+            // this opportunity to perform validation.
+            if (tb.getText().length() == 0) {
+              Window.alert("The text box must not be empty");
+              event.cancel();
+            }
+          }
+        });
+        form.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
+          public void onSubmitComplete(SubmitCompleteEvent event) {
+            // When the form submission is successfully completed, this event is
+            // fired. Assuming the service returned a response of type text/html,
+            // we can get the result text here (see the FormPanel documentation for
+            // further explanation).
+            Window.alert(event.getResults());
+          }
+        });
+        
+        horizontalPanel.add(form);
     }
 }
