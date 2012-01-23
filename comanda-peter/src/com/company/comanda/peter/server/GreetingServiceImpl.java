@@ -69,7 +69,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 	
 	protected List cutList(List list, int start, int length){
 	    int size = list.size();
-        start = Math.min(start, size - 1);
+        start = Math.max(0, Math.min(start, size - 1));
         length = Math.min(length, size - start);
         
         list = list.subList(start, start + length);
