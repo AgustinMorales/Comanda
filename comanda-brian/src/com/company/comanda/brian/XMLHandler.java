@@ -20,6 +20,7 @@ public class XMLHandler extends DefaultHandler
 
     private boolean in_item = false;
     private boolean in_name = false;
+    private boolean in_imageString = false;
 
     private FoodMenuItem item = null;
 
@@ -68,6 +69,10 @@ public class XMLHandler extends DefaultHandler
         {
             this.in_name = true;
         }
+        else if (localName.equals("ImageString")) 
+        {
+            this.in_imageString = true;
+        }
     }
 
     /** Gets be called on closing tags like: 
@@ -84,6 +89,10 @@ public class XMLHandler extends DefaultHandler
         {
             this.in_name = false;
         }
+        else if (localName.equals("ImageString")) 
+        {
+            this.in_imageString = false;
+        }
     }
 
     /** Gets be called on the following structure: 
@@ -97,6 +106,8 @@ public class XMLHandler extends DefaultHandler
             String textBetween = new String(ch, start, length);
             if(this.in_name)
                 item.setName(textBetween);
+            else if(this.in_imageString)
+                item.setImageString(textBetween);
         }
     }
 }

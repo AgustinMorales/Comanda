@@ -1,6 +1,8 @@
 package com.company.comanda.brian;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +24,8 @@ import org.xml.sax.XMLReader;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,6 +35,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.company.comanda.brian.model.FoodMenuItem;
@@ -222,7 +227,7 @@ public class ComandaActivity extends ListActivity
             {
                 //Set all of the UI components 
                 //with the respective Object data
-//                ImageView icon = (ImageView) v.findViewById(R.id.icon);
+                ImageView icon = (ImageView) v.findViewById(R.id.icon);
                 TextView tt = (TextView) v.findViewById(R.id.toptext);
                 TextView bt = (TextView) v.findViewById(R.id.bottomtext);
                 Button placeOrderButton = (Button)v.findViewById(R.id.placeorderbutton);
@@ -243,38 +248,38 @@ public class ComandaActivity extends ListActivity
                         
                     }
                 });
-                //                      if(icon != null)
-                //                      {
-                //                          URL imageURL = null;
-                //                          try      
-                //                          {        
-                //                              //use our image serve page to get the image URL
-                //                              imageURL = new URL("http://yourapp.appspot.com/serveBlob?id="
-                //                                      + o.getImageKey());
-                //                          } 
-                //                          catch (MalformedURLException e) 
-                //                          {
-                //                              e.printStackTrace();
-                //                          }
-                //                          try 
-                //                          {
-                //                              //Decode and resize the image then set as the icon
-                //                              BitmapFactory.Options options = new BitmapFactory
-                //                                      .Options();
-                //                              options.inJustDecodeBounds = true;
-                //                              options.inSampleSize = 1/2;
-                //                              Bitmap bitmap = BitmapFactor
-                //                                      .decodeStream((InputStream)imageURL
-                //                                              .getContent());
-                //                              Bitmap finImg = Bitmap
-                //                                      .createScaledBitmap(bitmap, 50, 50, false);
-                //                              icon.setImageBitmap(finImg);
-                //                          } 
-                //                          catch (IOException e) 
-                //                          {                        
-                //                              e.printStackTrace();
-                //                          }
-                //                      }
+                                      if(icon != null)
+                                      {
+                                          URL imageURL = null;
+                                          try      
+                                          {        
+                                              //use our image serve page to get the image URL
+                                              imageURL = new URL("http://pgmtestapp.appspot.com/serveBlob?id="
+                                                      + o.getImageString());
+                                          } 
+                                          catch (MalformedURLException e) 
+                                          {
+                                              e.printStackTrace();
+                                          }
+                                          try 
+                                          {
+                                              //Decode and resize the image then set as the icon
+                                              BitmapFactory.Options options = new BitmapFactory
+                                                      .Options();
+                                              options.inJustDecodeBounds = true;
+                                              options.inSampleSize = 1/2;
+                                              Bitmap bitmap = BitmapFactory
+                                                      .decodeStream((InputStream)imageURL
+                                                              .getContent());
+                                              Bitmap finImg = Bitmap
+                                                      .createScaledBitmap(bitmap, 50, 50, false);
+                                              icon.setImageBitmap(finImg);
+                                          } 
+                                          catch (IOException e) 
+                                          {                        
+                                              e.printStackTrace();
+                                          }
+                                      }
             }
             //returns the view to the Adapter to be displayed
             return v;

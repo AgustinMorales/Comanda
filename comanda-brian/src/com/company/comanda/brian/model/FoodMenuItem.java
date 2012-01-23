@@ -4,10 +4,12 @@ public class FoodMenuItem
 {
     
     private String name;
+    private String imageString;
     
     public FoodMenuItem()
     {
      this.name = "";
+     this.imageString = "";
     }
     public String getName() 
     {
@@ -21,4 +23,12 @@ public class FoodMenuItem
     {
      return "MenuItem (Name:" + this.name + ")";
     }
+    public String getImageString() {
+        return imageString;
+    }
+    public void setImageString(String imageString) {
+        this.imageString = imageString;
+    }
+    
+    
 }
