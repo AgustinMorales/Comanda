@@ -159,9 +159,9 @@ public class ComandaActivity extends ListActivity
 
     
     private class PlaceOrderTask extends AsyncTask<String, Void, String> {
-        protected String doInBackground(String... names) {
-            assert names.length == 1;
-            String name = names[0];
+        protected String doInBackground(String... keyIds) {
+            assert keyIds.length == 1;
+            String keyId = keyIds[0];
             
             
             HttpClient httpclient = new DefaultHttpClient();
@@ -170,20 +170,20 @@ public class ComandaActivity extends ListActivity
             try {
                 // Add your data
                 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-                nameValuePairs.add(new BasicNameValuePair("name", name));
+                nameValuePairs.add(new BasicNameValuePair("keyId", keyId));
                 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
                 // Execute HTTP Post Request
                 HttpResponse response = httpclient.execute(httppost);
                 
             } catch (ClientProtocolException e) {
-                name = "ERROR!!!";
+                keyId = "ERROR!!!";
             } catch (IOException e) {
-                name = "ERROR!!!";
+                keyId = "ERROR!!!";
             }
             
             
-            return name;
+            return keyId;
         }
 
 
@@ -232,6 +232,7 @@ public class ComandaActivity extends ListActivity
                 TextView bt = (TextView) v.findViewById(R.id.bottomtext);
                 Button placeOrderButton = (Button)v.findViewById(R.id.placeorderbutton);
                 final String menuItemName = o.getName();
+                final String menuItemKeyId = o.getKeyId();
                 if (tt != null)
                 {
                     tt.setText("Name: " + menuItemName);   
@@ -244,7 +245,7 @@ public class ComandaActivity extends ListActivity
                     
                     @Override
                     public void onClick(View v) {
-                        (new PlaceOrderTask()).execute(menuItemName);
+                        (new PlaceOrderTask()).execute(menuItemKeyId);
                         
                     }
                 });

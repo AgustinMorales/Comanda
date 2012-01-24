@@ -23,7 +23,7 @@ public class PlaceOrderServlet extends HttpServlet
     
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException
     {
-        String name = req.getParameter("name");
-        itemsManager.placeOrder(name);
+        String keyId = req.getParameter("keyId");
+        itemsManager.placeOrder(Long.parseLong(keyId));
     }
 }

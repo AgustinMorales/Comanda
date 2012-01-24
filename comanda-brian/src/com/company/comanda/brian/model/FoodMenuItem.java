@@ -5,6 +5,7 @@ public class FoodMenuItem
     
     private String name;
     private String imageString;
+    private String keyId;
     
     public FoodMenuItem()
     {
@@ -28,6 +29,12 @@ public class FoodMenuItem
     }
     public void setImageString(String imageString) {
         this.imageString = imageString;
+    }
+    public String getKeyId() {
+        return keyId;
+    }
+    public void setKeyId(String keyID) {
+        this.keyId = keyID;
     }
     
     

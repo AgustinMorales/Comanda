@@ -1,6 +1,7 @@
 package com.company.comanda.peter.server;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.jdo.FetchPlan;
 import javax.jdo.PersistenceManager;
@@ -12,6 +13,8 @@ import com.company.comanda.peter.server.model.Order;
 
 public class ItemsManager {
 
+    private static final Logger log = Logger.getLogger(ItemsManager.class.getName());
+    
 	@SuppressWarnings("unchecked")
 	public List<MenuItem> getMenuItems(){
 		List<MenuItem> result = null;
@@ -33,20 +36,16 @@ public class ItemsManager {
 	    return result;
 	}
 	
-	public void placeOrder(String menuItemName){
+	public void placeOrder(long keyId){
         PersistenceManager pm = null;
         try{
             pm = PMF.get().getPersistenceManager();
-            Query query = pm.newQuery("select from " + MenuItem.class.getName() +
-                    " where name == nameParam " +
-                    "parameters String nameParam ");
-            @SuppressWarnings("unchecked")
-            List<MenuItem> menuItems = (List<MenuItem>)query.execute(menuItemName);
-            if(menuItems.size() !=1 ){
-                throw new IllegalArgumentException("!= 1 while placing order");
+            MenuItem menuItem = pm.getObjectById(MenuItem.class, keyId);
+            if(menuItem == null){
+                String errorMsg = String.format("Could not place order for item ID: %s",keyId);
+                log.warning(errorMsg);
+                throw new IllegalArgumentException(errorMsg);
             }
-            MenuItem menuItem = menuItems.get(0);
-            
             Order newOrder = new Order(menuItem.getName());
             pm.makePersistent(newOrder);
         }
