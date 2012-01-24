@@ -81,9 +81,6 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
         list = list.subList(start, start + length);
         return list;
 	}
-	public void placeOrder(String keyId){
-		itemsManager.placeOrder(Long.parseLong(keyId));
-	}
 	
 	public PagedResult<String> getMenuItemNames(int start, int length){
 		ArrayList<String> resultList = new ArrayList<String>();
