@@ -31,6 +31,11 @@
     <servlet-class>com.company.comanda.peter.server.PlaceOrderServlet</servlet-class>
   </servlet>
   
+  <servlet>
+    <servlet-name>getTables</servlet-name>
+    <servlet-class>com.company.comanda.peter.server.GetTablesServlet</servlet-class>
+  </servlet>
+  
   <servlet-mapping>
     <servlet-name>greetServlet</servlet-name>
     <url-pattern>/comanda_peter/greet</url-pattern>
@@ -54,6 +59,11 @@
   <servlet-mapping>
     <servlet-name>serveBlob</servlet-name>
     <url-pattern>/serveBlob</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>getTables</servlet-name>
+    <url-pattern>/getTables</url-pattern>
   </servlet-mapping>
   
   
