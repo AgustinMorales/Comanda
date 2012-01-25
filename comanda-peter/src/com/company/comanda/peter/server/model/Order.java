@@ -14,11 +14,14 @@ public class Order
     private Key key;
     @Persistent(defaultFetchGroup = "true")
     private String name;
+    @Persistent
+    private String table;
     
 
-    public Order(String name)
+    public Order(String name, String table)
     {
         this.name = name;
+        this.table = table;
     }
     public Key getKey() 
     {
@@ -31,5 +34,12 @@ public class Order
     public void setName(String t)
     {
      this.name = t;
-    }    
+    }
+    public String getTable() {
+        return table;
+    }
+    public void setTable(String table) {
+        this.table = table;
+    }
+    
 }

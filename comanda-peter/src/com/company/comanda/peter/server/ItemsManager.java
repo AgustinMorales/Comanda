@@ -36,7 +36,7 @@ public class ItemsManager {
 	    return result;
 	}
 	
-	public void placeOrder(long keyId){
+	public void placeOrder(long keyId, String table){
         PersistenceManager pm = null;
         try{
             pm = PMF.get().getPersistenceManager();
@@ -46,7 +46,7 @@ public class ItemsManager {
                 log.warning(errorMsg);
                 throw new IllegalArgumentException(errorMsg);
             }
-            Order newOrder = new Order(menuItem.getName());
+            Order newOrder = new Order(menuItem.getName(), table);
             pm.makePersistent(newOrder);
         }
         finally{
