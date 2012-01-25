@@ -68,6 +68,10 @@ public class ComandaActivity extends ListActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        Bundle extras = getIntent().getExtras();
+        String tableName = extras.getString("tableName");
+        TextView tableNameTextView = (TextView)findViewById(R.id.tableNametextView);
+        tableNameTextView.setText(tableName);
         fetchContent();
     }
     public void fetchContent()

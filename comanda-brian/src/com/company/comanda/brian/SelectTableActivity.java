@@ -12,8 +12,12 @@ import org.xml.sax.XMLReader;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -56,6 +60,23 @@ public class SelectTableActivity extends Activity
         this.m_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, tables);
         this.m_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(m_adapter);
+        spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                    int pos, long id) {
+                String tableName = parent.getItemAtPosition(pos).toString();
+                Intent intent = new Intent(parent.getContext(), ComandaActivity.class);
+                intent.putExtra("tableName", tableName);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+                
+            }
+        });
         //create a Runnable object that does the work 
         //of retrieving the XML data online
         //This will be run in a new Thread
