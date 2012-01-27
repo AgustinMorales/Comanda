@@ -27,6 +27,19 @@ public class SelectTableActivity extends Activity
     private ArrayList<String> tables = null;
     private ArrayAdapter<String> m_adapter;
     private Runnable viewItems;
+    private int artificiallyTrigggeredSelections;
+    
+    
+    
+    protected synchronized int decreaseSelections() {
+        if (artificiallyTrigggeredSelections > 0){
+            artificiallyTrigggeredSelections--;
+        }
+        return artificiallyTrigggeredSelections;
+    }
+    protected synchronized void increaseSelections() {
+        this.artificiallyTrigggeredSelections++;
+    }
     private Runnable returnRes = new Runnable()
     {
         @Override
@@ -38,9 +51,11 @@ public class SelectTableActivity extends Activity
                 m_adapter.clear();
                 for(int i=0;i<tables.size();i++)
                     m_adapter.add(tables.get(i));
+                increaseSelections();
             }
             m_ProgressDialog.dismiss();
             m_adapter.notifyDataSetChanged();
+            increaseSelections();
         }
     };
     /** Called when the activity is first created. */
@@ -65,10 +80,13 @@ public class SelectTableActivity extends Activity
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
                     int pos, long id) {
-                String tableName = parent.getItemAtPosition(pos).toString();
-                Intent intent = new Intent(parent.getContext(), ComandaActivity.class);
-                intent.putExtra("tableName", tableName);
-                startActivity(intent);
+                if (decreaseSelections() == 0){
+                    String tableName = parent.getItemAtPosition(pos).toString();
+                    Intent intent = new Intent(parent.getContext(), ComandaActivity.class);
+                    intent.putExtra("tableName", tableName);
+                    startActivity(intent);
+                }
+                
             }
 
             @Override
