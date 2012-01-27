@@ -46,6 +46,7 @@ public class ComandaActivity extends ListActivity
     private ArrayList<FoodMenuItem> m_items = null;
     private ItemAdapter m_adapter;
     private Runnable viewItems;
+    private String tableName;
     private Runnable returnRes = new Runnable()
     {
         @Override
@@ -69,9 +70,9 @@ public class ComandaActivity extends ListActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         Bundle extras = getIntent().getExtras();
-        String tableName = extras.getString("tableName");
+        tableName = extras.getString("tableName");
         TextView tableNameTextView = (TextView)findViewById(R.id.tableNametextView);
-        tableNameTextView.setText(tableName);
+        tableNameTextView.setText(getString(R.string.you_are_at_table) + " " + tableName);
         fetchContent();
     }
     public void fetchContent()
@@ -117,7 +118,7 @@ public class ComandaActivity extends ListActivity
         try 
         {
             // Create a URL we want to load some xml-data from.
-            URL url = new URL("http://pgmtestapp.appspot.com/menuitems");
+            URL url = new URL("http://10.0.2.2:8888/menuitems");
             // Get a SAXParser from the SAXPArserFactory.
             SAXParserFactory spf = SAXParserFactory.newInstance();
             SAXParser sp = spf.newSAXParser();

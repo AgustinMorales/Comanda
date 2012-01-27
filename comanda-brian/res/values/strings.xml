@@ -4,5 +4,6 @@
     <string name="hello">Hello World, ComandaActivity!</string>
     <string name="app_name">Comanda-brian</string>
     <string name="select_table">Select table:</string>
-
+    <string name="you_are_at_table">Table:</string>
+    
 </resources>
