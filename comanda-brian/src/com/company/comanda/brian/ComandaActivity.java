@@ -176,6 +176,7 @@ public class ComandaActivity extends ListActivity
                 // Add your data
                 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
                 nameValuePairs.add(new BasicNameValuePair("keyId", keyId));
+                nameValuePairs.add(new BasicNameValuePair("table", tableName));
                 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
                 // Execute HTTP Post Request
