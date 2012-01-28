@@ -1,7 +1,10 @@
 package com.company.comanda.peter.client;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.TabPanel;
 
 /**
@@ -14,13 +17,12 @@ public class Comanda_peter implements EntryPoint {
      * This is the entry point method.
      */
     public void onModuleLoad() {
-        TabPanel tabPanel = new TabPanel();
-        
+        TabLayoutPanel tabPanel = new TabLayoutPanel(1.5, Unit.EM);
         tabPanel.add(new EditMenuPanel(), "editMenu");
         tabPanel.add(new ViewOrdersPanel(), "viewOrders");
         
         tabPanel.selectTab(1);
         
-        RootPanel.get().add(tabPanel);
+        RootLayoutPanel.get().add(tabPanel);
     }
 }
