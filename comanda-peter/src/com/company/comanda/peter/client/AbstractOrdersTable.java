@@ -2,6 +2,7 @@ package com.company.comanda.peter.client;
 
 import java.util.List;
 
+import com.company.comanda.peter.shared.Constants;
 import com.company.comanda.peter.shared.PagedResult;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.cellview.client.CellTable;
@@ -21,6 +22,9 @@ public abstract class AbstractOrdersTable extends VerticalPanel {
 
     private final GreetingServiceAsync greetingService = GWT
             .create(GreetingService.class);
+    
+    private MyTimer autoUpdateTimer = new MyTimer();
+    private CellTable<String[]> ordersTable;
     
     public class ColumnDefinition{
         
@@ -52,7 +56,7 @@ public abstract class AbstractOrdersTable extends VerticalPanel {
     }
     
     public AbstractOrdersTable(){
-        final CellTable<String[]> ordersTable = new CellTable<String[]>();
+        ordersTable = new CellTable<String[]>();
         add(ordersTable);
         ordersTable.setSize("213px", "300px");
 
@@ -98,18 +102,23 @@ public abstract class AbstractOrdersTable extends VerticalPanel {
         ordersProvider.addDataDisplay(ordersTable);
         AsyncHandler ordersColumnSortHandler = new AsyncHandler(ordersTable);
 
-        class MyTimer extends Timer{
+        
+    }
+    
+    class MyTimer extends Timer{
 
-            public void run(){
-                Range range = ordersTable.getVisibleRange();
-                RangeChangeEvent.fire(ordersTable, range);
-            }
+        public void run(){
+            Range range = ordersTable.getVisibleRange();
+            RangeChangeEvent.fire(ordersTable, range);
         }
-
-        Timer timer = new MyTimer();
-
-        timer.scheduleRepeating(1000);
     }
     
     protected abstract List<ColumnDefinition> getColumns();
+    
+    public void setAutoUpdate(boolean value){
+        autoUpdateTimer.cancel();
+        if(value){
+            autoUpdateTimer.scheduleRepeating(Constants.AUTOUPDATE_PERIOD);
+        }
+    }
 }

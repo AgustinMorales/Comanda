@@ -5,7 +5,8 @@ import java.util.List;
 
 import com.google.gwt.user.cellview.client.TextColumn;
 
-public class AllOrdersTable extends AbstractOrdersTable {
+public class AllOrdersTable extends AbstractOrdersTable 
+implements Autoupdatable{
 
     @Override
     protected List<ColumnDefinition> getColumns() {
