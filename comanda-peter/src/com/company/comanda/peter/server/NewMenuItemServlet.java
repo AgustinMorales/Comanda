@@ -33,12 +33,13 @@ public class NewMenuItemServlet extends HttpServlet{
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         String itemName = req.getParameter("itemName");
+        int price = Integer.parseInt(req.getParameter("price"));
         Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(req);
         List<BlobKey> blobKeyList = blobs.get("itemImage");
         assert blobKeyList.size() == 1;
         BlobKey blobKey = blobKeyList.get(0);
         PersistenceManager pm = PMF.get().getPersistenceManager();   
-        MenuItem item = new MenuItem(itemName, "", blobKey.getKeyString());
+        MenuItem item = new MenuItem(itemName, "", blobKey.getKeyString(), price);
      //persist
         try{ pm.makePersistent(item); }
         finally{ pm.close(); }

@@ -18,12 +18,16 @@ public class MenuItem
     private String description;
     @Persistent
     private String imageString;
+    @Persistent
+    private int price;
 
-    public MenuItem(String name, String desc, String imageString)
+    public MenuItem(String name, String desc, String imageString, 
+            int price)
     {
         this.name = name;
         this.description = desc;
         this.imageString = imageString;
+        this.price = price;
     }
     public Key getKey() 
     {
@@ -50,6 +54,12 @@ public class MenuItem
     }
     public void setImageString(String imageString) {
         this.imageString = imageString;
+    }
+    public int getPrice() {
+        return price;
+    }
+    public void setPrice(int price) {
+        this.price = price;
     } 
     
     
