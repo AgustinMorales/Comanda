@@ -48,9 +48,9 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 //			      finally{ pm.close(); }
 	}
 	
-	public PagedResult<String> getOrders(int start, int length){
+	public PagedResult<String[]> getOrders(int start, int length){
 		PersistenceManager pm = null;
-		ArrayList<String> resultList = new ArrayList<String>();
+		ArrayList<String[]> resultList = new ArrayList<String[]>();
 		int total;
 	    try{
 	    	pm = PMF.get().getPersistenceManager();
@@ -62,7 +62,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		    resultList.ensureCapacity(orders.size());
 		    
 		    for(Order orderElement: orders){
-		        resultList.add(orderElement.getName());
+		        resultList.add(new String[]{orderElement.getName(), orderElement.getTable()});
 		    }
 	    }
 	    finally{
@@ -70,7 +70,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 	    		pm.close();
 	    	}
 	    }
-		return new PagedResult<String>(resultList,total);
+		return new PagedResult<String[]>(resultList,total);
 	}
 	
 	protected List cutList(List list, int start, int length){

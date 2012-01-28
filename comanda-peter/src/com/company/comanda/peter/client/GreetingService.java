@@ -11,6 +11,6 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public interface GreetingService extends RemoteService {
 	void greetServer(String name) throws IllegalArgumentException;
 	PagedResult<String> getMenuItemNames(int start, int length);
-	PagedResult<String> getOrders(int start, int length);
+	PagedResult<String[]> getOrders(int start, int length);
 	public String getUploadUrl();
 }
