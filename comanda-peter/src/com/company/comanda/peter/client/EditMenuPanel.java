@@ -33,7 +33,7 @@ public class EditMenuPanel extends VerticalPanel {
 
         add(addMenuItemButton);
         
-        final CellTable<String> cellTable = new CellTable<String>();
+        final CellTable<String[]> cellTable = new CellTable<String[]>();
         add(cellTable);
         cellTable.setSize("213px", "300px");
 
@@ -43,32 +43,40 @@ public class EditMenuPanel extends VerticalPanel {
         menuItemsPager.setPageSize(8);
         
         // Add a text column to show the name.
-        TextColumn<String> nameColumn = new TextColumn<String>() {
+        TextColumn<String[]> nameColumn = new TextColumn<String[]>() {
             @Override
-            public String getValue(String object) {
-                return object;
+            public String getValue(String[] object) {
+                return object[1];
             }
         };
-        cellTable.addColumn(nameColumn, "Menu items");
-
-        AsyncDataProvider<String> provider = new AsyncDataProvider<String>() {
+        cellTable.addColumn(nameColumn, "Name");
+        
+        TextColumn<String[]> priceColumn = new TextColumn<String[]>() {
             @Override
-            protected void onRangeChanged(HasData<String> display) {
+            public String getValue(String[] object) {
+                return object[2];
+            }
+        };
+        cellTable.addColumn(priceColumn, "Price");
+
+        AsyncDataProvider<String[]> provider = new AsyncDataProvider<String[]>() {
+            @Override
+            protected void onRangeChanged(HasData<String[]> display) {
                 final int start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
-                AsyncCallback<PagedResult<String>> callback = new AsyncCallback<PagedResult<String>>() {
+                AsyncCallback<PagedResult<String[]>> callback = new AsyncCallback<PagedResult<String[]>>() {
                     @Override
                     public void onFailure(Throwable caught) {
                         Window.alert(caught.getMessage());
                     }
                     @Override
-                    public void onSuccess(PagedResult<String> result) {
+                    public void onSuccess(PagedResult<String[]> result) {
                         updateRowData(start, result.getList());
                         updateRowCount(result.getTotal(), true);
                     }
                 };
                 // The remote service that should be implemented
-                greetingService.getMenuItemNames(start, length, callback);
+                greetingService.getMenuItems(start, length, callback);
             }
         };
         provider.addDataDisplay(cellTable);

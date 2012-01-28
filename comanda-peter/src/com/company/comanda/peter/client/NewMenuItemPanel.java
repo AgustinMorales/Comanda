@@ -69,7 +69,7 @@ public class NewMenuItemPanel extends VerticalPanel {
         HorizontalPanel horizontalPanel_1 = new HorizontalPanel();
         newMenuItemElementsPanel.add(horizontalPanel_1);
         
-        Label lblItemPrice = new Label("Item price");
+        Label lblItemPrice = new Label("Item price (SIN DECIMALES!!)");
         horizontalPanel_1.add(lblItemPrice);
         
         IntegerBox priceBox = new IntegerBox();
@@ -115,7 +115,7 @@ public class NewMenuItemPanel extends VerticalPanel {
             
             @Override
             public void onSubmitComplete(SubmitCompleteEvent event) {
-                addMenuItemFormPanel.clear();
+                addMenuItemFormPanel.reset();
                 newMenuItemHandler.onNewMenuItem();
                 
             }

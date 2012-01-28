@@ -82,8 +82,8 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
         return list;
 	}
 	
-	public PagedResult<String> getMenuItemNames(int start, int length){
-		ArrayList<String> resultList = new ArrayList<String>();
+	public PagedResult<String[]> getMenuItems(int start, int length){
+		ArrayList<String[]> resultList = new ArrayList<String[]>();
 		int total;
 
 		List<MenuItem> items = itemsManager.getMenuItems();
@@ -93,9 +93,10 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
         resultList.ensureCapacity(items.size());
 		
 		for(MenuItem item: items){
-		    resultList.add(item.getName());
+		    resultList.add(new String[]{item.getImageString(), 
+		            item.getName(), (new Integer(item.getPrice())).toString()});
 		}
-		return new PagedResult<String>(resultList, total);
+		return new PagedResult<String[]>(resultList, total);
 	}
 	
 	/**

@@ -9,7 +9,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public interface GreetingServiceAsync {
 	void greetServer(String input, AsyncCallback<Void> callback)
 			throws IllegalArgumentException;
-	void getMenuItemNames(int start, int length, AsyncCallback<PagedResult<String>> callback);
+	void getMenuItems(int start, int length, AsyncCallback<PagedResult<String[]>> callback);
 	void getOrders(int start, int length, AsyncCallback<PagedResult<String[]>> callback);
 	void getUploadUrl(AsyncCallback<String> callback);
 }
