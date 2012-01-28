@@ -131,7 +131,7 @@ public class SelectTableActivity extends Activity
         try 
         {
             // Create a URL we want to load some xml-data from.
-            URL url = new URL("http://10.0.2.2:8888/getTables");
+            URL url = new URL("http://" + Constants.SERVER_LOCATION + "/getTables");
             // Get a SAXParser from the SAXPArserFactory.
             SAXParserFactory spf = SAXParserFactory.newInstance();
             SAXParser sp = spf.newSAXParser();

@@ -54,7 +54,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		int total;
 	    try{
 	    	pm = PMF.get().getPersistenceManager();
-		    Query query = pm.newQuery("select from " + Order.class.getName());
+		    Query query = pm.newQuery("select from " + Order.class.getName() + " order by date desc");
 		    @SuppressWarnings("unchecked")
 			List<Order> orders = (List<Order>) query.execute();
 		    total = orders.size();

@@ -1,5 +1,6 @@
 package com.company.comanda.peter.server;
 
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -46,7 +47,7 @@ public class ItemsManager {
                 log.warning(errorMsg);
                 throw new IllegalArgumentException(errorMsg);
             }
-            Order newOrder = new Order(menuItem.getName(), table);
+            Order newOrder = new Order(menuItem.getName(), table, new Date());
             pm.makePersistent(newOrder);
         }
         finally{

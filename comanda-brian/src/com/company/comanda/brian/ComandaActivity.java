@@ -118,7 +118,8 @@ public class ComandaActivity extends ListActivity
         try 
         {
             // Create a URL we want to load some xml-data from.
-            URL url = new URL("http://10.0.2.2:8888/menuitems");
+            URL url = new URL("http://" + 
+                    Constants.SERVER_LOCATION + "/menuitems");
             // Get a SAXParser from the SAXPArserFactory.
             SAXParserFactory spf = SAXParserFactory.newInstance();
             SAXParser sp = spf.newSAXParser();
@@ -170,7 +171,8 @@ public class ComandaActivity extends ListActivity
             
             
             HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost("http://pgmtestapp.appspot.com/placeOrder");
+            HttpPost httppost = new HttpPost("http://" + 
+                    Constants.SERVER_LOCATION + "/placeOrder");
 
             try {
                 // Add your data
@@ -261,7 +263,7 @@ public class ComandaActivity extends ListActivity
                                           try      
                                           {        
                                               //use our image serve page to get the image URL
-                                              imageURL = new URL("http://pgmtestapp.appspot.com/serveBlob?id="
+                                              imageURL = new URL("http://" + Constants.SERVER_LOCATION + "/serveBlob?id="
                                                       + o.getImageString());
                                           } 
                                           catch (MalformedURLException e) 

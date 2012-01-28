@@ -1,5 +1,7 @@
 package com.company.comanda.peter.server.model;
 
+import java.util.Date;
+
 import com.google.appengine.api.datastore.Key;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
@@ -16,12 +18,14 @@ public class Order
     private String name;
     @Persistent
     private String table;
-    
+    @Persistent
+    private Date date;
 
-    public Order(String name, String table)
+    public Order(String name, String table, Date date)
     {
         this.name = name;
         this.table = table;
+        this.date = date;
     }
     public Key getKey() 
     {
@@ -40,6 +44,12 @@ public class Order
     }
     public void setTable(String table) {
         this.table = table;
+    }
+    protected synchronized Date getDate() {
+        return date;
+    }
+    protected synchronized void setDate(Date date) {
+        this.date = date;
     }
     
 }
