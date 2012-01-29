@@ -3,9 +3,11 @@ package com.company.comanda.peter.client;
 import java.util.List;
 
 import com.company.comanda.peter.shared.Constants;
+import com.company.comanda.peter.shared.OrderState;
 import com.company.comanda.peter.shared.PagedResult;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.AsyncHandler;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
@@ -26,12 +28,16 @@ public abstract class AbstractOrdersTable extends VerticalPanel {
     private MyTimer autoUpdateTimer = new MyTimer();
     private CellTable<String[]> ordersTable;
     
+    AsyncDataProvider<String[]> ordersProvider;
+    
+    
+    
     public class ColumnDefinition{
         
         private String name;
-        private TextColumn<String[]> textColumn;
+        private Column textColumn;
         
-        public ColumnDefinition(String name, TextColumn<String[]> textColumn){
+        public ColumnDefinition(String name, Column textColumn){
             this.name = name;
             this.textColumn = textColumn;
         }
@@ -44,7 +50,7 @@ public abstract class AbstractOrdersTable extends VerticalPanel {
             this.name = name;
         }
 
-        public TextColumn<String[]> getTextColumn() {
+        public Column getTextColumn() {
             return textColumn;
         }
 
@@ -79,28 +85,6 @@ public abstract class AbstractOrdersTable extends VerticalPanel {
             ordersTable.addColumn(columnDefinition.getTextColumn(), columnDefinition.getName());
         }
 
-        final AsyncDataProvider<String[]> ordersProvider = new AsyncDataProvider<String[]>() {
-            @Override
-            protected void onRangeChanged(HasData<String[]> display) {
-                final int start = display.getVisibleRange().getStart();
-                int length = display.getVisibleRange().getLength();
-                AsyncCallback<PagedResult<String[]>> callback = new AsyncCallback<PagedResult<String[]>>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        Window.alert(caught.getMessage());
-                    }
-                    @Override
-                    public void onSuccess(PagedResult<String[]> result) {
-                        updateRowData(start, result.getList());
-                        updateRowCount(result.getTotal(), true);
-                    }
-                };
-                // The remote service that should be implemented
-                greetingService.getOrders(start, length, callback);
-            }
-        };
-        ordersProvider.addDataDisplay(ordersTable);
-        AsyncHandler ordersColumnSortHandler = new AsyncHandler(ordersTable);
 
         
     }
@@ -108,17 +92,49 @@ public abstract class AbstractOrdersTable extends VerticalPanel {
     class MyTimer extends Timer{
 
         public void run(){
-            Range range = ordersTable.getVisibleRange();
-            RangeChangeEvent.fire(ordersTable, range);
+            refreshTable();
         }
     }
     
     protected abstract List<ColumnDefinition> getColumns();
     
+    protected abstract OrderState getSelectedState();
+    
+    protected abstract String getSelectedTable();
+
     public void setAutoUpdate(boolean value){
+        if(ordersProvider == null){
+            ordersProvider = new AsyncDataProvider<String[]>() {
+                @Override
+                protected void onRangeChanged(HasData<String[]> display) {
+                    final int start = display.getVisibleRange().getStart();
+                    int length = display.getVisibleRange().getLength();
+                    AsyncCallback<PagedResult<String[]>> callback = new AsyncCallback<PagedResult<String[]>>() {
+                        @Override
+                        public void onFailure(Throwable caught) {
+                            Window.alert(caught.getMessage());
+                        }
+                        @Override
+                        public void onSuccess(PagedResult<String[]> result) {
+                            updateRowData(start, result.getList());
+                            updateRowCount(result.getTotal(), true);
+                        }
+                    };
+                    // The remote service that should be implemented
+                    greetingService.getOrders(start, length, 
+                            getSelectedState(), getSelectedTable(), callback);
+                }
+            };
+            ordersProvider.addDataDisplay(ordersTable);
+        }
         autoUpdateTimer.cancel();
         if(value){
             autoUpdateTimer.scheduleRepeating(Constants.AUTOUPDATE_PERIOD);
         }
+    }
+    
+    protected void refreshTable(){
+        Range range = ordersTable.getVisibleRange();
+        RangeChangeEvent.fire(ordersTable, range);
     }
 }

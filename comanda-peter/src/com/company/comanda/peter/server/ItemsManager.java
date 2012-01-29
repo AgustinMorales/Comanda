@@ -11,6 +11,7 @@ import javax.jdo.Transaction;
 
 import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Order;
+import com.company.comanda.peter.shared.OrderState;
 
 public class ItemsManager {
 
@@ -47,7 +48,7 @@ public class ItemsManager {
                 log.warning(errorMsg);
                 throw new IllegalArgumentException(errorMsg);
             }
-            Order newOrder = new Order(menuItem.getName(), table, new Date());
+            Order newOrder = new Order(menuItem.getName(), table, new Date(), OrderState.ORDERED);
             pm.makePersistent(newOrder);
         }
         finally{
@@ -56,4 +57,23 @@ public class ItemsManager {
             }
         }
     }
+	
+	public void modifyOrder(long keyId, OrderState newState){
+	    PersistenceManager pm = null;
+        try{
+            pm = PMF.get().getPersistenceManager();
+            Order order = pm.getObjectById(Order.class, keyId);
+            if(order == null){
+                String errorMsg = String.format("Could not order with ID: %s",keyId);
+                log.warning(errorMsg);
+                throw new IllegalArgumentException(errorMsg);
+            }
+            order.setState(newState);
+        }
+        finally{
+            if (pm != null){
+                pm.close();
+            }
+        }
+	}
 }

@@ -2,6 +2,7 @@ package com.company.comanda.peter.server.model;
 
 import java.util.Date;
 
+import com.company.comanda.peter.shared.OrderState;
 import com.google.appengine.api.datastore.Key;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
@@ -20,12 +21,16 @@ public class Order
     private String table;
     @Persistent
     private Date date;
+    @Persistent
+    private OrderState state;
+    
 
-    public Order(String name, String table, Date date)
+    public Order(String name, String table, Date date, OrderState state)
     {
         this.name = name;
         this.table = table;
         this.date = date;
+        this.state = state;
     }
     public Key getKey() 
     {
@@ -50,6 +55,12 @@ public class Order
     }
     protected synchronized void setDate(Date date) {
         this.date = date;
+    }
+    public OrderState getState() {
+        return state;
+    }
+    public void setState(OrderState state) {
+        this.state = state;
     }
     
 }
