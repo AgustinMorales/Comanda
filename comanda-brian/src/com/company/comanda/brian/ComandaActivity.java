@@ -21,6 +21,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
+import android.app.Dialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -28,7 +29,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Layout;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -36,6 +39,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.company.comanda.brian.model.FoodMenuItem;
@@ -199,14 +203,14 @@ public class ComandaActivity extends ListActivity
 //            showDialog();
         }
     }
-    
-    
+
+
     /*
      * PRIVATE ADAPTER CLASS. Assigns data to be displayed on the listview
      */
     private class ItemAdapter extends ArrayAdapter<FoodMenuItem> 
     {
-
+        private Bitmap finImg = null;
         //Hold array of items to be displayed in the list
         private ArrayList<FoodMenuItem> items;
 
@@ -250,48 +254,76 @@ public class ComandaActivity extends ListActivity
                     bt.setText("No description");
                 }
                 placeOrderButton.setOnClickListener(new OnClickListener() {
-                    
+
                     @Override
                     public void onClick(View v) {
                         (new PlaceOrderTask()).execute(menuItemKeyId);
-                        
+
                     }
                 });
-                                      if(icon != null)
-                                      {
-                                          URL imageURL = null;
-                                          try      
-                                          {        
-                                              //use our image serve page to get the image URL
-                                              imageURL = new URL("http://" + Constants.SERVER_LOCATION + "/serveBlob?id="
-                                                      + o.getImageString());
-                                          } 
-                                          catch (MalformedURLException e) 
-                                          {
-                                              e.printStackTrace();
-                                          }
-                                          try 
-                                          {
-                                              //Decode and resize the image then set as the icon
-                                              BitmapFactory.Options options = new BitmapFactory
-                                                      .Options();
-                                              options.inJustDecodeBounds = true;
-                                              options.inSampleSize = 1/2;
-                                              Bitmap bitmap = BitmapFactory
-                                                      .decodeStream((InputStream)imageURL
-                                                              .getContent());
-                                              Bitmap finImg = Bitmap
-                                                      .createScaledBitmap(bitmap, 50, 50, false);
-                                              icon.setImageBitmap(finImg);
-                                          } 
-                                          catch (IOException e) 
-                                          {                        
-                                              e.printStackTrace();
-                                          }
-                                      }
+                if(icon != null)
+                {
+                    URL imageURL = null;
+                    try      
+                    {        
+                        //use our image serve page to get the image URL
+                        imageURL = new URL("http://" + Constants.SERVER_LOCATION + "/serveBlob?id="
+                                + o.getImageString());
+                    } 
+                    catch (MalformedURLException e) 
+                    {
+                        e.printStackTrace();
+                    }
+                    try 
+                    {
+                        //Decode and resize the image then set as the icon
+                        BitmapFactory.Options options = new BitmapFactory
+                                .Options();
+                        options.inJustDecodeBounds = true;
+                        options.inSampleSize = 1/2;
+                        Bitmap bitmap = BitmapFactory
+                                .decodeStream((InputStream)imageURL
+                                        .getContent());
+                        finImg = Bitmap
+                                .createScaledBitmap(bitmap, 50, 50, false);
+                        icon.setImageBitmap(finImg);
+                    } 
+                    catch (IOException e) 
+                    {                        
+                        e.printStackTrace();
+                    }
+                }
+                //returns the view to the Adapter to be displayed
+
+                v.setOnClickListener(new OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        LayoutInflater inflater = (LayoutInflater)
+                                ComandaActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        View view = inflater.inflate(R.layout.menu_item_details, null, false);
+                        
+                        PopupWindow pw = new PopupWindow(
+                                view, 
+                                100, 
+                                100, 
+                                true);
+                        TextView text = (TextView) view.findViewById(R.id.text);
+                        text.setText("Details for item: " + menuItemName);
+                        if(finImg != null){
+                            ImageView image = (ImageView) view.findViewById(R.id.image);
+                            image.setImageBitmap(finImg);
+                        }
+                        // The code below assumes that the root container has an id called 'main'
+                        pw.showAtLocation(findViewById(R.id.main_menu_item_list), Gravity.CENTER, 0, 0);
+
+                    }
+                });
             }
-            //returns the view to the Adapter to be displayed
+
             return v;
         }        
     }
+
+
 }
