@@ -131,7 +131,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
         resultList.ensureCapacity(items.size());
 		
 		for(MenuItem item: items){
-		    resultList.add(new String[]{item.getImageString(), 
+		    resultList.add(new String[]{"" + item.getKey().getId(),item.getImageString(), 
 		            item.getName(), (new Integer(item.getPrice())).toString()});
 		}
 		return new PagedResult<String[]>(resultList, total);
@@ -160,5 +160,11 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
     public void acceptOrder(String orderKey) {
         long keyId = Long.parseLong(orderKey);
         itemsManager.modifyOrder(keyId, OrderState.ACCEPTED);
+    }
+
+    @Override
+    public void deleteMenuItems(long[] keyIds) {
+        itemsManager.deleteMenuItems(keyIds);
+        
     }
 }

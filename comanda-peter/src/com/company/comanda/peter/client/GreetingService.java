@@ -1,5 +1,7 @@
 package com.company.comanda.peter.client;
 
+import java.util.List;
+
 import com.company.comanda.peter.shared.OrderState;
 import com.company.comanda.peter.shared.PagedResult;
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -16,4 +18,5 @@ public interface GreetingService extends RemoteService {
 	        String tableName);
 	public String getUploadUrl();
 	void acceptOrder(String orderKey);
+	void deleteMenuItems(long[] keyIds);
 }

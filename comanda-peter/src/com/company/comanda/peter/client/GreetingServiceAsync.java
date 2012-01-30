@@ -1,5 +1,7 @@
 package com.company.comanda.peter.client;
 
+import java.util.List;
+
 import com.company.comanda.peter.shared.OrderState;
 import com.company.comanda.peter.shared.PagedResult;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -15,4 +17,5 @@ public interface GreetingServiceAsync {
 	        AsyncCallback<PagedResult<String[]>> callback);
 	void getUploadUrl(AsyncCallback<String> callback);
 	void acceptOrder(String orderKey, AsyncCallback<Void> callback);
+	void deleteMenuItems(long[] keyIds, AsyncCallback<Void> callback);
 }

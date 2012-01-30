@@ -1,5 +1,7 @@
 package com.company.comanda.peter.server;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
@@ -69,6 +71,23 @@ public class ItemsManager {
                 throw new IllegalArgumentException(errorMsg);
             }
             order.setState(newState);
+        }
+        finally{
+            if (pm != null){
+                pm.close();
+            }
+        }
+	}
+	
+	public void deleteMenuItems(long[] keyIds){
+	    PersistenceManager pm = null;
+        try{
+            pm = PMF.get().getPersistenceManager();
+            List<MenuItem> itemsToDelete = new ArrayList<MenuItem>(keyIds.length);
+            for(long currentId : keyIds){
+                itemsToDelete.add((MenuItem)pm.getObjectById(MenuItem.class,currentId));
+            }
+            pm.deletePersistentAll(itemsToDelete);
         }
         finally{
             if (pm != null){
