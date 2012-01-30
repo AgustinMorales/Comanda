@@ -21,6 +21,9 @@ public class MenuItem
     @Persistent
     private int price;
 
+    public MenuItem(){
+    }
+    
     public MenuItem(String name, String desc, String imageString, 
             int price)
     {

@@ -40,7 +40,7 @@ public class EditMenuPanel extends VerticalPanel {
     public EditMenuPanel(){
         final DialogBox dialogBox = new DialogBox();
 
-        NewMenuItemPanel newMenuItemPanel = new NewMenuItemPanel();
+        final NewMenuItemPanel newMenuItemPanel = new NewMenuItemPanel();
         dialogBox.setWidget(newMenuItemPanel);
         cellTable = new CellTable<String[]>();
         
@@ -109,6 +109,7 @@ public class EditMenuPanel extends VerticalPanel {
 
             @Override
             public void onNewMenuItem() {
+                selectionModel.clear();
                 refreshTable();
                 dialogBox.hide();
 
@@ -132,6 +133,20 @@ public class EditMenuPanel extends VerticalPanel {
 
         final Button btnEdit = new Button("Edit");
         horizontalPanel.add(btnEdit);
+        
+        btnEdit.addClickHandler(new ClickHandler() {
+            
+            @Override
+            public void onClick(ClickEvent event) {
+                Set<String[]> selectedSet = selectionModel.getSelectedSet();
+                if(selectedSet.size() == 1){
+                    newMenuItemPanel.reset();
+                    newMenuItemPanel.setData(selectedSet.iterator().next());
+                    dialogBox.show();
+                    dialogBox.center();
+                }
+            }
+        });
 
         final Button btnDelete = new Button("Delete");
         horizontalPanel.add(btnDelete);
@@ -175,6 +190,7 @@ public class EditMenuPanel extends VerticalPanel {
 
             @Override
             public void onClick(ClickEvent event) {
+                newMenuItemPanel.reset();
                 dialogBox.show();
                 dialogBox.center();
 

@@ -24,6 +24,12 @@ public class NewMenuItemPanel extends VerticalPanel {
 
     private NewMenuItemHandler newMenuItemHandler;
     
+    private TextBox keyIdTB;
+    private TextBox newMenuItemNameTextField;
+    private IntegerBox priceBox;
+    private FileUpload menuItemImageFile;
+    private FormPanel addMenuItemFormPanel;
+    
     private final GreetingServiceAsync greetingService = GWT
             .create(GreetingService.class);
     
@@ -37,7 +43,7 @@ public class NewMenuItemPanel extends VerticalPanel {
         // Add the nameField and sendButton to the RootPanel
         // Use RootPanel.get() to get the entire body element
 
-        final FormPanel addMenuItemFormPanel = new FormPanel();
+        addMenuItemFormPanel = new FormPanel();
         addMenuItemFormPanel.setAction("/newMenuItem");
 
         // Because we're going to add a FileUpload widget, we'll need to set the
@@ -45,10 +51,15 @@ public class NewMenuItemPanel extends VerticalPanel {
         addMenuItemFormPanel.setEncoding(FormPanel.ENCODING_MULTIPART);
         addMenuItemFormPanel.setMethod(FormPanel.METHOD_POST);
         
-        FileUpload menuItemImageFile = new FileUpload();
+        menuItemImageFile = new FileUpload();
         menuItemImageFile.setName("itemImage");
         
         VerticalPanel newMenuItemElementsPanel = new VerticalPanel();
+        keyIdTB = new TextBox();
+        newMenuItemElementsPanel.add(keyIdTB);
+        keyIdTB.setVisible(false);
+        keyIdTB.setName("keyId");
+        
         HorizontalPanel menuItemImageHP = new HorizontalPanel();
         menuItemImageHP.add(new Label("Image file: "));
         menuItemImageHP.add(menuItemImageFile);
@@ -59,7 +70,7 @@ public class NewMenuItemPanel extends VerticalPanel {
         
         Label lblItemName = new Label("Item name");
         horizontalPanel.add(lblItemName);
-        final TextBox newMenuItemNameTextField = new TextBox();
+        newMenuItemNameTextField = new TextBox();
         horizontalPanel.add(newMenuItemNameTextField);
         newMenuItemNameTextField.setText("GWT User");
         newMenuItemNameTextField.setName("itemName");
@@ -72,7 +83,7 @@ public class NewMenuItemPanel extends VerticalPanel {
         Label lblItemPrice = new Label("Item price (SIN DECIMALES!!)");
         horizontalPanel_1.add(lblItemPrice);
         
-        IntegerBox priceBox = new IntegerBox();
+        priceBox = new IntegerBox();
         priceBox.setName("price");
         horizontalPanel_1.add(priceBox);
         newMenuItemElementsPanel.add(menuItemImageHP);
@@ -160,4 +171,13 @@ public class NewMenuItemPanel extends VerticalPanel {
         this.newMenuItemHandler = handler;
     }
     
+    public void setData(String[] data){
+        keyIdTB.setText(data[0]);
+        newMenuItemNameTextField.setText(data[2]);
+        priceBox.setText(data[3]);
+    }
+    
+    public void reset(){
+        addMenuItemFormPanel.reset();
+    }
 }
