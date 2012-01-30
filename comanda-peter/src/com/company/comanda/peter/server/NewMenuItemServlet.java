@@ -39,7 +39,7 @@ public class NewMenuItemServlet extends HttpServlet{
         String priceString = req.getParameter("price");
         Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(req);
         List<BlobKey> blobKeyList = blobs.get("itemImage");
-        if(keyId != null){
+        if(keyId != null && keyId.length() > 0){
             item = pm.getObjectById(MenuItem.class, Long.parseLong(keyId));
         }
         else{
