@@ -24,7 +24,6 @@ implements Autoupdatable, TableSelectorListener{
         add(singleTablePanel);
         ordersTable = new AllOrdersTable();
         add(ordersTable);
-        ordersTable.setAutoUpdate(true);
     }
 
     @Override
