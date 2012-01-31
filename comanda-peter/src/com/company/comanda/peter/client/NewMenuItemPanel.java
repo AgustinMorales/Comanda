@@ -86,6 +86,16 @@ public class NewMenuItemPanel extends VerticalPanel {
         priceBox = new IntegerBox();
         priceBox.setName("price");
         horizontalPanel_1.add(priceBox);
+        
+        HorizontalPanel horizontalPanel_3 = new HorizontalPanel();
+        newMenuItemElementsPanel.add(horizontalPanel_3);
+        
+        Label lblDescription = new Label("Description");
+        horizontalPanel_3.add(lblDescription);
+        
+        TextBox textBox = new TextBox();
+        textBox.setName("description");
+        horizontalPanel_3.add(textBox);
         newMenuItemElementsPanel.add(menuItemImageHP);
         
         HorizontalPanel horizontalPanel_2 = new HorizontalPanel();

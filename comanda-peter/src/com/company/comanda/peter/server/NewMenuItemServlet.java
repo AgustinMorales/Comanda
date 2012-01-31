@@ -37,6 +37,7 @@ public class NewMenuItemServlet extends HttpServlet{
         PersistenceManager pm = PMF.get().getPersistenceManager();
         String itemName = req.getParameter("itemName");
         String priceString = req.getParameter("price");
+        String description = req.getParameter("description");
         Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(req);
         List<BlobKey> blobKeyList = blobs.get("itemImage");
         if(keyId != null && keyId.length() > 0){
@@ -45,7 +46,8 @@ public class NewMenuItemServlet extends HttpServlet{
         else{
             if(itemName == null ||
                     priceString == null ||
-                    blobKeyList == null){
+                    blobKeyList == null ||
+                    description == null){
                 throw new IllegalArgumentException("Missing data");
             }
             item = new MenuItem();
@@ -55,6 +57,9 @@ public class NewMenuItemServlet extends HttpServlet{
         }
         if(priceString != null){
             item.setPrice(Integer.parseInt(priceString));
+        }
+        if(description != null){
+            item.setDescription(description);
         }
         if(blobKeyList != null){
             assert blobKeyList.size() == 1;

@@ -21,7 +21,6 @@ import org.apache.http.message.BasicNameValuePair;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
-import android.app.Dialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -29,7 +28,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Layout;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -210,7 +208,6 @@ public class ComandaActivity extends ListActivity
      */
     private class ItemAdapter extends ArrayAdapter<FoodMenuItem> 
     {
-        private Bitmap finImg = null;
         //Hold array of items to be displayed in the list
         private ArrayList<FoodMenuItem> items;
 
@@ -245,6 +242,7 @@ public class ComandaActivity extends ListActivity
                 Button placeOrderButton = (Button)v.findViewById(R.id.placeorderbutton);
                 final String menuItemName = o.getName();
                 final String menuItemKeyId = o.getKeyId();
+                final String menuItemDescription = o.getDescription();
                 if (tt != null)
                 {
                     tt.setText("Name: " + menuItemName);   
@@ -261,6 +259,8 @@ public class ComandaActivity extends ListActivity
 
                     }
                 });
+                Bitmap rawBitMap = null;
+                
                 if(icon != null)
                 {
                     URL imageURL = null;
@@ -281,11 +281,11 @@ public class ComandaActivity extends ListActivity
                                 .Options();
                         options.inJustDecodeBounds = true;
                         options.inSampleSize = 1/2;
-                        Bitmap bitmap = BitmapFactory
+                        rawBitMap = BitmapFactory
                                 .decodeStream((InputStream)imageURL
                                         .getContent());
-                        finImg = Bitmap
-                                .createScaledBitmap(bitmap, 50, 50, false);
+                        Bitmap finImg = Bitmap
+                                .createScaledBitmap(rawBitMap, 50, 50, false);
                         icon.setImageBitmap(finImg);
                     } 
                     catch (IOException e) 
@@ -295,6 +295,7 @@ public class ComandaActivity extends ListActivity
                 }
                 //returns the view to the Adapter to be displayed
 
+                final Bitmap bitMap = rawBitMap;
                 v.setOnClickListener(new OnClickListener() {
 
                     @Override
@@ -303,16 +304,29 @@ public class ComandaActivity extends ListActivity
                                 ComandaActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         View view = inflater.inflate(R.layout.menu_item_details, null, false);
                         
-                        PopupWindow pw = new PopupWindow(
+                        final PopupWindow pw = new PopupWindow(
                                 view, 
-                                100, 
-                                100, 
+                                250, 
+                                300, 
                                 true);
-                        TextView text = (TextView) view.findViewById(R.id.text);
-                        text.setText("Details for item: " + menuItemName);
-                        if(finImg != null){
+                        pw.setBackgroundDrawable(null);
+                        TextView text = (TextView) view.findViewById(R.id.contextMenuItemDescription);
+                        text.setText(menuItemDescription);
+                        TextView textName = (TextView) view.findViewById(R.id.contextMenuItemName);
+                        textName.setText(menuItemName);
+                        Button btnClose = (Button) view.findViewById(R.id.btnCloseMenuItemPopup);
+                        btnClose.setOnClickListener(new OnClickListener() {
+                            
+                            @Override
+                            public void onClick(View v) {
+                                pw.dismiss();
+                                
+                            }
+                        });
+                        if(bitMap != null){
                             ImageView image = (ImageView) view.findViewById(R.id.image);
-                            image.setImageBitmap(finImg);
+                            image.setImageBitmap(Bitmap
+                                    .createScaledBitmap(bitMap, 100, 100, false));
                         }
                         // The code below assumes that the root container has an id called 'main'
                         pw.showAtLocation(findViewById(R.id.main_menu_item_list), Gravity.CENTER, 0, 0);

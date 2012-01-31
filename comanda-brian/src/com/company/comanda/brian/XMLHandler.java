@@ -21,6 +21,7 @@ public class XMLHandler extends DefaultHandler
     private boolean in_item = false;
     private boolean in_name = false;
     private boolean in_keyId = false;
+    private boolean in_description = false;
     private boolean in_imageString = false;
 
     private FoodMenuItem item = null;
@@ -78,6 +79,10 @@ public class XMLHandler extends DefaultHandler
         {
             this.in_keyId = true;
         }
+        else if (localName.equals("Description")) 
+        {
+            this.in_description = true;
+        }
     }
 
     /** Gets be called on closing tags like: 
@@ -102,6 +107,10 @@ public class XMLHandler extends DefaultHandler
         {
             this.in_keyId = false;
         }
+        else if (localName.equals("Description")) 
+        {
+            this.in_description = false;
+        }
     }
 
     /** Gets be called on the following structure: 
@@ -117,6 +126,8 @@ public class XMLHandler extends DefaultHandler
                 item.setName(textBetween);
             else if(this.in_imageString)
                 item.setImageString(textBetween);
+            else if(this.in_description)
+                item.setDescription(textBetween);
             else if(this.in_keyId)
                 //We are not parsing the long here. What for?
                 item.setKeyId(textBetween);
