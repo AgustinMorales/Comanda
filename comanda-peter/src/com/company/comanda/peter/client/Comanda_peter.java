@@ -18,26 +18,29 @@ public class Comanda_peter implements EntryPoint {
      * This is the entry point method.
      */
     public void onModuleLoad() {
-        TabLayoutPanel tabPanel = new TabLayoutPanel(1.5, Unit.EM);
-        tabPanel.add(new EditMenuPanel(), "editMenu");
-        final ViewOrdersPanel viewOrdersPanel = new ViewOrdersPanel();
-        tabPanel.add(viewOrdersPanel, "viewOrders");
+//        TabLayoutPanel tabPanel = new TabLayoutPanel(1.5, Unit.EM);
+//        tabPanel.add(new EditMenuPanel(), "editMenu");
+//        final ViewOrdersPanel viewOrdersPanel = new ViewOrdersPanel();
+//        tabPanel.add(viewOrdersPanel, "viewOrders");
+//        
+//        tabPanel.selectTab(0);
+//        
+//        tabPanel.addSelectionHandler(new SelectionHandler<Integer>() {
+//            
+//            @Override
+//            public void onSelection(SelectionEvent<Integer> event) {
+//                if(event.getSelectedItem() == 1){
+//                    viewOrdersPanel.setAutoUpdate(true);
+//                }
+//                else{
+//                    viewOrdersPanel.setAutoUpdate(false);
+//                }
+//            }
+//        });
+//        RootLayoutPanel.get().add(tabPanel);
         
-        tabPanel.selectTab(0);
         
-        tabPanel.addSelectionHandler(new SelectionHandler<Integer>() {
-            
-            @Override
-            public void onSelection(SelectionEvent<Integer> event) {
-                if(event.getSelectedItem() == 1){
-                    viewOrdersPanel.setAutoUpdate(true);
-                }
-                else{
-                    viewOrdersPanel.setAutoUpdate(false);
-                }
-            }
-        });
-        RootLayoutPanel.get().add(tabPanel);
+        RootLayoutPanel.get().add(new UIMain());
     }
     
     

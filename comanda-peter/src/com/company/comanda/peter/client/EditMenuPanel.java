@@ -29,6 +29,7 @@ import com.google.gwt.view.client.Range;
 import com.google.gwt.view.client.RangeChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent.Handler;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 
 public class EditMenuPanel extends VerticalPanel {
 
@@ -123,6 +124,7 @@ public class EditMenuPanel extends VerticalPanel {
         });
 
         HorizontalPanel horizontalPanel = new HorizontalPanel();
+        horizontalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
         horizontalPanel.setSpacing(5);
         add(horizontalPanel);
         final Button addMenuItemButton = new Button("Add menu item");
