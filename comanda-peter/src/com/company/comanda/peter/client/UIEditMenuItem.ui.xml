@@ -14,16 +14,16 @@
 								<g:Label text="Nombre:"/>
 							</g:at>
 							<g:at left="93" top="15">
-								<g:TextBox ui:field="tbName"/>
+								<g:TextBox ui:field="tbName" name="itemName"/>
 							</g:at>
 							<g:at left="93" top="63">
-								<g:DoubleBox styleName="gwt-TextBox" ui:field="dbPrice"/>
+								<g:DoubleBox styleName="gwt-TextBox" ui:field="dbPrice" name="price"/>
 							</g:at>
 							<g:at left="10" top="72">
 								<g:Label text="Precio:"/>
 							</g:at>
 							<g:at left="93" top="115">
-								<g:FileUpload width="177px" height="26px" ui:field="fuImageFile"/>
+								<g:FileUpload width="177px" height="26px" ui:field="fuImageFile" name="itemImage"/>
 							</g:at>
 							<g:at left="10" top="120">
 								<g:Label text="Imagen:"/>
@@ -31,12 +31,15 @@
 							<g:at left="390" top="116">
 								<g:Button text="Guardar cambios" ui:field="btnSaveChanges"/>
 							</g:at>
+							<g:at left="336" top="15">
+								<g:TextBox visible="false" name="keyId" ui:field="tbKeyId"/>
+							</g:at>
 						</g:AbsolutePanel>
 					</g:HorizontalPanel>
 				</g:HorizontalPanel>
 				<g:VerticalPanel width="100%" spacing="10">
 					<g:Label text="Descripción:"/>
-					<g:TextArea width="98%" height="233px" ui:field="taDescription"/>
+					<g:TextArea width="98%" height="233px" ui:field="taDescription" name="description"/>
 				</g:VerticalPanel>
 			</g:VerticalPanel>
 		</g:FormPanel>

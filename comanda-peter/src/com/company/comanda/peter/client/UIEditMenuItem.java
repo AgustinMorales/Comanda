@@ -31,6 +31,7 @@ public class UIEditMenuItem extends Composite {
     @UiField TextArea taDescription;
     @UiField Button btnSaveChanges;
     @UiField FormPanel itemDataFormPanel;
+    @UiField TextBox tbKeyId;
     
     private NewMenuItemHandler newMenuItemHandler;
 
@@ -73,7 +74,7 @@ public class UIEditMenuItem extends Composite {
     }
 	
 	public void setData(String[] data){
-//        keyIdTB.setText(data[0]);
+        tbKeyId.setText(data[0]);
         tbName.setText(data[2]);
         dbPrice.setText(data[3]);
     }
