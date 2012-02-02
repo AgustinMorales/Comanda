@@ -2,7 +2,7 @@ package com.company.comanda.peter.client;
 
 import java.util.Set;
 
-import com.company.comanda.peter.client.NewMenuItemPanel.NewMenuItemHandler;
+import com.company.comanda.peter.client.UIEditMenuItem.NewMenuItemHandler;
 import com.company.comanda.peter.shared.PagedResult;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.core.client.GWT;
@@ -46,7 +46,7 @@ public class UIEditMenu extends Composite {
     @UiField CellTable<String[]> menuItemsTable;
     private MultiSelectionModel<String[]> selectionModel;
     private DialogBox dialogBox;
-    private NewMenuItemPanel newMenuItemPanel;
+    private UIEditMenuItem newMenuItemPanel;
 
     interface UIEditMenuUiBinder extends UiBinder<Widget, UIEditMenu> {
     }
@@ -60,7 +60,7 @@ public class UIEditMenu extends Composite {
     protected void configureMenuItemDialogBox(){
     	
     	dialogBox = new DialogBox();
-        newMenuItemPanel = new NewMenuItemPanel();
+        newMenuItemPanel = new UIEditMenuItem();
         dialogBox.setWidget(newMenuItemPanel);
         
         newMenuItemPanel.setNewMenuItemHandler(new NewMenuItemHandler() {

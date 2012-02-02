@@ -28,9 +28,6 @@
 							<g:at left="10" top="120">
 								<g:Label text="Imagen:"/>
 							</g:at>
-							<g:at left="390" top="116">
-								<g:Button text="Guardar cambios" ui:field="btnSaveChanges"/>
-							</g:at>
 							<g:at left="336" top="15">
 								<g:TextBox visible="false" name="keyId" ui:field="tbKeyId"/>
 							</g:at>
@@ -39,7 +36,13 @@
 				</g:HorizontalPanel>
 				<g:VerticalPanel width="100%" spacing="10">
 					<g:Label text="Descripción:"/>
-					<g:TextArea width="98%" height="233px" ui:field="taDescription" name="description"/>
+					<g:TextArea width="98%" height="182px" ui:field="taDescription" name="description"/>
+					<g:HorizontalPanel width="100%" horizontalAlignment="ALIGN_RIGHT">
+						<g:HorizontalPanel spacing="10">
+							<g:Button ui:field="btnCancel">Cancelar</g:Button>
+							<g:Button text="Guardar cambios" ui:field="btnSaveChanges"/>
+						</g:HorizontalPanel>
+					</g:HorizontalPanel>
 				</g:VerticalPanel>
 			</g:VerticalPanel>
 		</g:FormPanel>

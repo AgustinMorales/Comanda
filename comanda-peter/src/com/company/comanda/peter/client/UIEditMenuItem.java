@@ -32,6 +32,7 @@ public class UIEditMenuItem extends Composite {
     @UiField Button btnSaveChanges;
     @UiField FormPanel itemDataFormPanel;
     @UiField TextBox tbKeyId;
+    @UiField Button btnCancel;
     
     private NewMenuItemHandler newMenuItemHandler;
 
@@ -40,7 +41,8 @@ public class UIEditMenuItem extends Composite {
 
     public UIEditMenuItem() {
         initWidget(uiBinder.createAndBindUi(this));
-        
+        itemDataFormPanel.setEncoding(FormPanel.ENCODING_MULTIPART);
+        itemDataFormPanel.setMethod(FormPanel.METHOD_POST);
         
     }
 
@@ -61,6 +63,8 @@ public class UIEditMenuItem extends Composite {
                 
             }
         });
+//	    itemDataFormPanel.setAction("/newMenuItem");
+//	    itemDataFormPanel.submit();
 	}
 	
 	
@@ -77,6 +81,7 @@ public class UIEditMenuItem extends Composite {
         tbKeyId.setText(data[0]);
         tbName.setText(data[2]);
         dbPrice.setText(data[3]);
+        taDescription.setText(data[4]);
     }
     
     public void reset(){
@@ -87,4 +92,9 @@ public class UIEditMenuItem extends Composite {
 		itemDataFormPanel.reset();
 		newMenuItemHandler.onNewMenuItem();
 	}
+    @UiHandler("btnCancel")
+    void onBtnCancelClick(ClickEvent event) {
+        itemDataFormPanel.reset();
+        newMenuItemHandler.onCancel();
+    }
 }

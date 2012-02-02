@@ -132,7 +132,8 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		
 		for(MenuItem item: items){
 		    resultList.add(new String[]{"" + item.getKey().getId(),item.getImageString(), 
-		            item.getName(), (new Integer(item.getPrice())).toString()});
+		            item.getName(), (new Integer(item.getPrice())).toString(),
+		            item.getDescription()});
 		}
 		return new PagedResult<String[]>(resultList, total);
 	}
