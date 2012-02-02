@@ -4,5 +4,5 @@ war/WEB-INF/deploy
 war/WEB-INF/appengine-generated
 war/comanda_peter
 war/com.company.comanda.peter.ComandaPeterViewOrders
-test-clasess
+test-classes
 gwt-unitCache
