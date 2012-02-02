@@ -1,5 +1,8 @@
 package com.company.comanda.peter.client;
 
+import java.util.Set;
+
+import com.company.comanda.peter.client.NewMenuItemPanel.NewMenuItemHandler;
 import com.company.comanda.peter.shared.PagedResult;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.core.client.GWT;
@@ -15,13 +18,18 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.MultiSelectionModel;
+import com.google.gwt.view.client.Range;
+import com.google.gwt.view.client.RangeChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent.Handler;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
 
 public class UIEditMenu extends Composite {
 
@@ -36,6 +44,9 @@ public class UIEditMenu extends Composite {
     @UiField Button btnDeleteItem;
     @UiField SimplePager menuItemsPager;
     @UiField CellTable<String[]> menuItemsTable;
+    private MultiSelectionModel<String[]> selectionModel;
+    private DialogBox dialogBox;
+    private NewMenuItemPanel newMenuItemPanel;
 
     interface UIEditMenuUiBinder extends UiBinder<Widget, UIEditMenu> {
     }
@@ -43,10 +54,35 @@ public class UIEditMenu extends Composite {
     public UIEditMenu() {
         initWidget(uiBinder.createAndBindUi(this));
         configureMenuItemsTable();
+        configureMenuItemDialogBox();
     }
 
+    protected void configureMenuItemDialogBox(){
+    	
+    	dialogBox = new DialogBox();
+        newMenuItemPanel = new NewMenuItemPanel();
+        dialogBox.setWidget(newMenuItemPanel);
+        
+        newMenuItemPanel.setNewMenuItemHandler(new NewMenuItemHandler() {
+
+            @Override
+            public void onNewMenuItem() {
+                selectionModel.clear();
+                refreshTable();
+                dialogBox.hide();
+
+            }
+
+            @Override
+            public void onCancel() {
+                dialogBox.hide();
+
+            }
+        });
+    }
+    
     protected void configureMenuItemsTable(){
-        final MultiSelectionModel<String[]> selectionModel = new MultiSelectionModel<String[]>();
+        selectionModel = new MultiSelectionModel<String[]>();
         menuItemsTable.setSelectionModel(selectionModel,
                 DefaultSelectionEventManager.<String[]> createCheckboxManager());
         Column<String[], Boolean> checkColumn = new Column<String[], Boolean>(
@@ -129,4 +165,50 @@ public class UIEditMenu extends Composite {
     }
 
 
+	@UiHandler("btnNewItem")
+	void onBtnNewItemClick(ClickEvent event) {
+		newMenuItemPanel.reset();
+        dialogBox.show();
+        dialogBox.center();
+	}
+	
+	public void refreshTable(){
+        Range range = menuItemsTable.getVisibleRange();
+        RangeChangeEvent.fire(menuItemsTable, range);
+    }
+	@UiHandler("btnEditItem")
+	void onBtnEditItemClick(ClickEvent event) {
+		Set<String[]> selectedSet = selectionModel.getSelectedSet();
+        if(selectedSet.size() == 1){
+            newMenuItemPanel.reset();
+            newMenuItemPanel.setData(selectedSet.iterator().next());
+            dialogBox.show();
+            dialogBox.center();
+        }
+	}
+	@UiHandler("btnDeleteItem")
+	void onBtnDeleteItemClick(ClickEvent event) {
+		Set<String[]> selectedSet = selectionModel.getSelectedSet();
+        int size = selectedSet.size();
+        long[] keysToDelete = new long[size];
+        int counter = 0;
+        for(String[] item : selectedSet){
+            keysToDelete[counter] = Long.parseLong(item[0]);
+            counter++;
+        };
+        greetingService.deleteMenuItems(keysToDelete, new AsyncCallback<Void>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                Window.alert("Error while deleting");
+                
+            }
+
+            @Override
+            public void onSuccess(Void result) {
+                refreshTable();
+                
+            }
+        });
+	}
 }
