@@ -1,0 +1,17 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" 
+	xmlns:c="urn:import:com.company.comanda.peter.client">
+	<ui:style>
+		
+	</ui:style>
+	<g:HTMLPanel>
+		<g:VerticalPanel width="100%" horizontalAlignment="ALIGN_CENTER">
+			<g:Label text="Seleccione una mesa para ver sus pedidos" />
+			<g:HorizontalPanel width="100%">
+			     <c:UITableMap width="374px" ui:field="tableMap"></c:UITableMap>
+			     <c:UIViewTableOrders width="265px" height="428px" ui:field="tableOrders"></c:UIViewTableOrders>
+			</g:HorizontalPanel>
+		</g:VerticalPanel>
+	</g:HTMLPanel>
+</ui:UiBinder> 
