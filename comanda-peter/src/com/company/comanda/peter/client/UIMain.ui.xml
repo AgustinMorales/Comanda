@@ -9,10 +9,15 @@
 			height="100%" ui:field="mainTabPanel">
 			<g:tab>
 				<g:header size='7'>
-					<b>HTML</b>
-					header
+					Editar menú
 				</g:header>
 				<c:UIEditMenu/>
+			</g:tab>
+			<g:tab>
+				<g:header size='7'>
+					Ver pedidos
+				</g:header>
+				<c:UIViewAllOrders/>
 			</g:tab>
 		</g:TabLayoutPanel>
 	</g:HTMLPanel>
