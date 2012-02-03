@@ -6,7 +6,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.uibinder.client.UiField;
 
-public class UISelectAndViewTableOrders extends Composite implements TableSelectorListener{
+public class UISelectAndViewTableOrders extends Composite {
 
 	private static UISelectAndViewTableOrdersUiBinder uiBinder = GWT
 			.create(UISelectAndViewTableOrdersUiBinder.class);
@@ -19,12 +19,16 @@ public class UISelectAndViewTableOrders extends Composite implements TableSelect
 
 	public UISelectAndViewTableOrders() {
 		initWidget(uiBinder.createAndBindUi(this));
+		tableMap.setTableSelectorListener(new TableSelectorListener() {
+            
+            @Override
+            public void onNewTableSelected(String tableName) {
+                tableOrders.setSelectedTable(tableName);
+                tableOrders.setAutoUpdate(true);
+                
+            }
+        });
 	}
 
-    @Override
-    public void onNewTableSelected(String tableName) {
-        tableOrders.setSelectedTable(tableName);
-        
-    }
 
 }

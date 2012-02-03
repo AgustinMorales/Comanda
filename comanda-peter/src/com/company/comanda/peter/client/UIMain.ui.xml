@@ -16,10 +16,16 @@
 			</g:tab>
 			<g:tab>
 				<g:header size='7'>
-					Ver pedidos
+					Ver pedidos pendientes
 				</g:header>
 				<c:UIViewAllOrders/>
 			</g:tab>
+			<g:tab>
+                <g:header size='7'>
+                    Ver mesas
+                </g:header>
+                <c:UIViewTableOrders/>
+            </g:tab>
 		</g:TabLayoutPanel>
 	</g:HTMLPanel>
 </ui:UiBinder> 
