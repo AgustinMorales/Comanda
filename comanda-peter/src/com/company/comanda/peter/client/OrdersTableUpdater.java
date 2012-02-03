@@ -32,11 +32,8 @@ public class OrdersTableUpdater {
         }
     }
 	
-	public OrdersTableUpdater(CellTable<String[]> ordersTable,
-			OrderState selectedState, String selectedTable){
+	public OrdersTableUpdater(CellTable<String[]> ordersTable){
 		this.ordersTable = ordersTable;
-		this.selectedState = selectedState;
-		this.selectedTable = selectedTable;
 	}
 	
 	public void setAutoUpdate(boolean value){
@@ -76,8 +73,16 @@ public class OrdersTableUpdater {
         }
     }
 	
-	protected void refreshTable(){
+	public void refreshTable(){
         Range range = ordersTable.getVisibleRange();
         RangeChangeEvent.fire(ordersTable, range);
     }
+	
+	public void setSelectedTable(String table){
+		this.selectedTable = table;
+	}
+	
+	public void setSelectedState(OrderState state){
+		this.selectedState = state;
+	}
 }
