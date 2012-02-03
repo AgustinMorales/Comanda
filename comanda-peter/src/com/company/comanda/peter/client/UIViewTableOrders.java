@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class UIViewTableOrders extends Composite {
 
+    public static final int PAGE_SIZE = 25;
 
 	@UiField CellTable<String[]> odersTable;
 	@UiField SimplePager odersPager;
@@ -35,6 +36,9 @@ public class UIViewTableOrders extends Composite {
                 return object[0];
             }
         }, "Pedido");
+		
+		odersPager.setDisplay(odersTable);
+        odersPager.setPageSize(PAGE_SIZE);
 
 	}
 

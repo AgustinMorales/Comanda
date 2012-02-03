@@ -17,6 +17,9 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class UIViewAllOrders extends Composite {
 
+    
+    public static final int PAGE_SIZE = 25;
+    
 	private final GreetingServiceAsync greetingService = GWT
 			.create(GreetingService.class);
 
@@ -84,6 +87,8 @@ public class UIViewAllOrders extends Composite {
 		ordersTableUpdater = new OrdersTableUpdater(odersTable);
 		ordersTableUpdater.setSelectedState(OrderState.ORDERED);
 
+		odersPager.setDisplay(odersTable);
+		odersPager.setPageSize(PAGE_SIZE);
 
 	}
 

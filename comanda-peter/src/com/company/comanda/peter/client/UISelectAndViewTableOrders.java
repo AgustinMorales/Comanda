@@ -12,6 +12,7 @@ public class UISelectAndViewTableOrders extends Composite {
 			.create(UISelectAndViewTableOrdersUiBinder.class);
 	@UiField UITableMap tableMap;
 	@UiField UIViewTableOrders tableOrders;
+	private boolean autoupdate;
 
 	interface UISelectAndViewTableOrdersUiBinder extends
 			UiBinder<Widget, UISelectAndViewTableOrders> {
@@ -24,11 +25,15 @@ public class UISelectAndViewTableOrders extends Composite {
             @Override
             public void onNewTableSelected(String tableName) {
                 tableOrders.setSelectedTable(tableName);
-                tableOrders.setAutoUpdate(true);
+                tableOrders.setAutoUpdate(autoupdate);
                 
             }
         });
 	}
 
+	public void setAutoUpdate(boolean value){
+	    this.autoupdate = value;
+	    tableOrders.setAutoUpdate(value);
+	}
 
 }

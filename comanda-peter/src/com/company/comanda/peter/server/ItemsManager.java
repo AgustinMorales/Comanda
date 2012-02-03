@@ -32,6 +32,9 @@ public class ItemsManager {
 		    result = (List<MenuItem>) query.execute();
 		    tx.commit();
 	    }
+	    catch(Throwable e){
+	        e.printStackTrace();
+	    }
 	    finally{
 	    	if(pm != null){
 	    		pm.close();

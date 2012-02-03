@@ -18,13 +18,14 @@
 				<g:header size='7'>
 					Ver pedidos pendientes
 				</g:header>
-				<c:UIViewAllOrders/>
+				<c:UIViewAllOrders ui:field="viewAllOrders"/>
 			</g:tab>
 			<g:tab>
                 <g:header size='7'>
                     Ver mesas
                 </g:header>
-                <c:UIViewTableOrders/>
+                <c:UISelectAndViewTableOrders 
+                ui:field="selectTableAndViewOrders"/>
             </g:tab>
 		</g:TabLayoutPanel>
 	</g:HTMLPanel>
