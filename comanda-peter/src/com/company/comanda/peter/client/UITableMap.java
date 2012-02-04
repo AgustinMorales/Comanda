@@ -42,7 +42,7 @@ public class UITableMap extends Composite implements TableSelector{
 				btnTable9,
 		};
 		for(int i=0;i<buttons.length;i++){
-			final String tableName = "" + i;
+			final String tableName = "" + (i + 1);
 			buttons[i].addClickHandler(new ClickHandler() {
 				
 				@Override
