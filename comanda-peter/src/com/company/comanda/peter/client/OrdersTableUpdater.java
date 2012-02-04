@@ -15,6 +15,9 @@ import com.google.gwt.view.client.RangeChangeEvent;
 
 public class OrdersTableUpdater {
 	
+    public interface UpdateListener{
+        void onUpdate();
+    }
 	private final GreetingServiceAsync greetingService = GWT
             .create(GreetingService.class);
 	private CellTable<String[]> ordersTable;
@@ -23,6 +26,8 @@ public class OrdersTableUpdater {
 	private String selectedTable;
 
 	private MyTimer autoUpdateTimer;
+	
+	private UpdateListener updateListener;
     
 	
 	class MyTimer extends Timer{
@@ -69,13 +74,17 @@ public class OrdersTableUpdater {
         	autoUpdateTimer.cancel();
         }
         if(value){
+            autoUpdateTimer.run();
             autoUpdateTimer.scheduleRepeating(Constants.AUTOUPDATE_PERIOD);
         }
     }
 	
-	public void refreshTable(){
+	public synchronized void refreshTable(){
         Range range = ordersTable.getVisibleRange();
         RangeChangeEvent.fire(ordersTable, range);
+        if(updateListener != null){
+            updateListener.onUpdate();
+        }
     }
 	
 	public void setSelectedTable(String table){
@@ -84,5 +93,9 @@ public class OrdersTableUpdater {
 	
 	public void setSelectedState(OrderState state){
 		this.selectedState = state;
+	}
+	
+	public synchronized void setUpdateListener(UpdateListener listener){
+	    this.updateListener = listener;
 	}
 }

@@ -14,6 +14,8 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class UIViewAllOrders extends Composite {
 
@@ -27,6 +29,8 @@ public class UIViewAllOrders extends Composite {
 			.create(UIViewAllOrdersUiBinder.class);
 	@UiField CellTable<String[]> odersTable;
 	@UiField SimplePager odersPager;
+	@UiField Label lblMessage;
+	@UiField VerticalPanel ordersTableContainer;
 
 	private OrdersTableUpdater ordersTableUpdater;
 

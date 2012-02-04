@@ -1,5 +1,6 @@
 package com.company.comanda.peter.client;
 
+import com.company.comanda.peter.client.OrdersTableUpdater.UpdateListener;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -8,16 +9,22 @@ import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class UIViewTableOrders extends Composite {
+public class UIViewTableOrders extends Composite 
+implements TableSelectorListener{
 
     public static final int PAGE_SIZE = 25;
 
 	@UiField CellTable<String[]> odersTable;
 	@UiField SimplePager odersPager;
+	@UiField VerticalPanel ordersTableContainer;
+	@UiField Label lblMessage;
 
 	private OrdersTableUpdater ordersTableUpdater;
+	private String selectedTable;
 	
 
 	@UiTemplate("UIViewAllOrders.ui.xml")
@@ -29,6 +36,16 @@ public class UIViewTableOrders extends Composite {
 		initWidget(uiBinder.createAndBindUi(this));
 
 		ordersTableUpdater = new OrdersTableUpdater(odersTable);
+		
+		ordersTableUpdater.setUpdateListener(new UpdateListener() {
+            
+            @Override
+            public void onUpdate() {
+                lblMessage.setVisible(false);
+                ordersTableContainer.setVisible(true);
+                
+            }
+        });
 
 		odersTable.addColumn(new TextColumn<String[]>() {
             @Override
@@ -39,15 +56,30 @@ public class UIViewTableOrders extends Composite {
 		
 		odersPager.setDisplay(odersTable);
         odersPager.setPageSize(PAGE_SIZE);
-
+        
+        ordersTableContainer.setVisible(false);
+        lblMessage.setText("Seleccione una mesa y los pedidos aparecerán aquí");
+        lblMessage.setVisible(true);
 	}
 
 	public void setSelectedTable(String tableName){
-		ordersTableUpdater.setSelectedTable(tableName);
-		
+	    this.selectedTable = tableName;
+		ordersTableUpdater.setSelectedTable(selectedTable);
+		ordersTableUpdater.setAutoUpdate(true);
 	}
 	
 	public void setAutoUpdate(boolean value){
-		ordersTableUpdater.setAutoUpdate(value);
+	    if(selectedTable != null){
+	        ordersTableUpdater.setAutoUpdate(value);
+	    }
 	}
+
+    @Override
+    public void onNewTableSelected(String tableName) {
+        ordersTableContainer.setVisible(false);
+        lblMessage.setText("Cargando mesa " + tableName + "...");
+        lblMessage.setVisible(true);
+        setSelectedTable(tableName);
+        
+    }
 }
