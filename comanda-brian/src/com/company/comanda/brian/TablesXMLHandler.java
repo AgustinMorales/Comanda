@@ -6,8 +6,6 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.company.comanda.brian.model.FoodMenuItem;
-
 import android.util.Log;
 
 

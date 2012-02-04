@@ -1,7 +1,5 @@
 package com.company.comanda.peter.client;
 
-import java.util.List;
-
 import com.company.comanda.peter.shared.OrderState;
 import com.company.comanda.peter.shared.PagedResult;
 import com.google.gwt.user.client.rpc.RemoteService;

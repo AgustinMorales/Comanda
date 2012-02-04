@@ -9,7 +9,6 @@ import javax.jdo.Query;
 import com.company.comanda.peter.client.GreetingService;
 import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Order;
-import com.company.comanda.peter.shared.FieldVerifier;
 import com.company.comanda.peter.shared.OrderState;
 import com.company.comanda.peter.shared.PagedResult;
 import com.google.appengine.api.blobstore.BlobstoreService;

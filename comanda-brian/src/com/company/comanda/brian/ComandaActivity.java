@@ -10,7 +10,6 @@ import java.util.List;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -187,7 +186,7 @@ public class ComandaActivity extends ListActivity
                 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
                 // Execute HTTP Post Request
-                HttpResponse response = httpclient.execute(httppost);
+                httpclient.execute(httppost);
                 
             } catch (ClientProtocolException e) {
                 keyId = "ERROR!!!";
