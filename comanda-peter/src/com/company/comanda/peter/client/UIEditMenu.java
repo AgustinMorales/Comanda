@@ -210,5 +210,7 @@ public class UIEditMenu extends Composite {
                 
             }
         });
+        
+        selectionModel.clear();
 	}
 }
