@@ -5,5 +5,6 @@
     <string name="app_name">Comanda-brian</string>
     <string name="select_table">Select table:</string>
     <string name="you_are_at_table">Table:</string>
+    <string name="order_placed">El pedido se ha enviado correctamente</string>
     
 </resources>

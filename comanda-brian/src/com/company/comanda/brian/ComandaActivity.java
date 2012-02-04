@@ -39,6 +39,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.company.comanda.brian.model.FoodMenuItem;
 
@@ -49,8 +50,10 @@ public class ComandaActivity extends ListActivity
     private ItemAdapter m_adapter;
     private Runnable viewItems;
     private String tableName;
-    private Runnable returnRes = new Runnable()
-    {
+    
+    public static final int ORDER_PLACED_TOAST_DURATION = 3;
+    
+    private Runnable returnRes = new Runnable(){
         @Override
         public void run() 
         {
@@ -197,8 +200,9 @@ public class ComandaActivity extends ListActivity
         }
 
 
-        protected void onPostExecute(Long result) {
-//            showDialog();
+        protected void onPostExecute(String result) {
+            Toast.makeText(getApplicationContext(), 
+                    R.string.order_placed, ORDER_PLACED_TOAST_DURATION).show();
         }
     }
 
