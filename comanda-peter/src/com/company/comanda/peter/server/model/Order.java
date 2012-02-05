@@ -2,28 +2,22 @@ package com.company.comanda.peter.server.model;
 
 import java.util.Date;
 
-import com.company.comanda.peter.shared.OrderState;
-import com.google.appengine.api.datastore.Key;
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
+import javax.persistence.Id;
 
-@PersistenceCapable
+import com.company.comanda.peter.shared.OrderState;
+
 public class Order
 {
-    @PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    private Key key;
-    @Persistent(defaultFetchGroup = "true")
+    @Id
+    private Long id;
     private String name;
-    @Persistent
     private String table;
-    @Persistent
     private Date date;
-    @Persistent
     private OrderState state;
-    
+
+    public Order(){
+        super();
+    }
 
     public Order(String name, String table, Date date, OrderState state)
     {
@@ -32,9 +26,9 @@ public class Order
         this.date = date;
         this.state = state;
     }
-    public Key getKey() 
+    public Long getId() 
     {
-        return key;
+        return id;
     }
     public String getName() 
     {

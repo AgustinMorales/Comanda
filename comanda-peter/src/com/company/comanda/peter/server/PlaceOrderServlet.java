@@ -14,7 +14,7 @@ public class PlaceOrderServlet extends HttpServlet
      */
     private static final long serialVersionUID = 7406683513326724866L;
     
-    private ItemsManager itemsManager = new ItemsManager();
+    private ItemsManager itemsManager = ItemsManager.me();
 
     
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException{
@@ -25,6 +25,7 @@ public class PlaceOrderServlet extends HttpServlet
     {
         String keyId = req.getParameter("keyId");
         String table = req.getParameter("table");
-        itemsManager.placeOrder(Long.parseLong(keyId), table);
+        String restaurantId = req.getParameter("restaurantId");
+        itemsManager.placeOrder(Long.parseLong(restaurantId), Long.parseLong(keyId), table);
     }
 }

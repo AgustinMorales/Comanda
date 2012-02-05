@@ -1,25 +1,22 @@
 package com.company.comanda.peter.server.model;
 
-import com.google.appengine.api.datastore.Key;
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
+import javax.persistence.Id;
 
-@PersistenceCapable
+import com.googlecode.objectify.Key;
+import com.googlecode.objectify.annotation.Parent;
+
 public class MenuItem
 {
-    @PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    private Key key;
-    @Persistent
+    @Id
+    private Long id;
+    
     private String name;
-    @Persistent
     private String description;
-    @Persistent
     private String imageString;
-    @Persistent
     private int price;
+    @Parent
+    private Key<Restaurant> parent;
+    
 
     public MenuItem(){
     }
@@ -32,9 +29,12 @@ public class MenuItem
         this.imageString = imageString;
         this.price = price;
     }
-    public Key getKey() 
+    public Long getId() 
     {
-        return key;
+        return id;
+    }
+    public void setId(Long id){
+        this.id = id;
     }
     public String getName() 
     {
@@ -63,6 +63,14 @@ public class MenuItem
     }
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public Key<Restaurant> getParent() {
+        return parent;
+    }
+
+    public void setParent(Key<Restaurant> parent) {
+        this.parent = parent;
     } 
     
     

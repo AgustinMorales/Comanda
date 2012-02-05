@@ -18,7 +18,7 @@ public class GetItemsServlet extends HttpServlet
      * 
      */
     private static final long serialVersionUID = 5142871744485848351L;
-    private ItemsManager itemsManager = new ItemsManager();
+    private ItemsManager itemsManager = ItemsManager.me();
 
     
     
@@ -32,15 +32,15 @@ public class GetItemsServlet extends HttpServlet
 
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException
     {
-        
-        List<MenuItem> items = itemsManager.getMenuItems();
+        //FIXME
+        List<MenuItem> items = itemsManager.getMenuItems(0);
         PrintWriter out = resp.getWriter();
         out.println("<ItemList>");
         //loop through items list and print each item
         for (MenuItem i : items) 
         {
             out.println("\n\t<Item>");
-            out.println("\n\t\t<KeyId>" + i.getKey().getId() + "</KeyId>");
+            out.println("\n\t\t<KeyId>" + i.getId() + "</KeyId>");
             out.println("\n\t\t<Name>" + i.getName() + "</Name>");
             out.println("\n\t\t<Description>" + i.getDescription() + "</Description>");
             out.println("\n\t\t<ImageString>" + i.getImageString() + "</ImageString>");
