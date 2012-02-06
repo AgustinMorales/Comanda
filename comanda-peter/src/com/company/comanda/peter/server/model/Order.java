@@ -6,6 +6,7 @@ import javax.persistence.Id;
 
 import com.company.comanda.peter.shared.OrderState;
 
+//FIXME: Should create a parent User class
 public class Order
 {
     @Id
@@ -14,7 +15,7 @@ public class Order
     private String table;
     private Date date;
     private OrderState state;
-
+    
     public Order(){
         super();
     }
