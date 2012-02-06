@@ -50,7 +50,8 @@ GreetingService {
             OrderState state, String tableName){
         ArrayList<String[]> resultList = new ArrayList<String[]>();
         int total;
-        List<Order> orders = itemsManager.getOrders(state, tableName);
+        List<Order> orders = itemsManager.getOrders(itemsManager.getUserId(), 
+                state, tableName);
 
         total = orders.size();
         orders = cutList(orders, start, length);
@@ -75,8 +76,8 @@ GreetingService {
         ArrayList<String[]> resultList = new ArrayList<String[]>();
         int total;
 
-        //FIXME
-        List<MenuItem> items = itemsManager.getMenuItems(0);
+        List<MenuItem> items = itemsManager.getMenuItems(
+                itemsManager.getRestaurantId());
         total = items.size();
         //Implement the paging inside ItemsManager
         items = cutList(items, start, length);
@@ -115,13 +116,13 @@ GreetingService {
     @Override
     public void acceptOrder(String orderKey) {
         long keyId = Long.parseLong(orderKey);
-        itemsManager.modifyOrder(keyId, OrderState.ACCEPTED);
+        itemsManager.modifyOrder(itemsManager.getUserId(), 
+                keyId, OrderState.ACCEPTED);
     }
 
     @Override
     public void deleteMenuItems(long[] keyIds) {
-        //FIXME
-        itemsManager.deleteMenuItems(0, keyIds);
+        itemsManager.deleteMenuItems(itemsManager.getRestaurantId(), keyIds);
 
     }
 }

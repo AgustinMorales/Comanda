@@ -32,8 +32,8 @@ public class GetItemsServlet extends HttpServlet
 
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException
     {
-        //FIXME
-        List<MenuItem> items = itemsManager.getMenuItems(0);
+        List<MenuItem> items = itemsManager.getMenuItems(
+                itemsManager.getRestaurantId());
         PrintWriter out = resp.getWriter();
         out.println("<ItemList>");
         //loop through items list and print each item

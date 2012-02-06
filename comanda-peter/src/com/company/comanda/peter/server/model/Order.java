@@ -5,8 +5,9 @@ import java.util.Date;
 import javax.persistence.Id;
 
 import com.company.comanda.peter.shared.OrderState;
+import com.googlecode.objectify.Key;
+import com.googlecode.objectify.annotation.Parent;
 
-//FIXME: Should create a parent User class
 public class Order
 {
     @Id
@@ -15,6 +16,8 @@ public class Order
     private String table;
     private Date date;
     private OrderState state;
+    @Parent
+    private Key<User> user;
     
     public Order(){
         super();
@@ -56,6 +59,14 @@ public class Order
     }
     public void setState(OrderState state) {
         this.state = state;
+    }
+
+    public Key<User> getUser() {
+        return user;
+    }
+
+    public void setUser(Key<User> user) {
+        this.user = user;
     }
     
 }

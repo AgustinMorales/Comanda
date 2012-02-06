@@ -44,12 +44,14 @@ public class NewMenuItemServlet extends HttpServlet{
             imageBlobKey = blobKeyList.get(0).getKeyString();
         }
         //persist
-        //FIXME
         Long itemId = null;
         if(keyId != null && keyId.length() > 0){
             itemId = Long.parseLong(keyId);
         }
-        itemsManager.addOrModifyMenuItem(itemId, itemName, description, priceString, imageBlobKey,(long)0);
+        itemsManager.addOrModifyMenuItem(itemId, 
+                itemName, description, 
+                priceString, imageBlobKey,
+                itemsManager.getRestaurantId());
     }
 
 

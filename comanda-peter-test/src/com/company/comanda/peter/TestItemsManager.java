@@ -19,15 +19,19 @@ public class TestItemsManager {
 
     private final LocalServiceTestHelper helper =
             new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig()
-            .setDefaultHighRepJobPolicyUnappliedJobPercentage(0));
+            .setDefaultHighRepJobPolicyUnappliedJobPercentage(100));
 
     private ItemsManager itemsManager;
 
+    private long userId;
+    private long restaurantId;
 
     @Before
     public void setUp() throws Exception {
         helper.setUp();
         itemsManager = ItemsManager.me();
+        restaurantId = itemsManager.addRestaurant();
+        userId = itemsManager.addUser();
     }
 
     @After
@@ -37,15 +41,13 @@ public class TestItemsManager {
 
     @Test
     public void testPlaceOrder() {
-        long restaurantId = itemsManager.addRestaurant();
-
         long keyId = addMenuItem(restaurantId);
 
         final String TABLE_NAME = "This is the table";
 
-        itemsManager.placeOrder(restaurantId, keyId, TABLE_NAME);
+        itemsManager.placeOrder(restaurantId, userId, keyId, TABLE_NAME);
 
-        List<Order> orders = itemsManager.getOrders(null, null);
+        List<Order> orders = itemsManager.getOrders(userId, null, null);
 
         assertEquals(1, orders.size());
 
@@ -60,15 +62,15 @@ public class TestItemsManager {
     public void testModifyOrder() {
         testPlaceOrder();
 
-        List<Order> orders = itemsManager.getOrders(null, null);
+        List<Order> orders = itemsManager.getOrders(userId, null, null);
 
         assertEquals(1, orders.size());
 
         Order order = orders.get(0);
 
-        itemsManager.modifyOrder(order.getId(), OrderState.ACCEPTED);
+        itemsManager.modifyOrder(userId, order.getId(), OrderState.ACCEPTED);
         
-        orders = itemsManager.getOrders(null, null);
+        orders = itemsManager.getOrders(userId, null, null);
 
         assertEquals(1, orders.size());
 
@@ -79,7 +81,6 @@ public class TestItemsManager {
 
     @Test
     public void testDeleteMenuItems() {
-        long restaurantId = itemsManager.addRestaurant();
 
         long keyId = addMenuItem(restaurantId);
         

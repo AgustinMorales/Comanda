@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Order;
 import com.company.comanda.peter.server.model.Restaurant;
+import com.company.comanda.peter.server.model.User;
 import com.company.comanda.peter.shared.OrderState;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
@@ -22,6 +23,9 @@ public class ItemsManager {
     private Objectify ofy = ObjectifyService.begin();
 
     private static ItemsManager instance;
+    
+    private Long userId;
+    private Long restaurantId;
 
 
     public static final ItemsManager me(){
@@ -35,6 +39,7 @@ public class ItemsManager {
         ObjectifyService.register(Restaurant.class);
         ObjectifyService.register(MenuItem.class);
         ObjectifyService.register(Order.class);
+        ObjectifyService.register(User.class);
     }
 
 
@@ -49,7 +54,7 @@ public class ItemsManager {
         return result;
     }
 
-    public void placeOrder(long restaurantId,long keyId, String table){
+    public void placeOrder(long restaurantId, long userId, long keyId, String table){
 
         MenuItem menuItem = ofy.get(
                 new Key<MenuItem>(new Key<Restaurant>(
@@ -61,11 +66,14 @@ public class ItemsManager {
             throw new IllegalArgumentException(errorMsg);
         }
         Order newOrder = new Order(menuItem.getName(), table, new Date(), OrderState.ORDERED);
+        newOrder.setUser(new Key<User>(User.class, userId));
         ofy.put(newOrder);
     }
 
-    public void modifyOrder(long keyId, OrderState newState){
-        Order order = ofy.get(new Key<Order>(Order.class, keyId));
+    public void modifyOrder(long userId, long keyId, OrderState newState){
+        Order order = ofy.get(new Key<Order>(
+                new Key<User>(User.class, userId),
+                Order.class, keyId));
         if(order == null){
             String errorMsg = String.format("Could not order with ID: %s",keyId);
             log.warning(errorMsg);
@@ -89,6 +97,12 @@ public class ItemsManager {
         Restaurant restaurant = new Restaurant();
         ofy.put(restaurant);
         return restaurant.getId();
+    }
+    
+    public Long addUser(){
+        User user = new User();
+        ofy.put(user);
+        return user.getId();
     }
 
     public void addOrModifyMenuItem(Long itemId,
@@ -128,7 +142,7 @@ public class ItemsManager {
         ofy.put(item);
     }
 
-    public List<Order> getOrders(
+    public List<Order> getOrders(long userId,
             OrderState state, String tableName){
         Query<Order> query = ofy.query(Order.class).order("-date");
         List<Order> orders = null;
@@ -138,7 +152,22 @@ public class ItemsManager {
         if(tableName != null){
             query.filter("table", tableName);
         }
-        orders = query.list();
+        orders = query.ancestor(
+                new Key<User>(User.class, userId)).list();
         return orders;
+    }
+    
+    long getUserId(){
+        if(userId == null){
+            userId = addUser();
+        }
+        return userId;
+    }
+    
+    long getRestaurantId(){
+        if(restaurantId == null){
+            restaurantId = addRestaurant();
+        }
+        return restaurantId;
     }
 }

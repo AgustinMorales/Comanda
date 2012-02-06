@@ -25,7 +25,8 @@ public class PlaceOrderServlet extends HttpServlet
     {
         String keyId = req.getParameter("keyId");
         String table = req.getParameter("table");
-        String restaurantId = req.getParameter("restaurantId");
-        itemsManager.placeOrder(Long.parseLong(restaurantId), Long.parseLong(keyId), table);
+        itemsManager.placeOrder(itemsManager.getRestaurantId(), 
+                itemsManager.getUserId(),
+                Long.parseLong(keyId), table);
     }
 }
