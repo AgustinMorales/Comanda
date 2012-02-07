@@ -35,7 +35,7 @@ public class GetItemsServlet extends HttpServlet
         List<MenuItem> items = itemsManager.getMenuItems(
                 itemsManager.getRestaurantId());
         PrintWriter out = resp.getWriter();
-        out.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+        out.println("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>");
         out.println("<ItemList>");
         //loop through items list and print each item
         for (MenuItem i : items) 
