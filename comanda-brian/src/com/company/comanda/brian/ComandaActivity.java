@@ -134,6 +134,7 @@ public class ComandaActivity extends ListActivity
             XMLHandler xmlHandler = new XMLHandler();
             xr.setContentHandler(xmlHandler);
             InputSource xmlInput = new InputSource(url.openStream());
+            xmlInput.setEncoding("ISO-8859-1");
             Log.e("ListViewSampleApp", "Input Source Defined: "+ xmlInput.toString());
             /* Parse the xml-data from our URL. */
             xr.parse(xmlInput);

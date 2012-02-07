@@ -122,15 +122,24 @@ public class XMLHandler extends DefaultHandler
         if(this.in_item)
         {
             String textBetween = new String(ch, start, length);
-            if(this.in_name)
+            if(this.in_name){
+                Log.d("Comanda", "Name: " + textBetween);
                 item.setName(textBetween);
-            else if(this.in_imageString)
+            }
+            else if(this.in_imageString){
+                Log.d("Comanda", "ImageString: " + textBetween);
                 item.setImageString(textBetween);
-            else if(this.in_description)
+            }
+                
+            else if(this.in_description){
+                Log.d("Comanda", "Description: " + textBetween);
                 item.setDescription(textBetween);
-            else if(this.in_keyId)
+            }
+            else if(this.in_keyId){
+                Log.d("Comanda", "KeyId: " + textBetween);
                 //We are not parsing the long here. What for?
                 item.setKeyId(textBetween);
+            }
         }
     }
 }
