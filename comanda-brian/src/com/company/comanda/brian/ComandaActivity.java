@@ -280,16 +280,20 @@ public class ComandaActivity extends ListActivity
                     try 
                     {
                         //Decode and resize the image then set as the icon
-                        BitmapFactory.Options options = new BitmapFactory
-                                .Options();
-                        options.inJustDecodeBounds = true;
-                        options.inSampleSize = 1/2;
+//                        BitmapFactory.Options options = new BitmapFactory
+//                                .Options();
+//                        options.inJustDecodeBounds = true;
+//                        options.inSampleSize = 1/2;
+                        InputStream bitmapIS = (InputStream)imageURL
+                                .getContent();
                         rawBitMap = BitmapFactory
-                                .decodeStream((InputStream)imageURL
-                                        .getContent());
-                        Bitmap finImg = Bitmap
-                                .createScaledBitmap(rawBitMap, 50, 50, false);
-                        icon.setImageBitmap(finImg);
+                                .decodeStream(bitmapIS);
+                        bitmapIS.close();
+                        if(rawBitMap != null){
+                            Bitmap finImg = Bitmap
+                                    .createScaledBitmap(rawBitMap, 50, 50, false);
+                            icon.setImageBitmap(finImg);
+                        }
                     } 
                     catch (IOException e) 
                     {                        
