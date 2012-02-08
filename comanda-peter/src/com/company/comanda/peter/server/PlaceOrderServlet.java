@@ -2,10 +2,12 @@ package com.company.comanda.peter.server;
 
 import java.io.IOException;
 
+import javax.inject.Singleton;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@Singleton
 public class PlaceOrderServlet extends HttpServlet  
 {
 

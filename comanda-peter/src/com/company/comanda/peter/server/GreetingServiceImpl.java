@@ -3,9 +3,13 @@ package com.company.comanda.peter.server;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import com.company.comanda.peter.client.GreetingService;
 import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Order;
+import com.company.comanda.peter.shared.Constants;
 import com.company.comanda.peter.shared.OrderState;
 import com.company.comanda.peter.shared.PagedResult;
 import com.google.appengine.api.blobstore.BlobstoreService;
@@ -16,6 +20,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
  * The server side implementation of the RPC service.
  */
 @SuppressWarnings("serial")
+@Singleton
 public class GreetingServiceImpl extends RemoteServiceServlet implements
 GreetingService {
 
@@ -24,6 +29,12 @@ GreetingService {
 
     private BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 
+    private RestaurantAgent restaurantAgent;
+    
+    @Inject
+    public GreetingServiceImpl(RestaurantAgent restaurantAgent){
+        this.restaurantAgent = restaurantAgent;
+    }
 
     public void greetServer(String input) throws IllegalArgumentException {
         // Verify that the input is valid.
@@ -76,8 +87,14 @@ GreetingService {
         ArrayList<String[]> resultList = new ArrayList<String[]>();
         int total;
 
-        List<MenuItem> items = itemsManager.getMenuItems(
-                itemsManager.getRestaurantId());
+        RestaurantAgent restaurantAgent = (RestaurantAgent)
+                getThreadLocalRequest().getSession().
+                getAttribute(Constants.RESTAURANT_AGENT);
+        
+        if(restaurantAgent == null){
+            throw new IllegalStateException("No RestaurantAgent found");
+        }
+        List<MenuItem> items = restaurantAgent.getMenuItems();
         total = items.size();
         //Implement the paging inside ItemsManager
         items = cutList(items, start, length);

@@ -6,65 +6,30 @@
          xmlns="http://java.sun.com/xml/ns/javaee">
 
   <!-- Servlets -->
-  <servlet>
-    <servlet-name>greetServlet</servlet-name>
-    <servlet-class>com.company.comanda.peter.server.GreetingServiceImpl</servlet-class>
-  </servlet>
-  
-  <servlet>
-    <servlet-name>serveBlob</servlet-name>
-    <servlet-class>com.company.comanda.peter.server.ServeBlob</servlet-class>
-  </servlet>
-  
+  <!-- This is for the file upload (blob) -->
   <servlet>
     <servlet-name>newMenuItem</servlet-name>
     <servlet-class>com.company.comanda.peter.server.NewMenuItemServlet</servlet-class>
   </servlet>
-  
-  <servlet>
-    <servlet-name>xmlMenuItems</servlet-name>
-    <servlet-class>com.company.comanda.peter.server.GetItemsServlet</servlet-class>
-  </servlet>
-  
-  <servlet>
-    <servlet-name>placeOrder</servlet-name>
-    <servlet-class>com.company.comanda.peter.server.PlaceOrderServlet</servlet-class>
-  </servlet>
-  
-  <servlet>
-    <servlet-name>getTables</servlet-name>
-    <servlet-class>com.company.comanda.peter.server.GetTablesServlet</servlet-class>
-  </servlet>
-  
-  <servlet-mapping>
-    <servlet-name>greetServlet</servlet-name>
-    <url-pattern>/comanda_peter/greet</url-pattern>
-  </servlet-mapping>
-  
-  <servlet-mapping>
-    <servlet-name>xmlMenuItems</servlet-name>
-    <url-pattern>/menuitems</url-pattern>
-  </servlet-mapping>
-  
-  <servlet-mapping>
-    <servlet-name>placeOrder</servlet-name>
-    <url-pattern>/placeOrder</url-pattern>
-  </servlet-mapping>
-  
   <servlet-mapping>
     <servlet-name>newMenuItem</servlet-name>
     <url-pattern>/newMenuItem</url-pattern>
   </servlet-mapping>
   
-  <servlet-mapping>
-    <servlet-name>serveBlob</servlet-name>
-    <url-pattern>/serveBlob</url-pattern>
-  </servlet-mapping>
   
-  <servlet-mapping>
-    <servlet-name>getTables</servlet-name>
-    <url-pattern>/getTables</url-pattern>
-  </servlet-mapping>
+  <filter>
+    <filter-name>guiceFilter</filter-name>
+    <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>guiceFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <listener>
+    <listener-class>com.company.comanda.peter.server.guice.ComandaGuiceServletContextListener</listener-class>
+  </listener>
   
   
   <!-- Default page to serve -->
