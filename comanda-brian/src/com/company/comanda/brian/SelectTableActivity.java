@@ -10,9 +10,6 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -35,7 +32,7 @@ public class SelectTableActivity extends Activity
     private Runnable viewItems;
     private int artificiallyTrigggeredSelections;
     
-    
+    private static final int SCAN_CODE_ACTIVITY = 1;
     
     protected synchronized int decreaseSelections() {
         if (artificiallyTrigggeredSelections > 0){
@@ -75,8 +72,9 @@ public class SelectTableActivity extends Activity
             
             @Override
             public void onClick(View v) {
-                IntentIntegrator integrator = new IntentIntegrator(SelectTableActivity.this);
-                integrator.initiateScan();
+                Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+                intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+                startActivityForResult(intent, SCAN_CODE_ACTIVITY);
                 
             }
         });
@@ -192,11 +190,14 @@ public class SelectTableActivity extends Activity
     //     }    
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-        if (scanResult != null) {
-          Toast.makeText(getApplicationContext(), scanResult.getContents(), 15).show();
-        }
-        // else continue with any other code you need in the method
+        if (requestCode == SCAN_CODE_ACTIVITY) {
+            if (resultCode == RESULT_OK) {
+               String contents = intent.getStringExtra("SCAN_RESULT");
+               Toast.makeText(getApplicationContext(), contents, 20).show();
+            } else if (resultCode == RESULT_CANCELED) {
+                Toast.makeText(getApplicationContext(), "Cancelled", 20);
+            }
+         }
         
       }
     
