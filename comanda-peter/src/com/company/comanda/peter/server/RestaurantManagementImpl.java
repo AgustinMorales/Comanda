@@ -4,9 +4,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import com.company.comanda.peter.server.model.Restaurant;
 import com.googlecode.objectify.Objectify;
-import com.googlecode.objectify.Query;
 
 public class RestaurantManagementImpl implements RestaurantManagement {
 
@@ -32,8 +33,13 @@ public class RestaurantManagementImpl implements RestaurantManagement {
         }
         assert resultSize == 1;
         Restaurant restaurant = restaurants.get(0);
+        
+        if(BCrypt.checkpw(password, restaurant.getHashedPassword()) == 
+                false){
+            throw new WrongUserNameOrPasswordException();
+        }
 
-        return 0;
+        return restaurant.getId();
     }
 
 }
