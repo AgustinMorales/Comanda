@@ -4,7 +4,9 @@ import java.util.List;
 
 import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Order;
+import com.company.comanda.peter.server.model.Table;
 import com.company.comanda.peter.shared.OrderState;
+import com.googlecode.objectify.Key;
 
 public interface RestaurantAgent {
 
@@ -21,7 +23,11 @@ public interface RestaurantAgent {
     public List<Order> getOrders(
             OrderState state, String tableName);
     
-    public void changeOrderState(long userId, long orderId,
+    public void changeOrderState(long orderId,
             OrderState newState);
+    
+    public Table getTable(Key<Table> tableKey);
+    
+    public MenuItem getMenuItem(Key<MenuItem> menuItemKey);
     
 }

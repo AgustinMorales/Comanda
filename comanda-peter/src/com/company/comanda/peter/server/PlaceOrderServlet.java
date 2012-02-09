@@ -2,6 +2,7 @@ package com.company.comanda.peter.server;
 
 import java.io.IOException;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,8 +17,12 @@ public class PlaceOrderServlet extends HttpServlet
      */
     private static final long serialVersionUID = 7406683513326724866L;
     
-    private ItemsManager itemsManager = ItemsManager.me();
+    private UserManager userManager;
 
+    @Inject
+    public PlaceOrderServlet(UserManager manager){
+        this.userManager = manager;
+    }
     
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException{
         doPost(req, resp);
@@ -25,10 +30,16 @@ public class PlaceOrderServlet extends HttpServlet
     
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException
     {
-        String keyId = req.getParameter("keyId");
-        String table = req.getParameter("table");
-        itemsManager.placeOrder(itemsManager.getRestaurantId(), 
-                itemsManager.getUserId(),
-                Long.parseLong(keyId), table);
+        long menuItemId = Long.parseLong(
+                req.getParameter("keyId"));
+        long tableId = Long.parseLong(req.getParameter("table"));
+        long userId = Long.parseLong(req.getParameter("userId"));
+        String password = req.getParameter("password");
+        long restaurantId = Long.parseLong(
+                req.getParameter("restaurantId"));
+        
+        //FIXME: What happens in case of error?
+        userManager.placeOrder(userId, password, 
+                restaurantId, menuItemId, tableId);
     }
 }

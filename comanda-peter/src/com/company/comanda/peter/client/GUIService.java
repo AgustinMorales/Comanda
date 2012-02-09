@@ -9,7 +9,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
  * The client side stub for the RPC service.
  */
 @RemoteServiceRelativePath("greet")
-public interface GreetingService extends RemoteService {
+public interface GUIService extends RemoteService {
 	void greetServer(String name) throws IllegalArgumentException;
 	PagedResult<String[]> getMenuItems(int start, int length);
 	PagedResult<String[]> getOrders(int start, int length, OrderState state, 

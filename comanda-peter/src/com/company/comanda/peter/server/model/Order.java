@@ -12,40 +12,33 @@ public class Order
 {
     @Id
     private Long id;
-    private String name;
-    private String table;
     private Date date;
     private OrderState state;
     @Parent
     private Key<User> user;
+    private Key<Table> table;
+    private Key<MenuItem> menuItem;
     
     public Order(){
         super();
     }
 
-    public Order(String name, String table, Date date, OrderState state)
+    public Order(Date date, OrderState state,
+           Key<Table> table, Key<MenuItem> menuItem)
     {
-        this.name = name;
-        this.table = table;
         this.date = date;
         this.state = state;
+        this.table = table;
+        this.menuItem = menuItem;
     }
     public Long getId() 
     {
         return id;
     }
-    public String getName() 
-    {
-        return name;
-    }
-    public void setName(String t)
-    {
-     this.name = t;
-    }
-    public String getTable() {
+    public Key<Table> getTable() {
         return table;
     }
-    public void setTable(String table) {
+    public void setTable(Key<Table> table) {
         this.table = table;
     }
     protected synchronized Date getDate() {
@@ -68,5 +61,14 @@ public class Order
     public void setUser(Key<User> user) {
         this.user = user;
     }
+
+    public Key<MenuItem> getMenuItem() {
+        return menuItem;
+    }
+
+    public void setMenuItem(Key<MenuItem> menuItem) {
+        this.menuItem = menuItem;
+    }
+
     
 }

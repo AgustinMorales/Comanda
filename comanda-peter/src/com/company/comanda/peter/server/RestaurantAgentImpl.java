@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Order;
 import com.company.comanda.peter.server.model.Restaurant;
+import com.company.comanda.peter.server.model.Table;
 import com.company.comanda.peter.server.model.User;
 import com.company.comanda.peter.shared.OrderState;
 import com.google.inject.assistedinject.Assisted;
@@ -18,7 +19,7 @@ import com.googlecode.objectify.Query;
 public class RestaurantAgentImpl implements RestaurantAgent {
 
     private static final Logger log = 
-            Logger.getLogger(ItemsManager.class.getName());
+            Logger.getLogger(RestaurantAgentImpl.class.getName());
     private final Objectify ofy;
     private final long restaurantId;
     
@@ -106,19 +107,35 @@ public class RestaurantAgentImpl implements RestaurantAgent {
     }
 
     @Override
-    public void changeOrderState(long userId, 
+    public void changeOrderState( 
             long orderId, OrderState newState) {
-        Order order = ofy.get(new Key<Order>(
-                new Key<User>(User.class, userId),
-                Order.class, orderId));
-        if(order == null){
+        List<Order> orders = ofy.query(Order.class).
+                filter("id", orderId).list();
+        final int size = orders.size();
+        if(size > 1){
+            throw new IllegalStateException(
+                    "More than one order with id: " + orderId);
+        }
+        if(size==0){
             String errorMsg = String.format(
                     "Could not order with ID: %s",orderId);
             log.warning(errorMsg);
             throw new IllegalArgumentException(errorMsg);
         }
+        
+        Order order = orders.get(0);
         order.setState(newState);
         ofy.put(order);
+    }
+
+    @Override
+    public Table getTable(Key<Table> tableKey) {
+        return ofy.get(tableKey);
+    }
+
+    @Override
+    public MenuItem getMenuItem(Key<MenuItem> menuItemKey) {
+        return ofy.get(menuItemKey);
     }
 
 }

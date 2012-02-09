@@ -7,7 +7,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 /**
  * The async counterpart of <code>GreetingService</code>.
  */
-public interface GreetingServiceAsync {
+public interface GUIServiceAsync {
 	void greetServer(String input, AsyncCallback<Void> callback)
 			throws IllegalArgumentException;
 	void getMenuItems(int start, int length, AsyncCallback<PagedResult<String[]>> callback);

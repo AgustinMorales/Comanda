@@ -18,8 +18,8 @@ public class OrdersTableUpdater {
     public interface UpdateListener{
         void onUpdate();
     }
-	private final GreetingServiceAsync greetingService = GWT
-            .create(GreetingService.class);
+	private final GUIServiceAsync greetingService = GWT
+            .create(GUIService.class);
 	private CellTable<String[]> ordersTable;
 	private AsyncDataProvider<String[]> ordersProvider;
 	private OrderState selectedState;

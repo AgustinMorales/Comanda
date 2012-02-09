@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -24,7 +25,11 @@ public class NewMenuItemServlet extends HttpServlet{
 
     private BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
     
-    private ItemsManager itemsManager = ItemsManager.me();
+    //FIXME: This is static because we need a explicit
+    //Servlet declaration in web.xml since otherwise
+    //blob file upload won't work
+    @Inject
+    private static RestaurantManager manager;
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -50,10 +55,9 @@ public class NewMenuItemServlet extends HttpServlet{
         if(keyId != null && keyId.length() > 0){
             itemId = Long.parseLong(keyId);
         }
-        itemsManager.addOrModifyMenuItem(itemId, 
-                itemName, description, 
-                priceString, imageBlobKey,
-                itemsManager.getRestaurantId());
+        manager.getAgent().addOrModifyMenuItem(itemId, 
+                itemName, description, priceString, 
+                imageBlobKey);
     }
 
 

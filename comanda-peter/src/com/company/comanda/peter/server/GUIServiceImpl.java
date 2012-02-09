@@ -6,9 +6,10 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import com.company.comanda.peter.client.GreetingService;
+import com.company.comanda.peter.client.GUIService;
 import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Order;
+import com.company.comanda.peter.server.model.Table;
 import com.company.comanda.peter.shared.Constants;
 import com.company.comanda.peter.shared.OrderState;
 import com.company.comanda.peter.shared.PagedResult;
@@ -21,19 +22,16 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
  */
 @SuppressWarnings("serial")
 @Singleton
-public class GreetingServiceImpl extends RemoteServiceServlet implements
-GreetingService {
-
-    //TODO: This should be done with dependency injection or something similar
-    private ItemsManager itemsManager = ItemsManager.me();
+public class GUIServiceImpl extends RemoteServiceServlet implements
+GUIService {
 
     private BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 
-    private RestaurantAgent restaurantAgent;
+    private RestaurantManager restaurantManager;
     
     @Inject
-    public GreetingServiceImpl(RestaurantAgent restaurantAgent){
-        this.restaurantAgent = restaurantAgent;
+    public GUIServiceImpl(RestaurantManager restaurantManager){
+        this.restaurantManager = restaurantManager;
     }
 
     public void greetServer(String input) throws IllegalArgumentException {
@@ -61,7 +59,7 @@ GreetingService {
             OrderState state, String tableName){
         ArrayList<String[]> resultList = new ArrayList<String[]>();
         int total;
-        List<Order> orders = itemsManager.getOrders(itemsManager.getUserId(), 
+        List<Order> orders = restaurantManager.getAgent().getOrders( 
                 state, tableName);
 
         total = orders.size();
@@ -69,7 +67,14 @@ GreetingService {
         resultList.ensureCapacity(orders.size());
 
         for(Order orderElement: orders){
-            resultList.add(new String[]{orderElement.getName(), orderElement.getTable(), "" + orderElement.getId()});
+            Table table = restaurantManager.getAgent().
+                    getTable(orderElement.getTable());
+            MenuItem menuItem = restaurantManager.getAgent().
+                    getMenuItem(orderElement.getMenuItem());
+            //FIXME: menuItem might be null!!!!
+            resultList.add(new String[]{menuItem.getName(), 
+                    table.getName(), 
+                    "" + orderElement.getId()});
         }
         return new PagedResult<String[]>(resultList,total);
     }
@@ -133,13 +138,13 @@ GreetingService {
     @Override
     public void acceptOrder(String orderKey) {
         long keyId = Long.parseLong(orderKey);
-        itemsManager.modifyOrder(itemsManager.getUserId(), 
+        restaurantManager.getAgent().changeOrderState(
                 keyId, OrderState.ACCEPTED);
     }
 
     @Override
     public void deleteMenuItems(long[] keyIds) {
-        itemsManager.deleteMenuItems(itemsManager.getRestaurantId(), keyIds);
+        restaurantManager.getAgent().deleteMenuItems(keyIds);
 
     }
 }
