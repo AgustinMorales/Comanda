@@ -17,10 +17,11 @@ public class TestDataStore {
 
     private final LocalServiceTestHelper helper =
             new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig()
-                .setDefaultHighRepJobPolicyUnappliedJobPercentage(100));
-    
+            .setDefaultHighRepJobPolicyUnappliedJobPercentage(100));
+
+
     private ItemsManager itemsManager;
-    
+
     @Before
     public void setUp() throws Exception {
         helper.setUp();
@@ -39,10 +40,10 @@ public class TestDataStore {
                 "item1", "description1", 
                 "300", "image1", resturantId);
         List<MenuItem> menuItems = itemsManager.getMenuItems(resturantId);
-        
+
         assertEquals(1, menuItems.size());
     }
-    
+
     @Test
     public void testModifyMenuItem() {
         long resturantId = itemsManager.addRestaurant();
@@ -50,11 +51,11 @@ public class TestDataStore {
                 "item1", "description1", 
                 "300", "image1", resturantId);
         List<MenuItem> menuItems = itemsManager.getMenuItems(resturantId);
-        
+
         assertEquals(1, menuItems.size());
-        
+
         MenuItem addedMenuItem = menuItems.get(0);
-        
+
         itemsManager.addOrModifyMenuItem(
                 addedMenuItem.getId(), 
                 "item1_modified", 
@@ -62,13 +63,13 @@ public class TestDataStore {
                 null, 
                 null, 
                 resturantId);
-        
+
         menuItems = itemsManager.getMenuItems(resturantId);
-        
+
         assertEquals(1, menuItems.size());
-        
+
         MenuItem modifiedMenuItem = menuItems.get(0);
-        
+
         assertEquals("item1_modified", modifiedMenuItem.getName());
     }
 

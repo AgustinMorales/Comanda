@@ -8,6 +8,8 @@ public class ComandaGuiceServletContextListener extends GuiceServletContextListe
 
   @Override protected Injector getInjector() {
     return Guice.createInjector(
-        new ComandaServletModule());
+        new ComandaServletModule(),
+        new BusinessModule(),
+        new SessionModule());
   }
 }

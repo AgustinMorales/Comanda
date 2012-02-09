@@ -5,6 +5,10 @@ import javax.inject.Singleton;
 import com.company.comanda.peter.server.RestaurantAgent;
 import com.company.comanda.peter.server.RestaurantAgentFactory;
 import com.company.comanda.peter.server.RestaurantAgentImpl;
+import com.company.comanda.peter.server.RestaurantManagementImpl;
+import com.company.comanda.peter.server.RestaurantManager;
+import com.company.comanda.peter.server.admin.ComandaAdmin;
+import com.company.comanda.peter.server.admin.ComandaAdminImpl;
 import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Order;
 import com.company.comanda.peter.server.model.Restaurant;
@@ -22,11 +26,14 @@ public class BusinessModule extends AbstractModule {
         install(new FactoryModuleBuilder()
         .implement(RestaurantAgent.class, RestaurantAgentImpl.class)
         .build(RestaurantAgentFactory.class));
-
+        bind(ComandaAdmin.class).to(ComandaAdminImpl.class);
+        bind(RestaurantManager.class).to(
+                RestaurantManagementImpl.class);
+        
     }
     
     @Provides @Singleton
-    Objectify getObjectify(){
+    Objectify provideObjectify(){
         Objectify ofy = ObjectifyService.begin();
         ObjectifyService.register(Restaurant.class);
         ObjectifyService.register(MenuItem.class);
