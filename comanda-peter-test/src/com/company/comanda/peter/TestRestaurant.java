@@ -16,6 +16,7 @@ import com.company.comanda.peter.server.admin.ComandaAdmin;
 import com.company.comanda.peter.server.guice.BusinessModule;
 import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Restaurant;
+import com.company.comanda.peter.server.model.Table;
 import com.company.comanda.peter.stubs.FirstOperationOnlyPolicy;
 import com.company.comanda.peter.stubs.SessionAttributesHashMap;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
@@ -216,5 +217,48 @@ public class TestRestaurant {
                 modifiedItem.getPrice());
         assertEquals(NEW_BLOB_KEY, modifiedItem.getImageString());
         assertEquals(itemId, (long)modifiedItem.getId());
+    }
+    
+    @Test
+    public void testAddTable(){
+        manager.login(REST_NAME, REST_PASSWORD);
+        
+        RestaurantAgent agent = manager.getAgent();
+        
+        final String TABLE_NAME = "This is the new table";
+        final long returnedId = agent.addTable(TABLE_NAME);
+        
+        List<Table> tables = agent.getTables();
+        
+        assertEquals(1, tables.size());
+        
+        Table table = tables.get(0);
+        
+        assertEquals(returnedId, (long)table.getId());
+        
+        assertEquals(8, table.getCode().length());
+    }
+    
+    @Test
+    public void testDifferentTableCodes(){
+        manager.login(REST_NAME, REST_PASSWORD);
+        
+        RestaurantAgent agent = manager.getAgent();
+        
+        final String TABLE1 = "table1";
+        final String TABLE2 = "table2";
+        
+        agent.addTable(TABLE1);
+        agent.addTable(TABLE2);
+        
+        List<Table> tables = agent.getTables();
+        
+        assertEquals(2, tables.size());
+        
+        Table table1 = tables.get(0);
+        Table table2 = tables.get(1);
+        
+        assertTrue(table1.getCode().equals(
+                table2.getCode()) == false);
     }
 }

@@ -2,6 +2,7 @@ package com.company.comanda.peter.server;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Logger;
 
 import javax.inject.Inject;
@@ -9,7 +10,6 @@ import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Order;
 import com.company.comanda.peter.server.model.Restaurant;
 import com.company.comanda.peter.server.model.Table;
-import com.company.comanda.peter.server.model.User;
 import com.company.comanda.peter.shared.OrderState;
 import com.google.inject.assistedinject.Assisted;
 import com.googlecode.objectify.Key;
@@ -18,23 +18,29 @@ import com.googlecode.objectify.Query;
 
 public class RestaurantAgentImpl implements RestaurantAgent {
 
+    private static final int TABLE_CODE_RANDOM_PART_MAX_VALUE = 9999;
+    private static final int TABLE_CODE_ID_PART_WIDTH = 4;
+    private static final int TABLE_CODE_RANDOM_PART_WIDTH = 4;
+    
     private static final Logger log = 
             Logger.getLogger(RestaurantAgentImpl.class.getName());
     private final Objectify ofy;
-    private final long restaurantId;
+    private final Key<Restaurant> restaurantKey;
+    private final Random random;
     
     @Inject
     public RestaurantAgentImpl(Objectify ofy, @Assisted long restaurantId){
         this.ofy = ofy;
-        this.restaurantId = restaurantId;
+        this.random = new Random();
+        this.restaurantKey = new Key<Restaurant>(Restaurant.class,
+                restaurantId);
     }
     
     @Override
     public List<MenuItem> getMenuItems() {
         List<MenuItem> result = new ArrayList<MenuItem>();
         Iterable<MenuItem> menuItems = ofy.query(MenuItem.class).
-                ancestor(new Key<Restaurant>(
-                        Restaurant.class, restaurantId));
+                ancestor(restaurantKey);
         for(MenuItem currentMenuItem : menuItems){
             result.add(currentMenuItem);
         }
@@ -45,12 +51,10 @@ public class RestaurantAgentImpl implements RestaurantAgent {
     public void addOrModifyMenuItem(Long itemId, String itemName,
             String description, String priceString, String imageBlobkey) {
         MenuItem item = null;
-        Key<Restaurant> parentRestaurant = 
-                new Key<Restaurant>(Restaurant.class, restaurantId);
         if(itemId != null ){
             item = ofy.get(
                     new Key<MenuItem>(
-                            parentRestaurant,MenuItem.class, itemId));
+                            restaurantKey,MenuItem.class, itemId));
         }
         else{
             if(itemName == null ||
@@ -60,7 +64,7 @@ public class RestaurantAgentImpl implements RestaurantAgent {
                 throw new IllegalArgumentException("Missing data");
             }
             item = new MenuItem();
-            item.setParent(parentRestaurant);
+            item.setParent(restaurantKey);
         }
         if(itemName != null){
             item.setName(itemName);
@@ -85,7 +89,7 @@ public class RestaurantAgentImpl implements RestaurantAgent {
                 new ArrayList<Key<MenuItem>>(keyIds.length);
         for(long currentId : keyIds){
             itemsToDelete.add(new Key<MenuItem>(
-                    new Key<Restaurant>(Restaurant.class, restaurantId), 
+                    restaurantKey, 
                     MenuItem.class,currentId));
         }
         ofy.delete(itemsToDelete);
@@ -136,6 +140,29 @@ public class RestaurantAgentImpl implements RestaurantAgent {
     @Override
     public MenuItem getMenuItem(Key<MenuItem> menuItemKey) {
         return ofy.get(menuItemKey);
+    }
+
+    @Override
+    public long addTable(String name) {
+        Table table = new Table();
+        table.setName(name);
+        table.setRestaurant(restaurantKey);
+        ofy.put(table);
+        final long id = table.getId();
+        final int random_part = random.nextInt(TABLE_CODE_RANDOM_PART_MAX_VALUE);
+        String code = String.format(
+                "%" + TABLE_CODE_ID_PART_WIDTH + "d" +
+                "%" + TABLE_CODE_RANDOM_PART_WIDTH + "d", 
+                id, random_part);
+        log.info("Setting table code to: " + code);
+        table.setCode(code);
+        ofy.put(table);
+        return id;
+    }
+
+    @Override
+    public List<Table> getTables() {
+        return ofy.query(Table.class).ancestor(restaurantKey).list();
     }
 
 }

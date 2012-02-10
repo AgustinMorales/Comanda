@@ -12,6 +12,7 @@ import com.company.comanda.peter.server.admin.ComandaAdminImpl;
 import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Order;
 import com.company.comanda.peter.server.model.Restaurant;
+import com.company.comanda.peter.server.model.Table;
 import com.company.comanda.peter.server.model.User;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
@@ -39,6 +40,7 @@ public class BusinessModule extends AbstractModule {
         ObjectifyService.register(MenuItem.class);
         ObjectifyService.register(Order.class);
         ObjectifyService.register(User.class);
+        ObjectifyService.register(Table.class);
         return ofy;
     }
 

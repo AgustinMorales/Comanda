@@ -30,4 +30,7 @@ public interface RestaurantAgent {
     
     public MenuItem getMenuItem(Key<MenuItem> menuItemKey);
     
+    public long addTable(String name);
+    
+    public List<Table> getTables();
 }
