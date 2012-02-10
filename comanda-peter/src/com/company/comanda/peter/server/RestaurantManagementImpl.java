@@ -27,6 +27,9 @@ public class RestaurantManagementImpl implements RestaurantManager {
 
     @Override
     public boolean login(String username, String password){
+        if(attributes.getAttribute(Constants.RESTAURANT_AGENT) != null){
+            throw new IllegalStateException("Already logged in");
+        }
         boolean result = false;
         List<Restaurant> restaurants = ofy.
                 query(Restaurant.class).filter("name", username).list();
