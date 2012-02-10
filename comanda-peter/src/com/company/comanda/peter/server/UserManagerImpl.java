@@ -44,4 +44,18 @@ public class UserManagerImpl implements UserManager {
 
     }
 
+    @Override
+    public CodifiedData getData(String code) {
+        int totalLength = code.length();
+        int restaurantLength = totalLength - 
+                (Table.TABLE_CODE_ID_PART_WIDTH +
+                        Table.TABLE_CODE_RANDOM_PART_WIDTH);
+        
+        long restaurantId = Long.parseLong(
+                code.substring(0, restaurantLength));
+        String 
+        
+        return null;
+    }
+
 }

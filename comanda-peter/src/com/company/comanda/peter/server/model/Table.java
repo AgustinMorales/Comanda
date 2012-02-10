@@ -8,6 +8,11 @@ import com.googlecode.objectify.annotation.Parent;
 
 public class Table {
 
+    public static final int TABLE_CODE_RANDOM_PART_MAX_VALUE = 9999;
+    public static final int TABLE_CODE_ID_PART_WIDTH = 4;
+    public static final int TABLE_CODE_RANDOM_PART_WIDTH = 4;
+    
+    
     @Id
     private Long id;
     private String name;

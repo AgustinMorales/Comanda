@@ -18,10 +18,6 @@ import com.googlecode.objectify.Query;
 
 public class RestaurantAgentImpl implements RestaurantAgent {
 
-    private static final int TABLE_CODE_RANDOM_PART_MAX_VALUE = 9999;
-    private static final int TABLE_CODE_ID_PART_WIDTH = 4;
-    private static final int TABLE_CODE_RANDOM_PART_WIDTH = 4;
-    
     private static final Logger log = 
             Logger.getLogger(RestaurantAgentImpl.class.getName());
     private final Objectify ofy;
@@ -149,10 +145,11 @@ public class RestaurantAgentImpl implements RestaurantAgent {
         table.setRestaurant(restaurantKey);
         ofy.put(table);
         final long id = table.getId();
-        final int random_part = random.nextInt(TABLE_CODE_RANDOM_PART_MAX_VALUE);
+        final int random_part = random.nextInt(
+                Table.TABLE_CODE_RANDOM_PART_MAX_VALUE);
         String code = String.format(
-                "%" + TABLE_CODE_ID_PART_WIDTH + "d" +
-                "%" + TABLE_CODE_RANDOM_PART_WIDTH + "d", 
+                "%" + Table.TABLE_CODE_ID_PART_WIDTH + "d" +
+                "%" + Table.TABLE_CODE_RANDOM_PART_WIDTH + "d", 
                 id, random_part);
         log.info("Setting table code to: " + code);
         table.setCode(code);
