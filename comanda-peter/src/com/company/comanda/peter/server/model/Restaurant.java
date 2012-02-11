@@ -36,5 +36,4 @@ public class Restaurant {
         this.hashedPassword = hashedPassword;
     }
     
-    
 }

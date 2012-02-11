@@ -1,5 +1,7 @@
 package com.company.comanda.peter.client;
 
+import java.util.List;
+
 import com.company.comanda.peter.shared.OrderState;
 import com.company.comanda.peter.shared.PagedResult;
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -18,4 +20,6 @@ public interface GUIService extends RemoteService {
 	void deleteMenuItems(long[] keyIds);
 	boolean login(String username, String password);
 	void newRestaurant(String name, String password);
+	void addTable(String tablename);
+	List<String[]> getTables();
 }

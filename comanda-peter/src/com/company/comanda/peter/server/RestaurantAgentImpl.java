@@ -185,4 +185,15 @@ public class RestaurantAgentImpl implements RestaurantAgent, Serializable {
         return getOrders(state, tableId);
     }
 
+    @Override
+    public String getFullCode(String tableCode) {
+        return getRestaurantCode() + tableCode;
+    }
+
+    @Override
+    public String getRestaurantCode() {
+        return String.format("%8d", (long)restaurantKey.getId());
+    }
+    
+    
 }

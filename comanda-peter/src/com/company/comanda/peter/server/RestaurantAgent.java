@@ -36,4 +36,8 @@ public interface RestaurantAgent {
     public long addTable(String name);
     
     public List<Table> getTables();
+    
+    public String getFullCode(String tableCode);
+    
+    public String getRestaurantCode();
 }

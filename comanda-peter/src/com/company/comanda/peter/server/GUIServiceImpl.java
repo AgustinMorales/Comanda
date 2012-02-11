@@ -127,12 +127,40 @@ GUIService {
 
     @Override
     public boolean login(String username, String password) {
-        return restaurantManager.login(username, password);
+        boolean result = false;
+        try{
+            result = restaurantManager.login(username, password);
+        }
+        catch (IllegalStateException e) {
+            //Try to log in again
+            getThreadLocalRequest().getSession().invalidate();
+            result = restaurantManager.login(username, password);
+        }
+        return result;
     }
 
     @Override
     public void newRestaurant(String name, String password) {
         admin.createRestaurant(name, password);
         
+    }
+
+    @Override
+    public void addTable(String tablename) {
+        restaurantManager.getAgent().addTable(tablename);
+        
+    }
+
+    @Override
+    public List<String[]> getTables() {
+        List<Table> tables = restaurantManager.getAgent().getTables();
+        List<String[]> result = new ArrayList<String[]>(tables.size());
+        for(Table table : tables){
+            result.add(new String[]{"" + table.getId(), 
+                    table.getName(), 
+                    restaurantManager.getAgent().getFullCode(
+                            table.getCode())});
+        }
+        return result;
     }
 }
