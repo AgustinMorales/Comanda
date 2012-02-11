@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.inject.Inject;
+
 import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Order;
 import com.company.comanda.peter.server.model.Restaurant;
@@ -19,20 +21,25 @@ public class UserManagerImpl implements UserManager {
     private static final Logger log = Logger.
             getLogger(UserManagerImpl.class.getName());
     private Objectify ofy;
+    private RestaurantAgentFactory agentFactory;
 
-    public UserManagerImpl(Objectify ofy){
+    @Inject
+    public UserManagerImpl(Objectify ofy, 
+            RestaurantAgentFactory agentFactory){
         this.ofy = ofy;
+        this.agentFactory = agentFactory;
     }
 
     @Override
     public void placeOrder(long userId, String password, long restaurantId,
             long menuItemId, long tableId) {
         // TODO Check password
+        
         Key<Restaurant> restaurantKey = new Key<Restaurant>(
                 Restaurant.class,restaurantId);
         Key<MenuItem> menuItemKey = new Key<MenuItem>(restaurantKey, 
                 MenuItem.class, menuItemId);
-        Key<Table> tableKey = new Key<Table>(Table.class, tableId);
+        Key<Table> tableKey = new Key<Table>(restaurantKey,Table.class, tableId);
         MenuItem menuItem = ofy.get(menuItemKey);
         if(menuItem == null){
             String errorMsg = String.format("Could not place order for item ID: %s",menuItemId);
@@ -89,6 +96,36 @@ public class UserManagerImpl implements UserManager {
         }
 
         return result;
+    }
+
+    @Override
+    public long registerUser(String phoneNumber, 
+            String password, String validationCode) {
+        
+        List<User> users = ofy.query(User.class).
+                filter("phoneNumber", phoneNumber).list();
+        
+        //TODO: Check validation code
+
+        User user = null;
+        if(users.size() == 0){
+            user = new User();
+            user.setPhoneNumber(phoneNumber);
+        }
+        else{
+            assert users.size() == 1;
+            user = users.get(0);
+        }
+        user.setPassword(password);
+        ofy.put(user);
+
+        return user.getId();
+    }
+
+    @Override
+    public List<MenuItem> getMenuItems(long restaurantId) {
+        RestaurantAgent agent = agentFactory.create(restaurantId);
+        return agent.getMenuItems();
     }
 
 }

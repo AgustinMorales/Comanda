@@ -7,6 +7,8 @@ import com.company.comanda.peter.server.RestaurantAgentFactory;
 import com.company.comanda.peter.server.RestaurantAgentImpl;
 import com.company.comanda.peter.server.RestaurantManagementImpl;
 import com.company.comanda.peter.server.RestaurantManager;
+import com.company.comanda.peter.server.UserManager;
+import com.company.comanda.peter.server.UserManagerImpl;
 import com.company.comanda.peter.server.admin.ComandaAdmin;
 import com.company.comanda.peter.server.admin.ComandaAdminImpl;
 import com.company.comanda.peter.server.model.MenuItem;
@@ -30,6 +32,7 @@ public class BusinessModule extends AbstractModule {
         bind(ComandaAdmin.class).to(ComandaAdminImpl.class);
         bind(RestaurantManager.class).to(
                 RestaurantManagementImpl.class);
+        bind(UserManager.class).to(UserManagerImpl.class);
         
     }
     

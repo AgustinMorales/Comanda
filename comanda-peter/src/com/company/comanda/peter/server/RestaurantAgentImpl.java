@@ -93,14 +93,15 @@ public class RestaurantAgentImpl implements RestaurantAgent {
     }
 
     @Override
-    public List<Order> getOrders(OrderState state, String tableName) {
+    public List<Order> getOrders(OrderState state, Long tableId) {
         Query<Order> query = ofy.query(Order.class).order("-date");
         List<Order> orders = null;
         if (state != null){
             query.filter("state", state);
         }
-        if(tableName != null){
-            query.filter("table", tableName);
+        if(tableId != null){
+            query.filter("table", new Key<Table>(
+                    restaurantKey,Table.class,(long)tableId));
         }
         orders = query.list();
         return orders;
@@ -148,8 +149,8 @@ public class RestaurantAgentImpl implements RestaurantAgent {
         final int random_part = random.nextInt(
                 Table.TABLE_CODE_RANDOM_PART_MAX_VALUE);
         String code = String.format(
-                "%" + Table.TABLE_CODE_ID_PART_WIDTH + "d" +
-                "%" + Table.TABLE_CODE_RANDOM_PART_WIDTH + "d", 
+                "%0" + Table.TABLE_CODE_ID_PART_WIDTH + "d" +
+                "%0" + Table.TABLE_CODE_RANDOM_PART_WIDTH + "d", 
                 id, random_part);
         log.info("Setting table code to: " + code);
         table.setCode(code);

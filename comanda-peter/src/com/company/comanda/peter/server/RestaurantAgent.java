@@ -21,7 +21,7 @@ public interface RestaurantAgent {
     public void deleteMenuItems(long[] keyIds);
     
     public List<Order> getOrders(
-            OrderState state, String tableName);
+            OrderState state, Long tableId);
     
     public void changeOrderState(long orderId,
             OrderState newState);
