@@ -25,7 +25,6 @@ implements TableSelectorListener{
 
 	private OrdersTableUpdater ordersTableUpdater;
 	private String selectedTable;
-	private Long selectedTableId;
 	
 
 	@UiTemplate("UIViewAllOrders.ui.xml")
@@ -63,10 +62,9 @@ implements TableSelectorListener{
         lblMessage.setVisible(true);
 	}
 
-	public void setSelectedTable(String tableName, Long tableId){
+	public void setSelectedTable(String tableName){
 	    this.selectedTable = tableName;
-	    this.selectedTableId = tableId;
-		ordersTableUpdater.setSelectedTableId(selectedTableId);
+		ordersTableUpdater.setSelectedTable(selectedTable);
 		ordersTableUpdater.setAutoUpdate(true);
 	}
 	
@@ -77,11 +75,11 @@ implements TableSelectorListener{
 	}
 
     @Override
-    public void onNewTableSelected(String tableName, Long tableId) {
+    public void onNewTableSelected(String tableName) {
         ordersTableContainer.setVisible(false);
         lblMessage.setText("Cargando mesa " + tableName + "...");
         lblMessage.setVisible(true);
-        setSelectedTable(tableName, tableId);
+        setSelectedTable(tableName);
         
     }
 }

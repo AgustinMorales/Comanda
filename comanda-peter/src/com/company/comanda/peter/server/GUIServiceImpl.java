@@ -56,11 +56,11 @@ GUIService {
 
     @SuppressWarnings("unchecked")
     public PagedResult<String[]> getOrders(int start, int length, 
-            OrderState state, Long tableId){
+            OrderState state, String tableName){
         ArrayList<String[]> resultList = new ArrayList<String[]>();
         int total;
         List<Order> orders = restaurantManager.getAgent().getOrders( 
-                state, tableId);
+                state, tableName);
 
         total = orders.size();
         orders = cutList(orders, start, length);

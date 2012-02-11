@@ -43,12 +43,11 @@ public class UITableMap extends Composite implements TableSelector{
 		};
 		for(int i=0;i<buttons.length;i++){
 			final String tableName = "" + (i + 1);
-			final long tableId = i;
 			buttons[i].addClickHandler(new ClickHandler() {
 				
 				@Override
 				public void onClick(ClickEvent event) {
-					tableSelectorListener.onNewTableSelected(tableName, tableId);
+					tableSelectorListener.onNewTableSelected(tableName);
 					
 				}
 			});

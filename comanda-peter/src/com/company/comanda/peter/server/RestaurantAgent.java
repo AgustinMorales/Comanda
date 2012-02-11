@@ -23,6 +23,9 @@ public interface RestaurantAgent {
     public List<Order> getOrders(
             OrderState state, Long tableId);
     
+    public List<Order> getOrders(OrderState state, 
+            String tableName);
+    
     public void changeOrderState(long orderId,
             OrderState newState);
     

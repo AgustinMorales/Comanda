@@ -163,4 +163,21 @@ public class RestaurantAgentImpl implements RestaurantAgent {
         return ofy.query(Table.class).ancestor(restaurantKey).list();
     }
 
+    @Override
+    public List<Order> getOrders(OrderState state, String tableName) {
+        Long tableId = null;
+        if(tableName != null){
+            List<Table> tables = ofy.query(Table.class).filter("name", 
+                    tableName).ancestor(restaurantKey).list();
+            if(tables.size() == 1){
+                tableId = tables.get(0).getId();
+            }
+            else if( tables.size() > 1){
+                throw new IllegalStateException(
+                        "More than one table with the same name");
+            }
+        }
+        return getOrders(state, tableId);
+    }
+
 }

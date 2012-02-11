@@ -23,7 +23,7 @@ public class OrdersTableUpdater {
 	private CellTable<String[]> ordersTable;
 	private AsyncDataProvider<String[]> ordersProvider;
 	private OrderState selectedState;
-	private Long selectedTableId;
+	private String selectedTable;
 
 	private MyTimer autoUpdateTimer;
 	
@@ -61,7 +61,7 @@ public class OrdersTableUpdater {
                     };
                     // The remote service that should be implemented
                     greetingService.getOrders(start, length, 
-                            selectedState, selectedTableId, 
+                            selectedState, selectedTable, 
                             callback);
                 }
             };
@@ -87,8 +87,8 @@ public class OrdersTableUpdater {
         }
     }
 	
-	public void setSelectedTableId(Long tableId){
-		this.selectedTableId = tableId;
+	public void setSelectedTable(String table){
+		this.selectedTable = table;
 	}
 	
 	public void setSelectedState(OrderState state){

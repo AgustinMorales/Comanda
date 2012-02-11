@@ -2,5 +2,5 @@ package com.company.comanda.peter.client;
 
 public interface TableSelectorListener {
 
-    void onNewTableSelected(String tableName, Long tableId);
+    void onNewTableSelected(String tableName);
 }
