@@ -13,21 +13,21 @@ import com.googlecode.objectify.Objectify;
 public class RestaurantManagementImpl implements RestaurantManager {
 
     private Objectify ofy;
-    private SessionAttributes attributes;
+    private SessionAttributesFactory attributesFactory;
     private RestaurantAgentFactory agentFactory;
 
     @Inject
     public RestaurantManagementImpl(Objectify ofy, 
-            SessionAttributes attributes,
+            SessionAttributesFactory attributesFactory,
             RestaurantAgentFactory agentFactory){
         this.ofy = ofy;
-        this.attributes = attributes;
+        this.attributesFactory = attributesFactory;
         this.agentFactory = agentFactory;
     }
 
     @Override
     public boolean login(String username, String password){
-        if(attributes.getAttribute(Constants.RESTAURANT_AGENT) != null){
+        if(attributesFactory.create().getAttribute(Constants.RESTAURANT_AGENT) != null){
             throw new IllegalStateException("Already logged in");
         }
         boolean result = false;
@@ -42,7 +42,7 @@ public class RestaurantManagementImpl implements RestaurantManager {
             Restaurant restaurant = restaurants.get(0);
             if(BCrypt.checkpw(password, restaurant.getHashedPassword())){
                 result = true;
-                attributes.setAttribute(
+                attributesFactory.create().setAttribute(
                         Constants.RESTAURANT_AGENT, 
                         agentFactory.create(restaurant.getId()));
             }
@@ -51,7 +51,7 @@ public class RestaurantManagementImpl implements RestaurantManager {
     }
 
     public RestaurantAgent getAgent(){
-        return (RestaurantAgent)attributes.
+        return (RestaurantAgent)attributesFactory.create().
                 getAttribute(Constants.RESTAURANT_AGENT);
     }
 }

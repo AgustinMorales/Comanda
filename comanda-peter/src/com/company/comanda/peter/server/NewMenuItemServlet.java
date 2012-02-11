@@ -28,7 +28,7 @@ public class NewMenuItemServlet extends HttpServlet{
     //FIXME: This is static because we need a explicit
     //Servlet declaration in web.xml since otherwise
     //blob file upload won't work
-    @Inject
+//    @Inject
     private static RestaurantManager manager;
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)

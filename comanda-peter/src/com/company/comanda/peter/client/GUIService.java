@@ -17,4 +17,5 @@ public interface GUIService extends RemoteService {
 	void acceptOrder(String orderKey);
 	void deleteMenuItems(long[] keyIds);
 	boolean login(String username, String password);
+	void newRestaurant(String name, String password);
 }

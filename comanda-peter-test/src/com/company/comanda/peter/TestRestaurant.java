@@ -12,6 +12,7 @@ import org.junit.Test;
 import com.company.comanda.peter.server.RestaurantAgent;
 import com.company.comanda.peter.server.RestaurantManager;
 import com.company.comanda.peter.server.SessionAttributes;
+import com.company.comanda.peter.server.SessionAttributesFactory;
 import com.company.comanda.peter.server.admin.ComandaAdmin;
 import com.company.comanda.peter.server.guice.BusinessModule;
 import com.company.comanda.peter.server.model.MenuItem;
@@ -24,6 +25,7 @@ import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.NotFoundException;
 
@@ -51,8 +53,9 @@ public class TestRestaurant {
 
                 @Override
                 protected void configure() {
-                    bind(SessionAttributes.class).
-                    to(SessionAttributesHashMap.class);
+                    install(new FactoryModuleBuilder()
+                    .implement(SessionAttributes.class, SessionAttributesHashMap.class)
+                    .build(SessionAttributesFactory.class));
 
                 }
 
@@ -70,7 +73,7 @@ public class TestRestaurant {
         helper.tearDown();
         ((SessionAttributesHashMap)
                 injector.getInstance(
-                        SessionAttributes.class)).clear();
+                        SessionAttributesFactory.class).create()).clear();
     }
     
     void createRestaurant(){

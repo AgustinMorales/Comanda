@@ -15,4 +15,5 @@ public interface GUIServiceAsync {
 	void acceptOrder(String orderKey, AsyncCallback<Void> callback);
 	void deleteMenuItems(long[] keyIds, AsyncCallback<Void> callback);
 	void login(String username, String password, AsyncCallback<Boolean> callback);
+	void newRestaurant(String name, String password, AsyncCallback<Void> callback);
 }

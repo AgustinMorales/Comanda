@@ -1,5 +1,6 @@
 package com.company.comanda.peter.server;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -16,8 +17,12 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.Query;
 
-public class RestaurantAgentImpl implements RestaurantAgent {
+public class RestaurantAgentImpl implements RestaurantAgent, Serializable {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -3055352812030604659L;
     private static final Logger log = 
             Logger.getLogger(RestaurantAgentImpl.class.getName());
     private final Objectify ofy;

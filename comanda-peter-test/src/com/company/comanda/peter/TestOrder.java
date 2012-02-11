@@ -11,6 +11,8 @@ import org.junit.Test;
 import com.company.comanda.peter.server.GetTablesServlet;
 import com.company.comanda.peter.server.RestaurantManager;
 import com.company.comanda.peter.server.SessionAttributes;
+import com.company.comanda.peter.server.SessionAttributesFactory;
+import com.company.comanda.peter.server.SessionAttributesHttp;
 import com.company.comanda.peter.server.UserManager;
 import com.company.comanda.peter.server.UserManager.CodifiedData;
 import com.company.comanda.peter.server.admin.ComandaAdmin;
@@ -26,6 +28,7 @@ import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 public class TestOrder {
 
@@ -56,8 +59,9 @@ public class TestOrder {
 
                 @Override
                 protected void configure() {
-                    bind(SessionAttributes.class).
-                    to(SessionAttributesHashMap.class);
+                    install(new FactoryModuleBuilder()
+                    .implement(SessionAttributes.class, SessionAttributesHashMap.class)
+                    .build(SessionAttributesFactory.class));
 
                 }
 
@@ -81,7 +85,7 @@ public class TestOrder {
         helper.tearDown();
         ((SessionAttributesHashMap)
                 injector.getInstance(
-                        SessionAttributes.class)).clear();
+                        SessionAttributesFactory.class).create()).clear();
     }
     
     void createRestaurant(){

@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import com.company.comanda.peter.client.GUIService;
+import com.company.comanda.peter.server.admin.ComandaAdmin;
 import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Order;
 import com.company.comanda.peter.server.model.Table;
@@ -28,10 +29,13 @@ GUIService {
     private BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 
     private RestaurantManager restaurantManager;
+    private ComandaAdmin admin;
     
     @Inject
-    public GUIServiceImpl(RestaurantManager restaurantManager){
+    public GUIServiceImpl(RestaurantManager restaurantManager,
+            ComandaAdmin admin){
         this.restaurantManager = restaurantManager;
+        this.admin = admin;
     }
 
     @SuppressWarnings("unchecked")
@@ -72,14 +76,7 @@ GUIService {
         ArrayList<String[]> resultList = new ArrayList<String[]>();
         int total;
 
-        RestaurantAgent restaurantAgent = (RestaurantAgent)
-                getThreadLocalRequest().getSession().
-                getAttribute(Constants.RESTAURANT_AGENT);
-        
-        if(restaurantAgent == null){
-            throw new IllegalStateException("No RestaurantAgent found");
-        }
-        List<MenuItem> items = restaurantAgent.getMenuItems();
+        List<MenuItem> items = restaurantManager.getAgent().getMenuItems();
         total = items.size();
         //Implement the paging inside ItemsManager
         items = cutList(items, start, length);
@@ -131,5 +128,11 @@ GUIService {
     @Override
     public boolean login(String username, String password) {
         return restaurantManager.login(username, password);
+    }
+
+    @Override
+    public void newRestaurant(String name, String password) {
+        admin.createRestaurant(name, password);
+        
     }
 }

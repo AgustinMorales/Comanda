@@ -11,24 +11,27 @@ import com.company.comanda.peter.server.SessionAttributes;
 @Singleton
 public class SessionAttributesHashMap implements SessionAttributes {
 
-    private Map<String, Object> map;
+    private static ThreadLocal<Map<String, Object>> map = 
+            new ThreadLocal<Map<String,Object>>();
     
     @Inject
     public SessionAttributesHashMap(){
-        map = new HashMap<String, Object>();
+        if(map.get() == null){
+            map.set(new HashMap<String, Object>());
+        }
     }
     
     @Override
     public Object getAttribute(String name) {
-        return map.get(name);
+        return map.get().get(name);
     }
 
     @Override
     public void setAttribute(String name, Object value) {
-        map.put(name, value);
+        map.get().put(name, value);
     }
 
     public void clear(){
-        map.clear();
+        map.get().clear();
     }
 }
