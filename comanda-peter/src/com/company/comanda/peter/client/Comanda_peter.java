@@ -13,7 +13,7 @@ public class Comanda_peter implements EntryPoint {
      * This is the entry point method.
      */
     public void onModuleLoad() {
-        RootLayoutPanel.get().add(new UIMain());
+        RootLayoutPanel.get().add(new UILogin());
     }
     
     

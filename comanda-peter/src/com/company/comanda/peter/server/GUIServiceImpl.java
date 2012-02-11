@@ -34,26 +34,6 @@ GUIService {
         this.restaurantManager = restaurantManager;
     }
 
-    public void greetServer(String input) throws IllegalArgumentException {
-        // Verify that the input is valid.
-        throw new UnsupportedOperationException();
-        //				if (!FieldVerifier.isValidName(input)) {
-        //					// If the input is not valid, throw an IllegalArgumentException back to
-        //					// the client.
-        //					throw new IllegalArgumentException(
-        //							"Name must be at least 4 characters long");
-        //				}
-        //
-        //				// Escape data from the client to avoid cross-site script vulnerabilities.
-        //				input = escapeHtml(input);
-        //				
-        //				PersistenceManager pm = PMF.get().getPersistenceManager();   
-        //			      MenuItem item = new MenuItem(input, "");
-        //			   //persist
-        //			      try{ pm.makePersistent(item); }
-        //			      finally{ pm.close(); }
-    }
-
     @SuppressWarnings("unchecked")
     public PagedResult<String[]> getOrders(int start, int length, 
             OrderState state, String tableName){
@@ -146,5 +126,10 @@ GUIService {
     public void deleteMenuItems(long[] keyIds) {
         restaurantManager.getAgent().deleteMenuItems(keyIds);
 
+    }
+
+    @Override
+    public boolean login(String username, String password) {
+        return restaurantManager.login(username, password);
     }
 }

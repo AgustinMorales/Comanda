@@ -10,11 +10,11 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
  */
 @RemoteServiceRelativePath("greet")
 public interface GUIService extends RemoteService {
-	void greetServer(String name) throws IllegalArgumentException;
 	PagedResult<String[]> getMenuItems(int start, int length);
 	PagedResult<String[]> getOrders(int start, int length, OrderState state, 
 	        String tableName);
 	public String getUploadUrl();
 	void acceptOrder(String orderKey);
 	void deleteMenuItems(long[] keyIds);
+	boolean login(String username, String password);
 }
