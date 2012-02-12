@@ -11,7 +11,6 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
@@ -20,9 +19,11 @@ import org.apache.http.message.BasicNameValuePair;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -49,6 +50,9 @@ public class ComandaActivity extends ListActivity
     private ItemAdapter m_adapter;
     private Runnable viewItems;
     private String tableName;
+    private String restName;
+    private String tableId;
+    private String restId;
     
     public static final int ORDER_PLACED_TOAST_DURATION = 3;
     
@@ -56,6 +60,10 @@ public class ComandaActivity extends ListActivity
     public static final String EXTRA_TABLE_ID = "tableId";
     public static final String EXTRA_REST_NAME = "restaurantName";
     public static final String EXTRA_REST_ID = "restaurantId";
+    
+    public static final String PARAM_TABLE_ID = "tableId";
+    public static final String PARAM_REST_ID = "restaurantId";
+    public static final String PARAM_ITEM_ID = "itemId";
     
     private Runnable returnRes = new Runnable(){
         @Override
@@ -79,9 +87,14 @@ public class ComandaActivity extends ListActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         Bundle extras = getIntent().getExtras();
-        tableName = extras.getString("tableName");
+        tableName = extras.getString(EXTRA_TABLE_NAME);
+        tableId = extras.getString(EXTRA_TABLE_ID);
+        restName = extras.getString(EXTRA_REST_NAME);
+        restId = extras.getString(EXTRA_REST_ID);
         TextView tableNameTextView = (TextView)findViewById(R.id.tableNametextView);
-        tableNameTextView.setText(getString(R.string.you_are_at_table) + " " + tableName);
+        tableNameTextView.setText(getString(R.string.you_are_at_table) + 
+                " " + tableName + ". " + 
+                getString(R.string.at_restaurant) + " " + restName);
         fetchContent();
     }
     public void fetchContent()
@@ -174,11 +187,11 @@ public class ComandaActivity extends ListActivity
     //     }    
 
     
-    private class PlaceOrderTask extends AsyncTask<String, Void, String> {
-        protected String doInBackground(String... keyIds) {
+    private class PlaceOrderTask extends AsyncTask<String, Void, Boolean> {
+        protected Boolean doInBackground(String... keyIds) {
             assert keyIds.length == 1;
             String keyId = keyIds[0];
-            
+            boolean success = false;
             
             HttpClient httpclient = new DefaultHttpClient();
             HttpPost httppost = new HttpPost("http://" + 
@@ -187,27 +200,41 @@ public class ComandaActivity extends ListActivity
             try {
                 // Add your data
                 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-                nameValuePairs.add(new BasicNameValuePair("keyId", keyId));
-                nameValuePairs.add(new BasicNameValuePair("table", tableName));
+                nameValuePairs.add(new BasicNameValuePair(PARAM_ITEM_ID, keyId));
+                nameValuePairs.add(new BasicNameValuePair(PARAM_TABLE_ID, tableId));
+                nameValuePairs.add(new BasicNameValuePair(PARAM_REST_ID, restId));
                 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
                 // Execute HTTP Post Request
                 httpclient.execute(httppost);
+                success = true;
                 
-            } catch (ClientProtocolException e) {
-                keyId = "ERROR!!!";
-            } catch (IOException e) {
-                keyId = "ERROR!!!";
+            } catch (Exception e){
+                success = false;
             }
             
             
-            return keyId;
+            return success;
         }
 
 
-        protected void onPostExecute(String result) {
-            Toast.makeText(getApplicationContext(), 
-                    R.string.order_placed, ORDER_PLACED_TOAST_DURATION).show();
+        protected void onPostExecute(Boolean result) {
+            if(result){
+                Toast.makeText(getApplicationContext(), 
+                        R.string.order_placed, ORDER_PLACED_TOAST_DURATION).show();
+            }
+            else{
+                AlertDialog.Builder builder = new AlertDialog.Builder(ComandaActivity.this);
+                builder.setMessage(R.string.error_while_placing_order)
+                       .setCancelable(false)
+                       .setNegativeButton(R.string.ok, new DialogInterface.OnClickListener() {
+                           public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                           }
+                       });
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
         }
     }
 

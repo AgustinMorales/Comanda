@@ -8,5 +8,8 @@
     <string name="order_placed">El pedido se ha enviado correctamente</string>
     <string name="read_qr_code">Leer código</string>
     <string name="comanda_logo_img_desc">Comanda logo</string>
+    <string name="at_restaurant">Restaurant:</string>
+    <string name="ok">OK</string>
+    <string name="error_while_placing_order">An error occurred while placing your order. Please try again later</string>
     
 </resources>
