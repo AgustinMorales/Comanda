@@ -3,6 +3,7 @@ package com.company.comanda.peter.server.guice;
 import com.company.comanda.peter.server.GetItemsServlet;
 import com.company.comanda.peter.server.GetTablesServlet;
 import com.company.comanda.peter.server.GUIServiceImpl;
+import com.company.comanda.peter.server.QRDecoderServlet;
 import com.company.comanda.peter.server.RestaurantLoginServiceImpl;
 import com.company.comanda.peter.server.NewMenuItemServlet;
 import com.company.comanda.peter.server.PlaceOrderServlet;
@@ -18,6 +19,7 @@ class ComandaServletModule extends ServletModule {
     serve("/newMenuItem").with(NewMenuItemServlet.class);
     serve("/serveBlob").with(ServeBlob.class);
     serve("/getTables").with(GetTablesServlet.class);
+    serve("/decodeQR").with(QRDecoderServlet.class);
     requestStaticInjection(NewMenuItemServlet.class);
   }
 }

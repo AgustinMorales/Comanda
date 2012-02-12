@@ -52,6 +52,11 @@ public class ComandaActivity extends ListActivity
     
     public static final int ORDER_PLACED_TOAST_DURATION = 3;
     
+    public static final String EXTRA_TABLE_NAME = "tableName";
+    public static final String EXTRA_TABLE_ID = "tableId";
+    public static final String EXTRA_REST_NAME = "restaurantName";
+    public static final String EXTRA_REST_ID = "restaurantId";
+    
     private Runnable returnRes = new Runnable(){
         @Override
         public void run() 

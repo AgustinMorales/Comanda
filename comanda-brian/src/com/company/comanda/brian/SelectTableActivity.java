@@ -2,7 +2,6 @@ package com.company.comanda.brian;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -17,50 +16,49 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.company.comanda.brian.RestaurantAndTableXMLHandler.ParsedData;
 
 public class SelectTableActivity extends Activity
 {
     private ProgressDialog m_ProgressDialog = null; 
-    private ArrayList<String> tables = null;
-    private ArrayAdapter<String> m_adapter;
-    private Runnable viewItems;
-    private int artificiallyTrigggeredSelections;
+    private Runnable retrieveData;
     
     private static final int SCAN_CODE_ACTIVITY = 1;
     
-    protected synchronized int decreaseSelections() {
-        if (artificiallyTrigggeredSelections > 0){
-            artificiallyTrigggeredSelections--;
+    
+    private class ProcessResult implements Runnable{
+
+        private ParsedData data;
+        
+        public ProcessResult(ParsedData data){
+            this.data = data;
         }
-        return artificiallyTrigggeredSelections;
-    }
-    protected synchronized void increaseSelections() {
-        this.artificiallyTrigggeredSelections++;
-    }
-    private Runnable returnRes = new Runnable()
-    {
+        
         @Override
-        public void run() 
-        {
-            if(tables != null && tables.size() > 0)
-            {
-                m_adapter.notifyDataSetChanged();
-                m_adapter.clear();
-                for(int i=0;i<tables.size();i++)
-                    m_adapter.add(tables.get(i));
-                increaseSelections();
+        public void run() {
+            if(data != null){
+                Intent intent = new Intent(
+                        SelectTableActivity.this.getApplicationContext(), 
+                        ComandaActivity.class);
+                intent.putExtra(ComandaActivity.EXTRA_REST_ID, 
+                        data.restId);
+                intent.putExtra(ComandaActivity.EXTRA_REST_NAME, 
+                        data.restName);
+                intent.putExtra(ComandaActivity.EXTRA_TABLE_ID, 
+                        data.tableId);
+                intent.putExtra(ComandaActivity.EXTRA_TABLE_NAME, 
+                        data.tableName);
+                startActivity(intent);
             }
             m_ProgressDialog.dismiss();
-            m_adapter.notifyDataSetChanged();
-            increaseSelections();
+            
         }
-    };
+        
+    }
+    
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) 
@@ -78,41 +76,14 @@ public class SelectTableActivity extends Activity
                 
             }
         });
-        fetchContent();
     }
-    public void fetchContent()
+    public void fetchContent(final String code)
     {
-        tables = new ArrayList<String>();
-        //set ListView adapter to basic ItemAdapter 
-        //(it's a coincidence they are both called Item)
-        Spinner spinner = (Spinner) findViewById(R.id.select_table_spinner);
-        this.m_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, tables);
-        this.m_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(m_adapter);
-        spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view,
-                    int pos, long id) {
-                if (decreaseSelections() == 0){
-                    String tableName = parent.getItemAtPosition(pos).toString();
-                    Intent intent = new Intent(parent.getContext(), ComandaActivity.class);
-                    intent.putExtra("tableName", tableName);
-                    startActivity(intent);
-                }
-                
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-                // TODO Auto-generated method stub
-                
-            }
-        });
+        
         //create a Runnable object that does the work 
         //of retrieving the XML data online
         //This will be run in a new Thread
-        viewItems = new Runnable()
+        retrieveData = new Runnable()
         {
             @Override
             public void run() 
@@ -120,28 +91,29 @@ public class SelectTableActivity extends Activity
                 //this is where we populate m_items (ArrayList<FoodMenuItem>) 
                 //which we can get from XML
                 //the XML can be updated via Google App-Engine
+                ParsedData data = null;
                 try
                 {
-                    getData();
+                    data = getData();
                 } 
                 catch (Exception e) 
                 { 
                     Log.e("ListViewSampleApp", "Unable to retrieve data.", e);
                 }
-                //This executes returnRes (see above) which will use the 
-                //ItemAdapter to display the contents of m_items
-                runOnUiThread(returnRes);
+                Runnable processResult = new ProcessResult(data);
+                runOnUiThread(processResult);
             }
         };
         //Create a new Thread to run viewItems
-        Thread thread =  new Thread(null, viewItems, "MagentoBackground");
+        Thread thread =  new Thread(null, retrieveData, "MagentoBackground");
         thread.start();
         //Make a popup progress dialog while we fetch and parse the data
         m_ProgressDialog = ProgressDialog.show(this, "Please wait...",
                 "Retrieving data ...", true);
     }
-    private void getData() throws IOException
+    private ParsedData getData() throws IOException
     {
+        ParsedData result = null;
         try 
         {
             // Create a URL we want to load some xml-data from.
@@ -153,47 +125,29 @@ public class SelectTableActivity extends Activity
             XMLReader xr = sp.getXMLReader();
             // Create a new ContentHandler and 
             //apply it to the XML-Rea der
-            TablesXMLHandler xmlHandler = new TablesXMLHandler();
+            RestaurantAndTableXMLHandler xmlHandler = new RestaurantAndTableXMLHandler();
             xr.setContentHandler(xmlHandler);
             InputSource xmlInput = new InputSource(url.openStream());
-            Log.e("ListViewSampleApp", "Input Source Defined: "+ xmlInput.toString());
+            Log.e("SelectTableActivity", "Input Source Defined: "+ xmlInput.toString());
             /* Parse the xml-data from our URL. */
             xr.parse(xmlInput);
             /* Parsing has finished. */
             /* XMLHandler now provides the parsed data to us. */
-            tables = xmlHandler.getParsedData(); 
+            result = xmlHandler.getParsedData(); 
         } 
         catch (Exception e) 
         {
-            Log.e("ListViewSampleApp XMLParser", "XML Error", e);
+            Log.e("SelectTableActivity XMLParser", "XML Error", e);
         }
+        return result;
     }
-    //OPTIONS MENU STUFF
-    //     @Override
-    //     public boolean onCreateOptionsMenu(Menu menu) 
-    //     {
-    //         MenuInflater inflater = getMenuInflater();
-    //         inflater.inflate(R.menu.menu, menu);
-    //         return true;
-    //     }
-    //     @Override
-    //     public boolean onOptionsItemSelected(MenuItem item) 
-    //     {
-    //         // Handle item selection
-    //         switch (item.getItemId()) {
-    //         case R.id.refresh:
-    //             fetchContent();
-    //             return true;
-    //         default:
-    //             return super.onOptionsItemSelected(item);
-    //         }
-    //     }    
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == SCAN_CODE_ACTIVITY) {
             if (resultCode == RESULT_OK) {
                String contents = intent.getStringExtra("SCAN_RESULT");
-               Toast.makeText(getApplicationContext(), contents, 20).show();
+               //TODO: Some contents validation would be great...
+               fetchContent(contents);
             } else if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(getApplicationContext(), "Cancelled", 20);
             }

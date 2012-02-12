@@ -41,8 +41,9 @@ public class GetItemsServlet extends HttpServlet
     {
         String restaurantId = req.getParameter("restaurantId");
         List<MenuItem> items = userManager.getMenuItems(Long.parseLong(restaurantId));
-        PrintWriter out = resp.getWriter();
+        
         resp.setContentType("text/xml; charset=ISO-8859-1");
+        PrintWriter out = resp.getWriter();
         out.println("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>");
         out.println("<ItemList>");
         //loop through items list and print each item

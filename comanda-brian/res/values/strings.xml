@@ -7,5 +7,6 @@
     <string name="you_are_at_table">Table:</string>
     <string name="order_placed">El pedido se ha enviado correctamente</string>
     <string name="read_qr_code">Leer código</string>
+    <string name="comanda_logo_img_desc">Comanda logo</string>
     
 </resources>

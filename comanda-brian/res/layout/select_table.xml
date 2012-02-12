@@ -8,12 +8,13 @@
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="fill_parent"
-        android:layout_height="200px"
+        android:layout_height="200dp"
         android:layout_gravity="top"
         android:gravity="center"
         android:orientation="vertical" >
 
         <ImageView
+            android:contentDescription="@string/comanda_logo_img_desc"
             android:id="@+id/imageView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
