@@ -12,5 +12,7 @@
     <string name="error_while_placing_order">An error occurred while placing your order. Please try again later</string>
     <string name="please_enter_phone">Please enter your phone number:</string>
     <string name="incorrect_phone_number">This phone number you entered is not valid</string>
+    <string name="place_order">Pedir</string>
+    <string name="menu_item_name">Name:</string>
     
 </resources>

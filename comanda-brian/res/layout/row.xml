@@ -18,22 +18,14 @@
             android:id="@+id/toptext"
             android:layout_width="fill_parent"
             android:layout_height="0dip"
-            android:layout_weight="1"
             android:gravity="center_vertical"
         />
-        <TextView
-            android:layout_height="0dip"
-            android:layout_weight="1" 
-            android:id="@+id/bottomtext"
-            android:singleLine="true"
-            android:ellipsize="marquee"
-        android:layout_width="wrap_content"/>
     </LinearLayout>
 
     <Button
         android:id="@+id/placeorderbutton"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
-        android:text="Button" />
+        android:text="@string/place_order" />
 
 </LinearLayout>
