@@ -253,7 +253,7 @@ public class ComandaActivity extends ListActivity
                 final String menuItemDescription = o.getDescription();
                 if (tt != null)
                 {
-                    tt.setText(getText(R.string.menu_item_name) + " " + menuItemName);   
+                    tt.setText(menuItemName);   
                 }
                 placeOrderButton.setOnClickListener(new OnClickListener() {
 
