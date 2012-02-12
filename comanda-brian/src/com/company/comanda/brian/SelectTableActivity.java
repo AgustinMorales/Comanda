@@ -47,13 +47,6 @@ public class SelectTableActivity extends Activity
             
         }
 
-
-
-        @Override
-        public void afterOnBackground(ParsedData data) {
-            // TODO Auto-generated method stub
-            
-        }
         
     }
     
