@@ -37,7 +37,7 @@ public class QRDecoderServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        final String code = (String)req.getAttribute("code");
+        final String code = (String)req.getParameter("code");
         PrintWriter out = ServletHelper.getXmlWriter(resp);
         try{
             CodifiedData data = userManager.getData(code);
