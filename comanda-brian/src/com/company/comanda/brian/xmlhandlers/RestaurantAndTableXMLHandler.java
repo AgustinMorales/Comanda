@@ -72,7 +72,7 @@ public class RestaurantAndTableXMLHandler extends ComandaXMLHandler<RestaurantAn
         }
         else if (localName.equals(REST)) 
         {
-            this.in_table = true;
+            this.in_restaurant = true;
             Log.e("XMLHandler", "Found a restaurant");
         }
         else if (localName.equals(NAME)) 
