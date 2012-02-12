@@ -95,11 +95,6 @@ public class TestRestaurant {
     }
     
     @Test
-    public void testSameAgent(){
-        manager.login(REST_NAME, REST_PASSWORD);
-        assertSame(manager.getAgent(), manager.getAgent());
-    }
-    @Test
     public void testWrongUsername(){
         assertFalse(manager.login(REST_NAME + ".", REST_PASSWORD));
         assertNull(manager.getAgent());

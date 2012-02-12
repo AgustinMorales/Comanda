@@ -27,7 +27,7 @@ public class RestaurantManagementImpl implements RestaurantManager {
 
     @Override
     public boolean login(String username, String password){
-        if(attributesFactory.create().getAttribute(Constants.RESTAURANT_AGENT) != null){
+        if(attributesFactory.create().getAttribute(Constants.RESTAURANT_ID) != null){
             throw new IllegalStateException("Already logged in");
         }
         boolean result = false;
@@ -43,15 +43,19 @@ public class RestaurantManagementImpl implements RestaurantManager {
             if(BCrypt.checkpw(password, restaurant.getHashedPassword())){
                 result = true;
                 attributesFactory.create().setAttribute(
-                        Constants.RESTAURANT_AGENT, 
-                        agentFactory.create(restaurant.getId()));
+                        Constants.RESTAURANT_ID,restaurant.getId());
             }
         }
         return result;
     }
 
     public RestaurantAgent getAgent(){
-        return (RestaurantAgent)attributesFactory.create().
-                getAttribute(Constants.RESTAURANT_AGENT);
+        RestaurantAgent result = null;
+        Long restaurantId = (Long)attributesFactory.create().
+                getAttribute(Constants.RESTAURANT_ID);
+        if(restaurantId != null){
+            result = agentFactory.create(restaurantId);
+        }
+        return result;
     }
 }
