@@ -28,8 +28,13 @@ public class NewMenuItemServlet extends HttpServlet{
     //FIXME: This is static because we need a explicit
     //Servlet declaration in web.xml since otherwise
     //blob file upload won't work
-//    @Inject
-    private static RestaurantManager manager;
+    
+    private RestaurantManager manager;
+    
+    @Inject
+    public NewMenuItemServlet(RestaurantManager manager){
+        this.manager = manager;
+    }
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {

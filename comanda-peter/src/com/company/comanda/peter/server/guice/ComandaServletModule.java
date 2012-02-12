@@ -22,6 +22,5 @@ class ComandaServletModule extends ServletModule {
     serve("/getTables").with(GetTablesServlet.class);
     serve("/decodeQR").with(QRDecoderServlet.class);
     serve("/registerUser").with(RegisterUserServlet.class);
-    requestStaticInjection(NewMenuItemServlet.class);
   }
 }
