@@ -4,6 +4,7 @@ import com.company.comanda.peter.server.GetItemsServlet;
 import com.company.comanda.peter.server.GetTablesServlet;
 import com.company.comanda.peter.server.GUIServiceImpl;
 import com.company.comanda.peter.server.QRDecoderServlet;
+import com.company.comanda.peter.server.RegisterUserServlet;
 import com.company.comanda.peter.server.RestaurantLoginServiceImpl;
 import com.company.comanda.peter.server.NewMenuItemServlet;
 import com.company.comanda.peter.server.PlaceOrderServlet;
@@ -20,6 +21,7 @@ class ComandaServletModule extends ServletModule {
     serve("/serveBlob").with(ServeBlob.class);
     serve("/getTables").with(GetTablesServlet.class);
     serve("/decodeQR").with(QRDecoderServlet.class);
+    serve("/registerUser").with(RegisterUserServlet.class);
     requestStaticInjection(NewMenuItemServlet.class);
   }
 }

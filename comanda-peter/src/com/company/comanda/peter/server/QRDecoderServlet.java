@@ -38,14 +38,12 @@ public class QRDecoderServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         final String code = (String)req.getAttribute("code");
-        resp.setContentType("text/xml; charset=ISO-8859-1");
-        PrintWriter out = resp.getWriter();
+        PrintWriter out = ServletHelper.getXmlWriter(resp);
         try{
             CodifiedData data = userManager.getData(code);
             if (data != null &&
                     data.restaurant != null &&
                     data.table != null){ 
-                out.println("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>");
                 out.println("<Data>");
                 out.println("\t<Restaurant>");
                 out.println("\t\t<Name>" + data.restaurant.getName() + "</Name>");

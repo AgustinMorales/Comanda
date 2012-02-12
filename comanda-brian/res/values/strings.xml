@@ -3,7 +3,6 @@
 
     <string name="hello">Hello World, ComandaActivity!</string>
     <string name="app_name">Comanda-brian</string>
-    <string name="select_table">Select table:</string>
     <string name="you_are_at_table">Table:</string>
     <string name="order_placed">El pedido se ha enviado correctamente</string>
     <string name="read_qr_code">Leer código</string>
@@ -11,5 +10,7 @@
     <string name="at_restaurant">Restaurant:</string>
     <string name="ok">OK</string>
     <string name="error_while_placing_order">An error occurred while placing your order. Please try again later</string>
+    <string name="please_enter_phone">Please enter your phone number:</string>
+    <string name="incorrect_phone_number">This phone number you entered is not valid</string>
     
 </resources>

@@ -1,16 +1,15 @@
-package com.company.comanda.brian;
+package com.company.comanda.brian.xmlhandlers;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
 
 import android.util.Log;
 
 
-public class RestaurantAndTableXMLHandler extends DefaultHandler
+public class RestaurantAndTableXMLHandler extends ComandaXMLHandler<RestaurantAndTableXMLHandler.ParsedData>
 {
 
-    public class ParsedData{
+    public static class ParsedData{
         public String restName;
         public String restId;
         public String tableName;

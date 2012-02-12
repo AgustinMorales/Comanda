@@ -1,17 +1,16 @@
-package com.company.comanda.brian;
+package com.company.comanda.brian.xmlhandlers;
 
 import java.util.ArrayList;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
-
-import com.company.comanda.brian.model.FoodMenuItem;
 
 import android.util.Log;
 
+import com.company.comanda.brian.model.FoodMenuItem;
 
-public class XMLHandler extends DefaultHandler
+
+public class MenuItemsHandler extends ComandaXMLHandler<ArrayList<FoodMenuItem>>
 {
 
     // ===========================================================
@@ -28,14 +27,6 @@ public class XMLHandler extends DefaultHandler
 
     private ArrayList<FoodMenuItem> items = null;
 
-    // ===========================================================
-    // Getter & Setter
-    // ===========================================================
-
-    public ArrayList<FoodMenuItem> getParsedData() 
-    {
-        return this.items;
-    }
 
     // ===========================================================
     // Methods
@@ -141,5 +132,10 @@ public class XMLHandler extends DefaultHandler
                 item.setKeyId(textBetween);
             }
         }
+    }
+
+    @Override
+    public ArrayList<FoodMenuItem> getParsedData() {
+        return this.items;
     }
 }

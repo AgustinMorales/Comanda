@@ -22,17 +22,6 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:text="@string/select_table" />
-
-    <Spinner
-        android:id="@+id/select_table_spinner"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/read_code_button"

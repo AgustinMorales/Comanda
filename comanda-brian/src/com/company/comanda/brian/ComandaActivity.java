@@ -19,15 +19,15 @@ import org.apache.http.message.BasicNameValuePair;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
-import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -42,6 +42,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.company.comanda.brian.model.FoodMenuItem;
+import com.company.comanda.brian.xmlhandlers.MenuItemsHandler;
 
 public class ComandaActivity extends ListActivity
 {
@@ -64,6 +65,10 @@ public class ComandaActivity extends ListActivity
     public static final String PARAM_TABLE_ID = "tableId";
     public static final String PARAM_REST_ID = "restaurantId";
     public static final String PARAM_ITEM_ID = "itemId";
+    public static final String PARAM_USER_ID = "userId";
+    public static final String PARAM_PASSWORD = "password";
+    
+    SharedPreferences prefs;
     
     private Runnable returnRes = new Runnable(){
         @Override
@@ -97,6 +102,18 @@ public class ComandaActivity extends ListActivity
                 getString(R.string.at_restaurant) + " " + restName);
         fetchContent();
     }
+    
+    
+    
+    @Override
+    protected void onStart() {
+        super.onStart();
+        prefs = PreferenceManager.
+                getDefaultSharedPreferences(getApplicationContext());
+    }
+
+
+
     public void fetchContent()
     {
         m_items = new ArrayList<FoodMenuItem>();
@@ -149,7 +166,7 @@ public class ComandaActivity extends ListActivity
             XMLReader xr = sp.getXMLReader();
             // Create a new ContentHandler and 
             //apply it to the XML-Rea der
-            XMLHandler xmlHandler = new XMLHandler();
+            MenuItemsHandler xmlHandler = new MenuItemsHandler();
             xr.setContentHandler(xmlHandler);
             InputSource xmlInput = new InputSource(url.openStream());
             xmlInput.setEncoding("ISO-8859-1");
@@ -203,6 +220,10 @@ public class ComandaActivity extends ListActivity
                 nameValuePairs.add(new BasicNameValuePair(PARAM_ITEM_ID, keyId));
                 nameValuePairs.add(new BasicNameValuePair(PARAM_TABLE_ID, tableId));
                 nameValuePairs.add(new BasicNameValuePair(PARAM_REST_ID, restId));
+                nameValuePairs.add(new BasicNameValuePair(PARAM_USER_ID, 
+                        prefs.getString(ComandaPreferences.USER_ID, "")));
+                nameValuePairs.add(new BasicNameValuePair(PARAM_PASSWORD, 
+                        prefs.getString(ComandaPreferences.USER_ID, "")));
                 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
                 // Execute HTTP Post Request
@@ -224,16 +245,9 @@ public class ComandaActivity extends ListActivity
                         R.string.order_placed, ORDER_PLACED_TOAST_DURATION).show();
             }
             else{
-                AlertDialog.Builder builder = new AlertDialog.Builder(ComandaActivity.this);
-                builder.setMessage(R.string.error_while_placing_order)
-                       .setCancelable(false)
-                       .setNegativeButton(R.string.ok, new DialogInterface.OnClickListener() {
-                           public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                           }
-                       });
-                AlertDialog alert = builder.create();
-                alert.show();
+                Constants.showErrorDialog(
+                        R.string.error_while_placing_order, 
+                        ComandaActivity.this);
             }
         }
     }
