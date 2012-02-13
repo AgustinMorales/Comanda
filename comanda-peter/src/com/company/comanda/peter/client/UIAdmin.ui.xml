@@ -1,0 +1,32 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		
+	</ui:style>
+	<g:HTMLPanel>
+		<g:AbsolutePanel height="167px" width="331px">
+			<g:at left="32" top="46">
+				<g:Label text="Nombre"/>
+			</g:at>
+			<g:at left="10" top="10">
+				<g:Label text="Nuevo restaurante"/>
+			</g:at>
+			<g:at left="107" top="38">
+				<g:TextBox ui:field="tbRestaurantName"/>
+			</g:at>
+			<g:at left="167" top="128">
+				<g:Button ui:field="btnNewRestaurant" width="74px" height="29px">Aceptar</g:Button>
+			</g:at>
+			<g:at left="107" top="77">
+				<g:TextBox ui:field="tbPassword"/>
+			</g:at>
+			<g:at left="32" top="85">
+				<g:Label text="Contraseña"/>
+			</g:at>
+			<g:at left="247" top="128">
+				<g:Button width="74px" height="29px" ui:field="btnCancel" text="Cancelar">Volver</g:Button>
+			</g:at>
+		</g:AbsolutePanel>
+	</g:HTMLPanel>
+</ui:UiBinder> 

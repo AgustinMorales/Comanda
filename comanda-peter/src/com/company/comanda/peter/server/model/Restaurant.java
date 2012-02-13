@@ -2,17 +2,14 @@ package com.company.comanda.peter.server.model;
 
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Id;
 
 public class Restaurant {
 
     @Id
     private Long id;
-    
-    private List<MenuItem> menuItems = new ArrayList<MenuItem>();
+    private String name;
+    private String hashedPassword;
     
 
     public Long getId() {
@@ -23,13 +20,20 @@ public class Restaurant {
         this.id = id;
     }
 
-    public List<MenuItem> getMenuItems() {
-        return menuItems;
+    public String getName() {
+        return name;
     }
 
-    public void setMenuItems(List<MenuItem> menuItems) {
-        this.menuItems = menuItems;
+    public void setName(String name) {
+        this.name = name;
     }
-    
+
+    public String getHashedPassword() {
+        return hashedPassword;
+    }
+
+    public void setHashedPassword(String hashedPassword) {
+        this.hashedPassword = hashedPassword;
+    }
     
 }

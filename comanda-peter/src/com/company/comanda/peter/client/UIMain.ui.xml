@@ -27,6 +27,13 @@
                 <c:UISelectAndViewTableOrders 
                 ui:field="selectTableAndViewOrders"/>
             </g:tab>
+            <g:tab>
+                <g:header size='7'>
+                    Editar mesas
+                </g:header>
+                <c:UIEditTables
+                ui:field="editTables"/>
+            </g:tab>
 		</g:TabLayoutPanel>
 	</g:HTMLPanel>
 </ui:UiBinder> 

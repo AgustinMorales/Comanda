@@ -7,26 +7,21 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.xml.sax.InputSource;
-import org.xml.sax.XMLReader;
 
 import android.app.ListActivity;
-import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -40,33 +35,70 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.company.comanda.brian.helpers.AsyncGetData;
 import com.company.comanda.brian.model.FoodMenuItem;
+import com.company.comanda.brian.xmlhandlers.MenuItemsHandler;
 
 public class ComandaActivity extends ListActivity
 {
-    private ProgressDialog m_ProgressDialog = null; 
+    
+    private static final String PARAM_RESTAURANT_ID = "restaurantId";
+    
     private ArrayList<FoodMenuItem> m_items = null;
     private ItemAdapter m_adapter;
-    private Runnable viewItems;
     private String tableName;
+    private String restName;
+    private String tableId;
+    private String restId;
     
-    public static final int ORDER_PLACED_TOAST_DURATION = 3;
-    
-    private Runnable returnRes = new Runnable(){
+    private class AsyncGetMenuItems extends AsyncGetData<ArrayList<FoodMenuItem>>{
+
         @Override
-        public void run() 
-        {
+        public void afterOnUIThread(ArrayList<FoodMenuItem> data) {
+            super.afterOnUIThread(data);
+            Log.d("Comanda", "afterOnUIThread");
             if(m_items != null && m_items.size() > 0)
             {
                 m_adapter.notifyDataSetChanged();
                 m_adapter.clear();
-                for(int i=0;i<m_items.size();i++)
+                for(int i=0;i<m_items.size();i++){
+                    Log.d("Comanda", "Item #" + i);
                     m_adapter.add(m_items.get(i));
+                }
             }
-            m_ProgressDialog.dismiss();
             m_adapter.notifyDataSetChanged();
         }
-    };
+
+
+        @Override
+        public void afterOnBackground(ArrayList<FoodMenuItem> data) {
+            super.afterOnBackground(data);
+            m_items = data;
+        }
+
+
+        @Override
+        public void beforeOnBackground(List<NameValuePair> params) {
+            super.beforeOnBackground(params);
+            params.add(new BasicNameValuePair(PARAM_RESTAURANT_ID, restId));
+        }
+        
+    }
+    
+    public static final int ORDER_PLACED_TOAST_DURATION = 3;
+    
+    public static final String EXTRA_TABLE_NAME = "tableName";
+    public static final String EXTRA_TABLE_ID = "tableId";
+    public static final String EXTRA_REST_NAME = "restaurantName";
+    public static final String EXTRA_REST_ID = "restaurantId";
+    
+    public static final String PARAM_TABLE_ID = "tableId";
+    public static final String PARAM_REST_ID = "restaurantId";
+    public static final String PARAM_ITEM_ID = "itemId";
+    public static final String PARAM_USER_ID = "userId";
+    public static final String PARAM_PASSWORD = "password";
+    
+    SharedPreferences prefs;
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) 
@@ -74,78 +106,40 @@ public class ComandaActivity extends ListActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         Bundle extras = getIntent().getExtras();
-        tableName = extras.getString("tableName");
+        tableName = extras.getString(EXTRA_TABLE_NAME);
+        tableId = extras.getString(EXTRA_TABLE_ID);
+        restName = extras.getString(EXTRA_REST_NAME);
+        restId = extras.getString(EXTRA_REST_ID);
         TextView tableNameTextView = (TextView)findViewById(R.id.tableNametextView);
-        tableNameTextView.setText(getString(R.string.you_are_at_table) + " " + tableName);
-        fetchContent();
-    }
-    public void fetchContent()
-    {
+        tableNameTextView.setText(getString(R.string.you_are_at_table) + 
+                " " + tableName + ". " + 
+                getString(R.string.at_restaurant) + " " + restName);
+        
         m_items = new ArrayList<FoodMenuItem>();
         //set ListView adapter to basic ItemAdapter 
         //(it's a coincidence they are both called Item)
         this.m_adapter = new ItemAdapter(this, R.layout.row, m_items);
         setListAdapter(this.m_adapter);
-        //create a Runnable object that does the work 
-        //of retrieving the XML data online
-        //This will be run in a new Thread
-        viewItems = new Runnable()
-        {
-            @Override
-            public void run() 
-            {
-                //this is where we populate m_items (ArrayList<FoodMenuItem>) 
-                //which we can get from XML
-                //the XML can be updated via Google App-Engine
-                try
-                {
-                    getData();
-                } 
-                catch (Exception e) 
-                { 
-                    Log.e("ListViewSampleApp", "Unable to retrieve data.", e);
-                }
-                //This executes returnRes (see above) which will use the 
-                //ItemAdapter to display the contents of m_items
-                runOnUiThread(returnRes);
-            }
-        };
-        //Create a new Thread to run viewItems
-        Thread thread =  new Thread(null, viewItems, "MagentoBackground");
-        thread.start();
-        //Make a popup progress dialog while we fetch and parse the data
-        m_ProgressDialog = ProgressDialog.show(this, "Please wait...",
-                "Retrieving data ...", true);
+        
+        AsyncGetMenuItems getData = new AsyncGetMenuItems();
+        getData.execute(this, "/menuitems", new ArrayList<NameValuePair>(1), MenuItemsHandler.class);
     }
-    private void getData() throws IOException
+    
+    
+    
+    @Override
+    protected void onStart() {
+        super.onStart();
+        prefs = PreferenceManager.
+                getDefaultSharedPreferences(getApplicationContext());
+    }
+
+
+
+    public void fetchContent()
     {
-        try 
-        {
-            // Create a URL we want to load some xml-data from.
-            URL url = new URL("http://" + 
-                    Constants.SERVER_LOCATION + "/menuitems");
-            // Get a SAXParser from the SAXPArserFactory.
-            SAXParserFactory spf = SAXParserFactory.newInstance();
-            SAXParser sp = spf.newSAXParser();
-            // Get the XMLReader of the SAXParser we created.
-            XMLReader xr = sp.getXMLReader();
-            // Create a new ContentHandler and 
-            //apply it to the XML-Rea der
-            XMLHandler xmlHandler = new XMLHandler();
-            xr.setContentHandler(xmlHandler);
-            InputSource xmlInput = new InputSource(url.openStream());
-            xmlInput.setEncoding("ISO-8859-1");
-            Log.e("ListViewSampleApp", "Input Source Defined: "+ xmlInput.toString());
-            /* Parse the xml-data from our URL. */
-            xr.parse(xmlInput);
-            /* Parsing has finished. */
-            /* XMLHandler now provides the parsed data to us. */
-            m_items = xmlHandler.getParsedData(); 
-        } 
-        catch (Exception e) 
-        {
-            Log.e("ListViewSampleApp XMLParser", "XML Error", e);
-        }
+        
+        
     }
     //OPTIONS MENU STUFF
     //     @Override
@@ -169,11 +163,11 @@ public class ComandaActivity extends ListActivity
     //     }    
 
     
-    private class PlaceOrderTask extends AsyncTask<String, Void, String> {
-        protected String doInBackground(String... keyIds) {
+    private class PlaceOrderTask extends AsyncTask<String, Void, Boolean> {
+        protected Boolean doInBackground(String... keyIds) {
             assert keyIds.length == 1;
             String keyId = keyIds[0];
-            
+            boolean success = false;
             
             HttpClient httpclient = new DefaultHttpClient();
             HttpPost httppost = new HttpPost("http://" + 
@@ -182,27 +176,38 @@ public class ComandaActivity extends ListActivity
             try {
                 // Add your data
                 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-                nameValuePairs.add(new BasicNameValuePair("keyId", keyId));
-                nameValuePairs.add(new BasicNameValuePair("table", tableName));
+                nameValuePairs.add(new BasicNameValuePair(PARAM_ITEM_ID, keyId));
+                nameValuePairs.add(new BasicNameValuePair(PARAM_TABLE_ID, tableId));
+                nameValuePairs.add(new BasicNameValuePair(PARAM_REST_ID, restId));
+                nameValuePairs.add(new BasicNameValuePair(PARAM_USER_ID, 
+                        prefs.getString(ComandaPreferences.USER_ID, "")));
+                nameValuePairs.add(new BasicNameValuePair(PARAM_PASSWORD, 
+                        prefs.getString(ComandaPreferences.USER_ID, "")));
                 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
                 // Execute HTTP Post Request
                 httpclient.execute(httppost);
+                success = true;
                 
-            } catch (ClientProtocolException e) {
-                keyId = "ERROR!!!";
-            } catch (IOException e) {
-                keyId = "ERROR!!!";
+            } catch (Exception e){
+                success = false;
             }
             
             
-            return keyId;
+            return success;
         }
 
 
-        protected void onPostExecute(String result) {
-            Toast.makeText(getApplicationContext(), 
-                    R.string.order_placed, ORDER_PLACED_TOAST_DURATION).show();
+        protected void onPostExecute(Boolean result) {
+            if(result){
+                Toast.makeText(getApplicationContext(), 
+                        R.string.order_placed, ORDER_PLACED_TOAST_DURATION).show();
+            }
+            else{
+                Constants.showErrorDialog(
+                        R.string.error_while_placing_order, 
+                        ComandaActivity.this);
+            }
         }
     }
 
@@ -242,18 +247,13 @@ public class ComandaActivity extends ListActivity
                 //with the respective Object data
                 ImageView icon = (ImageView) v.findViewById(R.id.icon);
                 TextView tt = (TextView) v.findViewById(R.id.toptext);
-                TextView bt = (TextView) v.findViewById(R.id.bottomtext);
                 Button placeOrderButton = (Button)v.findViewById(R.id.placeorderbutton);
                 final String menuItemName = o.getName();
                 final String menuItemKeyId = o.getKeyId();
                 final String menuItemDescription = o.getDescription();
                 if (tt != null)
                 {
-                    tt.setText("Name: " + menuItemName);   
-                }
-                if(bt != null)
-                {
-                    bt.setText("No description");
+                    tt.setText(menuItemName);   
                 }
                 placeOrderButton.setOnClickListener(new OnClickListener() {
 

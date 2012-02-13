@@ -23,8 +23,8 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 public class UIEditMenuItem extends Composite {
 
 	
-	private final GreetingServiceAsync greetingService = GWT
-            .create(GreetingService.class);
+	private final GUIServiceAsync greetingService = GWT
+            .create(GUIService.class);
 	
     private static UIEditMenuItemUiBinder uiBinder = GWT
             .create(UIEditMenuItemUiBinder.class);

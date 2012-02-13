@@ -37,8 +37,8 @@ public class UIEditMenu extends Composite {
     
     private static UIEditMenuUiBinder uiBinder = GWT
             .create(UIEditMenuUiBinder.class);
-    private final GreetingServiceAsync greetingService = GWT
-            .create(GreetingService.class);
+    private final GUIServiceAsync greetingService = GWT
+            .create(GUIService.class);
     @UiField Button btnNewItem;
     @UiField Button btnEditItem;
     @UiField Button btnDeleteItem;

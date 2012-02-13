@@ -22,8 +22,8 @@ public class UIViewAllOrders extends Composite {
     
     public static final int PAGE_SIZE = 25;
     
-	private final GreetingServiceAsync greetingService = GWT
-			.create(GreetingService.class);
+	private final GUIServiceAsync greetingService = GWT
+			.create(GUIService.class);
 
 	private static UIViewAllOrdersUiBinder uiBinder = GWT
 			.create(UIViewAllOrdersUiBinder.class);
