@@ -16,6 +16,7 @@ public class MenuItem
     private int price;
     @Parent
     private Key<Restaurant> parent;
+    private Key<MenuCategory> category;
     
 
     public MenuItem(){
@@ -71,6 +72,14 @@ public class MenuItem
 
     public void setParent(Key<Restaurant> parent) {
         this.parent = parent;
+    }
+
+    public Key<MenuCategory> getCategory() {
+        return category;
+    }
+
+    public void setCategory(Key<MenuCategory> category) {
+        this.category = category;
     } 
     
     

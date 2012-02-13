@@ -24,11 +24,7 @@ public class NewMenuItemServlet extends HttpServlet{
     private static final long serialVersionUID = -5754007697909915549L;
 
     private BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
-    
-    //FIXME: This is static because we need a explicit
-    //Servlet declaration in web.xml since otherwise
-    //blob file upload won't work
-    
+        
     private RestaurantManager manager;
     
     @Inject
@@ -48,6 +44,7 @@ public class NewMenuItemServlet extends HttpServlet{
         String itemName = req.getParameter("itemName");
         String priceString = req.getParameter("price");
         String description = req.getParameter("description");
+        Long categoryId = Long.parseLong(req.getParameter("categoryId"));
         Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(req);
         List<BlobKey> blobKeyList = blobs.get("itemImage");
         String imageBlobKey = null;
@@ -62,7 +59,7 @@ public class NewMenuItemServlet extends HttpServlet{
         }
         manager.getAgent().addOrModifyMenuItem(itemId, 
                 itemName, description, priceString, 
-                imageBlobKey);
+                imageBlobKey, categoryId);
     }
 
 

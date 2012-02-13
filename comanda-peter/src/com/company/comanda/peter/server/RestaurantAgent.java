@@ -2,6 +2,7 @@ package com.company.comanda.peter.server;
 
 import java.util.List;
 
+import com.company.comanda.peter.server.model.MenuCategory;
 import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Order;
 import com.company.comanda.peter.server.model.Table;
@@ -16,7 +17,8 @@ public interface RestaurantAgent {
             String itemName,
             String description,
             String priceString,
-            String imageBlobkey);
+            String imageBlobkey,
+            Long categoryId);
     
     public void deleteMenuItems(long[] keyIds);
     
@@ -40,4 +42,8 @@ public interface RestaurantAgent {
     public String getFullCode(String tableCode);
     
     public String getRestaurantCode();
+    
+    public long addOrModifyMenuCategory(Long categoryId, String name);
+    
+    public List<MenuCategory> getCategories();
 }

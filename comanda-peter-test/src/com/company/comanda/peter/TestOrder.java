@@ -1,6 +1,6 @@
 package com.company.comanda.peter;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
@@ -8,20 +8,16 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.company.comanda.peter.server.GetTablesServlet;
 import com.company.comanda.peter.server.RestaurantManager;
 import com.company.comanda.peter.server.SessionAttributes;
 import com.company.comanda.peter.server.SessionAttributesFactory;
-import com.company.comanda.peter.server.SessionAttributesHttp;
 import com.company.comanda.peter.server.UserManager;
 import com.company.comanda.peter.server.UserManager.CodifiedData;
 import com.company.comanda.peter.server.admin.ComandaAdmin;
 import com.company.comanda.peter.server.guice.BusinessModule;
 import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Order;
-import com.company.comanda.peter.server.model.Restaurant;
 import com.company.comanda.peter.server.model.Table;
-import com.company.comanda.peter.stubs.FirstOperationOnlyPolicy;
 import com.company.comanda.peter.stubs.SessionAttributesHashMap;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
@@ -39,12 +35,14 @@ public class TestOrder {
     private static final int NO_OF_TABLES = 10;
     private static final String PHONE_NUMBER = "987654321";
     private static final String USER_PASSWORD = "userpassword";
+    private static final String CATEGORY_NAME = "Category name";
     
     private RestaurantManager manager;
     private UserManager userManager;
     
     private long restaurantId;
     private long userId;
+    private long categoryId;
     
     
     private String[] tableCodes;
@@ -74,6 +72,7 @@ public class TestOrder {
         userManager = injector.getInstance(UserManager.class);
         createRestaurant();
         manager.login(REST_NAME, REST_PASSWORD);
+        createCategory();
         createMenuItems();
         createTables();
         getCodes();
@@ -86,6 +85,11 @@ public class TestOrder {
         ((SessionAttributesHashMap)
                 injector.getInstance(
                         SessionAttributesFactory.class).create()).clear();
+    }
+    
+    void createCategory(){
+        categoryId = manager.getAgent().addOrModifyMenuCategory(null, 
+                CATEGORY_NAME);
     }
     
     void createRestaurant(){
@@ -101,7 +105,8 @@ public class TestOrder {
         for(int i=1;i<NO_OF_MENU_ITEMS;i++){
             manager.getAgent().addOrModifyMenuItem(null, 
                     "itemName" + i, "description" + i, 
-                    "" + i, "imageBlobkey" + i);
+                    "" + i, "imageBlobkey" + i,
+                    categoryId);
         }
     }
     

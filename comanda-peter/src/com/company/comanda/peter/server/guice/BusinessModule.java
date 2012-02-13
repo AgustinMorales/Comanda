@@ -11,6 +11,7 @@ import com.company.comanda.peter.server.UserManager;
 import com.company.comanda.peter.server.UserManagerImpl;
 import com.company.comanda.peter.server.admin.ComandaAdmin;
 import com.company.comanda.peter.server.admin.ComandaAdminImpl;
+import com.company.comanda.peter.server.model.MenuCategory;
 import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Order;
 import com.company.comanda.peter.server.model.Restaurant;
@@ -44,6 +45,7 @@ public class BusinessModule extends AbstractModule {
         ObjectifyService.register(Order.class);
         ObjectifyService.register(User.class);
         ObjectifyService.register(Table.class);
+        ObjectifyService.register(MenuCategory.class);
         return ofy;
     }
 

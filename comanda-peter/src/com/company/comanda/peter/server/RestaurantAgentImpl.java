@@ -6,6 +6,8 @@ import java.util.Random;
 import java.util.logging.Logger;
 
 import javax.inject.Inject;
+
+import com.company.comanda.peter.server.model.MenuCategory;
 import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Order;
 import com.company.comanda.peter.server.model.Restaurant;
@@ -46,7 +48,8 @@ public class RestaurantAgentImpl implements RestaurantAgent {
 
     @Override
     public void addOrModifyMenuItem(Long itemId, String itemName,
-            String description, String priceString, String imageBlobkey) {
+            String description, String priceString, String imageBlobkey,
+            Long categoryId) {
         MenuItem item = null;
         if(itemId != null ){
             item = ofy.get(
@@ -57,7 +60,8 @@ public class RestaurantAgentImpl implements RestaurantAgent {
             if(itemName == null ||
                     priceString == null ||
                     imageBlobkey == null ||
-                    description == null){
+                    description == null ||
+                    categoryId == null){
                 throw new IllegalArgumentException("Missing data");
             }
             item = new MenuItem();
@@ -74,6 +78,12 @@ public class RestaurantAgentImpl implements RestaurantAgent {
         }
         if(imageBlobkey != null){
             item.setImageString(imageBlobkey);
+        }
+        if(categoryId != null){
+            item.setCategory(new Key<MenuCategory>(
+                    restaurantKey,
+                    MenuCategory.class,
+                    categoryId));
         }
         //persist
         ofy.put(item);
@@ -189,6 +199,37 @@ public class RestaurantAgentImpl implements RestaurantAgent {
     @Override
     public String getRestaurantCode() {
         return String.format("%8d", (long)restaurantKey.getId());
+    }
+
+    @Override
+    public long addOrModifyMenuCategory(Long categoryId, String name) {
+        MenuCategory category = null;
+        if(categoryId != null){
+            Key<MenuCategory> key = new Key<MenuCategory>(
+                    restaurantKey,
+                    MenuCategory.class,
+                    (long)categoryId);
+            category = ofy.get(key);
+        }
+        else{
+            category = new MenuCategory();
+            if(name == null){
+                throw new IllegalArgumentException(
+                        "name must not be null");
+            }
+            category.setRestaurant(restaurantKey);
+        }
+        if(name != null){
+            category.setName(name);
+        }
+        ofy.put(category);
+        return category.getId();
+    }
+
+    @Override
+    public List<MenuCategory> getCategories() {
+        return ofy.query(MenuCategory.class).
+                ancestor(restaurantKey).list();
     }
     
     

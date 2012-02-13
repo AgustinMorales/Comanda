@@ -15,6 +15,7 @@ import com.company.comanda.peter.server.SessionAttributes;
 import com.company.comanda.peter.server.SessionAttributesFactory;
 import com.company.comanda.peter.server.admin.ComandaAdmin;
 import com.company.comanda.peter.server.guice.BusinessModule;
+import com.company.comanda.peter.server.model.MenuCategory;
 import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Restaurant;
 import com.company.comanda.peter.server.model.Table;
@@ -34,9 +35,12 @@ public class TestRestaurant {
     private static final String REST_NAME = "This is the name";
     private static final String REST_PASSWORD = "This is the password";
     
+    private static final String CATEGORY_NAME = "This is the category";
+    
     private RestaurantManager manager;
     
     private long restaurantId;
+    private long categoryId;
     
     private static final Logger log = 
             Logger.getLogger(TestRestaurant.class.getName()
@@ -76,6 +80,12 @@ public class TestRestaurant {
                         SessionAttributesFactory.class).create()).clear();
     }
     
+    void createCategory(){
+        categoryId = 
+                manager.getAgent().addOrModifyMenuCategory(
+                        null, CATEGORY_NAME);
+    }
+    
     void createRestaurant(){
         manager = 
                 injector.getInstance(RestaurantManager.class);
@@ -83,6 +93,34 @@ public class TestRestaurant {
         
         restaurantId = admin.createRestaurant(REST_NAME, REST_PASSWORD);
         
+    }
+    @Test
+    public void testNewCategory(){
+        manager.login(REST_NAME, REST_PASSWORD);
+        createCategory();
+        List<MenuCategory> categories = 
+                manager.getAgent().getCategories();
+        assertEquals(1,categories.size());
+        MenuCategory category = categories.get(0);
+        assertEquals(CATEGORY_NAME, category.getName());
+        assertEquals(restaurantId, category.
+                getRestaurant().getId());
+    }
+    @Test
+    public void testModifyCategory(){
+        manager.login(REST_NAME, REST_PASSWORD);
+        createCategory();
+        
+        String NEW_NAME = "NEW CATEGORY NAME";
+        manager.getAgent().addOrModifyMenuCategory(
+                categoryId, NEW_NAME);
+        List<MenuCategory> categories = 
+                manager.getAgent().getCategories();
+        assertEquals(1,categories.size());
+        MenuCategory category = categories.get(0);
+        assertEquals(NEW_NAME, category.getName());
+        assertEquals(restaurantId, category.
+                getRestaurant().getId());
     }
     @Test
     public void testNoAgent(){
@@ -120,10 +158,14 @@ public class TestRestaurant {
             
         }
     }
+    
+    
+    
     @Test
     public void testAddMenuItem() {
         
         manager.login(REST_NAME, REST_PASSWORD);
+        createCategory();
         
         RestaurantAgent agent = manager.getAgent();
         
@@ -133,7 +175,7 @@ public class TestRestaurant {
         final String BLOB_KEY = "ABCD";
         agent.addOrModifyMenuItem(null, 
                 ITEM_NAME, ITEM_DESCRIPTION, 
-                ITEM_PRICE, BLOB_KEY);
+                ITEM_PRICE, BLOB_KEY, categoryId);
         
         List<MenuItem> items = agent.getMenuItems();
         assertEquals(1, items.size());
@@ -152,7 +194,7 @@ public class TestRestaurant {
     @Test
     public void testDeleteMenuItem(){
         manager.login(REST_NAME, REST_PASSWORD);
-        
+        createCategory();
         RestaurantAgent agent = manager.getAgent();
         
         final String ITEM_NAME = "pescado";
@@ -161,7 +203,7 @@ public class TestRestaurant {
         final String BLOB_KEY = "ABCD";
         agent.addOrModifyMenuItem(null, 
                 ITEM_NAME, ITEM_DESCRIPTION, 
-                ITEM_PRICE, BLOB_KEY);
+                ITEM_PRICE, BLOB_KEY, categoryId);
         
         List<MenuItem> items = agent.getMenuItems();
         
@@ -183,7 +225,7 @@ public class TestRestaurant {
     @Test
     public void testModifyMenuItem(){
         manager.login(REST_NAME, REST_PASSWORD);
-        
+        createCategory();
         RestaurantAgent agent = manager.getAgent();
         
         final String ITEM_NAME = "pescado";
@@ -192,7 +234,7 @@ public class TestRestaurant {
         final String BLOB_KEY = "ABCD";
         agent.addOrModifyMenuItem(null, 
                 ITEM_NAME, ITEM_DESCRIPTION, 
-                ITEM_PRICE, BLOB_KEY);
+                ITEM_PRICE, BLOB_KEY, categoryId);
         
         MenuItem item = agent.getMenuItems().get(0);
         
@@ -204,7 +246,7 @@ public class TestRestaurant {
         final long itemId = item.getId();
         agent.addOrModifyMenuItem(item.getId(), 
                 NEW_ITEM_NAME, NEW_ITEM_DESCRIPTION, 
-                NEW_ITEM_PRICE, NEW_BLOB_KEY);
+                NEW_ITEM_PRICE, NEW_BLOB_KEY, categoryId);
         
         MenuItem modifiedItem = agent.getMenuItems().get(0);
         
