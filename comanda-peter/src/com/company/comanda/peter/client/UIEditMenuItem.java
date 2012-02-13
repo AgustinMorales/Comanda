@@ -1,7 +1,9 @@
 package com.company.comanda.peter.client;
 
-import com.company.comanda.peter.shared.Constants;
+import java.util.List;
+
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -14,11 +16,11 @@ import com.google.gwt.user.client.ui.DoubleBox;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.event.dom.client.ChangeEvent;
 
 public class UIEditMenuItem extends Composite {
 
@@ -37,6 +39,7 @@ public class UIEditMenuItem extends Composite {
     @UiField TextBox tbKeyId;
     @UiField Button btnCancel;
     @UiField Image imgItem;
+    @UiField ListBox lbCategory;
     
     private NewMenuItemHandler newMenuItemHandler;
 
@@ -94,6 +97,7 @@ public class UIEditMenuItem extends Composite {
     }
     
     public void reset(){
+        loadCategories();
         itemDataFormPanel.reset();
         imgItem.setVisible(false);
     }
@@ -111,4 +115,26 @@ public class UIEditMenuItem extends Composite {
     void onFuImageFileChange(ChangeEvent event) {
         imgItem.setVisible(false);
     }
+    
+    private void loadCategories(){
+        greetingService.getCategories(
+                new AsyncCallback<List<String[]>>() {
+
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        Window.alert("Error");
+                    }
+
+                    @Override
+                    public void onSuccess(List<String[]> result) {
+                        lbCategory.setEnabled(false);
+                        lbCategory.clear();
+                        for(String[] elem : result){
+                            lbCategory.addItem(elem[1], elem[0]);
+                        }
+                        lbCategory.setEnabled(true);
+                    }
+        });
+    }
+    
 }

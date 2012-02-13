@@ -10,7 +10,7 @@
 				<g:HorizontalPanel horizontalAlignment="ALIGN_RIGHT" width="100%" verticalAlignment="ALIGN_BOTTOM">
 					<g:HorizontalPanel width="100%" spacing="10" horizontalAlignment="ALIGN_RIGHT">
 						<g:HorizontalPanel width="100%">
-							<g:AbsolutePanel height="155px" width="388px">
+							<g:AbsolutePanel height="188px" width="388px">
 							<g:at left="10" top="26">
 								<g:Label text="Nombre:"/>
 							</g:at>
@@ -23,14 +23,20 @@
 							<g:at left="10" top="72">
 								<g:Label text="Precio:"/>
 							</g:at>
-							<g:at left="93" top="115">
+							<g:at left="93" top="152">
 								<g:FileUpload width="177px" height="26px" ui:field="fuImageFile" name="itemImage"/>
 							</g:at>
-							<g:at left="10" top="120">
+							<g:at left="10" top="157">
 								<g:Label text="Imagen:"/>
 							</g:at>
 							<g:at left="336" top="15">
 								<g:TextBox visible="false" name="keyId" ui:field="tbKeyId"/>
+							</g:at>
+							<g:at left="10" top="116">
+								<g:Label text="Categoría:"/>
+							</g:at>
+							<g:at left="93" top="111">
+								<g:ListBox visibleItemCount="1" name="categoryId" width="177px" height="27px" ui:field="lbCategory" enabled="false"/>
 							</g:at>
 						</g:AbsolutePanel>
 						</g:HorizontalPanel>

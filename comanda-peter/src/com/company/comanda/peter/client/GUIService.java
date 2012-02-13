@@ -22,4 +22,5 @@ public interface GUIService extends RemoteService {
 	void newRestaurant(String name, String password);
 	void addTable(String tablename);
 	List<String[]> getTables();
+	List<String[]> getCategories();
 }

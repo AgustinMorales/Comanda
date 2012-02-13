@@ -20,4 +20,5 @@ public interface GUIServiceAsync {
 	void newRestaurant(String name, String password, AsyncCallback<Void> callback);
 	void addTable(String tablename, AsyncCallback<Void> callback);
 	void getTables(AsyncCallback<List<String[]>> callback);
+	void getCategories(AsyncCallback<List<String[]>> callback);
 }

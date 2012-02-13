@@ -8,10 +8,10 @@ import javax.inject.Singleton;
 
 import com.company.comanda.peter.client.GUIService;
 import com.company.comanda.peter.server.admin.ComandaAdmin;
+import com.company.comanda.peter.server.model.MenuCategory;
 import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Order;
 import com.company.comanda.peter.server.model.Table;
-import com.company.comanda.peter.shared.Constants;
 import com.company.comanda.peter.shared.OrderState;
 import com.company.comanda.peter.shared.PagedResult;
 import com.google.appengine.api.blobstore.BlobstoreService;
@@ -160,6 +160,21 @@ GUIService {
                     table.getName(), 
                     restaurantManager.getAgent().getFullCode(
                             table.getCode())});
+        }
+        return result;
+    }
+
+    @Override
+    public List<String[]> getCategories() {
+        List<MenuCategory> categories = 
+                restaurantManager.getAgent().getCategories();
+        List<String[]> result = 
+                new ArrayList<String[]>(categories.size());
+        for(MenuCategory category : categories){
+            result.add(new String[]{
+                    "" + category.getId(),
+                    category.getName()
+            });
         }
         return result;
     }
