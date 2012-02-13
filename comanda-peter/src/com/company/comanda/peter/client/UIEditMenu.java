@@ -30,10 +30,10 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent.Handler;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.user.client.ui.TabLayoutPanel;
 
 public class UIEditMenu extends Composite {
 
-    public static final int PAGE_SIZE = 20;
     
     private static UIEditMenuUiBinder uiBinder = GWT
             .create(UIEditMenuUiBinder.class);
@@ -42,8 +42,7 @@ public class UIEditMenu extends Composite {
     @UiField Button btnNewItem;
     @UiField Button btnEditItem;
     @UiField Button btnDeleteItem;
-    @UiField SimplePager menuItemsPager;
-    @UiField CellTable<String[]> menuItemsTable;
+    @UiField TabLayoutPanel tabPanelCategories;
     private MultiSelectionModel<String[]> selectionModel;
     private DialogBox dialogBox;
     private UIEditMenuItem newMenuItemPanel;
@@ -138,7 +137,6 @@ public class UIEditMenu extends Composite {
         provider.addDataDisplay(menuItemsTable);
         
         menuItemsPager.setDisplay(menuItemsTable);
-        menuItemsPager.setPageSize(PAGE_SIZE);
         
         selectionModel.addSelectionChangeHandler(new Handler() {
             
