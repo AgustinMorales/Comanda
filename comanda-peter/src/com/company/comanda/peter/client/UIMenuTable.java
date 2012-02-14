@@ -19,8 +19,8 @@ import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.MultiSelectionModel;
-import com.google.gwt.view.client.SelectionChangeEvent;
-import com.google.gwt.view.client.SelectionChangeEvent.Handler;
+import com.google.gwt.view.client.Range;
+import com.google.gwt.view.client.RangeChangeEvent;
 
 public class UIMenuTable extends Composite {
 
@@ -29,6 +29,10 @@ public class UIMenuTable extends Composite {
     @UiField SimplePager menuItemsPager;
     @UiField CellTable<String[]> menuItemsTable;
     private MultiSelectionModel<String[]> selectionModel;
+    private long categoryId;
+    private final GUIServiceAsync GUIService = GWT
+            .create(GUIService.class);
+    private boolean configured = false;
     
     
     private static UIMenuTableUiBinder uiBinder = GWT
@@ -47,6 +51,10 @@ public class UIMenuTable extends Composite {
     
     void setProvider(AsyncDataProvider<String[]> provider){
         provider.addDataDisplay(menuItemsTable);
+    }
+    
+    public void setCategoryId(long categoryId){
+        this.categoryId = categoryId;
     }
     
     void configureMenuItemsTable(){
@@ -82,12 +90,41 @@ public class UIMenuTable extends Composite {
         };
         menuItemsTable.addColumn(priceColumn, "Price");
 
+        AsyncDataProvider<String[]> provider = new AsyncDataProvider<String[]>() {
+            @Override
+            protected void onRangeChanged(HasData<String[]> display) {
+                final int start = display.getVisibleRange().getStart();
+                int length = display.getVisibleRange().getLength();
+                AsyncCallback<PagedResult<String[]>> callback = new AsyncCallback<PagedResult<String[]>>() {
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        Window.alert(caught.getMessage());
+                    }
+                    @Override
+                    public void onSuccess(PagedResult<String[]> result) {
+                        updateRowData(start, result.getList());
+                        updateRowCount(result.getTotal(), true);
+                    }
+                };
+                // The remote service that should be implemented
+                GUIService.getMenuItems(start, length, categoryId, callback);
+            }
+        };
         
-        
+        provider.addDataDisplay(menuItemsTable);
         
         menuItemsPager.setDisplay(menuItemsTable);
         menuItemsPager.setPageSize(PAGE_SIZE);
         
     }
     
+    public void refreshTable(){
+        if(configured == false){
+            configureMenuItemsTable();
+        }
+        else{
+            Range range = menuItemsTable.getVisibleRange();
+            RangeChangeEvent.fire(menuItemsTable, range);
+        }
+    }
 }

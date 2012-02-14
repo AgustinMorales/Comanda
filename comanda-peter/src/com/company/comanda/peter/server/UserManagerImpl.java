@@ -125,7 +125,7 @@ public class UserManagerImpl implements UserManager {
     @Override
     public List<MenuItem> getMenuItems(long restaurantId) {
         RestaurantAgent agent = agentFactory.create(restaurantId);
-        return agent.getMenuItems();
+        return agent.getMenuItems(null);
     }
 
 }

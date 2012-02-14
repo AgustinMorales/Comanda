@@ -36,10 +36,15 @@ public class RestaurantAgentImpl implements RestaurantAgent {
     }
     
     @Override
-    public List<MenuItem> getMenuItems() {
+    public List<MenuItem> getMenuItems(Long categoryId) {
         List<MenuItem> result = new ArrayList<MenuItem>();
-        Iterable<MenuItem> menuItems = ofy.query(MenuItem.class).
-                ancestor(restaurantKey);
+        Query<MenuItem> menuItems = ofy.query(MenuItem.class);
+        if(categoryId != null){
+            Key<MenuCategory> categoryKey = new Key<MenuCategory>(
+                    restaurantKey, MenuCategory.class,(long)categoryId);
+            menuItems.filter("category", categoryKey);
+        }
+        menuItems.ancestor(restaurantKey);
         for(MenuItem currentMenuItem : menuItems){
             result.add(currentMenuItem);
         }

@@ -11,7 +11,7 @@ import com.googlecode.objectify.Key;
 
 public interface RestaurantAgent {
 
-    public List<MenuItem> getMenuItems();
+    public List<MenuItem> getMenuItems(Long categoryId);
     
     public void addOrModifyMenuItem(Long itemId,
             String itemName,

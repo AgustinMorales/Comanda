@@ -18,7 +18,8 @@
 					<g:Button text="Delete" ui:field="btnDeleteItem" enabled="false"/>
 				</g:HorizontalPanel>
 			</g:HorizontalPanel>
-			<g:TabLayoutPanel barHeight="2" barUnit="EM" width="100%" height="100%" ui:field="tabPanelCategories"/>
+			<g:TabLayoutPanel barHeight="2" barUnit="EM" width="100%" height="100%" ui:field="tabPanelCategories" visible="false"/>
+			<g:Label text="Cargando..." ui:field="lblLoading"/>
 		</g:VerticalPanel>
 		
 	</g:HTMLPanel>

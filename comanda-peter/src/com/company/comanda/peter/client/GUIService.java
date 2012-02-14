@@ -12,7 +12,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
  */
 @RemoteServiceRelativePath("greet")
 public interface GUIService extends RemoteService {
-	PagedResult<String[]> getMenuItems(int start, int length);
+	PagedResult<String[]> getMenuItems(int start, int length, Long categoryId);
 	PagedResult<String[]> getOrders(int start, int length, OrderState state, 
 	        String tableName);
 	public String getUploadUrl();

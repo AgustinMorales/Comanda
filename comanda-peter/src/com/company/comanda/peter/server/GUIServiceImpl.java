@@ -72,11 +72,13 @@ GUIService {
         return list;
     }
 
-    public PagedResult<String[]> getMenuItems(int start, int length){
+    public PagedResult<String[]> getMenuItems(int start, int length, 
+            Long categoryId){
         ArrayList<String[]> resultList = new ArrayList<String[]>();
         int total;
 
-        List<MenuItem> items = restaurantManager.getAgent().getMenuItems();
+        List<MenuItem> items = restaurantManager.getAgent().
+                getMenuItems(categoryId);
         total = items.size();
         //Implement the paging inside ItemsManager
         items = cutList(items, start, length);

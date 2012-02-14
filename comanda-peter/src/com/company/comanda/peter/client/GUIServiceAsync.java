@@ -10,7 +10,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * The async counterpart of <code>GreetingService</code>.
  */
 public interface GUIServiceAsync {
-	void getMenuItems(int start, int length, AsyncCallback<PagedResult<String[]>> callback);
+	void getMenuItems(int start, int length, Long categoryId,
+	        AsyncCallback<PagedResult<String[]>> callback);
 	void getOrders(int start, int length, OrderState state, String tableName,
 	        AsyncCallback<PagedResult<String[]>> callback);
 	void getUploadUrl(AsyncCallback<String> callback);
