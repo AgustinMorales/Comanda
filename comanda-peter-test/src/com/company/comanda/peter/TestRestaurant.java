@@ -81,9 +81,13 @@ public class TestRestaurant {
     }
     
     void createCategory(){
-        categoryId = 
+        categoryId = createCategory(CATEGORY_NAME);
+    }
+    
+    long createCategory(String name){
+        return 
                 manager.getAgent().addOrModifyMenuCategory(
-                        null, CATEGORY_NAME);
+                        null, name);
     }
     
     void createRestaurant(){
@@ -300,5 +304,43 @@ public class TestRestaurant {
         
         assertTrue(table1.getCode().equals(
                 table2.getCode()) == false);
+    }
+    
+    @Test
+    public void testTwoCategories(){
+        final String SECOND_CATEGORY_NAME = "Another category";
+        manager.login(REST_NAME, REST_PASSWORD);
+        createCategory();
+        
+        RestaurantAgent agent = manager.getAgent();
+        
+        final long secondCategoryId = 
+                createCategory(SECOND_CATEGORY_NAME);
+        final String ITEM_NAME = "pescado";
+        final String ITEM_DESCRIPTION = "Pescado description";
+        final String ITEM_PRICE = "345";
+        final String BLOB_KEY = "ABCD";
+        agent.addOrModifyMenuItem(null, 
+                ITEM_NAME, ITEM_DESCRIPTION, 
+                ITEM_PRICE, BLOB_KEY, categoryId);
+        
+        final String SECOND_ITEM_NAME = "carne";
+        final String SECOND_ITEM_DESCRIPTION = "carne description";
+        final String SECOND_ITEM_PRICE = "3435";
+        final String SECOND_BLOB_KEY = "AD";
+        agent.addOrModifyMenuItem(null, 
+                SECOND_ITEM_NAME, SECOND_ITEM_DESCRIPTION, 
+                SECOND_ITEM_PRICE, SECOND_BLOB_KEY, secondCategoryId);
+        
+        List<MenuItem> categoryOneItems = agent.getMenuItems(categoryId);
+        List<MenuItem> categoryTwoItems = agent.getMenuItems(secondCategoryId);
+        
+        assertEquals(1, categoryOneItems.size());
+        assertEquals(1, categoryTwoItems.size());
+        
+        assertEquals(ITEM_NAME, categoryOneItems.get(0).getName());
+        assertEquals(SECOND_ITEM_NAME, categoryTwoItems.get(0).getName());
+        
+        
     }
 }
