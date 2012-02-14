@@ -236,6 +236,11 @@ public class RestaurantAgentImpl implements RestaurantAgent {
         return ofy.query(MenuCategory.class).
                 ancestor(restaurantKey).list();
     }
+
+    @Override
+    public List<MenuItem> getMenuItems() {
+        return getMenuItems(null);
+    }
     
     
 }
