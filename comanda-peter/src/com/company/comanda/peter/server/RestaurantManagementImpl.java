@@ -46,6 +46,13 @@ public class RestaurantManagementImpl implements RestaurantManager {
                         Constants.RESTAURANT_ID,restaurant.getId());
             }
         }
+        //FIXME: Should be deleted when we can add categories from the interface
+        RestaurantAgent agent = getAgent();
+        if(agent.getCategories().size() == 0){
+            agent.addOrModifyMenuCategory(null, "Entrantes");
+            agent.addOrModifyMenuCategory(null, "Principales");
+            agent.addOrModifyMenuCategory(null, "Bebidas");
+        }
         return result;
     }
 

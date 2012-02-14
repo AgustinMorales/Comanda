@@ -96,6 +96,7 @@ public class UIEditMenu extends Composite {
                     UIMenuTable newMenuTable = new UIMenuTable();
                     menuTables[counter] = newMenuTable;
                     newMenuTable.setSelectionModel(selectionModel);
+                    newMenuTable.setCategoryId(Long.parseLong(elem[0]));
                     tabPanelCategories.add(newMenuTable, elem[1]);
                     counter++;
                     lblLoading.setVisible(false);
@@ -181,8 +182,7 @@ public class UIEditMenu extends Composite {
         selectionModel.clear();
 	}
     @UiHandler("tabPanelCategories")
-    void onTabPanelCategoriesSelection(
-            @SuppressWarnings("rawtypes") SelectionEvent event) {
+    void onTabPanelCategoriesSelection(SelectionEvent<Integer> event) {
         refreshTable();
     }
 }

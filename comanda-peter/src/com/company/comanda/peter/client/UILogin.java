@@ -38,8 +38,13 @@ public class UILogin extends Composite {
             
             @Override
             public void onSuccess(Boolean result) {
-                RootLayoutPanel.get().clear();
-                RootLayoutPanel.get().add(new UIMain());
+                if(result){
+                    RootLayoutPanel.get().clear();
+                    RootLayoutPanel.get().add(new UIMain());
+                }
+                else{
+                    Window.alert("Login failed");
+                }
                 
             }
             
