@@ -142,8 +142,9 @@ GUIService {
     }
 
     @Override
-    public void newRestaurant(String name, String password) {
-        admin.createRestaurant(name, password);
+    public void newRestaurant(String name, String password, double latitude,
+            double longitude) {
+        admin.createRestaurant(name, password, latitude, longitude);
         
     }
 

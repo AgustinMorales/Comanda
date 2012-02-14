@@ -25,4 +25,7 @@ public interface UserManager {
     CodifiedData getData(String code);
     
     List<MenuItem> getMenuItems(long restaurantId);
+    
+    List<Restaurant> searchRestaurant(double latitude,
+            double longitude, int maxResults, double maxDistance);
 }

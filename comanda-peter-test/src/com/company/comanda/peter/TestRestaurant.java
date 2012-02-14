@@ -95,7 +95,8 @@ public class TestRestaurant {
                 injector.getInstance(RestaurantManager.class);
         ComandaAdmin admin = injector.getInstance(ComandaAdmin.class);
         
-        restaurantId = admin.createRestaurant(REST_NAME, REST_PASSWORD);
+        restaurantId = admin.createRestaurant(REST_NAME, REST_PASSWORD,
+                0,0);
         
     }
     @Test

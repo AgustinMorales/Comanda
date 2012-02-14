@@ -2,14 +2,23 @@ package com.company.comanda.peter.server.model;
 
 
 
+import java.util.List;
+
 import javax.persistence.Id;
 
-public class Restaurant {
+import com.beoui.geocell.model.LocationCapable;
+import com.beoui.geocell.model.Point;
+import com.googlecode.objectify.Key;
+
+public class Restaurant implements LocationCapable{
 
     @Id
     private Long id;
     private String name;
     private String hashedPassword;
+    private double latitude;
+    private double longitude;
+    private List<String> geocells;
     
 
     public Long getId() {
@@ -34,6 +43,41 @@ public class Restaurant {
 
     public void setHashedPassword(String hashedPassword) {
         this.hashedPassword = hashedPassword;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public void setGeoCells(List<String> cells) {
+        this.geocells = cells;
+    }
+
+    @Override
+    public Point getLocation() {
+        return new Point(latitude, longitude);
+    }
+
+    @Override
+    public String getKeyString() {
+        return (new Key<Restaurant>(Restaurant.class,id)).getString();
+    }
+
+    @Override
+    public List<String> getGeocells() {
+        return this.geocells;
     }
     
 }

@@ -17,6 +17,7 @@ import com.company.comanda.peter.server.admin.ComandaAdmin;
 import com.company.comanda.peter.server.guice.BusinessModule;
 import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Order;
+import com.company.comanda.peter.server.model.Restaurant;
 import com.company.comanda.peter.server.model.Table;
 import com.company.comanda.peter.stubs.SessionAttributesHashMap;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
@@ -26,11 +27,17 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 
-public class TestOrder {
+public class TestUserManager {
 
     
     private static final String REST_NAME = "This is the name";
     private static final String REST_PASSWORD = "This is the password";
+    private static final double SANTA_JUSTA_LATITUDE = 37.390925;
+    private static final double SANTA_JUSTA_LONGITUDE = -5.976627;
+    private static final double NERVION_LATITUDE = 37.387413;
+    private static final double NERVION_LONGITUDE = -5.971584;
+    private static final double DOS_HERMANAS_LATITUDE = 37.289350;
+    private static final double DOS_HERMANAS_LONGITUDE = -5.922661;
     private static final int NO_OF_MENU_ITEMS = 10;
     private static final int NO_OF_TABLES = 10;
     private static final String PHONE_NUMBER = "987654321";
@@ -97,7 +104,8 @@ public class TestOrder {
                 injector.getInstance(RestaurantManager.class);
         ComandaAdmin admin = injector.getInstance(ComandaAdmin.class);
         
-        restaurantId = admin.createRestaurant(REST_NAME, REST_PASSWORD);
+        restaurantId = admin.createRestaurant(REST_NAME, REST_PASSWORD,
+                SANTA_JUSTA_LATITUDE,SANTA_JUSTA_LONGITUDE);
         
     }
     
@@ -152,4 +160,27 @@ public class TestOrder {
         
     }
 
+    @Test
+    public void testGeographicSearchFound(){
+        List<Restaurant> restaurants = userManager.searchRestaurant(
+                NERVION_LATITUDE, NERVION_LONGITUDE, 10, 10000);
+        
+        assertEquals(1, restaurants.size());
+    }
+    
+    @Test
+    public void testGeographicSearchTooFar(){
+        List<Restaurant> restaurants = userManager.searchRestaurant(
+                DOS_HERMANAS_LATITUDE, DOS_HERMANAS_LONGITUDE, 10, 10000);
+        
+        assertEquals(0, restaurants.size());
+    }
+    
+    @Test
+    public void testGeographicSearchWideArea(){
+        List<Restaurant> restaurants = userManager.searchRestaurant(
+                DOS_HERMANAS_LATITUDE, DOS_HERMANAS_LONGITUDE, 10, 100000);
+        
+        assertEquals(1, restaurants.size());
+    }
 }

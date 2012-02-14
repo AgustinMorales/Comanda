@@ -5,7 +5,7 @@
 		
 	</ui:style>
 	<g:HTMLPanel>
-		<g:AbsolutePanel height="167px" width="331px">
+		<g:AbsolutePanel height="244px" width="331px">
 			<g:at left="32" top="46">
 				<g:Label text="Nombre"/>
 			</g:at>
@@ -15,7 +15,7 @@
 			<g:at left="107" top="38">
 				<g:TextBox ui:field="tbRestaurantName"/>
 			</g:at>
-			<g:at left="167" top="128">
+			<g:at left="167" top="205">
 				<g:Button ui:field="btnNewRestaurant" width="74px" height="29px">Aceptar</g:Button>
 			</g:at>
 			<g:at left="107" top="77">
@@ -24,8 +24,20 @@
 			<g:at left="32" top="85">
 				<g:Label text="Contraseña"/>
 			</g:at>
-			<g:at left="247" top="128">
+			<g:at left="247" top="205">
 				<g:Button width="74px" height="29px" ui:field="btnCancel" text="Cancelar">Volver</g:Button>
+			</g:at>
+			<g:at left="107" top="116">
+				<g:DoubleBox ui:field="dbLatitude"/>
+			</g:at>
+			<g:at left="107" top="151">
+				<g:DoubleBox ui:field="dbLongitude"/>
+			</g:at>
+			<g:at left="32" top="122">
+				<g:Label text="Latitud"/>
+			</g:at>
+			<g:at left="32" top="157">
+				<g:Label text="Longitud"/>
 			</g:at>
 		</g:AbsolutePanel>
 	</g:HTMLPanel>

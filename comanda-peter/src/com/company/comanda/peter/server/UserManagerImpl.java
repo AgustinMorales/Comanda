@@ -6,6 +6,9 @@ import java.util.logging.Logger;
 
 import javax.inject.Inject;
 
+import com.beoui.geocell.GeocellManager;
+import com.beoui.geocell.LocationCapableRepositorySearch;
+import com.beoui.geocell.model.Point;
 import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Order;
 import com.company.comanda.peter.server.model.Restaurant;
@@ -23,6 +26,18 @@ public class UserManagerImpl implements UserManager {
     private Objectify ofy;
     private RestaurantAgentFactory agentFactory;
 
+    public class OfyEntityLocationCapableRepositorySearchImpl implements
+    LocationCapableRepositorySearch<Restaurant> {
+
+
+
+        @Override
+        public List<Restaurant> search(List<String> geocells) {
+            return ofy.query(Restaurant.class)
+                    .filter("geocells in ", geocells).list();
+        }
+
+    }
     @Inject
     public UserManagerImpl(Objectify ofy, 
             RestaurantAgentFactory agentFactory){
@@ -126,6 +141,17 @@ public class UserManagerImpl implements UserManager {
     public List<MenuItem> getMenuItems(long restaurantId) {
         RestaurantAgent agent = agentFactory.create(restaurantId);
         return agent.getMenuItems(null);
+    }
+
+    @Override
+    public List<Restaurant> searchRestaurant(double latitude, double longitude,
+            int maxResults, double maxDistance) {
+        LocationCapableRepositorySearch<Restaurant> ofySearch = 
+                new OfyEntityLocationCapableRepositorySearchImpl();
+
+        return GeocellManager.proximityFetch(
+                new Point(latitude, longitude), 
+                maxResults, maxDistance, ofySearch);
     }
 
 }

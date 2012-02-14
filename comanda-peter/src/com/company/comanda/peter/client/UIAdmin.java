@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.user.client.ui.DoubleBox;
 
 public class UIAdmin extends Composite {
 
@@ -24,6 +25,8 @@ public class UIAdmin extends Composite {
     @UiField Button btnNewRestaurant;
     @UiField TextBox tbPassword;
     @UiField Button btnCancel;
+    @UiField DoubleBox dbLatitude;
+    @UiField DoubleBox dbLongitude;
 
     interface UIAdminUiBinder extends UiBinder<Widget, UIAdmin> {
     }
@@ -35,7 +38,8 @@ public class UIAdmin extends Composite {
     @UiHandler("btnNewRestaurant")
     void onBtnNewRestaurantClick(ClickEvent event) {
         GUIService.newRestaurant(tbRestaurantName.getText(), 
-                tbPassword.getText(), 
+                tbPassword.getText(),dbLatitude.getValue(),
+                dbLongitude.getValue(),
                 new AsyncCallback<Void>() {
                     
                     @Override
