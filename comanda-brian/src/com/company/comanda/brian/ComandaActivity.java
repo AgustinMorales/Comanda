@@ -14,7 +14,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
-import android.app.ListActivity;
+import roboguice.activity.RoboListActivity;
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -39,7 +40,7 @@ import com.company.comanda.brian.helpers.AsyncGetData;
 import com.company.comanda.brian.model.FoodMenuItem;
 import com.company.comanda.brian.xmlhandlers.MenuItemsHandler;
 
-public class ComandaActivity extends ListActivity
+public class ComandaActivity extends RoboListActivity
 {
     
     private static final String PARAM_RESTAURANT_ID = "restaurantId";
@@ -51,36 +52,41 @@ public class ComandaActivity extends ListActivity
     private String tableId;
     private String restId;
     
-    private class AsyncGetMenuItems extends AsyncGetData<ArrayList<FoodMenuItem>>{
+    private static class AsyncGetMenuItems extends AsyncGetData<ArrayList<FoodMenuItem>>{
 
         @Override
-        public void afterOnUIThread(ArrayList<FoodMenuItem> data) {
-            super.afterOnUIThread(data);
+        public void afterOnUIThread(ArrayList<FoodMenuItem> data,
+                Activity activity) {
+            super.afterOnUIThread(data, activity);
+            ComandaActivity local = (ComandaActivity)activity;
             Log.d("Comanda", "afterOnUIThread");
-            if(m_items != null && m_items.size() > 0)
+            if(local.m_items != null && local.m_items.size() > 0)
             {
-                m_adapter.notifyDataSetChanged();
-                m_adapter.clear();
-                for(int i=0;i<m_items.size();i++){
+                local.m_adapter.notifyDataSetChanged();
+                local.m_adapter.clear();
+                for(int i=0;i<local.m_items.size();i++){
                     Log.d("Comanda", "Item #" + i);
-                    m_adapter.add(m_items.get(i));
+                    local.m_adapter.add(local.m_items.get(i));
                 }
             }
-            m_adapter.notifyDataSetChanged();
+            local.m_adapter.notifyDataSetChanged();
         }
 
 
         @Override
-        public void afterOnBackground(ArrayList<FoodMenuItem> data) {
-            super.afterOnBackground(data);
-            m_items = data;
+        public void afterOnBackground(ArrayList<FoodMenuItem> data,
+                Activity activity) {
+            super.afterOnBackground(data, activity);
+            ((ComandaActivity)activity).m_items = data;
         }
 
 
         @Override
-        public void beforeOnBackground(List<NameValuePair> params) {
-            super.beforeOnBackground(params);
-            params.add(new BasicNameValuePair(PARAM_RESTAURANT_ID, restId));
+        public void beforeOnBackground(List<NameValuePair> params,
+                Activity activity) {
+            super.beforeOnBackground(params, activity);
+            params.add(new BasicNameValuePair(PARAM_RESTAURANT_ID, 
+                    ((ComandaActivity)activity).restId));
         }
         
     }

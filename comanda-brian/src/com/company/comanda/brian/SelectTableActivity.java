@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import roboguice.activity.RoboActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,22 +18,23 @@ import android.widget.Toast;
 import com.company.comanda.brian.helpers.AsyncGetData;
 import com.company.comanda.brian.xmlhandlers.RestaurantAndTableXMLHandler;
 import com.company.comanda.brian.xmlhandlers.RestaurantAndTableXMLHandler.ParsedData;
+import com.google.inject.Inject;
 
-public class SelectTableActivity extends Activity
+public class SelectTableActivity extends RoboActivity
 {
     
     private static final int SCAN_CODE_ACTIVITY = 1;
     
     private static final String PARAM_CODE = "code";
     
-    
-    private class GetTableData extends AsyncGetData<ParsedData>{
+    public static class GetTableData extends AsyncGetData<ParsedData>{
 
         @Override
-        public void afterOnUIThread(ParsedData data) {
+        public void afterOnUIThread(ParsedData data, 
+                Activity activity) {
             if(data != null){
                 Intent intent = new Intent(
-                        SelectTableActivity.this.getApplicationContext(), 
+                        activity.getApplicationContext(), 
                         ComandaActivity.class);
                 intent.putExtra(ComandaActivity.EXTRA_REST_ID, 
                         data.restId);
@@ -42,13 +44,16 @@ public class SelectTableActivity extends Activity
                         data.tableId);
                 intent.putExtra(ComandaActivity.EXTRA_TABLE_NAME, 
                         data.tableName);
-                startActivity(intent);
+                activity.startActivity(intent);
             }
             
         }
 
         
     }
+    
+    @Inject
+    private GetTableData getTableData;
     
     /** Called when the activity is first created. */
     @Override
@@ -61,10 +66,15 @@ public class SelectTableActivity extends Activity
             
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent("com.google.zxing.client.android.SCAN");
-                intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
-                startActivityForResult(intent, SCAN_CODE_ACTIVITY);
+//                Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+//                intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+//                startActivityForResult(intent, SCAN_CODE_ACTIVITY);
                 
+                GetTableData getData = getTableData;
+                List<NameValuePair> params = new ArrayList<NameValuePair>(1);
+                params.add(new BasicNameValuePair(PARAM_CODE, "2300200022742"));
+                getData.execute(SelectTableActivity.this, "/decodeQR", params, 
+                        RestaurantAndTableXMLHandler.class);
             }
         });
     }

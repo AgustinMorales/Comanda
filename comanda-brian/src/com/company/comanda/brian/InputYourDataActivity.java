@@ -7,6 +7,8 @@ import java.util.Random;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import roboguice.activity.RoboActivity;
+
 import com.company.comanda.brian.helpers.AsyncGetData;
 import com.company.comanda.brian.xmlhandlers.UserIdHandler;
 
@@ -21,7 +23,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class InputYourDataActivity extends Activity {
+public class InputYourDataActivity extends RoboActivity {
 
     private Button okButton;
     private EditText phoneET;
@@ -36,27 +38,30 @@ public class InputYourDataActivity extends Activity {
     
     private Random random;
     
-    private class GetUserData extends AsyncGetData<String>{
+    private static class GetUserData extends AsyncGetData<String>{
 
         @Override
-        public void afterOnUIThread(String data) {
-            startSelectTable();
+        public void afterOnUIThread(String data, Activity activity) {
+            ((InputYourDataActivity)activity).startSelectTable();
             
         }
 
         @Override
-        public void afterOnBackground(String data) {
-            Editor editor = prefs.edit();
+        public void afterOnBackground(String data, Activity activity) {
+            Editor editor = ((InputYourDataActivity)activity).
+                    prefs.edit();
             editor.putString(ComandaPreferences.USER_ID, data);
             editor.commit();
         }
 
         @Override
-        public void beforeOnBackground(List<NameValuePair> params) {
-            super.beforeOnBackground(params);
+        public void beforeOnBackground(List<NameValuePair> params, 
+                Activity activity) {
+            super.beforeOnBackground(params, activity);
             params.add(new BasicNameValuePair(
                     PARAM_VALIDATION_CODE, "validation"));
             String generatedPassword = String.format("%04d", 
+                    ((InputYourDataActivity)activity).
                     random.nextInt(9999));
             params.add(new BasicNameValuePair(PARAM_PASSWORD, 
                     generatedPassword));
