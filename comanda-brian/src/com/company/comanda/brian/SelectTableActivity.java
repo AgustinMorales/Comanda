@@ -66,19 +66,24 @@ public class SelectTableActivity extends RoboActivity
             
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent("com.google.zxing.client.android.SCAN");
-//                intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
-//                startActivityForResult(intent, SCAN_CODE_ACTIVITY);
+                Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+                intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+                startActivityForResult(intent, SCAN_CODE_ACTIVITY);
                 
-                GetTableData getData = getTableData;
-                List<NameValuePair> params = new ArrayList<NameValuePair>(1);
-                params.add(new BasicNameValuePair(PARAM_CODE, "2300200022742"));
-                getData.execute(SelectTableActivity.this, "/decodeQR", params, 
-                        RestaurantAndTableXMLHandler.class);
+                
             }
         });
     }
 
+    
+    public void onScanCodeClick(){
+        GetTableData getData = getTableData;
+        List<NameValuePair> params = new ArrayList<NameValuePair>(1);
+        params.add(new BasicNameValuePair(PARAM_CODE, "2300200022742"));
+        getData.execute(SelectTableActivity.this, "/decodeQR", params, 
+                RestaurantAndTableXMLHandler.class);
+        
+    }
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == SCAN_CODE_ACTIVITY) {
             if (resultCode == RESULT_OK) {
