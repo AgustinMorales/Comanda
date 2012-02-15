@@ -21,6 +21,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent.Handler;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class UIEditMenu extends Composite {
 
@@ -34,6 +35,7 @@ public class UIEditMenu extends Composite {
     @UiField Button btnDeleteItem;
     @UiField TabLayoutPanel tabPanelCategories;
     @UiField Label lblLoading;
+    @UiField VerticalPanel vpTabPanelContainer;
     private MultiSelectionModel<String[]> selectionModel;
     private DialogBox dialogBox;
     private UIEditMenuItem newMenuItemPanel;
@@ -100,7 +102,8 @@ public class UIEditMenu extends Composite {
                     tabPanelCategories.add(newMenuTable, elem[1]);
                     counter++;
                     lblLoading.setVisible(false);
-                    tabPanelCategories.setVisible(true);
+                    vpTabPanelContainer.setVisible(true);
+                    newMenuTable.setVisible(true);
                     refreshTable();
                 }
                 

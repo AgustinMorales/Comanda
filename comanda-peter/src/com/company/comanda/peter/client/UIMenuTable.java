@@ -116,6 +116,8 @@ public class UIMenuTable extends Composite {
         menuItemsPager.setDisplay(menuItemsTable);
         menuItemsPager.setPageSize(PAGE_SIZE);
         
+        configured = true;
+        
     }
     
     public void refreshTable(){
