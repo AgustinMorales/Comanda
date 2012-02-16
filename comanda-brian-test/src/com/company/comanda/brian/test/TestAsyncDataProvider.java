@@ -1,37 +1,25 @@
 package com.company.comanda.brian.test;
 
-import roboguice.test.RoboActivityUnitTestCase;
-import android.app.Activity;
 import android.content.Intent;
-import android.test.ActivityUnitTestCase;
-import android.test.TouchUtils;
-import android.test.suitebuilder.annotation.MediumTest;
-import android.widget.Button;
+import android.test.ActivityInstrumentationTestCase2;
 
-import com.company.comanda.brian.ComandaActivity;
-import com.company.comanda.brian.R;
 import com.company.comanda.brian.SelectTableActivity;
+import com.jayway.android.robotium.solo.Solo;
 
-public class TestAsyncDataProvider extends RoboActivityUnitTestCase<SelectTableActivity> {
+public class TestAsyncDataProvider extends ActivityInstrumentationTestCase2<SelectTableActivity> {
 
     protected Intent intent = new Intent(Intent.ACTION_MAIN);
     
-    
+    private Solo solo;
     
     public TestAsyncDataProvider() {
-        super(SelectTableActivity.class);
+        super("com.company.comanda.brian", SelectTableActivity.class);
     }
 
-    @MediumTest
+    public void setUp() throws Exception{
+        solo = new Solo(getInstrumentation(), getActivity());
+    }
     public void test01(){
-        setApplication( new ComandaTestApp( getInstrumentation().getTargetContext() ) );
-        startActivity(new Intent(),null, null);
-        Activity activity = getActivity();
-        assertNotNull(activity);
-        
-        ((SelectTableActivity)activity).onScanCodeClick();
-        
-        Intent intent = getStartedActivityIntent();
-        assertEquals("Restaurant name", intent.getExtras().getString(ComandaActivity.EXTRA_REST_NAME));
+        solo.clickOnText("Scan code");
     }
 }

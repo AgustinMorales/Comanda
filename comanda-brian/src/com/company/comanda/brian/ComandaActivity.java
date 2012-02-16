@@ -14,7 +14,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
-import roboguice.activity.RoboListActivity;
+import roboguice.activity.RoboActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -23,6 +23,8 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -32,6 +34,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,12 +43,13 @@ import com.company.comanda.brian.helpers.AsyncGetData;
 import com.company.comanda.brian.model.FoodMenuItem;
 import com.company.comanda.brian.xmlhandlers.MenuItemsHandler;
 
-public class ComandaActivity extends RoboListActivity
+public class ComandaActivity extends RoboActivity
 {
     
     private static final String PARAM_RESTAURANT_ID = "restaurantId";
     
     private ArrayList<FoodMenuItem> m_items = null;
+    private ArrayList<String> categories = null;
     private ItemAdapter m_adapter;
     private String tableName;
     private String restName;
@@ -97,6 +101,7 @@ public class ComandaActivity extends RoboListActivity
     public static final String EXTRA_TABLE_ID = "tableId";
     public static final String EXTRA_REST_NAME = "restaurantName";
     public static final String EXTRA_REST_ID = "restaurantId";
+    public static final String EXTRA_CATEGORIES = "categories";
     
     public static final String PARAM_TABLE_ID = "tableId";
     public static final String PARAM_REST_ID = "restaurantId";
@@ -116,6 +121,7 @@ public class ComandaActivity extends RoboListActivity
         tableId = extras.getString(EXTRA_TABLE_ID);
         restName = extras.getString(EXTRA_REST_NAME);
         restId = extras.getString(EXTRA_REST_ID);
+        categories = extras.getStringArrayList(EXTRA_CATEGORIES);
         TextView tableNameTextView = (TextView)findViewById(R.id.tableNametextView);
         tableNameTextView.setText(getString(R.string.you_are_at_table) + 
                 " " + tableName + ". " + 
@@ -125,13 +131,46 @@ public class ComandaActivity extends RoboListActivity
         //set ListView adapter to basic ItemAdapter 
         //(it's a coincidence they are both called Item)
         this.m_adapter = new ItemAdapter(this, R.layout.row, m_items);
-        setListAdapter(this.m_adapter);
         
         AsyncGetMenuItems getData = new AsyncGetMenuItems();
         getData.execute(this, "/menuitems", new ArrayList<NameValuePair>(1), MenuItemsHandler.class);
+        
+        ViewPager pager = (ViewPager)findViewById(R.id.categoriesPager);
+        pager.setAdapter(new CategoriesPagerAdapter());
+        ActionB
     }
     
     
+    private class CategoriesPagerAdapter extends PagerAdapter{
+
+        @Override
+        public int getCount() {
+            return categories.size();
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            // TODO Auto-generated method stub
+            return view == ((TextView)object);
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            ((ViewGroup) container).removeView((ListView) object);
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            ListView listView = new ListView(container.getContext());
+            
+            listView.setAdapter(m_adapter);
+            
+            container.addView(listView,position);
+            
+            return listView;
+        }
+        
+    }
     
     @Override
     protected void onStart() {
