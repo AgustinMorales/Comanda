@@ -7,6 +7,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsAdapter;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -15,7 +18,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
 import android.app.Activity;
-import android.app.ListActivity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -23,7 +25,10 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.view.PagerAdapter;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Gravity;
@@ -34,6 +39,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -43,18 +49,21 @@ import com.company.comanda.brian.helpers.AsyncGetData;
 import com.company.comanda.brian.model.FoodMenuItem;
 import com.company.comanda.brian.xmlhandlers.MenuItemsHandler;
 
-public class ComandaActivity extends ListActivity
+public class ComandaActivity extends FragmentActivity
 {
     
     private static final String PARAM_RESTAURANT_ID = "restaurantId";
     
     private ArrayList<FoodMenuItem> m_items = null;
-    private ArrayList<String> categories = null;
+    private String[] categories = null;
     private ItemAdapter m_adapter;
     private String tableName;
     private String restName;
     private String tableId;
     private String restId;
+    
+    private SwipeyTabs categoriesTabs;
+    private ViewPager categoriesPager;
     
     private static class AsyncGetMenuItems extends AsyncGetData<ArrayList<FoodMenuItem>>{
 
@@ -121,7 +130,7 @@ public class ComandaActivity extends ListActivity
         tableId = extras.getString(EXTRA_TABLE_ID);
         restName = extras.getString(EXTRA_REST_NAME);
         restId = extras.getString(EXTRA_REST_ID);
-        categories = extras.getStringArrayList(EXTRA_CATEGORIES);
+        categories = extras.getStringArray(EXTRA_CATEGORIES);
         TextView tableNameTextView = (TextView)findViewById(R.id.tableNametextView);
         tableNameTextView.setText(getString(R.string.you_are_at_table) + 
                 " " + tableName + ". " + 
@@ -135,41 +144,83 @@ public class ComandaActivity extends ListActivity
         AsyncGetMenuItems getData = new AsyncGetMenuItems();
         getData.execute(this, "/menuitems", new ArrayList<NameValuePair>(1), MenuItemsHandler.class);
         
-        ViewPager pager = (ViewPager)findViewById(R.id.categoriesPager);
-        pager.setAdapter(new CategoriesPagerAdapter());
+        categoriesPager = (ViewPager)findViewById(R.id.categoriesPager);
+        categoriesTabs = (SwipeyTabs)findViewById(R.id.categoriesTabs);
+        
+        final SwipeyTabsPagerAdapter adapter = new SwipeyTabsPagerAdapter(
+                this, getSupportFragmentManager());
+        categoriesPager.setAdapter(adapter);
+        categoriesTabs.setAdapter(adapter);
+        categoriesPager.setOnPageChangeListener(categoriesTabs);
+        categoriesPager.setCurrentItem(0);
     }
     
     
-    private class CategoriesPagerAdapter extends PagerAdapter{
+    public static class CategoriesTabFragment extends Fragment {
+        
+        private ListAdapter adapter;
+        
+        public CategoriesTabFragment(ListAdapter adapter){
+            this.adapter = adapter;
+        }
+        
+        public static Fragment newInstance(String title, 
+                ListAdapter adapter) {
+            CategoriesTabFragment f = new CategoriesTabFragment(adapter);
+            Bundle args = new Bundle();
+            args.putString("title", title);
+            f.setArguments(args);
+            return f;
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                Bundle savedInstanceState) {
+            ViewGroup root = (ViewGroup) inflater.inflate(R.layout.menu_items_list, null);
+            ((ListView) root.findViewById(R.id.menu_items_listview)).setAdapter(adapter);
+            return root;
+        }
+
+    }
+    
+
+    private class SwipeyTabsPagerAdapter extends FragmentPagerAdapter implements
+    SwipeyTabsAdapter {
+
+        private final Context mContext;
+
+        public SwipeyTabsPagerAdapter(Context context, FragmentManager fm) {
+            super(fm);
+
+            this.mContext = context;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return CategoriesTabFragment.newInstance(
+                    categories[position], m_adapter);
+        }
 
         @Override
         public int getCount() {
-            return categories.size();
+            return categories.length;
         }
 
-        @Override
-        public boolean isViewFromObject(View view, Object object) {
-            // TODO Auto-generated method stub
-            return view == ((TextView)object);
+        public TextView getTab(final int position, SwipeyTabs root) {
+            TextView view = (TextView) LayoutInflater.from(mContext).inflate(
+                    R.layout.swipey_tab_indicator, root, false);
+            view.setText(categories[position]);
+            view.setOnClickListener(new OnClickListener() {
+                public void onClick(View v) {
+                    categoriesPager.setCurrentItem(position);
+                }
+            });
+
+            return view;
         }
 
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            ((ViewGroup) container).removeView((ListView) object);
-        }
-
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            ListView listView = new ListView(container.getContext());
-            
-            listView.setAdapter(m_adapter);
-            
-            container.addView(listView,position);
-            
-            return listView;
-        }
-        
     }
+
     
     @Override
     protected void onStart() {
