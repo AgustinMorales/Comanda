@@ -105,7 +105,7 @@ public class CategoriesHandler extends ComandaXMLHandler<ArrayList<Category>> {
             }
             else if(this.in_id){
                 Log.d("Comanda", "Id: " + textBetween);
-                category.id = textBetween;
+                category.id = Long.parseLong(textBetween);
             }
         }
     }

@@ -57,7 +57,7 @@ public class ComandaActivity extends FragmentActivity
     
     private ArrayList<FoodMenuItem> m_items = null;
     private ArrayList<Category> categories = null;
-    private ItemAdapter m_adapter;
+    private ItemAdapter[] adapters;
     private String tableName;
     private String restName;
     private String tableId;
@@ -76,14 +76,22 @@ public class ComandaActivity extends FragmentActivity
             Log.d("Comanda", "afterOnUIThread");
             if(local.m_items != null && local.m_items.size() > 0)
             {
-                local.m_adapter.notifyDataSetChanged();
-                local.m_adapter.clear();
-                for(int i=0;i<local.m_items.size();i++){
-                    Log.d("Comanda", "Item #" + i);
-                    local.m_adapter.add(local.m_items.get(i));
+                
+                for(int i=0;i<local.adapters.length; i++){
+                    ItemAdapter adapter = local.adapters[i];
+                    adapter.notifyDataSetChanged();
+                    adapter.clear();
+                    ArrayList<FoodMenuItem> currentList =
+                            local.filterMenuItems(local.categories.get(i).id);
+                    for(FoodMenuItem currentItem : currentList){
+                        Log.d("Comanda", "Item #" + i);
+                        adapter.add(currentItem);
+                    }
                 }
             }
-            local.m_adapter.notifyDataSetChanged();
+            for(ItemAdapter adapter : local.adapters){
+                adapter.notifyDataSetChanged();
+            }
         }
 
 
@@ -142,7 +150,12 @@ public class ComandaActivity extends FragmentActivity
         m_items = new ArrayList<FoodMenuItem>();
         //set ListView adapter to basic ItemAdapter 
         //(it's a coincidence they are both called Item)
-        this.m_adapter = new ItemAdapter(this, R.layout.row, m_items);
+        final int noOfCategories = categories.size();
+        adapters = new ItemAdapter[noOfCategories];
+        for(int i=0;i<noOfCategories;i++){
+            adapters[i] = new ItemAdapter(this, 
+                    R.layout.row, filterMenuItems(categories.get(i).id));
+        }
         
         AsyncGetMenuItems getData = new AsyncGetMenuItems();
         getData.execute(this, "/menuitems", new ArrayList<NameValuePair>(1), MenuItemsHandler.class);
@@ -179,8 +192,10 @@ public class ComandaActivity extends FragmentActivity
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
-            ViewGroup root = (ViewGroup) inflater.inflate(R.layout.menu_items_list, null);
-            ((ListView) root.findViewById(R.id.menu_items_listview)).setAdapter(adapter);
+            ViewGroup root = (ViewGroup) inflater.
+                    inflate(R.layout.menu_items_list, null);
+            ((ListView) root.findViewById(
+                    R.id.menu_items_listview)).setAdapter(adapter);
             return root;
         }
 
@@ -201,7 +216,7 @@ public class ComandaActivity extends FragmentActivity
         @Override
         public Fragment getItem(int position) {
             return CategoriesTabFragment.newInstance(
-                    categories.get(position).name, m_adapter);
+                    categories.get(position).name, adapters[position]);
         }
 
         @Override
@@ -446,4 +461,13 @@ public class ComandaActivity extends FragmentActivity
     }
 
 
+    ArrayList<FoodMenuItem> filterMenuItems(long categoryId){
+        ArrayList<FoodMenuItem> result = new ArrayList<FoodMenuItem>(m_items.size());
+        for(FoodMenuItem elem : m_items){
+            if(elem.getCategoryId() == categoryId){
+                result.add(elem);
+            }
+        }
+        return result;
+    }
 }

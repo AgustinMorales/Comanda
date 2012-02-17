@@ -54,6 +54,7 @@ public class GetItemsServlet extends HttpServlet
             out.println("\n\t\t<Name>" + i.getName() + "</Name>");
             out.println("\n\t\t<Description>" + i.getDescription() + "</Description>");
             out.println("\n\t\t<ImageString>" + i.getImageString() + "</ImageString>");
+            out.println("\n\t\t<CategoryId>" + i.getCategory().getId() + "</CategoryId>");
             out.println("\n\t</Item>");
         }
         out.println("\n</ItemList>");
