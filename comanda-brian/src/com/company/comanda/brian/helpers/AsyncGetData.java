@@ -19,12 +19,10 @@ import android.util.Log;
 
 import com.company.comanda.brian.Constants;
 import com.company.comanda.brian.xmlhandlers.ComandaXMLHandler;
-import com.google.inject.Inject;
 
 public abstract class AsyncGetData <T>{
 
-    @Inject
-    private HttpRetriever retriever;
+    private HttpRetriever retriever = new HttpRetriever();
     
     private ProgressDialog m_ProgressDialog = null; 
 

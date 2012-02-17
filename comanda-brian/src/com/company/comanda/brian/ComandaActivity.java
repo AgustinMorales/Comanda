@@ -14,8 +14,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
-import roboguice.activity.RoboActivity;
 import android.app.Activity;
+import android.app.ListActivity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -43,7 +43,7 @@ import com.company.comanda.brian.helpers.AsyncGetData;
 import com.company.comanda.brian.model.FoodMenuItem;
 import com.company.comanda.brian.xmlhandlers.MenuItemsHandler;
 
-public class ComandaActivity extends RoboActivity
+public class ComandaActivity extends ListActivity
 {
     
     private static final String PARAM_RESTAURANT_ID = "restaurantId";

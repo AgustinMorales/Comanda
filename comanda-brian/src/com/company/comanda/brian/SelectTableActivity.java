@@ -6,7 +6,6 @@ import java.util.List;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
-import roboguice.activity.RoboActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,9 +17,8 @@ import android.widget.Toast;
 import com.company.comanda.brian.helpers.AsyncGetData;
 import com.company.comanda.brian.xmlhandlers.RestaurantAndTableXMLHandler;
 import com.company.comanda.brian.xmlhandlers.RestaurantAndTableXMLHandler.ParsedData;
-import com.google.inject.Inject;
 
-public class SelectTableActivity extends RoboActivity
+public class SelectTableActivity extends Activity
 {
     
     private static final int SCAN_CODE_ACTIVITY = 1;
@@ -52,8 +50,6 @@ public class SelectTableActivity extends RoboActivity
         
     }
     
-    @Inject
-    private GetTableData getTableData;
     
     /** Called when the activity is first created. */
     @Override
@@ -77,7 +73,7 @@ public class SelectTableActivity extends RoboActivity
 
     
     public void onScanCodeClick(){
-        GetTableData getData = getTableData;
+        GetTableData getData = new GetTableData();
         List<NameValuePair> params = new ArrayList<NameValuePair>(1);
         params.add(new BasicNameValuePair(PARAM_CODE, "2300200022742"));
         getData.execute(SelectTableActivity.this, "/decodeQR", params, 

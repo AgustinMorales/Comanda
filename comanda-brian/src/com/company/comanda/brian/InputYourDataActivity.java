@@ -7,8 +7,6 @@ import java.util.Random;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
-import roboguice.activity.RoboActivity;
-
 import com.company.comanda.brian.helpers.AsyncGetData;
 import com.company.comanda.brian.xmlhandlers.UserIdHandler;
 
@@ -23,7 +21,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class InputYourDataActivity extends RoboActivity {
+public class InputYourDataActivity extends Activity {
 
     private Button okButton;
     private EditText phoneET;
