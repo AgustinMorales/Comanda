@@ -1,5 +1,6 @@
 package com.company.comanda.peter.server.guice;
 
+import com.company.comanda.peter.server.GetCategoriesServlet;
 import com.company.comanda.peter.server.GetItemsServlet;
 import com.company.comanda.peter.server.GetTablesServlet;
 import com.company.comanda.peter.server.GUIServiceImpl;
@@ -22,5 +23,6 @@ class ComandaServletModule extends ServletModule {
     serve("/getTables").with(GetTablesServlet.class);
     serve("/decodeQR").with(QRDecoderServlet.class);
     serve("/registerUser").with(RegisterUserServlet.class);
+    serve("/getCategories").with(GetCategoriesServlet.class);
   }
 }

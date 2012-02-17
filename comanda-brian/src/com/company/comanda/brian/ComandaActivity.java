@@ -46,6 +46,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.company.comanda.brian.helpers.AsyncGetData;
+import com.company.comanda.brian.model.Category;
 import com.company.comanda.brian.model.FoodMenuItem;
 import com.company.comanda.brian.xmlhandlers.MenuItemsHandler;
 
@@ -55,7 +56,7 @@ public class ComandaActivity extends FragmentActivity
     private static final String PARAM_RESTAURANT_ID = "restaurantId";
     
     private ArrayList<FoodMenuItem> m_items = null;
-    private String[] categories = null;
+    private ArrayList<Category> categories = null;
     private ItemAdapter m_adapter;
     private String tableName;
     private String restName;
@@ -120,6 +121,7 @@ public class ComandaActivity extends FragmentActivity
     
     SharedPreferences prefs;
     /** Called when the activity is first created. */
+    @SuppressWarnings("unchecked")
     @Override
     public void onCreate(Bundle savedInstanceState) 
     {
@@ -130,7 +132,8 @@ public class ComandaActivity extends FragmentActivity
         tableId = extras.getString(EXTRA_TABLE_ID);
         restName = extras.getString(EXTRA_REST_NAME);
         restId = extras.getString(EXTRA_REST_ID);
-        categories = extras.getStringArray(EXTRA_CATEGORIES);
+        categories = (ArrayList<Category>)extras.
+                get(EXTRA_CATEGORIES);
         TextView tableNameTextView = (TextView)findViewById(R.id.tableNametextView);
         tableNameTextView.setText(getString(R.string.you_are_at_table) + 
                 " " + tableName + ". " + 
@@ -198,18 +201,18 @@ public class ComandaActivity extends FragmentActivity
         @Override
         public Fragment getItem(int position) {
             return CategoriesTabFragment.newInstance(
-                    categories[position], m_adapter);
+                    categories.get(position).name, m_adapter);
         }
 
         @Override
         public int getCount() {
-            return categories.length;
+            return categories.size();
         }
 
         public TextView getTab(final int position, SwipeyTabs root) {
             TextView view = (TextView) LayoutInflater.from(mContext).inflate(
                     R.layout.swipey_tab_indicator, root, false);
-            view.setText(categories[position]);
+            view.setText(categories.get(position).name);
             view.setOnClickListener(new OnClickListener() {
                 public void onClick(View v) {
                     categoriesPager.setCurrentItem(position);

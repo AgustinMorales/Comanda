@@ -2,6 +2,7 @@ package com.company.comanda.peter.server;
 
 import java.util.List;
 
+import com.company.comanda.peter.server.model.MenuCategory;
 import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Restaurant;
 import com.company.comanda.peter.server.model.Table;
@@ -28,4 +29,6 @@ public interface UserManager {
     
     List<Restaurant> searchRestaurant(double latitude,
             double longitude, int maxResults, double maxDistance);
+    
+    List<MenuCategory> getMenuCategories(long restaurantId);
 }

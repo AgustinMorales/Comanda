@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import com.beoui.geocell.GeocellManager;
 import com.beoui.geocell.LocationCapableRepositorySearch;
 import com.beoui.geocell.model.Point;
+import com.company.comanda.peter.server.model.MenuCategory;
 import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Order;
 import com.company.comanda.peter.server.model.Restaurant;
@@ -152,6 +153,11 @@ public class UserManagerImpl implements UserManager {
         return GeocellManager.proximityFetch(
                 new Point(latitude, longitude), 
                 maxResults, maxDistance, ofySearch);
+    }
+
+    @Override
+    public List<MenuCategory> getMenuCategories(long restaurantId) {
+        return agentFactory.create(restaurantId).getCategories();
     }
 
 }
