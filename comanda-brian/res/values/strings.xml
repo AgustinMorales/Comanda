@@ -14,5 +14,6 @@
     <string name="incorrect_phone_number">This phone number you entered is not valid</string>
     <string name="place_order">Pedir</string>
     <string name="menu_item_name">Name:</string>
+    <string name="choose_restaurant">These restaurants serve to your selected location. Please choose one.</string>
     
 </resources>

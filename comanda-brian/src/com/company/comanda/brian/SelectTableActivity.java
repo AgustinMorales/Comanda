@@ -130,15 +130,6 @@ public class SelectTableActivity extends Activity
         });
     }
 
-    
-    public void onScanCodeClick(){
-        GetTableData getData = new GetTableData();
-        List<NameValuePair> params = new ArrayList<NameValuePair>(1);
-        params.add(new BasicNameValuePair(PARAM_CODE, "2300200022742"));
-        getData.execute(SelectTableActivity.this, "/decodeQR", params, 
-                RestaurantAndTableXMLHandler.class);
-        
-    }
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == SCAN_CODE_ACTIVITY) {
             if (resultCode == RESULT_OK) {
