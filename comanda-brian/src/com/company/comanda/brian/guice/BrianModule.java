@@ -3,10 +3,9 @@ package com.company.comanda.brian.guice;
 import com.company.comanda.brian.SelectTableActivity;
 import com.company.comanda.brian.helpers.HttpRetriever;
 import com.company.comanda.brian.helpers.HttpRetrieverImpl;
+import com.google.inject.AbstractModule;
 
-import roboguice.config.AbstractAndroidModule;
-
-public class BrianModule extends AbstractAndroidModule {
+public class BrianModule extends AbstractModule {
 
     @Override
     protected void configure() {

@@ -137,7 +137,6 @@ public class ComandaActivity extends RoboActivity
         
         ViewPager pager = (ViewPager)findViewById(R.id.categoriesPager);
         pager.setAdapter(new CategoriesPagerAdapter());
-        ActionB
     }
     
     
