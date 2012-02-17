@@ -20,6 +20,8 @@ public class TestAsyncDataProvider extends ActivityInstrumentationTestCase2<Sele
         solo = new Solo(getInstrumentation(), getActivity());
     }
     public void test01(){
-        solo.clickOnText("Scan code");
+        solo.clickOnText("Order delivery");
+        solo.clickOnText("Add new address");
+        solo.sleep(10000);
     }
 }
