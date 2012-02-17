@@ -22,11 +22,25 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
 
-    <Button
+        <Button
         android:id="@+id/read_code_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/read_qr_code" />
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/order_food" />
+
+    </LinearLayout>
 
 </LinearLayout>
