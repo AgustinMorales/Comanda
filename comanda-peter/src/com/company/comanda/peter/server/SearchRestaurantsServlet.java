@@ -11,10 +11,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.company.comanda.peter.server.model.MenuItem;
+import com.company.comanda.peter.server.model.Restaurant;
 
 @Singleton
-public class GetItemsServlet extends HttpServlet  
+public class SearchRestaurantsServlet extends HttpServlet  
 { 
 
     /**
@@ -22,10 +22,17 @@ public class GetItemsServlet extends HttpServlet
      */
     private static final long serialVersionUID = 5142871744485848351L;
     
+    private static final String PARAM_LATITUDE = "latitude";
+    private static final String PARAM_LONGITUDE = "longitude";
+    
+    
+    private static final int defaultMaxResults = 50;
+    private static final double defaultRadius = 6000;
+    
     private UserManager userManager;
     
     @Inject
-    public GetItemsServlet(UserManager userManager){
+    public SearchRestaurantsServlet(UserManager userManager){
         this.userManager = userManager;
     }
     
@@ -39,25 +46,25 @@ public class GetItemsServlet extends HttpServlet
 
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException
     {
-        String restaurantId = req.getParameter("restaurantId");
-        List<MenuItem> items = userManager.getMenuItems(Long.parseLong(restaurantId));
+        final double latitude = Double.parseDouble(req.getParameter(PARAM_LATITUDE));
+        final double longitude = Double.parseDouble(req.getParameter(PARAM_LONGITUDE));
+        final int maxResults = defaultMaxResults;
+        final double radius = defaultRadius;
+        List<Restaurant> items = userManager.searchRestaurant(latitude, longitude, maxResults, radius);
         
         resp.setContentType("text/xml; charset=ISO-8859-1");
         PrintWriter out = resp.getWriter();
         out.println("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>");
-        out.println("<ItemList>");
+        out.println("<RestaurantList>");
         //loop through items list and print each item
-        for (MenuItem i : items) 
+        for (Restaurant i : items) 
         {
-            out.println("\n\t<Item>");
-            out.println("\n\t\t<KeyId>" + i.getId() + "</KeyId>");
+            out.println("\n\t<Restaurant>");
+            out.println("\n\t\t<Id>" + i.getId() + "</Id>");
             out.println("\n\t\t<Name>" + i.getName() + "</Name>");
-            out.println("\n\t\t<Description>" + i.getDescription() + "</Description>");
-            out.println("\n\t\t<ImageString>" + i.getImageString() + "</ImageString>");
-            out.println("\n\t\t<CategoryId>" + i.getCategory().getId() + "</CategoryId>");
-            out.println("\n\t</Item>");
+            out.println("\n\t</Restaurant>");
         }
-        out.println("\n</ItemList>");
+        out.println("\n</RestaurantList>");
         // Flush writer
         out.flush();
 

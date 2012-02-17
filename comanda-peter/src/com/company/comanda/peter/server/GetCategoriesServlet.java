@@ -11,10 +11,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.company.comanda.peter.server.model.MenuItem;
+import com.company.comanda.peter.server.model.MenuCategory;
 
 @Singleton
-public class GetItemsServlet extends HttpServlet  
+public class GetCategoriesServlet extends HttpServlet  
 { 
 
     /**
@@ -25,7 +25,7 @@ public class GetItemsServlet extends HttpServlet
     private UserManager userManager;
     
     @Inject
-    public GetItemsServlet(UserManager userManager){
+    public GetCategoriesServlet(UserManager userManager){
         this.userManager = userManager;
     }
     
@@ -40,24 +40,22 @@ public class GetItemsServlet extends HttpServlet
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException
     {
         String restaurantId = req.getParameter("restaurantId");
-        List<MenuItem> items = userManager.getMenuItems(Long.parseLong(restaurantId));
+        List<MenuCategory> categories = 
+                userManager.getMenuCategories(Long.parseLong(restaurantId));
         
         resp.setContentType("text/xml; charset=ISO-8859-1");
         PrintWriter out = resp.getWriter();
         out.println("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>");
-        out.println("<ItemList>");
+        out.println("<CategoryList>");
         //loop through items list and print each item
-        for (MenuItem i : items) 
+        for (MenuCategory i : categories) 
         {
-            out.println("\n\t<Item>");
-            out.println("\n\t\t<KeyId>" + i.getId() + "</KeyId>");
+            out.println("\n\t<Category>");
+            out.println("\n\t\t<Id>" + i.getId() + "</Id>");
             out.println("\n\t\t<Name>" + i.getName() + "</Name>");
-            out.println("\n\t\t<Description>" + i.getDescription() + "</Description>");
-            out.println("\n\t\t<ImageString>" + i.getImageString() + "</ImageString>");
-            out.println("\n\t\t<CategoryId>" + i.getCategory().getId() + "</CategoryId>");
-            out.println("\n\t</Item>");
+            out.println("\n\t</Category>");
         }
-        out.println("\n</ItemList>");
+        out.println("\n</CategoryList>");
         // Flush writer
         out.flush();
 

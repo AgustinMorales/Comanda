@@ -7,6 +7,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
+import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsAdapter;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -14,7 +17,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
-import android.app.ListActivity;
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -22,6 +25,11 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -31,56 +39,76 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.company.comanda.brian.helpers.AsyncGetData;
+import com.company.comanda.brian.model.Category;
 import com.company.comanda.brian.model.FoodMenuItem;
 import com.company.comanda.brian.xmlhandlers.MenuItemsHandler;
 
-public class ComandaActivity extends ListActivity
+public class ComandaActivity extends FragmentActivity
 {
     
     private static final String PARAM_RESTAURANT_ID = "restaurantId";
     
     private ArrayList<FoodMenuItem> m_items = null;
-    private ItemAdapter m_adapter;
+    private ArrayList<Category> categories = null;
+    private ItemAdapter[] adapters;
     private String tableName;
     private String restName;
     private String tableId;
     private String restId;
     
-    private class AsyncGetMenuItems extends AsyncGetData<ArrayList<FoodMenuItem>>{
+    private SwipeyTabs categoriesTabs;
+    private ViewPager categoriesPager;
+    
+    private static class AsyncGetMenuItems extends AsyncGetData<ArrayList<FoodMenuItem>>{
 
         @Override
-        public void afterOnUIThread(ArrayList<FoodMenuItem> data) {
-            super.afterOnUIThread(data);
+        public void afterOnUIThread(ArrayList<FoodMenuItem> data,
+                Activity activity) {
+            super.afterOnUIThread(data, activity);
+            ComandaActivity local = (ComandaActivity)activity;
             Log.d("Comanda", "afterOnUIThread");
-            if(m_items != null && m_items.size() > 0)
+            if(local.m_items != null && local.m_items.size() > 0)
             {
-                m_adapter.notifyDataSetChanged();
-                m_adapter.clear();
-                for(int i=0;i<m_items.size();i++){
-                    Log.d("Comanda", "Item #" + i);
-                    m_adapter.add(m_items.get(i));
+                
+                for(int i=0;i<local.adapters.length; i++){
+                    ItemAdapter adapter = local.adapters[i];
+                    adapter.notifyDataSetChanged();
+                    adapter.clear();
+                    ArrayList<FoodMenuItem> currentList =
+                            local.filterMenuItems(local.categories.get(i).id);
+                    for(FoodMenuItem currentItem : currentList){
+                        Log.d("Comanda", "Item #" + i);
+                        adapter.add(currentItem);
+                    }
                 }
             }
-            m_adapter.notifyDataSetChanged();
+            for(ItemAdapter adapter : local.adapters){
+                adapter.notifyDataSetChanged();
+            }
         }
 
 
         @Override
-        public void afterOnBackground(ArrayList<FoodMenuItem> data) {
-            super.afterOnBackground(data);
-            m_items = data;
+        public void afterOnBackground(ArrayList<FoodMenuItem> data,
+                Activity activity) {
+            super.afterOnBackground(data, activity);
+            ((ComandaActivity)activity).m_items = data;
         }
 
 
         @Override
-        public void beforeOnBackground(List<NameValuePair> params) {
-            super.beforeOnBackground(params);
-            params.add(new BasicNameValuePair(PARAM_RESTAURANT_ID, restId));
+        public void beforeOnBackground(List<NameValuePair> params,
+                Activity activity) {
+            super.beforeOnBackground(params, activity);
+            params.add(new BasicNameValuePair(PARAM_RESTAURANT_ID, 
+                    ((ComandaActivity)activity).restId));
         }
         
     }
@@ -91,6 +119,7 @@ public class ComandaActivity extends ListActivity
     public static final String EXTRA_TABLE_ID = "tableId";
     public static final String EXTRA_REST_NAME = "restaurantName";
     public static final String EXTRA_REST_ID = "restaurantId";
+    public static final String EXTRA_CATEGORIES = "categories";
     
     public static final String PARAM_TABLE_ID = "tableId";
     public static final String PARAM_REST_ID = "restaurantId";
@@ -100,6 +129,7 @@ public class ComandaActivity extends ListActivity
     
     SharedPreferences prefs;
     /** Called when the activity is first created. */
+    @SuppressWarnings("unchecked")
     @Override
     public void onCreate(Bundle savedInstanceState) 
     {
@@ -110,6 +140,8 @@ public class ComandaActivity extends ListActivity
         tableId = extras.getString(EXTRA_TABLE_ID);
         restName = extras.getString(EXTRA_REST_NAME);
         restId = extras.getString(EXTRA_REST_ID);
+        categories = (ArrayList<Category>)extras.
+                get(EXTRA_CATEGORIES);
         TextView tableNameTextView = (TextView)findViewById(R.id.tableNametextView);
         tableNameTextView.setText(getString(R.string.you_are_at_table) + 
                 " " + tableName + ". " + 
@@ -118,14 +150,95 @@ public class ComandaActivity extends ListActivity
         m_items = new ArrayList<FoodMenuItem>();
         //set ListView adapter to basic ItemAdapter 
         //(it's a coincidence they are both called Item)
-        this.m_adapter = new ItemAdapter(this, R.layout.row, m_items);
-        setListAdapter(this.m_adapter);
+        final int noOfCategories = categories.size();
+        adapters = new ItemAdapter[noOfCategories];
+        for(int i=0;i<noOfCategories;i++){
+            adapters[i] = new ItemAdapter(this, 
+                    R.layout.row, filterMenuItems(categories.get(i).id));
+        }
         
         AsyncGetMenuItems getData = new AsyncGetMenuItems();
         getData.execute(this, "/menuitems", new ArrayList<NameValuePair>(1), MenuItemsHandler.class);
+        
+        categoriesPager = (ViewPager)findViewById(R.id.categoriesPager);
+        categoriesTabs = (SwipeyTabs)findViewById(R.id.categoriesTabs);
+        
+        final SwipeyTabsPagerAdapter adapter = new SwipeyTabsPagerAdapter(
+                this, getSupportFragmentManager());
+        categoriesPager.setAdapter(adapter);
+        categoriesTabs.setAdapter(adapter);
+        categoriesPager.setOnPageChangeListener(categoriesTabs);
+        categoriesPager.setCurrentItem(0);
     }
     
     
+    public static class CategoriesTabFragment extends Fragment {
+        
+        private ListAdapter adapter;
+        
+        public CategoriesTabFragment(ListAdapter adapter){
+            this.adapter = adapter;
+        }
+        
+        public static Fragment newInstance(String title, 
+                ListAdapter adapter) {
+            CategoriesTabFragment f = new CategoriesTabFragment(adapter);
+            Bundle args = new Bundle();
+            args.putString("title", title);
+            f.setArguments(args);
+            return f;
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                Bundle savedInstanceState) {
+            ViewGroup root = (ViewGroup) inflater.
+                    inflate(R.layout.menu_items_list, null);
+            ((ListView) root.findViewById(
+                    R.id.menu_items_listview)).setAdapter(adapter);
+            return root;
+        }
+
+    }
+    
+
+    private class SwipeyTabsPagerAdapter extends FragmentPagerAdapter implements
+    SwipeyTabsAdapter {
+
+        private final Context mContext;
+
+        public SwipeyTabsPagerAdapter(Context context, FragmentManager fm) {
+            super(fm);
+
+            this.mContext = context;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return CategoriesTabFragment.newInstance(
+                    categories.get(position).name, adapters[position]);
+        }
+
+        @Override
+        public int getCount() {
+            return categories.size();
+        }
+
+        public TextView getTab(final int position, SwipeyTabs root) {
+            TextView view = (TextView) LayoutInflater.from(mContext).inflate(
+                    R.layout.swipey_tab_indicator, root, false);
+            view.setText(categories.get(position).name);
+            view.setOnClickListener(new OnClickListener() {
+                public void onClick(View v) {
+                    categoriesPager.setCurrentItem(position);
+                }
+            });
+
+            return view;
+        }
+
+    }
+
     
     @Override
     protected void onStart() {
@@ -348,4 +461,13 @@ public class ComandaActivity extends ListActivity
     }
 
 
+    ArrayList<FoodMenuItem> filterMenuItems(long categoryId){
+        ArrayList<FoodMenuItem> result = new ArrayList<FoodMenuItem>(m_items.size());
+        for(FoodMenuItem elem : m_items){
+            if(elem.getCategoryId() == categoryId){
+                result.add(elem);
+            }
+        }
+        return result;
+    }
 }

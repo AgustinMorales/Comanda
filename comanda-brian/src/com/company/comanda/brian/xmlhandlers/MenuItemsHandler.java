@@ -16,12 +16,15 @@ public class MenuItemsHandler extends ComandaXMLHandler<ArrayList<FoodMenuItem>>
     // ===========================================================
     // Fields
     // ===========================================================
+    
+    private static final String CATEGORY_ID = "CategoryId";
 
     private boolean in_item = false;
     private boolean in_name = false;
     private boolean in_keyId = false;
     private boolean in_description = false;
     private boolean in_imageString = false;
+    private boolean in_categoryId = false;
 
     private FoodMenuItem item = null;
 
@@ -74,6 +77,10 @@ public class MenuItemsHandler extends ComandaXMLHandler<ArrayList<FoodMenuItem>>
         {
             this.in_description = true;
         }
+        else if (localName.equals(CATEGORY_ID)) 
+        {
+            this.in_categoryId = true;
+        }
     }
 
     /** Gets be called on closing tags like: 
@@ -101,6 +108,10 @@ public class MenuItemsHandler extends ComandaXMLHandler<ArrayList<FoodMenuItem>>
         else if (localName.equals("Description")) 
         {
             this.in_description = false;
+        }
+        else if (localName.equals(CATEGORY_ID)) 
+        {
+            this.in_categoryId = false;
         }
     }
 
@@ -130,6 +141,10 @@ public class MenuItemsHandler extends ComandaXMLHandler<ArrayList<FoodMenuItem>>
                 Log.d("Comanda", "KeyId: " + textBetween);
                 //We are not parsing the long here. What for?
                 item.setKeyId(textBetween);
+            }
+            else if(this.in_categoryId){
+                Log.d("Comanda", "CategoryId: " + textBetween);
+                item.setCategoryId(Long.parseLong(textBetween));
             }
         }
     }

@@ -7,12 +7,9 @@ import java.util.List;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
@@ -25,13 +22,15 @@ import com.company.comanda.brian.xmlhandlers.ComandaXMLHandler;
 
 public abstract class AsyncGetData <T>{
 
+    private HttpRetriever retriever = new HttpRetriever();
+    
     private ProgressDialog m_ProgressDialog = null; 
 
     /**
      * 
      * @param data Be ready for a null value if data retrieval failed
      */
-    public void afterOnUIThread(T data){
+    public void afterOnUIThread(T data, Activity activity){
         
     }
 
@@ -39,11 +38,12 @@ public abstract class AsyncGetData <T>{
      * 
      * @param data Be ready for a null value if data retrieval failed
      */
-    public void afterOnBackground(T data){
+    public void afterOnBackground(T data, Activity activity){
         
     }
 
-    public void beforeOnBackground(List<NameValuePair> params){
+    public void beforeOnBackground(List<NameValuePair> params, 
+            Activity activity){
         
     }
 
@@ -51,14 +51,12 @@ public abstract class AsyncGetData <T>{
             final List<NameValuePair> params,
             final Class<? extends ComandaXMLHandler<T>> handlerClass){
 
-
-
         Runnable retrieveData = new Runnable()
         {
             @Override
             public void run() 
             {
-                beforeOnBackground(params);
+                beforeOnBackground(params, activity);
                 T data = null;
                 //this is where we populate m_items (ArrayList<FoodMenuItem>) 
                 //which we can get from XML
@@ -72,13 +70,13 @@ public abstract class AsyncGetData <T>{
                     Log.e("ListViewSampleApp", "Unable to retrieve data.", e);
                 }
                 final T finalData = data;
-                afterOnBackground(finalData);
+                afterOnBackground(finalData, activity);
                 Runnable onUIRunnable = new Runnable() {
 
                     @Override
                     public void run() {
                         m_ProgressDialog.dismiss();
-                        afterOnUIThread(finalData);
+                        afterOnUIThread(finalData,activity);
                     }
                 };
                 //This executes returnRes (see above) which will use the 
@@ -102,16 +100,12 @@ public abstract class AsyncGetData <T>{
         try 
         {
             // Create a URL we want to load some xml-data from.
-
-            HttpClient httpclient = new DefaultHttpClient();
             HttpPost httppost = new HttpPost("http://" + 
                     Constants.SERVER_LOCATION + service);
 
             // Add your data
             httppost.setEntity(new UrlEncodedFormEntity(params));
 
-            // Execute HTTP Post Request
-            HttpResponse response = httpclient.execute(httppost);
 
             // Get a SAXParser from the SAXPArserFactory.
             SAXParserFactory spf = SAXParserFactory.newInstance();
@@ -122,7 +116,7 @@ public abstract class AsyncGetData <T>{
             //apply it to the XML-Rea der
             ComandaXMLHandler<T> xmlHandler = handlerClass.newInstance();
             xr.setContentHandler(xmlHandler);
-            InputSource xmlInput = new InputSource(response.getEntity().getContent());
+            InputSource xmlInput = new InputSource(retriever.execute(httppost));
             xmlInput.setEncoding("ISO-8859-1");
             Log.e("ListViewSampleApp", "Input Source Defined: "+ 
                     xmlInput.toString());

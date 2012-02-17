@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.company.comanda.brian.helpers.AsyncGetData;
+import com.company.comanda.brian.model.Category;
+import com.company.comanda.brian.xmlhandlers.CategoriesHandler;
 import com.company.comanda.brian.xmlhandlers.RestaurantAndTableXMLHandler;
 import com.company.comanda.brian.xmlhandlers.RestaurantAndTableXMLHandler.ParsedData;
 
@@ -24,15 +26,57 @@ public class SelectTableActivity extends Activity
     private static final int SCAN_CODE_ACTIVITY = 1;
     
     private static final String PARAM_CODE = "code";
+    private static final String PARAM_REST_ID = "restaurantId";
     
     
-    private class GetTableData extends AsyncGetData<ParsedData>{
+    public static class GetCategories extends 
+    AsyncGetData<ArrayList<Category>>{
+
+        private String restId;
+        private String restName;
+        private String tableId;
+        private String tableName;
+        
+        public GetCategories(String restId,
+                String restName,
+                String tableId,
+                String tableName){
+            this.restId = restId;
+            this.restName = restName;
+            this.tableId = tableId;
+            this.tableName = tableName;
+        }
+        
+        @Override
+        public void afterOnUIThread(ArrayList<Category> data, Activity activity) {
+            super.afterOnUIThread(data, activity);
+            Intent intent = new Intent(
+                    activity.getApplicationContext(), 
+                    ComandaActivity.class);
+            intent.putExtra(ComandaActivity.EXTRA_REST_ID, 
+                    restId);
+            intent.putExtra(ComandaActivity.EXTRA_REST_NAME, 
+                    restName);
+            intent.putExtra(ComandaActivity.EXTRA_TABLE_ID, 
+                    tableId);
+            intent.putExtra(ComandaActivity.EXTRA_TABLE_NAME, 
+                    tableName);
+            intent.putExtra(ComandaActivity.EXTRA_CATEGORIES, data);
+            activity.startActivity(intent);
+        }
+        
+        
+    }
+    
+    
+    public static class GetTableData extends AsyncGetData<ParsedData>{
 
         @Override
-        public void afterOnUIThread(ParsedData data) {
+        public void afterOnUIThread(ParsedData data, 
+                Activity activity) {
             if(data != null){
                 Intent intent = new Intent(
-                        SelectTableActivity.this.getApplicationContext(), 
+                        activity.getApplicationContext(), 
                         ComandaActivity.class);
                 intent.putExtra(ComandaActivity.EXTRA_REST_ID, 
                         data.restId);
@@ -42,13 +86,29 @@ public class SelectTableActivity extends Activity
                         data.tableId);
                 intent.putExtra(ComandaActivity.EXTRA_TABLE_NAME, 
                         data.tableName);
-                startActivity(intent);
+                activity.startActivity(intent);
             }
             
         }
 
+        @Override
+        public void afterOnBackground(ParsedData data, Activity activity) {
+            super.afterOnBackground(data, activity);
+            
+            GetCategories getCategories = new GetCategories(
+                    data.restId, data.restName, 
+                    data.tableId, data.tableName);
+            
+            List<NameValuePair> params = new ArrayList<NameValuePair>(1);
+            params.add(new BasicNameValuePair(PARAM_REST_ID, data.restId));
+            getCategories.execute(activity, "/getCategories", 
+                    params, CategoriesHandler.class);
+        }
+        
+        
         
     }
+    
     
     /** Called when the activity is first created. */
     @Override
@@ -64,6 +124,7 @@ public class SelectTableActivity extends Activity
                 Intent intent = new Intent("com.google.zxing.client.android.SCAN");
                 intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
                 startActivityForResult(intent, SCAN_CODE_ACTIVITY);
+                
                 
             }
         });

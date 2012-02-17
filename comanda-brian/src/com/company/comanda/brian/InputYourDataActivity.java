@@ -36,27 +36,30 @@ public class InputYourDataActivity extends Activity {
     
     private Random random;
     
-    private class GetUserData extends AsyncGetData<String>{
+    private static class GetUserData extends AsyncGetData<String>{
 
         @Override
-        public void afterOnUIThread(String data) {
-            startSelectTable();
+        public void afterOnUIThread(String data, Activity activity) {
+            ((InputYourDataActivity)activity).startSelectTable();
             
         }
 
         @Override
-        public void afterOnBackground(String data) {
-            Editor editor = prefs.edit();
+        public void afterOnBackground(String data, Activity activity) {
+            Editor editor = ((InputYourDataActivity)activity).
+                    prefs.edit();
             editor.putString(ComandaPreferences.USER_ID, data);
             editor.commit();
         }
 
         @Override
-        public void beforeOnBackground(List<NameValuePair> params) {
-            super.beforeOnBackground(params);
+        public void beforeOnBackground(List<NameValuePair> params, 
+                Activity activity) {
+            super.beforeOnBackground(params, activity);
             params.add(new BasicNameValuePair(
                     PARAM_VALIDATION_CODE, "validation"));
             String generatedPassword = String.format("%04d", 
+                    ((InputYourDataActivity)activity).
                     random.nextInt(9999));
             params.add(new BasicNameValuePair(PARAM_PASSWORD, 
                     generatedPassword));
