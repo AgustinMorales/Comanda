@@ -128,6 +128,20 @@ public class SelectTableActivity extends Activity
                 
             }
         });
+        
+        Button orderDeliveryButton = 
+                (Button)findViewById(R.id.order_delivery_button);
+        orderDeliveryButton.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(
+                        getApplicationContext(), 
+                        ChooseAddressActivity.class);
+                startActivity(intent);
+                
+            }
+        });
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
