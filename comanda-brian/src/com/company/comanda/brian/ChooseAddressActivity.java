@@ -1,5 +1,8 @@
 package com.company.comanda.brian;
 
+import java.util.List;
+
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.ContentValues;
@@ -9,8 +12,11 @@ import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v4.widget.CursorAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -132,9 +138,23 @@ public class ChooseAddressActivity extends ListActivity {
                 
                 @Override
                 public void onClick(View v) {
-                    addNewAddress(niceAddressEditText.getText().toString(), 
-                            additionalDetailsEditText.getText().toString());
-                    dismissDialog(NEW_ADDRESS_DIALOG);
+                    if(addNewAddress(niceAddressEditText.getText().toString(), 
+                            additionalDetailsEditText.getText().toString())){
+                    
+                        dismissDialog(NEW_ADDRESS_DIALOG);
+                    }
+                    else{
+                        AlertDialog.Builder builder = new AlertDialog.Builder(ChooseAddressActivity.this);
+                        builder.setMessage("Your address could not be recognized. Please type it again.")
+                               .setCancelable(false)
+                               .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                                   public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                   }
+                               });
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                    }
                     
                 }
             });
@@ -153,17 +173,33 @@ public class ChooseAddressActivity extends ListActivity {
         return result;
     }
 
-    
-    private void addNewAddress(String niceAddress, 
+
+    private boolean addNewAddress(String niceAddress, 
             String additionalDetails){
-        SQLiteDatabase database = openHelper.getWritableDatabase();
-        ContentValues values = new ContentValues(4);
-        values.put(AddressOpenHelper.COLUMN_NICE_STRING, 
-                niceAddress);
-        values.put(AddressOpenHelper.COLUMN_ADDITIONAL_DATA, 
-                additionalDetails);
-        database.insert(AddressOpenHelper.ADDRESS_TABLE_NAME, 
-                null, values);
+        boolean result = false;
+        Geocoder coder = new Geocoder(this);
+
+        try {
+            List<Address>address = coder.getFromLocationName(niceAddress,5);
+            if (address != null) {
+                Address location = address.get(0);
+                location.getLatitude();
+                location.getLongitude();
+                SQLiteDatabase database = openHelper.getWritableDatabase();
+                ContentValues values = new ContentValues(4);
+                values.put(AddressOpenHelper.COLUMN_NICE_STRING, 
+                        niceAddress);
+                values.put(AddressOpenHelper.COLUMN_ADDITIONAL_DATA, 
+                        additionalDetails);
+                database.insert(AddressOpenHelper.ADDRESS_TABLE_NAME, 
+                        null, values);
+                result = true;
+            }
+        }
+        catch (Exception e) {
+            Log.e("Comanda", "Could not save address...", e);
+        }
+        return result;
     }
 
     @Override
