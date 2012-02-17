@@ -9,6 +9,7 @@ import com.company.comanda.peter.server.RegisterUserServlet;
 import com.company.comanda.peter.server.RestaurantLoginServiceImpl;
 import com.company.comanda.peter.server.NewMenuItemServlet;
 import com.company.comanda.peter.server.PlaceOrderServlet;
+import com.company.comanda.peter.server.SearchRestaurantsServlet;
 import com.company.comanda.peter.server.ServeBlob;
 import com.google.inject.servlet.ServletModule;
 
@@ -24,5 +25,6 @@ class ComandaServletModule extends ServletModule {
     serve("/decodeQR").with(QRDecoderServlet.class);
     serve("/registerUser").with(RegisterUserServlet.class);
     serve("/getCategories").with(GetCategoriesServlet.class);
+    serve("/searchRestaurants").with(SearchRestaurantsServlet.class);
   }
 }
