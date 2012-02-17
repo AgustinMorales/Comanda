@@ -20,7 +20,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/new_address_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/add_new_address" />

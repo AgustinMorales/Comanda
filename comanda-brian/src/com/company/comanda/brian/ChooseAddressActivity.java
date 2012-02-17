@@ -34,6 +34,7 @@ public class ChooseAddressActivity extends ListActivity {
     private CursorAdapter adapter;
     private Cursor cursor;
     AddressOpenHelper openHelper;
+    private Button addAddressButton;
     
     private static final int NEW_ADDRESS_DIALOG = 1;
     
@@ -48,6 +49,7 @@ public class ChooseAddressActivity extends ListActivity {
         cursor = openHelper.getReadableDatabase().query(
                 AddressOpenHelper.ADDRESS_TABLE_NAME, 
                 new String[]{
+                        AddressOpenHelper.COLUMN_ID,
                         AddressOpenHelper.COLUMN_NICE_STRING,
                         AddressOpenHelper.COLUMN_ADDITIONAL_DATA,
                         AddressOpenHelper.COLUMN_LATITUDE,
@@ -61,6 +63,16 @@ public class ChooseAddressActivity extends ListActivity {
         
         setListAdapter(adapter);
         
+        addAddressButton = (Button)findViewById(R.id.new_address_button);
+        
+        addAddressButton.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                showDialog(NEW_ADDRESS_DIALOG);
+                
+            }
+        });
     }
 
     

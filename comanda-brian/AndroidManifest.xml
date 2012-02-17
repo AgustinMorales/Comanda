@@ -31,6 +31,14 @@
             android:name=".ComandaActivity"
             android:label="ComandaActivity" >
         </activity>
+        <activity
+            android:name=".ChooseRestaurantActivity"
+            android:label="ChooseRestaurantActivity" >
+        </activity>
+        <activity
+            android:name=".ChooseAddressActivity"
+            android:label="ChooseAddressActivity" >
+        </activity>
         <!-- For ZXing -->
         <activity
         android:name="com.google.zxing.client.android.CaptureActivity"

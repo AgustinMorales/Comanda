@@ -15,12 +15,14 @@ public class AddressOpenHelper extends SQLiteOpenHelper{
     
     public static final String ADDRESS_TABLE_NAME = "addresses";
     
+    public static final String COLUMN_ID = "_id";
     public static final String COLUMN_NICE_STRING = "NICE_STRING";
     public static final String COLUMN_ADDITIONAL_DATA = "ADDITIONAL_DATA";
     public static final String COLUMN_LATITUDE = "LATITUDE";
     public static final String COLUMN_LONGITUDE = "LONGITUDE";
     private static final String ADDRESS_TABLE_CREATE = 
             "CREATE TABLE " + ADDRESS_TABLE_NAME + " (" +
+                    COLUMN_ID + " integer primary key autoincrement, " +
                     COLUMN_NICE_STRING + " TEXT, " +
                     COLUMN_ADDITIONAL_DATA + " TEXT, " +
                     COLUMN_LATITUDE + " REAL, " +
