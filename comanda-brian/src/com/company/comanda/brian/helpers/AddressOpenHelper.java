@@ -7,25 +7,24 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class AddressOpenHelper extends SQLiteOpenHelper{
 
-    public AddressOpenHelper(Context context, String name,
-            CursorFactory factory, int version) {
+    public AddressOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
     private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "addresses";
     
-    private static final String ADDRESS_TABLE_NAME = "addresses";
+    public static final String ADDRESS_TABLE_NAME = "addresses";
     
-    private static final String COLUMN_NICE_STRING = "NICE_STRING";
-    private static final String COLUMN_ADDITIONAL_DATA = "ADDITIONAL_DATA";
-    private static final String COLUMN_LATITUDE = "LATITUDE";
-    private static final String COLUMN_LONGITUDE = "LONGITUDE";
+    public static final String COLUMN_NICE_STRING = "NICE_STRING";
+    public static final String COLUMN_ADDITIONAL_DATA = "ADDITIONAL_DATA";
+    public static final String COLUMN_LATITUDE = "LATITUDE";
+    public static final String COLUMN_LONGITUDE = "LONGITUDE";
     private static final String ADDRESS_TABLE_CREATE = 
             "CREATE TABLE " + ADDRESS_TABLE_NAME + " (" +
                     COLUMN_NICE_STRING + " TEXT, " +
                     COLUMN_ADDITIONAL_DATA + " TEXT, " +
-                    COLUMN_LATITUDE + " DOUBLE, " +
-                    COLUMN_LONGITUDE + " DOUBLE);";
+                    COLUMN_LATITUDE + " REAL, " +
+                    COLUMN_LONGITUDE + " REAL);";
                     
     @Override
     public void onCreate(SQLiteDatabase db){

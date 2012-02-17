@@ -33,6 +33,8 @@ public class ChooseRestaurantActivity extends ListActivity {
     
     public static final String EXTRA_LATITUDE = "latitude";
     public static final String EXTRA_LONGITUDE = "longitude";
+    public static final String EXTRA_NICE_ADDRESS = "niceAddress";
+    public static final String EXTRA_ADDRESS_DETAILS = "addressDetails";
     public static final String PARAM_RESTAURANT_ID = "restaurantId";
     public static final String PARAM_LATITUDE = "latitude";
     public static final String PARAM_LONGITUDE = "longitude";
