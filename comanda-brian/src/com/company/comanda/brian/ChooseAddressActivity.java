@@ -33,7 +33,8 @@ public class ChooseAddressActivity extends ListActivity {
     
     private CursorAdapter adapter;
     private Cursor cursor;
-    AddressOpenHelper openHelper;
+    private AddressOpenHelper openHelper;
+    private SQLiteDatabase readableDatabase;
     private Button addAddressButton;
     
     private static final int NEW_ADDRESS_DIALOG = 1;
@@ -46,16 +47,7 @@ public class ChooseAddressActivity extends ListActivity {
         
         openHelper = new AddressOpenHelper(this);
         
-        cursor = openHelper.getReadableDatabase().query(
-                AddressOpenHelper.ADDRESS_TABLE_NAME, 
-                new String[]{
-                        AddressOpenHelper.COLUMN_ID,
-                        AddressOpenHelper.COLUMN_NICE_STRING,
-                        AddressOpenHelper.COLUMN_ADDITIONAL_DATA,
-                        AddressOpenHelper.COLUMN_LATITUDE,
-                        AddressOpenHelper.COLUMN_LONGITUDE
-                },
-                null, null, null, null, null);
+        cursor = newQuery();
         
         startManagingCursor(cursor);
         
@@ -75,7 +67,25 @@ public class ChooseAddressActivity extends ListActivity {
         });
     }
 
-    
+    private Cursor newQuery(){
+        if(readableDatabase != null){
+            if(readableDatabase.isOpen()){
+                readableDatabase.close();
+            }
+        }
+        readableDatabase = openHelper.getReadableDatabase();
+        return readableDatabase.query(
+                AddressOpenHelper.ADDRESS_TABLE_NAME, 
+                new String[]{
+                        AddressOpenHelper.COLUMN_ID,
+                        AddressOpenHelper.COLUMN_NICE_STRING,
+                        AddressOpenHelper.COLUMN_ADDITIONAL_DATA,
+                        AddressOpenHelper.COLUMN_LATITUDE,
+                        AddressOpenHelper.COLUMN_LONGITUDE
+                },
+                null, null, null, null, null);
+    }
+
     private class AddressAdapter extends CursorAdapter{
 
         public AddressAdapter(Context context, Cursor c) {
@@ -101,10 +111,10 @@ public class ChooseAddressActivity extends ListActivity {
         private void prepareView(View v, Cursor cursor){
             TextView textView = (TextView)v.findViewById(
                     R.id.textViewAddressNiceString);
-            final String niceAddress = cursor.getString(0);
-            final String additionalData = cursor.getString(1);
-            final double latitude = cursor.getDouble(2);
-            final double longitude = cursor.getDouble(3);
+            final String niceAddress = cursor.getString(1);
+            final String additionalData = cursor.getString(2);
+            final double latitude = cursor.getDouble(3);
+            final double longitude = cursor.getDouble(4);
             
             textView.setText(niceAddress);
             
@@ -175,7 +185,7 @@ public class ChooseAddressActivity extends ListActivity {
                 
                 @Override
                 public void onDismiss(DialogInterface dialog) {
-                    adapter.notifyDataSetChanged();
+                    refreshList();
                 }
             });
         }
@@ -185,6 +195,10 @@ public class ChooseAddressActivity extends ListActivity {
         return result;
     }
 
+    private void refreshList(){
+        adapter.changeCursor(newQuery());
+        adapter.notifyDataSetChanged();
+    }
 
     private boolean addNewAddress(String niceAddress, 
             String additionalDetails){
@@ -195,16 +209,21 @@ public class ChooseAddressActivity extends ListActivity {
             List<Address>address = coder.getFromLocationName(niceAddress,5);
             if (address != null) {
                 Address location = address.get(0);
-                location.getLatitude();
-                location.getLongitude();
+                double latitude = location.getLatitude();
+                double longitude = location.getLongitude();
                 SQLiteDatabase database = openHelper.getWritableDatabase();
                 ContentValues values = new ContentValues(4);
                 values.put(AddressOpenHelper.COLUMN_NICE_STRING, 
                         niceAddress);
                 values.put(AddressOpenHelper.COLUMN_ADDITIONAL_DATA, 
                         additionalDetails);
+                values.put(AddressOpenHelper.COLUMN_LATITUDE, 
+                        latitude);
+                values.put(AddressOpenHelper.COLUMN_LONGITUDE, 
+                        longitude);
                 database.insert(AddressOpenHelper.ADDRESS_TABLE_NAME, 
                         null, values);
+                database.close();
                 result = true;
             }
         }
