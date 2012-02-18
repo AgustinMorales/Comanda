@@ -12,19 +12,21 @@ import com.company.comanda.peter.server.PlaceOrderServlet;
 import com.company.comanda.peter.server.SearchRestaurantsServlet;
 import com.company.comanda.peter.server.ServeBlob;
 import com.google.inject.servlet.ServletModule;
+import static com.company.comanda.common.HttpParams.*;
 
 class ComandaServletModule extends ServletModule {
   @Override protected void configureServlets() {
     serve("/comanda_peter/greet").with(GUIServiceImpl.class);
     serve("/comanda_peter/login").with(RestaurantLoginServiceImpl.class);
-    serve("/menuitems").with(GetItemsServlet.class);
+    serve(GetMenuItems.SERVICE_NAME).with(GetItemsServlet.class);
     serve("/placeOrder").with(PlaceOrderServlet.class);
     serve("/newMenuItem").with(NewMenuItemServlet.class);
     serve("/serveBlob").with(ServeBlob.class);
     serve("/getTables").with(GetTablesServlet.class);
     serve("/decodeQR").with(QRDecoderServlet.class);
     serve("/registerUser").with(RegisterUserServlet.class);
-    serve("/getCategories").with(GetCategoriesServlet.class);
-    serve("/searchRestaurants").with(SearchRestaurantsServlet.class);
+    serve(GetCategories.SERVICE_NAME).with(GetCategoriesServlet.class);
+    serve(SearchRestaurants.SERVICE_NAME).with(
+            SearchRestaurantsServlet.class);
   }
 }

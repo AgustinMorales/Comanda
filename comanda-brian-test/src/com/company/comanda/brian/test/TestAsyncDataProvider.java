@@ -31,11 +31,10 @@ public class TestAsyncDataProvider extends ActivityInstrumentationTestCase2<Sele
         solo.clickOnButton(0);
         solo.sleep(1000);
         Assert.assertTrue(solo.searchText("Puerto de Envalira, 1, Sevilla"));
-        solo.goBack();
-        solo.clickOnText(solo.getString(
-                com.company.comanda.brian.R.string.order_food));
         solo.clickOnText("Puerto de Envalira, 1, Sevilla");
-        solo.sleep(10000);
+        solo.sleep(1000);
+        solo.clickOnText("Ginos");
+        solo.sleep(60000);
         
     }
 }

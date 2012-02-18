@@ -24,6 +24,8 @@ import com.company.comanda.brian.model.Restaurant;
 import com.company.comanda.brian.xmlhandlers.CategoriesHandler;
 import com.company.comanda.brian.xmlhandlers.RestaurantListHandler;
 
+import static com.company.comanda.common.HttpParams.*;
+
 public class ChooseRestaurantActivity extends ListActivity {
 
     private double latitude;
@@ -35,9 +37,6 @@ public class ChooseRestaurantActivity extends ListActivity {
     public static final String EXTRA_LONGITUDE = "longitude";
     public static final String EXTRA_NICE_ADDRESS = "niceAddress";
     public static final String EXTRA_ADDRESS_DETAILS = "addressDetails";
-    public static final String PARAM_RESTAURANT_ID = "restaurantId";
-    public static final String PARAM_LATITUDE = "latitude";
-    public static final String PARAM_LONGITUDE = "longitude";
     
     private ItemAdapter adapter;
     
@@ -65,9 +64,16 @@ public class ChooseRestaurantActivity extends ListActivity {
             }
             local.adapter.notifyDataSetChanged();
         }
+        
+        @Override
+        public void afterOnBackground(ArrayList<Restaurant> data,
+                Activity activity) {
+            super.afterOnBackground(data, activity);
+            ((ChooseRestaurantActivity)activity).restaurants = data;
+        }
     }
     
-    private static class GetCategories extends AsyncGetData<ArrayList<Category>>{
+    private static class AsyncGetCategories extends AsyncGetData<ArrayList<Category>>{
         
         @Override
         public void afterOnUIThread(ArrayList<Category> data,
@@ -106,9 +112,9 @@ public class ChooseRestaurantActivity extends ListActivity {
         GetRestaurants getRestaurants = new GetRestaurants();
         
         ArrayList<NameValuePair> params = new ArrayList<NameValuePair>(2);
-        params.add(new BasicNameValuePair(PARAM_LATITUDE, "" + latitude));
-        params.add(new BasicNameValuePair(PARAM_LONGITUDE, "" + longitude));
-        getRestaurants.execute(this, "/searchRestaurants", params, 
+        params.add(new BasicNameValuePair(SearchRestaurants.PARAM_LATITUDE, "" + latitude));
+        params.add(new BasicNameValuePair(SearchRestaurants.PARAM_LONGITUDE, "" + longitude));
+        getRestaurants.execute(this, SearchRestaurants.SERVICE_NAME, params, 
                 RestaurantListHandler.class);
     }
 
@@ -136,7 +142,7 @@ public class ChooseRestaurantActivity extends ListActivity {
             {
                 LayoutInflater vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 //inflate using res/layout/row.xml
-                v = vi.inflate(R.layout.row, null);
+                v = vi.inflate(R.layout.restaurant_row, null);
             }
             //get the FoodMenuItem corresponding to 
             //the position in the list we are rendering
@@ -157,11 +163,11 @@ public class ChooseRestaurantActivity extends ListActivity {
                     
                     @Override
                     public void onClick(View v) {
-                        GetCategories getCategories = new GetCategories();
+                        AsyncGetCategories getCategories = new AsyncGetCategories();
                         ArrayList<NameValuePair> params = new ArrayList<NameValuePair>(1);
-                        params.add(new BasicNameValuePair(PARAM_RESTAURANT_ID, restaurantId));
+                        params.add(new BasicNameValuePair(GetCategories.PARAM_RESTAURANT_ID, restaurantId));
                         getCategories.execute(ChooseRestaurantActivity.this, 
-                                "/getCategories", params, CategoriesHandler.class);
+                                GetCategories.SERVICE_NAME, params, CategoriesHandler.class);
                         
                     }
                 });

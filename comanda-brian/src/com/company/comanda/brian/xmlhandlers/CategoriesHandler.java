@@ -8,6 +8,7 @@ import org.xml.sax.SAXException;
 import android.util.Log;
 
 import com.company.comanda.brian.model.Category;
+import static com.company.comanda.common.XmlTags.CategoryList.*;
 
 public class CategoriesHandler extends ComandaXMLHandler<ArrayList<Category>> {
 
@@ -15,9 +16,6 @@ public class CategoriesHandler extends ComandaXMLHandler<ArrayList<Category>> {
     // Fields
     // ===========================================================
 
-    private static final String CATEGORY = "Category";
-    private static final String ID = "Id";
-    private static final String NAME = "Name";
     
     
     private boolean in_category = false;

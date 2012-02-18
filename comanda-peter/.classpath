@@ -11,5 +11,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/aopalliance.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/javax.inject.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guice-assistedinject-3.0.jar"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/comanda-common"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

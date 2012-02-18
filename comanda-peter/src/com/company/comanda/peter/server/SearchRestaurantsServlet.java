@@ -11,6 +11,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static com.company.comanda.common.XmlHelper.*;
+import static com.company.comanda.common.XmlTags.Restaurantlist.*;
+import static com.company.comanda.common.HttpParams.SearchRestaurants.*;
+
 import com.company.comanda.peter.server.model.Restaurant;
 
 @Singleton
@@ -22,8 +26,6 @@ public class SearchRestaurantsServlet extends HttpServlet
      */
     private static final long serialVersionUID = 5142871744485848351L;
     
-    private static final String PARAM_LATITUDE = "latitude";
-    private static final String PARAM_LONGITUDE = "longitude";
     
     
     private static final int defaultMaxResults = 50;
@@ -55,16 +57,16 @@ public class SearchRestaurantsServlet extends HttpServlet
         resp.setContentType("text/xml; charset=ISO-8859-1");
         PrintWriter out = resp.getWriter();
         out.println("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>");
-        out.println("<RestaurantList>");
+        out.println(open(RESTAURANT_LIST));
         //loop through items list and print each item
         for (Restaurant i : items) 
         {
-            out.println("\n\t<Restaurant>");
-            out.println("\n\t\t<Id>" + i.getId() + "</Id>");
-            out.println("\n\t\t<Name>" + i.getName() + "</Name>");
-            out.println("\n\t</Restaurant>");
+            out.println(open(RESTAURANT));
+            out.println(enclose(ID, "" + i.getId()));
+            out.println(enclose(NAME, i.getName()));
+            out.println(close(RESTAURANT));
         }
-        out.println("\n</RestaurantList>");
+        out.println(close(RESTAURANT_LIST));
         // Flush writer
         out.flush();
 

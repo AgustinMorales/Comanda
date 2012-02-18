@@ -6,5 +6,6 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="lib" path="/zxing/libs/core.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/android-support-v4.jar"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/comanda-common"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

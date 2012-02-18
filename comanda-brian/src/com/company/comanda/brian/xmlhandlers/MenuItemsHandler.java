@@ -8,6 +8,7 @@ import org.xml.sax.SAXException;
 import android.util.Log;
 
 import com.company.comanda.brian.model.FoodMenuItem;
+import static com.company.comanda.common.XmlTags.MenuItemList.*;
 
 
 public class MenuItemsHandler extends ComandaXMLHandler<ArrayList<FoodMenuItem>>
@@ -17,7 +18,6 @@ public class MenuItemsHandler extends ComandaXMLHandler<ArrayList<FoodMenuItem>>
     // Fields
     // ===========================================================
     
-    private static final String CATEGORY_ID = "CategoryId";
 
     private boolean in_item = false;
     private boolean in_name = false;
@@ -55,25 +55,25 @@ public class MenuItemsHandler extends ComandaXMLHandler<ArrayList<FoodMenuItem>>
     public void startElement(String namespaceURI, 
             String localName, String qName, 
             Attributes atts) throws SAXException{
-        if (localName.equals("Item")) 
+        if (localName.equals(ITEM)) 
         {
             this.in_item = true;
             item = new FoodMenuItem();
             Log.e("XMLHandler", "Found an Item");
         }
-        else if (localName.equals("Name")) 
+        else if (localName.equals(NAME)) 
         {
             this.in_name = true;
         }
-        else if (localName.equals("ImageString")) 
+        else if (localName.equals(IMAGE_STRING)) 
         {
             this.in_imageString = true;
         }
-        else if (localName.equals("KeyId")) 
+        else if (localName.equals(ID)) 
         {
             this.in_keyId = true;
         }
-        else if (localName.equals("Description")) 
+        else if (localName.equals(DESCRIPTION)) 
         {
             this.in_description = true;
         }
@@ -88,24 +88,24 @@ public class MenuItemsHandler extends ComandaXMLHandler<ArrayList<FoodMenuItem>>
     @Override
     public void endElement(String namespaceURI, String localName,
             String qName) throws SAXException {
-        if (localName.equals("Item")) 
+        if (localName.equals(ITEM)) 
         {
             this.in_item = false;
             items.add(item);
         }
-        else if (localName.equals("Name")) 
+        else if (localName.equals(NAME)) 
         {
             this.in_name = false;
         }
-        else if (localName.equals("ImageString")) 
+        else if (localName.equals(IMAGE_STRING)) 
         {
             this.in_imageString = false;
         }
-        else if (localName.equals("KeyId")) 
+        else if (localName.equals(ID)) 
         {
             this.in_keyId = false;
         }
-        else if (localName.equals("Description")) 
+        else if (localName.equals(DESCRIPTION)) 
         {
             this.in_description = false;
         }

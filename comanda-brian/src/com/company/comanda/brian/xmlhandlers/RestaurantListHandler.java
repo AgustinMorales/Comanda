@@ -9,6 +9,8 @@ import android.util.Log;
 
 import com.company.comanda.brian.model.Restaurant;
 
+import static com.company.comanda.common.XmlTags.Restaurantlist.*;
+
 
 public class RestaurantListHandler extends ComandaXMLHandler<ArrayList<Restaurant>>
 {
@@ -16,10 +18,6 @@ public class RestaurantListHandler extends ComandaXMLHandler<ArrayList<Restauran
     // ===========================================================
     // Fields
     // ===========================================================
-        
-    private static final String RESTAURANT = "Restaurant";
-    private static final String NAME = "Name";
-    private static final String ID = "Id";
 
     private boolean in_restaurant = false;
     private boolean in_name = false;

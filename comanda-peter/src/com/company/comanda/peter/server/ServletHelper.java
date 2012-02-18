@@ -5,11 +5,13 @@ import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.company.comanda.common.XmlTags;
+
 public class ServletHelper {
     public static PrintWriter getXmlWriter(HttpServletResponse resp) throws IOException{
         resp.setContentType("text/xml; charset=ISO-8859-1");
         PrintWriter out = resp.getWriter();
-        out.println("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>");
+        out.println(XmlTags.HEADER);
         
         return out;
     }

@@ -49,11 +49,11 @@ import com.company.comanda.brian.helpers.AsyncGetData;
 import com.company.comanda.brian.model.Category;
 import com.company.comanda.brian.model.FoodMenuItem;
 import com.company.comanda.brian.xmlhandlers.MenuItemsHandler;
+import com.company.comanda.common.HttpParams.GetMenuItems;
 
 public class ComandaActivity extends FragmentActivity
 {
     
-    private static final String PARAM_RESTAURANT_ID = "restaurantId";
     
     private ArrayList<FoodMenuItem> m_items = null;
     private ArrayList<Category> categories = null;
@@ -107,7 +107,7 @@ public class ComandaActivity extends FragmentActivity
         public void beforeOnBackground(List<NameValuePair> params,
                 Activity activity) {
             super.beforeOnBackground(params, activity);
-            params.add(new BasicNameValuePair(PARAM_RESTAURANT_ID, 
+            params.add(new BasicNameValuePair(GetMenuItems.PARAM_RESTAURANT_ID, 
                     ((ComandaActivity)activity).restId));
         }
         
@@ -158,7 +158,7 @@ public class ComandaActivity extends FragmentActivity
         }
         
         AsyncGetMenuItems getData = new AsyncGetMenuItems();
-        getData.execute(this, "/menuitems", new ArrayList<NameValuePair>(1), MenuItemsHandler.class);
+        getData.execute(this, GetMenuItems.SERVICE_NAME, new ArrayList<NameValuePair>(1), MenuItemsHandler.class);
         
         categoriesPager = (ViewPager)findViewById(R.id.categoriesPager);
         categoriesTabs = (SwipeyTabs)findViewById(R.id.categoriesTabs);

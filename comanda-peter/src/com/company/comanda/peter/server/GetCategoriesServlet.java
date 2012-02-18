@@ -13,6 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.company.comanda.peter.server.model.MenuCategory;
 
+import static com.company.comanda.common.HttpParams.GetCategories.*;
+import static com.company.comanda.common.XmlTags.CategoryList.*;
+import static com.company.comanda.common.XmlHelper.*;
+
 @Singleton
 public class GetCategoriesServlet extends HttpServlet  
 { 
@@ -39,23 +43,21 @@ public class GetCategoriesServlet extends HttpServlet
 
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException
     {
-        String restaurantId = req.getParameter("restaurantId");
+        String restaurantId = req.getParameter(PARAM_RESTAURANT_ID);
         List<MenuCategory> categories = 
                 userManager.getMenuCategories(Long.parseLong(restaurantId));
         
-        resp.setContentType("text/xml; charset=ISO-8859-1");
-        PrintWriter out = resp.getWriter();
-        out.println("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>");
-        out.println("<CategoryList>");
+        PrintWriter out = ServletHelper.getXmlWriter(resp);
+        out.println(open(CATEGORY_LIST));
         //loop through items list and print each item
         for (MenuCategory i : categories) 
         {
-            out.println("\n\t<Category>");
-            out.println("\n\t\t<Id>" + i.getId() + "</Id>");
-            out.println("\n\t\t<Name>" + i.getName() + "</Name>");
-            out.println("\n\t</Category>");
+            out.println(open(CATEGORY));
+            out.println(enclose(ID, "" + i.getId()));
+            out.println(enclose(NAME, i.getName()));
+            out.println(close(CATEGORY));
         }
-        out.println("\n</CategoryList>");
+        out.println(close(CATEGORY_LIST));
         // Flush writer
         out.flush();
 
