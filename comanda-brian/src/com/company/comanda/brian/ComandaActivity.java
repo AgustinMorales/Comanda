@@ -364,6 +364,7 @@ public class ComandaActivity extends FragmentActivity
                 final String menuItemName = o.getName();
                 final String menuItemKeyId = o.getKeyId();
                 final String menuItemDescription = o.getDescription();
+                final String imageString = o.getImageString();
                 if (tt != null)
                 {
                     tt.setText(menuItemName);   
@@ -378,14 +379,14 @@ public class ComandaActivity extends FragmentActivity
                 });
                 Bitmap rawBitMap = null;
                 
-                if(icon != null)
+                if(icon != null && imageString != null && imageString.length() > 0)
                 {
                     URL imageURL = null;
                     try      
                     {        
                         //use our image serve page to get the image URL
                         imageURL = new URL("http://" + Constants.SERVER_LOCATION + "/serveBlob?id="
-                                + o.getImageString());
+                                + imageString);
                     } 
                     catch (MalformedURLException e) 
                     {
