@@ -83,8 +83,78 @@ public class HttpRetriever {
                     enclose(MenuItemList.CATEGORY_ID, "1") + 
                     close(MenuItemList.ITEM) + 
                     open(MenuItemList.ITEM) + 
-                    enclose(MenuItemList.NAME, "Pizza") + 
+                    enclose(MenuItemList.NAME, "Cosas") + 
                     enclose(MenuItemList.ID, "2") + 
+                    enclose(MenuItemList.DESCRIPTION, "Unos buenos nachos") + 
+                    enclose(MenuItemList.IMAGE_STRING, "") + 
+                    enclose(MenuItemList.CATEGORY_ID, "1") + 
+                    close(MenuItemList.ITEM) + 
+                    open(MenuItemList.ITEM) + 
+                    enclose(MenuItemList.NAME, "Otros nachos") + 
+                    enclose(MenuItemList.ID, "3") + 
+                    enclose(MenuItemList.DESCRIPTION, "Unos buenos nachos") + 
+                    enclose(MenuItemList.IMAGE_STRING, "") + 
+                    enclose(MenuItemList.CATEGORY_ID, "1") + 
+                    close(MenuItemList.ITEM) + 
+                    open(MenuItemList.ITEM) + 
+                    enclose(MenuItemList.NAME, "Comida") + 
+                    enclose(MenuItemList.ID, "4") + 
+                    enclose(MenuItemList.DESCRIPTION, "Unos buenos nachos") + 
+                    enclose(MenuItemList.IMAGE_STRING, "") + 
+                    enclose(MenuItemList.CATEGORY_ID, "1") + 
+                    close(MenuItemList.ITEM) + 
+                    open(MenuItemList.ITEM) + 
+                    enclose(MenuItemList.NAME, "Algo distinto") + 
+                    enclose(MenuItemList.ID, "5") + 
+                    enclose(MenuItemList.DESCRIPTION, "Unos buenos nachos") + 
+                    enclose(MenuItemList.IMAGE_STRING, "") + 
+                    enclose(MenuItemList.CATEGORY_ID, "1") + 
+                    close(MenuItemList.ITEM) + 
+                    open(MenuItemList.ITEM) + 
+                    enclose(MenuItemList.NAME, "Otro entrante") + 
+                    enclose(MenuItemList.ID, "6") + 
+                    enclose(MenuItemList.DESCRIPTION, "Unos buenos nachos") + 
+                    enclose(MenuItemList.IMAGE_STRING, "") + 
+                    enclose(MenuItemList.CATEGORY_ID, "1") + 
+                    close(MenuItemList.ITEM) + 
+                    open(MenuItemList.ITEM) + 
+                    enclose(MenuItemList.NAME, "Esto no se acaba nunca") + 
+                    enclose(MenuItemList.ID, "7") + 
+                    enclose(MenuItemList.DESCRIPTION, "Unos buenos nachos") + 
+                    enclose(MenuItemList.IMAGE_STRING, "") + 
+                    enclose(MenuItemList.CATEGORY_ID, "1") + 
+                    close(MenuItemList.ITEM) + 
+                    open(MenuItemList.ITEM) + 
+                    enclose(MenuItemList.NAME, "Nachos") + 
+                    enclose(MenuItemList.ID, "8") + 
+                    enclose(MenuItemList.DESCRIPTION, "Unos buenos nachos") + 
+                    enclose(MenuItemList.IMAGE_STRING, "") + 
+                    enclose(MenuItemList.CATEGORY_ID, "1") + 
+                    close(MenuItemList.ITEM) + 
+                    open(MenuItemList.ITEM) + 
+                    enclose(MenuItemList.NAME, "Nachos9") + 
+                    enclose(MenuItemList.ID, "9") + 
+                    enclose(MenuItemList.DESCRIPTION, "Unos buenos nachos") + 
+                    enclose(MenuItemList.IMAGE_STRING, "") + 
+                    enclose(MenuItemList.CATEGORY_ID, "1") + 
+                    close(MenuItemList.ITEM) + 
+                    open(MenuItemList.ITEM) + 
+                    enclose(MenuItemList.NAME, "Nachos10") + 
+                    enclose(MenuItemList.ID, "10") + 
+                    enclose(MenuItemList.DESCRIPTION, "Unos buenos nachos") + 
+                    enclose(MenuItemList.IMAGE_STRING, "") + 
+                    enclose(MenuItemList.CATEGORY_ID, "1") + 
+                    close(MenuItemList.ITEM) + 
+                    open(MenuItemList.ITEM) + 
+                    enclose(MenuItemList.NAME, "Nachos11") + 
+                    enclose(MenuItemList.ID, "11") + 
+                    enclose(MenuItemList.DESCRIPTION, "Unos buenos nachos") + 
+                    enclose(MenuItemList.IMAGE_STRING, "") + 
+                    enclose(MenuItemList.CATEGORY_ID, "1") + 
+                    close(MenuItemList.ITEM) + 
+                    open(MenuItemList.ITEM) + 
+                    enclose(MenuItemList.NAME, "Pizza") + 
+                    enclose(MenuItemList.ID, "12") + 
                     enclose(MenuItemList.DESCRIPTION, "Una pizza") + 
                     enclose(MenuItemList.IMAGE_STRING, "") + 
                     enclose(MenuItemList.CATEGORY_ID, "2") + 
