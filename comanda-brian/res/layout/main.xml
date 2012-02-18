@@ -34,9 +34,4 @@
     android:layout_height="0px"
     android:layout_weight="1" 
     android:id="@+id/categoriesPager"/>
-    <TextView
-    android:id="@+id/android:empty"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:text=""/>
 </LinearLayout>
