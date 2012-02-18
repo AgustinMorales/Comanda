@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="com/google/zxing/integration/android/IntentIntegratorSupportV4.java|com/google/zxing/integration/android/IntentIntegratorV30.java|net/peterkuterna/android/apps/swipeytabs/SwipeyTabFragment.java|net/peterkuterna/android/apps/swipeytabs/SwipeyTabsSampleActivity.java" kind="src" path="src"/>
+	<classpathentry excluding="com/google/zxing/integration/android/IntentIntegratorSupportV4.java|com/google/zxing/integration/android/IntentIntegratorV30.java|net/peterkuterna/android/apps/swipeytabs/SwipeyTabFragment.java|net/peterkuterna/android/apps/swipeytabs/SwipeyTabsSampleActivity.java|com/company/comanda/brian/helpers/HttpRetrieverImpl.java" kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>

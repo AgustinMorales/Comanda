@@ -92,11 +92,13 @@ public class ChooseRestaurantActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.latitude = savedInstanceState.getDouble(EXTRA_LATITUDE);
-        this.longitude = savedInstanceState.getDouble(EXTRA_LONGITUDE);
+        Bundle extras = getIntent().getExtras();
+        this.latitude = extras.getDouble(EXTRA_LATITUDE);
+        this.longitude = extras.getDouble(EXTRA_LONGITUDE);
         
         setContentView(R.layout.choose_restaurant);
         
+        restaurants = new ArrayList<Restaurant>();
         adapter = new ItemAdapter(this, R.layout.restaurant_row, restaurants);
         
         setListAdapter(adapter);
@@ -106,7 +108,7 @@ public class ChooseRestaurantActivity extends ListActivity {
         ArrayList<NameValuePair> params = new ArrayList<NameValuePair>(2);
         params.add(new BasicNameValuePair(PARAM_LATITUDE, "" + latitude));
         params.add(new BasicNameValuePair(PARAM_LONGITUDE, "" + longitude));
-        getRestaurants.execute(this, "searchRestaurants", params, 
+        getRestaurants.execute(this, "/searchRestaurants", params, 
                 RestaurantListHandler.class);
     }
 

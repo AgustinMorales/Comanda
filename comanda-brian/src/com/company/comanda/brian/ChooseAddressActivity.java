@@ -1,5 +1,6 @@
 package com.company.comanda.brian;
 
+import java.nio.ReadOnlyBufferException;
 import java.util.List;
 
 import android.app.AlertDialog;
@@ -140,6 +141,16 @@ public class ChooseAddressActivity extends ListActivity {
         }
     }
 
+    
+
+    @Override
+    protected void onPause() {
+        if(readableDatabase != null){
+            if(readableDatabase.isOpen()){
+                readableDatabase.close();
+            }
+        }
+    }
 
     @Override
     protected Dialog onCreateDialog(int id) {

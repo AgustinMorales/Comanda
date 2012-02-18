@@ -23,19 +23,19 @@ public class TestAsyncDataProvider extends ActivityInstrumentationTestCase2<Sele
     public void test01(){
         solo.clickOnText(solo.getString(
                 com.company.comanda.brian.R.string.order_food));
-        solo.sleep(1000);
         solo.clickOnButton(solo.getString(
                 com.company.comanda.brian.R.string.add_new_address));
         solo.sleep(1000);
         solo.enterText(0, "Puerto de Envalira, 1, Sevilla");
         solo.enterText(1, "10 D");
-        solo.clickOnText(solo.getString(
-                com.company.comanda.brian.R.string.add_address_button));
+        solo.clickOnButton(0);
+        solo.sleep(1000);
         Assert.assertTrue(solo.searchText("Puerto de Envalira, 1, Sevilla"));
         solo.goBack();
         solo.clickOnText(solo.getString(
                 com.company.comanda.brian.R.string.order_food));
-        Assert.assertTrue(solo.searchText("Puerto de Envalira, 1, Sevilla"));
+        solo.clickOnText("Puerto de Envalira, 1, Sevilla");
+        solo.sleep(10000);
         
     }
 }
