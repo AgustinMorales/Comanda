@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.company.comanda.common.HttpParams.BlobServer;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
@@ -22,7 +23,7 @@ public class ServeBlob extends HttpServlet
 
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException
     {
-        BlobKey blobKey = new BlobKey(req.getParameter("id"));
+        BlobKey blobKey = new BlobKey(req.getParameter(BlobServer.PARAM_ID));
         blobstoreService.serve(blobKey, resp);
     }
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException

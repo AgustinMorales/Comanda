@@ -34,4 +34,12 @@
     android:layout_height="0px"
     android:layout_weight="1" 
     android:id="@+id/categoriesPager"/>
+
+    <Button
+        android:id="@+id/buttonReviewOrder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/review_order" />
+
 </LinearLayout>

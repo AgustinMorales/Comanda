@@ -13,6 +13,7 @@ import org.apache.http.client.methods.HttpPost;
 
 import com.company.comanda.common.HttpParams.GetCategories;
 import com.company.comanda.common.HttpParams.GetMenuItems;
+import com.company.comanda.common.HttpParams.PlaceOrder;
 import com.company.comanda.common.HttpParams.SearchRestaurants;
 import com.company.comanda.common.XmlTags.CategoryList;
 import com.company.comanda.common.XmlTags.MenuItemList;
@@ -161,6 +162,9 @@ public class HttpRetriever {
                     close(MenuItemList.ITEM) + 
                     close(MenuItemList.ITEM_LIST);
     
+    public static final String PLACE_ORDER_RESPONSE = 
+            XmlTags.HEADER + 
+            enclose(XmlTags.BooleanResult.RESULT, "" + true);
     
     public InputStream execute(HttpPost httpPost) throws IllegalStateException,
             ClientProtocolException, IOException {
@@ -174,6 +178,9 @@ public class HttpRetriever {
         }
         else if(uri.contains(GetMenuItems.SERVICE_NAME)){
             response = GET_MENU_ITEMS_RESPONSE;
+        }
+        else if(uri.contains(PlaceOrder.SERVICE_NAME)){
+            response = PLACE_ORDER_RESPONSE;
         }
         return new ByteArrayInputStream(
                 response.getBytes("ISO-8859-1"));

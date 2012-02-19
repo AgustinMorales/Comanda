@@ -10,9 +10,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.company.comanda.common.HttpParams.DecodeQR;
 import com.company.comanda.peter.server.UserManager.CodifiedData;
 import com.googlecode.objectify.NotFoundException;
 
+
+import static com.company.comanda.common.XmlTags.RestaurantAndTableData.*;
+import static com.company.comanda.common.XmlHelper.*;
 @Singleton
 public class QRDecoderServlet extends HttpServlet {
 
@@ -37,23 +41,23 @@ public class QRDecoderServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        final String code = (String)req.getParameter("code");
+        final String code = (String)req.getParameter(DecodeQR.PARAM_CODE);
         PrintWriter out = ServletHelper.getXmlWriter(resp);
         try{
             CodifiedData data = userManager.getData(code);
             if (data != null &&
                     data.restaurant != null &&
                     data.table != null){ 
-                out.println("<Data>");
-                out.println("\t<Restaurant>");
-                out.println("\t\t<Name>" + data.restaurant.getName() + "</Name>");
-                out.println("\t\t<Id>" + data.restaurant.getId() + "</Id>");
-                out.println("\t</Restaurant>");
-                out.println("\t<Table>");
-                out.println("\t\t<Name>" + data.table.getName() + "</Name>");
-                out.println("\t\t<Id>" + data.table.getId() + "</Id>");
-                out.println("\t</Table>");
-                out.println("</Data>");
+                out.println(open(DATA));
+                out.println(open(RESTAURANT));
+                out.println(enclose(NAME, data.restaurant.getName()));
+                out.println(enclose(ID, "" + data.restaurant.getId()));
+                out.println(close(RESTAURANT));
+                out.println(open(TABLE));
+                out.println(enclose(NAME, data.table.getName()));
+                out.println(enclose(ID, "" + data.table.getId()));
+                out.println(close(TABLE));
+                out.println(close(DATA));
             }
             else{
                 out.println("error");

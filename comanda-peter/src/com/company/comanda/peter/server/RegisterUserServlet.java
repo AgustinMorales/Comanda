@@ -10,6 +10,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static com.company.comanda.common.HttpParams.RegisterUser.*;
+import static com.company.comanda.common.XmlTags.UserData.*;
+import static com.company.comanda.common.XmlHelper.*;
+
+
 @Singleton
 public class RegisterUserServlet extends HttpServlet {
 
@@ -17,13 +22,6 @@ public class RegisterUserServlet extends HttpServlet {
      * 
      */
     private static final long serialVersionUID = 28454201636922480L;
-    
-    private static final String PARAM_PHONE_NUMBER = 
-            "phoneNumber";
-    private static final String PARAM_PASSWORD = 
-            "password";
-    private static final String PARAM_VALIDATION_CODE = 
-            "validationCode";
     
     
     private UserManager userManager;
@@ -57,9 +55,9 @@ public class RegisterUserServlet extends HttpServlet {
         long userId = userManager.registerUser(phoneNumber, password, validationCode);
         
         PrintWriter out = ServletHelper.getXmlWriter(resp);
-        out.println("<User>");
-        out.println("\t<Id>" + userId + "</Id>");
-        out.println("</User>");
+        out.println(open(USER));
+        out.println(enclose(ID, "" + userId));
+        out.println(close(USER));
         out.flush();
         
     }

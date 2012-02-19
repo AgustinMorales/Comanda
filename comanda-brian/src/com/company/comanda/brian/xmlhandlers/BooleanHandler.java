@@ -5,29 +5,28 @@ import org.xml.sax.SAXException;
 
 import android.util.Log;
 
-import static com.company.comanda.common.XmlTags.UserData.*;
+import static com.company.comanda.common.XmlTags.BooleanResult.*;
 
-public class UserIdHandler extends ComandaXMLHandler<String>
+public class BooleanHandler extends ComandaXMLHandler<Boolean>
 {
 
     // ===========================================================
     // Fields
     // ===========================================================
 
-    
-    private boolean in_user = false;
-    private boolean in_id = false;
+
+    private boolean in_result = false;
 
 
-    private String userId;
+    private Boolean result;
 
     // ===========================================================
     // Getter & Setter
     // ===========================================================
 
-    public String getParsedData() 
+    public Boolean getParsedData() 
     {
-        return this.userId;
+        return this.result;
     }
 
     // ===========================================================
@@ -53,13 +52,9 @@ public class UserIdHandler extends ComandaXMLHandler<String>
     public void startElement(String namespaceURI, 
             String localName, String qName, 
             Attributes atts) throws SAXException{
-        if (localName.equals(USER)) 
+        if (localName.equals(RESULT)) 
         {
-            this.in_user = true;
-        }
-        else if (localName.equals(ID)) 
-        {
-            this.in_id = true;
+            this.in_result = true;
         }
     }
 
@@ -68,13 +63,9 @@ public class UserIdHandler extends ComandaXMLHandler<String>
     @Override
     public void endElement(String namespaceURI, String localName,
             String qName) throws SAXException {
-        if (localName.equals(USER)) 
+        if (localName.equals(RESULT)) 
         {
-            this.in_user = false;
-        }
-        else if (localName.equals(ID)) 
-        {
-            this.in_id = false;
+            this.in_result = false;
         }
     }
 
@@ -84,12 +75,10 @@ public class UserIdHandler extends ComandaXMLHandler<String>
     @Override
     public void characters(char ch[], int start, int length) 
     {
-        if(this.in_id)
+        if(this.in_result)
         {
             String textBetween = new String(ch, start, length);
-            if(this.in_user){
-                userId = textBetween;
-            }
+            result = Boolean.parseBoolean(textBetween);
         }
     }
 }

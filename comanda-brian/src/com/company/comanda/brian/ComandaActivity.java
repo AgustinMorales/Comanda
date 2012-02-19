@@ -5,24 +5,22 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsAdapter;
 
 import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.DataSetObserver;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -48,13 +46,15 @@ import android.widget.Toast;
 import com.company.comanda.brian.helpers.AsyncGetData;
 import com.company.comanda.brian.model.Category;
 import com.company.comanda.brian.model.FoodMenuItem;
+import com.company.comanda.brian.xmlhandlers.BooleanHandler;
 import com.company.comanda.brian.xmlhandlers.MenuItemsHandler;
+import com.company.comanda.common.HttpParams;
+import com.company.comanda.common.HttpParams.BlobServer;
 import com.company.comanda.common.HttpParams.GetMenuItems;
 
 public class ComandaActivity extends FragmentActivity
 {
-    
-    
+
     private ArrayList<FoodMenuItem> m_items = null;
     private ArrayList<Category> categories = null;
     private ItemAdapter[] adapters;
@@ -62,10 +62,21 @@ public class ComandaActivity extends FragmentActivity
     private String restName;
     private String tableId;
     private String restId;
-    
+
+    private HashMap<String, Bitmap> smallBitmaps = new HashMap<String, Bitmap>();
+    private HashMap<String, Bitmap> largeBitmaps = new HashMap<String, Bitmap>();
+
     private SwipeyTabs categoriesTabs;
     private ViewPager categoriesPager;
-    
+
+    private ArrayList<FoodMenuItem> orderItems;
+    private ArrayList<Integer> orderNumbers;
+
+    private ArrayAdapter<FoodMenuItem> reviewOrdersAdapter;
+
+    private static final int REVIEW_ORDER_DIALOG = 1;
+
+
     private static class AsyncGetMenuItems extends AsyncGetData<ArrayList<FoodMenuItem>>{
 
         @Override
@@ -76,7 +87,7 @@ public class ComandaActivity extends FragmentActivity
             Log.d("Comanda", "afterOnUIThread");
             if(local.m_items != null && local.m_items.size() > 0)
             {
-                
+
                 for(int i=0;i<local.adapters.length; i++){
                     ItemAdapter adapter = local.adapters[i];
                     adapter.notifyDataSetChanged();
@@ -110,23 +121,23 @@ public class ComandaActivity extends FragmentActivity
             params.add(new BasicNameValuePair(GetMenuItems.PARAM_RESTAURANT_ID, 
                     ((ComandaActivity)activity).restId));
         }
-        
+
     }
-    
+
     public static final int ORDER_PLACED_TOAST_DURATION = 3;
-    
+
     public static final String EXTRA_TABLE_NAME = "tableName";
     public static final String EXTRA_TABLE_ID = "tableId";
     public static final String EXTRA_REST_NAME = "restaurantName";
     public static final String EXTRA_REST_ID = "restaurantId";
     public static final String EXTRA_CATEGORIES = "categories";
-    
+
     public static final String PARAM_TABLE_ID = "tableId";
     public static final String PARAM_REST_ID = "restaurantId";
     public static final String PARAM_ITEM_ID = "itemId";
     public static final String PARAM_USER_ID = "userId";
     public static final String PARAM_PASSWORD = "password";
-    
+
     SharedPreferences prefs;
     /** Called when the activity is first created. */
     @SuppressWarnings("unchecked")
@@ -146,8 +157,10 @@ public class ComandaActivity extends FragmentActivity
         tableNameTextView.setText(getString(R.string.you_are_at_table) + 
                 " " + tableName + ". " + 
                 getString(R.string.at_restaurant) + " " + restName);
-        
+
         m_items = new ArrayList<FoodMenuItem>();
+        orderItems = new ArrayList<FoodMenuItem>();
+        orderNumbers = new ArrayList<Integer>();
         //set ListView adapter to basic ItemAdapter 
         //(it's a coincidence they are both called Item)
         final int noOfCategories = categories.size();
@@ -156,30 +169,41 @@ public class ComandaActivity extends FragmentActivity
             adapters[i] = new ItemAdapter(this, 
                     R.layout.row, filterMenuItems(categories.get(i).id));
         }
-        
+
         AsyncGetMenuItems getData = new AsyncGetMenuItems();
         getData.execute(this, GetMenuItems.SERVICE_NAME, new ArrayList<NameValuePair>(1), MenuItemsHandler.class);
-        
+
         categoriesPager = (ViewPager)findViewById(R.id.categoriesPager);
         categoriesTabs = (SwipeyTabs)findViewById(R.id.categoriesTabs);
-        
+
         final SwipeyTabsPagerAdapter adapter = new SwipeyTabsPagerAdapter(
                 this, getSupportFragmentManager());
         categoriesPager.setAdapter(adapter);
         categoriesTabs.setAdapter(adapter);
         categoriesPager.setOnPageChangeListener(categoriesTabs);
         categoriesPager.setCurrentItem(0);
+
+        Button reviewOrderButton = (Button)findViewById(R.id.buttonReviewOrder);
+        reviewOrderButton.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                showDialog(REVIEW_ORDER_DIALOG);
+
+            }
+        });
+        reviewOrdersAdapter = new ReviewOrderAdapter(this, R.layout.review_order_row, orderItems);
     }
-    
-    
+
+
     public static class CategoriesTabFragment extends Fragment {
-        
+
         private ListAdapter adapter;
-        
+
         public CategoriesTabFragment(ListAdapter adapter){
             this.adapter = adapter;
         }
-        
+
         public static Fragment newInstance(String title, 
                 ListAdapter adapter) {
             CategoriesTabFragment f = new CategoriesTabFragment(adapter);
@@ -200,7 +224,7 @@ public class ComandaActivity extends FragmentActivity
         }
 
     }
-    
+
 
     private class SwipeyTabsPagerAdapter extends FragmentPagerAdapter implements
     SwipeyTabsAdapter {
@@ -239,7 +263,7 @@ public class ComandaActivity extends FragmentActivity
 
     }
 
-    
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -251,8 +275,8 @@ public class ComandaActivity extends FragmentActivity
 
     public void fetchContent()
     {
-        
-        
+
+
     }
     //OPTIONS MENU STUFF
     //     @Override
@@ -275,44 +299,20 @@ public class ComandaActivity extends FragmentActivity
     //         }
     //     }    
 
-    
-    private class PlaceOrderTask extends AsyncTask<String, Void, Boolean> {
-        protected Boolean doInBackground(String... keyIds) {
-            assert keyIds.length == 1;
-            String keyId = keyIds[0];
-            boolean success = false;
-            
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost("http://" + 
-                    Constants.SERVER_LOCATION + "/placeOrder");
-
-            try {
-                // Add your data
-                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-                nameValuePairs.add(new BasicNameValuePair(PARAM_ITEM_ID, keyId));
-                nameValuePairs.add(new BasicNameValuePair(PARAM_TABLE_ID, tableId));
-                nameValuePairs.add(new BasicNameValuePair(PARAM_REST_ID, restId));
-                nameValuePairs.add(new BasicNameValuePair(PARAM_USER_ID, 
-                        prefs.getString(ComandaPreferences.USER_ID, "")));
-                nameValuePairs.add(new BasicNameValuePair(PARAM_PASSWORD, 
-                        prefs.getString(ComandaPreferences.USER_ID, "")));
-                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-                // Execute HTTP Post Request
-                httpclient.execute(httppost);
-                success = true;
-                
-            } catch (Exception e){
-                success = false;
-            }
-            
-            
-            return success;
-        }
+    //FIXME: Should accept Void instead of String
+    private class PlaceOrderTask extends AsyncGetData<Boolean> {
 
 
-        protected void onPostExecute(Boolean result) {
-            if(result){
+
+
+        @Override
+        public void afterOnUIThread(Boolean data, Activity activity) {
+            super.afterOnUIThread(data, activity);
+            dismissDialog(REVIEW_ORDER_DIALOG);
+            orderItems.clear();
+            orderNumbers.clear();
+            reviewOrdersAdapter.notifyDataSetChanged();
+            if(data){
                 Toast.makeText(getApplicationContext(), 
                         R.string.order_placed, ORDER_PLACED_TOAST_DURATION).show();
             }
@@ -322,6 +322,32 @@ public class ComandaActivity extends FragmentActivity
                         ComandaActivity.this);
             }
         }
+
+
+        @Override
+        public void beforeOnBackground(List<NameValuePair> params,
+                Activity activity) {
+            super.beforeOnBackground(params, activity);
+
+            // Add your data
+            StringBuffer keyIds = new StringBuffer();
+            for(int i=0;i<orderItems.size();i++){
+                final String currentKeyId = orderItems.get(i).getKeyId();
+                for(int j=0;j<orderNumbers.get(i);j++){
+                    keyIds.append(currentKeyId);
+                    keyIds.append("|");
+                }
+            }
+            keyIds.deleteCharAt(keyIds.length() - 1);
+            params.add(new BasicNameValuePair(PARAM_ITEM_ID, keyIds.toString()));
+            params.add(new BasicNameValuePair(PARAM_TABLE_ID, tableId));
+            params.add(new BasicNameValuePair(PARAM_REST_ID, restId));
+            params.add(new BasicNameValuePair(PARAM_USER_ID, 
+                    prefs.getString(ComandaPreferences.USER_ID, "")));
+            params.add(new BasicNameValuePair(PARAM_PASSWORD, 
+                    prefs.getString(ComandaPreferences.USER_ID, "")));
+        }
+
     }
 
 
@@ -353,105 +379,16 @@ public class ComandaActivity extends FragmentActivity
             }
             //get the FoodMenuItem corresponding to 
             //the position in the list we are rendering
-            FoodMenuItem o = items.get(position);
+            final FoodMenuItem o = items.get(position);
             if (o != null) 
             {
-                //Set all of the UI components 
-                //with the respective Object data
-                ImageView icon = (ImageView) v.findViewById(R.id.icon);
-                TextView tt = (TextView) v.findViewById(R.id.toptext);
+                fillWithMenuItemInfo(v, o);
                 Button placeOrderButton = (Button)v.findViewById(R.id.placeorderbutton);
-                final String menuItemName = o.getName();
-                final String menuItemKeyId = o.getKeyId();
-                final String menuItemDescription = o.getDescription();
-                final String imageString = o.getImageString();
-                if (tt != null)
-                {
-                    tt.setText(menuItemName);   
-                }
                 placeOrderButton.setOnClickListener(new OnClickListener() {
 
                     @Override
                     public void onClick(View v) {
-                        (new PlaceOrderTask()).execute(menuItemKeyId);
-
-                    }
-                });
-                Bitmap rawBitMap = null;
-                
-                if(icon != null && imageString != null && imageString.length() > 0)
-                {
-                    URL imageURL = null;
-                    try      
-                    {        
-                        //use our image serve page to get the image URL
-                        imageURL = new URL("http://" + Constants.SERVER_LOCATION + "/serveBlob?id="
-                                + imageString);
-                    } 
-                    catch (MalformedURLException e) 
-                    {
-                        e.printStackTrace();
-                    }
-                    try 
-                    {
-                        //Decode and resize the image then set as the icon
-//                        BitmapFactory.Options options = new BitmapFactory
-//                                .Options();
-//                        options.inJustDecodeBounds = true;
-//                        options.inSampleSize = 1/2;
-                        InputStream bitmapIS = (InputStream)imageURL
-                                .getContent();
-                        rawBitMap = BitmapFactory
-                                .decodeStream(bitmapIS);
-                        bitmapIS.close();
-                        if(rawBitMap != null){
-                            Bitmap finImg = Bitmap
-                                    .createScaledBitmap(rawBitMap, 50, 50, false);
-                            icon.setImageBitmap(finImg);
-                        }
-                    } 
-                    catch (IOException e) 
-                    {                        
-                        e.printStackTrace();
-                    }
-                }
-                //returns the view to the Adapter to be displayed
-
-                final Bitmap bitMap = rawBitMap;
-                v.setOnClickListener(new OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        LayoutInflater inflater = (LayoutInflater)
-                                ComandaActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        View view = inflater.inflate(R.layout.menu_item_details, null, false);
-                        
-                        final PopupWindow pw = new PopupWindow(
-                                view, 
-                                250, 
-                                300, 
-                                true);
-                        pw.setBackgroundDrawable(null);
-                        TextView text = (TextView) view.findViewById(R.id.contextMenuItemDescription);
-                        text.setText(menuItemDescription);
-                        TextView textName = (TextView) view.findViewById(R.id.contextMenuItemName);
-                        textName.setText(menuItemName);
-                        Button btnClose = (Button) view.findViewById(R.id.btnCloseMenuItemPopup);
-                        btnClose.setOnClickListener(new OnClickListener() {
-                            
-                            @Override
-                            public void onClick(View v) {
-                                pw.dismiss();
-                                
-                            }
-                        });
-                        if(bitMap != null){
-                            ImageView image = (ImageView) view.findViewById(R.id.image);
-                            image.setImageBitmap(Bitmap
-                                    .createScaledBitmap(bitMap, 100, 100, false));
-                        }
-                        // The code below assumes that the root container has an id called 'main'
-                        pw.showAtLocation(findViewById(R.id.main_menu_item_list), Gravity.CENTER, 0, 0);
+                        addItemForOrder(o);
 
                     }
                 });
@@ -461,6 +398,118 @@ public class ComandaActivity extends FragmentActivity
         }        
     }
 
+    private void fillWithMenuItemInfo(View v, FoodMenuItem o){
+        //Set all of the UI components 
+        //with the respective Object data
+        ImageView icon = (ImageView) v.findViewById(R.id.icon);
+        TextView tt = (TextView) v.findViewById(R.id.item_name);
+        final String menuItemName = o.getName();
+        final String menuItemDescription = o.getDescription();
+        final String imageString = o.getImageString();
+        if (tt != null)
+        {
+            tt.setText(menuItemName);   
+        }
+        Bitmap rawBitMap = null;
+        Bitmap finImg = null;
+        if(icon != null && imageString != null && imageString.length() > 0)
+        {
+            if(smallBitmaps.containsKey(imageString)){
+                finImg = smallBitmaps.get(imageString);
+            }
+            else{
+                URL imageURL = null;
+                try      
+                {        
+                    //use our image serve page to get the image URL
+                    imageURL = new URL("http://" + Constants.SERVER_LOCATION + 
+                            BlobServer.SERVICE_NAME + 
+                            "?" + BlobServer.PARAM_ID + "="
+                            + imageString);
+                } 
+                catch (MalformedURLException e) 
+                {
+                    e.printStackTrace();
+                }
+                try 
+                {
+                    //Decode and resize the image then set as the icon
+                    //                BitmapFactory.Options options = new BitmapFactory
+                    //                        .Options();
+                    //                options.inJustDecodeBounds = true;
+                    //                options.inSampleSize = 1/2;
+                    InputStream bitmapIS = (InputStream)imageURL
+                            .getContent();
+                    rawBitMap = BitmapFactory
+                            .decodeStream(bitmapIS);
+                    bitmapIS.close();
+                    if(rawBitMap != null){
+                        finImg = Bitmap
+                                .createScaledBitmap(rawBitMap, 50, 50, false);
+                        smallBitmaps.put(imageString, finImg);
+
+                    }
+                } 
+                catch (IOException e) 
+                {                        
+                    e.printStackTrace();
+                }
+            }
+        }
+        //returns the view to the Adapter to be displayed
+        if(finImg != null){
+            icon.setImageBitmap(finImg);
+        }
+        final Bitmap bitMap = rawBitMap;
+        v.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                LayoutInflater inflater = (LayoutInflater)
+                        ComandaActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View view = inflater.inflate(R.layout.menu_item_details, null, false);
+
+                final PopupWindow pw = new PopupWindow(
+                        view, 
+                        250, 
+                        300, 
+                        true);
+                pw.setBackgroundDrawable(null);
+                TextView text = (TextView) view.findViewById(R.id.contextMenuItemDescription);
+                text.setText(menuItemDescription);
+                TextView textName = (TextView) view.findViewById(R.id.contextMenuItemName);
+                textName.setText(menuItemName);
+                Button btnClose = (Button) view.findViewById(R.id.btnCloseMenuItemPopup);
+                btnClose.setOnClickListener(new OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        pw.dismiss();
+
+                    }
+                });
+                Bitmap largeBitmap = null;
+                if(largeBitmaps.containsKey(imageString)){
+                    largeBitmap = largeBitmaps.get(imageString);
+                }
+                else{
+                    if(bitMap != null){
+                        largeBitmap = Bitmap
+                                .createScaledBitmap(bitMap, 100, 100, false);
+                        largeBitmaps.put(imageString, largeBitmap);
+                    }
+                }
+                if(largeBitmap != null){
+                    ImageView image = (ImageView) view.findViewById(R.id.image);
+                    image.setImageBitmap(largeBitmap);
+                }
+
+                // The code below assumes that the root container has an id called 'main'
+                pw.showAtLocation(v, Gravity.CENTER, 0, 0);
+
+            }
+        });
+    }
 
     ArrayList<FoodMenuItem> filterMenuItems(long categoryId){
         ArrayList<FoodMenuItem> result = new ArrayList<FoodMenuItem>(m_items.size());
@@ -471,4 +520,131 @@ public class ComandaActivity extends FragmentActivity
         }
         return result;
     }
+
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        Dialog result = null;
+        if(id == REVIEW_ORDER_DIALOG){
+            result = new Dialog(this);
+            final Dialog dialog = result;
+            result.setContentView(R.layout.review_order);
+
+            ListView listView = (ListView)result.findViewById(R.id.listViewReviewOrder);
+            listView.setAdapter(reviewOrdersAdapter);
+
+            final Button commitOrderButton = (Button)result.findViewById(R.id.buttonCommitOrder);
+            commitOrderButton.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    (new PlaceOrderTask()).execute(
+                            ComandaActivity.this,
+                            HttpParams.PlaceOrder.SERVICE_NAME,
+                            new ArrayList<NameValuePair>(),
+                            BooleanHandler.class);
+                }
+            });
+
+            Button backButton = (Button) result.findViewById(R.id.buttonReviewOrderBack);
+            backButton.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    dialog.cancel();
+                }
+            });
+
+            commitOrderButton.setEnabled(false);
+            reviewOrdersAdapter.registerDataSetObserver(new DataSetObserver() {
+
+                @Override
+                public void onChanged() {
+                    if(orderItems.size() > 0){
+                        commitOrderButton.setEnabled(true);
+                    }
+                    else{
+                        commitOrderButton.setEnabled(false);
+                    }
+                }
+
+            });
+        }
+        else{
+            result = super.onCreateDialog(id);
+        }
+        return result;
+    }
+
+
+    private class ReviewOrderAdapter extends ArrayAdapter<FoodMenuItem>{
+
+        public ReviewOrderAdapter(Context context, int textViewResourceId,
+                List<FoodMenuItem> objects) {
+            super(context, textViewResourceId, objects);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View v = convertView;
+            if (v == null) 
+            {
+                LayoutInflater vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                //inflate using res/layout/row.xml
+                v = vi.inflate(R.layout.review_order_row, null);
+            }
+            final FoodMenuItem o = orderItems.get(position);
+            if (o != null) 
+            {
+                fillWithMenuItemInfo(v, o);
+            }
+            TextView no_of_items = (TextView)v.findViewById(R.id.no_of_items);
+            no_of_items.setText(orderNumbers.get(position).toString());
+
+            Button removeButton = (Button)v.findViewById(R.id.buttonRemoveItem);
+            removeButton.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    removeItemFromOrder(o);
+                }
+            });
+            return v;
+        }
+
+    }
+
+    private void addItemForOrder(FoodMenuItem item){
+        int index = orderItems.indexOf(item);
+        if(index != -1){
+            int previousnumber = orderNumbers.get(index);
+            orderNumbers.remove(index);
+            orderNumbers.add(index,previousnumber + 1);
+        }
+        else{
+            orderItems.add(item);
+            orderNumbers.add(1);
+        }
+        reviewOrdersAdapter.notifyDataSetChanged();
+    }
+
+    private void removeItemFromOrder(FoodMenuItem item){
+        int index = orderItems.indexOf(item);
+        if(index != -1){
+            int previousnumber = orderNumbers.get(index);
+            orderNumbers.remove(index);
+            if(previousnumber > 1){
+                orderNumbers.add(index,previousnumber - 1);
+            }
+            else{
+                orderItems.remove(index);
+            }
+            reviewOrdersAdapter.notifyDataSetChanged();
+        }
+        else{
+            throw new IllegalStateException("Not in the order list");
+        }
+    }
+
+
 }

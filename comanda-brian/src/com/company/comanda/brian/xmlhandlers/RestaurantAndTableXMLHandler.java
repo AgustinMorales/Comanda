@@ -5,6 +5,7 @@ import org.xml.sax.SAXException;
 
 import android.util.Log;
 
+import static com.company.comanda.common.XmlTags.RestaurantAndTableData.*;
 
 public class RestaurantAndTableXMLHandler extends ComandaXMLHandler<RestaurantAndTableXMLHandler.ParsedData>
 {
@@ -20,10 +21,6 @@ public class RestaurantAndTableXMLHandler extends ComandaXMLHandler<RestaurantAn
     // Fields
     // ===========================================================
 
-    private static final String REST = "Restaurant";
-    private static final String TABLE = "Table";
-    private static final String NAME = "Name";
-    private static final String ID = "Id";
     
     private boolean in_table = false;
     private boolean in_restaurant = false;
@@ -70,7 +67,7 @@ public class RestaurantAndTableXMLHandler extends ComandaXMLHandler<RestaurantAn
             this.in_table = true;
             Log.e("XMLHandler", "Found a table");
         }
-        else if (localName.equals(REST)) 
+        else if (localName.equals(RESTAURANT)) 
         {
             this.in_restaurant = true;
             Log.e("XMLHandler", "Found a restaurant");
@@ -96,7 +93,7 @@ public class RestaurantAndTableXMLHandler extends ComandaXMLHandler<RestaurantAn
         {
             this.in_table = false;
         }
-        else if (localName.equals(REST)) 
+        else if (localName.equals(RESTAURANT)) 
         {
             this.in_restaurant = false;
         }

@@ -19,14 +19,13 @@ import com.company.comanda.brian.model.Category;
 import com.company.comanda.brian.xmlhandlers.CategoriesHandler;
 import com.company.comanda.brian.xmlhandlers.RestaurantAndTableXMLHandler;
 import com.company.comanda.brian.xmlhandlers.RestaurantAndTableXMLHandler.ParsedData;
+import com.company.comanda.common.HttpParams.DecodeQR;
 
 public class SelectTableActivity extends Activity
 {
     
     private static final int SCAN_CODE_ACTIVITY = 1;
     
-    private static final String PARAM_CODE = "code";
-    private static final String PARAM_REST_ID = "restaurantId";
     
     
     public static class GetCategories extends 
@@ -100,8 +99,13 @@ public class SelectTableActivity extends Activity
                     data.tableId, data.tableName);
             
             List<NameValuePair> params = new ArrayList<NameValuePair>(1);
-            params.add(new BasicNameValuePair(PARAM_REST_ID, data.restId));
-            getCategories.execute(activity, "/getCategories", 
+            params.add(new BasicNameValuePair(
+                    com.company.comanda.common.
+                    HttpParams.GetCategories.PARAM_RESTAURANT_ID,
+                    data.restId));
+            getCategories.execute(activity, 
+                    com.company.comanda.common.
+                    HttpParams.GetCategories.SERVICE_NAME, 
                     params, CategoriesHandler.class);
         }
         
@@ -151,8 +155,8 @@ public class SelectTableActivity extends Activity
                //TODO: Some contents validation would be great...
                GetTableData getData = new GetTableData();
                List<NameValuePair> params = new ArrayList<NameValuePair>(1);
-               params.add(new BasicNameValuePair(PARAM_CODE, contents));
-               getData.execute(this, "/decodeQR", params, 
+               params.add(new BasicNameValuePair(DecodeQR.PARAM_CODE, contents));
+               getData.execute(this, DecodeQR.SERVICE_NAME, params, 
                        RestaurantAndTableXMLHandler.class);
             } else if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(getApplicationContext(), "Cancelled", 20);
