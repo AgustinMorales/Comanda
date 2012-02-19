@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, ComandaActivity!</string>
+    <string name="app_name">Comanda</string>
+    <string name="you_are_at_table">Mesa:</string>
+    <string name="order_placed">El pedido se ha enviado con éxito</string>
+    <string name="read_qr_code">En restaurante</string>
+    <string name="comanda_logo_img_desc">Comanda logo</string>
+    <string name="at_restaurant">Restaurante:</string>
+    <string name="ok">Aceptar</string>
+    <string name="error_while_placing_order">Ocurrió un error al enviar el pedido. Por favor, comprueba la cobetura e inténtalo de nuevo</string>
+    <string name="please_enter_phone">Introduce tu número de teléfono:</string>
+    <string name="incorrect_phone_number">El número de teléfono introducido no es válido</string>
+    <string name="place_order">Añadir al pedido</string>
+    <string name="menu_item_name">Nombre:</string>
+    <string name="choose_restaurant">Éstos son los restaurantes que sirven a la dirección escogida. Por favor, selecciona uno para continuar.</string>
+    <string name="order_food">A domicilio</string>
+    <string name="select_delivery_address">Selecciona una dirección en la que recibir el pedido. Si no se encuentra en la lista, pulsa el botón para añadir una nueva.</string>
+    <string name="add_new_address">Añadir dirección nueva</string>
+    <string name="enter_address_details">Introduce los datos de tu dirección de envío:</string>
+    <string name="nice_address_hint">Calle, número, ciudad&#8230;</string>
+    <string name="address_additional_data">Otros datos (portal, piso, puerta&#8230;)</string>
+    <string name="add_address_button">Añadir</string>
+    <string name="new_address_dialog_title">Dirección nueva</string>
+    <string name="back">Atrás</string>
+    <string name="commit_order">Validar pedido</string>
+    <string name="remove_item">Eliminar</string>
+    <string name="review_order">Revisar pedido</string>
+    <string name="restaurant_image">Imagen del restaurante</string>
+    <string name="menu_item_image">Imagen del elemento de la carta</string>
+    
+</resources>

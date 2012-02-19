@@ -8,13 +8,9 @@
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_marginRight="6dip"
-        android:contentDescription="Restaurant image"
+        android:contentDescription="@string/restaurant_image"
         android:src="@drawable/ic_launcher" />
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="0dip"
-        android:layout_weight="1"
-        android:layout_height="fill_parent">
+    
         <TextView
             android:id="@+id/toptext"
             android:layout_width="fill_parent"
@@ -22,6 +18,5 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
         />
-    </LinearLayout>
 
 </LinearLayout>

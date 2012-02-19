@@ -4,28 +4,30 @@
     <string name="hello">Hello World, ComandaActivity!</string>
     <string name="app_name">Comanda-brian</string>
     <string name="you_are_at_table">Table:</string>
-    <string name="order_placed">El pedido se ha enviado correctamente</string>
-    <string name="read_qr_code">Leer código</string>
+    <string name="order_placed">Order sucessfully sent</string>
+    <string name="read_qr_code">I am on the restaurant</string>
     <string name="comanda_logo_img_desc">Comanda logo</string>
     <string name="at_restaurant">Restaurant:</string>
     <string name="ok">OK</string>
     <string name="error_while_placing_order">An error occurred while placing your order. Please try again later</string>
     <string name="please_enter_phone">Please enter your phone number:</string>
     <string name="incorrect_phone_number">This phone number you entered is not valid</string>
-    <string name="place_order">Pedir</string>
+    <string name="place_order">Add to order</string>
     <string name="menu_item_name">Name:</string>
     <string name="choose_restaurant">These restaurants serve to your selected location. Please choose one.</string>
-    <string name="order_food">Order delivery</string>
+    <string name="order_food">I want to order a delivery</string>
     <string name="select_delivery_address">Please choose an address for delivery. If the address is not in the list, press \'Add new address\' button to enter a new one.</string>
     <string name="add_new_address">Add new address</string>
     <string name="enter_address_details">Enter you address below:</string>
-    <string name="nice_address_hint">Street, number, city...</string>
-    <string name="address_additional_data">Extras (floor number, door...)</string>
+    <string name="nice_address_hint">Street, number, city&#8230;</string>
+    <string name="address_additional_data">Extras (floor number, door&#8230;)</string>
     <string name="add_address_button">OK</string>
     <string name="new_address_dialog_title">New address</string>
     <string name="back">Back</string>
     <string name="commit_order">Commit order</string>
     <string name="remove_item">Remove</string>
     <string name="review_order">Review order</string>
+    <string name="restaurant_image">Restaurant image</string>
+    <string name="menu_item_image">Menu item image</string>
     
 </resources>

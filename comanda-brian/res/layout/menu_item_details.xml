@@ -16,7 +16,8 @@
             android:id="@+id/image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp" />
+            android:layout_marginRight="10dp"
+            android:contentDescription="@string/menu_item_image" />
 
         <LinearLayout
             android:id="@+id/linearLayout4"
@@ -28,8 +29,7 @@
             <TextView
                 android:id="@+id/contextMenuItemName"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Name" />
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
@@ -45,7 +45,6 @@
             android:id="@+id/contextMenuItemDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Description"
             android:textColor="#FFF" />
 
     </LinearLayout>
@@ -61,7 +60,7 @@
             android:id="@+id/btnCloseMenuItemPopup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Back" />
+            android:text="@string/back" />
 
     </LinearLayout>
 
