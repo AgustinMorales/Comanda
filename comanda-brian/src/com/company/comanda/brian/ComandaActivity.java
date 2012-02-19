@@ -528,6 +528,7 @@ public class ComandaActivity extends FragmentActivity
         if(id == REVIEW_ORDER_DIALOG){
             result = new Dialog(this);
             final Dialog dialog = result;
+            result.setTitle(this.getString(R.string.review_order_dialog_title));
             result.setContentView(R.layout.review_order);
 
             ListView listView = (ListView)result.findViewById(R.id.listViewReviewOrder);

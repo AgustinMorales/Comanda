@@ -12,7 +12,7 @@
     <string name="error_while_placing_order">Ocurrió un error al enviar el pedido. Por favor, comprueba la cobetura e inténtalo de nuevo</string>
     <string name="please_enter_phone">Introduce tu número de teléfono:</string>
     <string name="incorrect_phone_number">El número de teléfono introducido no es válido</string>
-    <string name="place_order">Añadir al pedido</string>
+    <string name="place_order">Añadir</string>
     <string name="menu_item_name">Nombre:</string>
     <string name="choose_restaurant">Éstos son los restaurantes que sirven a la dirección escogida. Por favor, selecciona uno para continuar.</string>
     <string name="order_food">A domicilio</string>
@@ -29,5 +29,6 @@
     <string name="review_order">Revisar pedido</string>
     <string name="restaurant_image">Imagen del restaurante</string>
     <string name="menu_item_image">Imagen del elemento de la carta</string>
+    <string name="review_order_dialog_title">Pedido actual</string>
     
 </resources>

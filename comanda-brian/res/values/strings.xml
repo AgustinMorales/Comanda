@@ -2,7 +2,7 @@
 <resources>
 
     <string name="hello">Hello World, ComandaActivity!</string>
-    <string name="app_name">Comanda-brian</string>
+    <string name="app_name">Comanda</string>
     <string name="you_are_at_table">Table:</string>
     <string name="order_placed">Order sucessfully sent</string>
     <string name="read_qr_code">I am on the restaurant</string>
@@ -29,5 +29,6 @@
     <string name="review_order">Review order</string>
     <string name="restaurant_image">Restaurant image</string>
     <string name="menu_item_image">Menu item image</string>
+    <string name="review_order_dialog_title">Current order</string>
     
 </resources>

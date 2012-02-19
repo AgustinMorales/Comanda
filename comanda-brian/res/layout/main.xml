@@ -25,7 +25,7 @@
         android:id="@+id/categoriesTabs"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        swipeytabs:bottomBarColor="#ff96aa39"
+        swipeytabs:bottomBarColor="#ffff6400"
         swipeytabs:bottomBarHeight="2dip"
         swipeytabs:tabIndicatorHeight="3dip"
         android:background="#ff3b3b3b"/>
