@@ -70,7 +70,7 @@ public class ComandaActivity extends FragmentActivity
     private ViewPager categoriesPager;
 
     private ArrayList<FoodMenuItem> orderItems;
-    private ArrayList<Integer> orderNumbers;
+    private HashMap<FoodMenuItem, Integer> orderNumbers;
 
     private ArrayAdapter<FoodMenuItem> reviewOrdersAdapter;
 
@@ -509,6 +509,18 @@ public class ComandaActivity extends FragmentActivity
 
             }
         });
+        
+        TextView no_of_items = (TextView)v.findViewById(R.id.no_of_items);
+        no_of_items.setText(orderNumbers.get(position).toString());
+
+        Button removeButton = (Button)v.findViewById(R.id.buttonRemoveItem);
+        removeButton.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                removeItemFromOrder(o);
+            }
+        });
     }
 
     ArrayList<FoodMenuItem> filterMenuItems(long categoryId){
@@ -599,17 +611,7 @@ public class ComandaActivity extends FragmentActivity
             {
                 fillWithMenuItemInfo(v, o);
             }
-            TextView no_of_items = (TextView)v.findViewById(R.id.no_of_items);
-            no_of_items.setText(orderNumbers.get(position).toString());
-
-            Button removeButton = (Button)v.findViewById(R.id.buttonRemoveItem);
-            removeButton.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    removeItemFromOrder(o);
-                }
-            });
+            
             return v;
         }
 
