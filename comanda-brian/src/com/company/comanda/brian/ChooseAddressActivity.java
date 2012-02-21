@@ -82,7 +82,7 @@ public class ChooseAddressActivity extends ListActivity {
                         ChooseRestaurantActivity.class);
                 intent.putExtra(ChooseRestaurantActivity.EXTRA_LATITUDE, 
                         latitude);
-                intent.putExtra(ChooseRestaurantActivity.EXTRA_LATITUDE, 
+                intent.putExtra(ChooseRestaurantActivity.EXTRA_LONGITUDE, 
                         longitude);
                 intent.putExtra(ChooseRestaurantActivity.EXTRA_ADDRESS_DETAILS, 
                         additionalData);

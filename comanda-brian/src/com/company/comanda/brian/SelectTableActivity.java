@@ -63,7 +63,7 @@ public class SelectTableActivity extends Activity
             
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SelectTableActivity.this, CaptureActivity.class);
+                Intent intent = new Intent("com.google.zxing.client.android.SCAN");
                 intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
                 startActivityForResult(intent, SCAN_CODE_ACTIVITY);
                 
