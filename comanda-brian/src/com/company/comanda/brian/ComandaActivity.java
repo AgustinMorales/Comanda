@@ -351,8 +351,9 @@ public class ComandaActivity extends FragmentActivity
             // Add your data
             StringBuffer keyIds = new StringBuffer();
             for(int i=0;i<orderItems.size();i++){
-                final String currentKeyId = orderItems.get(i).getKeyId();
-                for(int j=0;j<orderNumbers.get(i);j++){
+                final FoodMenuItem currentItem = orderItems.get(i);
+                final String currentKeyId = currentItem.getKeyId();
+                for(int j=0;j<orderNumbers.get(currentItem);j++){
                     keyIds.append(currentKeyId);
                     keyIds.append("|");
                 }
@@ -604,7 +605,12 @@ public class ComandaActivity extends FragmentActivity
                 }
             });
 
-            commitOrderButton.setEnabled(false);
+            if(orderItems.size() == 0){
+                commitOrderButton.setEnabled(false);
+            }
+            else{
+                commitOrderButton.setEnabled(true);
+            }
             reviewOrdersAdapter.registerDataSetObserver(new DataSetObserver() {
 
                 @Override
