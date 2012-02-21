@@ -36,6 +36,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -47,9 +48,11 @@ import com.company.comanda.brian.helpers.AsyncGetData;
 import com.company.comanda.brian.model.Category;
 import com.company.comanda.brian.model.FoodMenuItem;
 import com.company.comanda.brian.xmlhandlers.BooleanHandler;
+import com.company.comanda.brian.xmlhandlers.CategoriesHandler;
 import com.company.comanda.brian.xmlhandlers.MenuItemsHandler;
 import com.company.comanda.common.HttpParams;
 import com.company.comanda.common.HttpParams.BlobServer;
+import com.company.comanda.common.HttpParams.GetCategories;
 import com.company.comanda.common.HttpParams.GetMenuItems;
 
 public class ComandaActivity extends FragmentActivity
@@ -124,13 +127,64 @@ public class ComandaActivity extends FragmentActivity
 
     }
 
+    private class AsyncGetCategories extends AsyncGetData<ArrayList<Category>>{
+
+        @Override
+        public void afterOnUIThread(ArrayList<Category> data,
+                Activity activity) {
+            super.afterOnUIThread(data, activity);
+            categories = data;
+            TextView tableNameTextView = (TextView)findViewById(R.id.tableNametextView);
+            tableNameTextView.setText(getString(R.string.you_are_at_table) + 
+                    " " + tableName + ". " + 
+                    getString(R.string.at_restaurant) + " " + restName);
+
+            m_items = new ArrayList<FoodMenuItem>();
+            orderItems = new ArrayList<FoodMenuItem>();
+            orderNumbers = new HashMap<FoodMenuItem, Integer>();
+            //set ListView adapter to basic ItemAdapter 
+            //(it's a coincidence they are both called Item)
+            final int noOfCategories = categories.size();
+            adapters = new ItemAdapter[noOfCategories];
+            for(int i=0;i<noOfCategories;i++){
+                adapters[i] = new ItemAdapter(ComandaActivity.this, 
+                        R.layout.row, filterMenuItems(categories.get(i).id));
+            }
+
+            AsyncGetMenuItems getData = new AsyncGetMenuItems();
+            getData.execute(ComandaActivity.this, GetMenuItems.SERVICE_NAME, new ArrayList<NameValuePair>(1), MenuItemsHandler.class);
+
+            categoriesPager = (ViewPager)findViewById(R.id.categoriesPager);
+            categoriesTabs = (SwipeyTabs)findViewById(R.id.categoriesTabs);
+
+            final SwipeyTabsPagerAdapter adapter = new SwipeyTabsPagerAdapter(
+                    ComandaActivity.this, getSupportFragmentManager());
+            categoriesPager.setAdapter(adapter);
+            categoriesTabs.setAdapter(adapter);
+            categoriesPager.setOnPageChangeListener(categoriesTabs);
+            categoriesPager.setCurrentItem(0);
+
+            Button reviewOrderButton = (Button)findViewById(R.id.buttonReviewOrder);
+            reviewOrderButton.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    showDialog(REVIEW_ORDER_DIALOG);
+
+                }
+            });
+            reviewOrdersAdapter = new ReviewOrderAdapter(ComandaActivity.this, 
+                    R.layout.row, orderItems);
+        }
+    }
+
+
     public static final int ORDER_PLACED_TOAST_DURATION = 3;
 
     public static final String EXTRA_TABLE_NAME = "tableName";
     public static final String EXTRA_TABLE_ID = "tableId";
     public static final String EXTRA_REST_NAME = "restaurantName";
     public static final String EXTRA_REST_ID = "restaurantId";
-    public static final String EXTRA_CATEGORIES = "categories";
 
     public static final String PARAM_TABLE_ID = "tableId";
     public static final String PARAM_REST_ID = "restaurantId";
@@ -140,7 +194,6 @@ public class ComandaActivity extends FragmentActivity
 
     SharedPreferences prefs;
     /** Called when the activity is first created. */
-    @SuppressWarnings("unchecked")
     @Override
     public void onCreate(Bundle savedInstanceState) 
     {
@@ -151,48 +204,14 @@ public class ComandaActivity extends FragmentActivity
         tableId = extras.getString(EXTRA_TABLE_ID);
         restName = extras.getString(EXTRA_REST_NAME);
         restId = extras.getString(EXTRA_REST_ID);
-        categories = (ArrayList<Category>)extras.
-                get(EXTRA_CATEGORIES);
-        TextView tableNameTextView = (TextView)findViewById(R.id.tableNametextView);
-        tableNameTextView.setText(getString(R.string.you_are_at_table) + 
-                " " + tableName + ". " + 
-                getString(R.string.at_restaurant) + " " + restName);
 
-        m_items = new ArrayList<FoodMenuItem>();
-        orderItems = new ArrayList<FoodMenuItem>();
-        orderNumbers = new ArrayList<Integer>();
-        //set ListView adapter to basic ItemAdapter 
-        //(it's a coincidence they are both called Item)
-        final int noOfCategories = categories.size();
-        adapters = new ItemAdapter[noOfCategories];
-        for(int i=0;i<noOfCategories;i++){
-            adapters[i] = new ItemAdapter(this, 
-                    R.layout.row, filterMenuItems(categories.get(i).id));
-        }
+        AsyncGetCategories getCategories = new AsyncGetCategories();
+        ArrayList<NameValuePair> params = new ArrayList<NameValuePair>(1);
+        params.add(new BasicNameValuePair(GetCategories.PARAM_RESTAURANT_ID, restId));
+        getCategories.execute(this, 
+                GetCategories.SERVICE_NAME, params, CategoriesHandler.class);
 
-        AsyncGetMenuItems getData = new AsyncGetMenuItems();
-        getData.execute(this, GetMenuItems.SERVICE_NAME, new ArrayList<NameValuePair>(1), MenuItemsHandler.class);
 
-        categoriesPager = (ViewPager)findViewById(R.id.categoriesPager);
-        categoriesTabs = (SwipeyTabs)findViewById(R.id.categoriesTabs);
-
-        final SwipeyTabsPagerAdapter adapter = new SwipeyTabsPagerAdapter(
-                this, getSupportFragmentManager());
-        categoriesPager.setAdapter(adapter);
-        categoriesTabs.setAdapter(adapter);
-        categoriesPager.setOnPageChangeListener(categoriesTabs);
-        categoriesPager.setCurrentItem(0);
-
-        Button reviewOrderButton = (Button)findViewById(R.id.buttonReviewOrder);
-        reviewOrderButton.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                showDialog(REVIEW_ORDER_DIALOG);
-
-            }
-        });
-        reviewOrdersAdapter = new ReviewOrderAdapter(this, R.layout.review_order_row, orderItems);
     }
 
 
@@ -383,22 +402,14 @@ public class ComandaActivity extends FragmentActivity
             if (o != null) 
             {
                 fillWithMenuItemInfo(v, o);
-                Button placeOrderButton = (Button)v.findViewById(R.id.placeorderbutton);
-                placeOrderButton.setOnClickListener(new OnClickListener() {
 
-                    @Override
-                    public void onClick(View v) {
-                        addItemForOrder(o);
-
-                    }
-                });
             }
 
             return v;
         }        
     }
 
-    private void fillWithMenuItemInfo(View v, FoodMenuItem o){
+    private void fillWithMenuItemInfo(View v, final FoodMenuItem o){
         //Set all of the UI components 
         //with the respective Object data
         ImageView icon = (ImageView) v.findViewById(R.id.icon);
@@ -461,7 +472,7 @@ public class ComandaActivity extends FragmentActivity
             icon.setImageBitmap(finImg);
         }
         final Bitmap bitMap = rawBitMap;
-        v.setOnClickListener(new OnClickListener() {
+        View.OnClickListener clickListener = new OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -508,12 +519,11 @@ public class ComandaActivity extends FragmentActivity
                 pw.showAtLocation(v, Gravity.CENTER, 0, 0);
 
             }
-        });
-        
-        TextView no_of_items = (TextView)v.findViewById(R.id.no_of_items);
-        no_of_items.setText(orderNumbers.get(position).toString());
+        };
+        tt.setOnClickListener(clickListener);
+        icon.setOnClickListener(clickListener);
 
-        Button removeButton = (Button)v.findViewById(R.id.buttonRemoveItem);
+        ImageButton removeButton = (ImageButton)v.findViewById(R.id.removeorderbutton);
         removeButton.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -521,6 +531,32 @@ public class ComandaActivity extends FragmentActivity
                 removeItemFromOrder(o);
             }
         });
+
+        ImageButton placeOrderButton = (ImageButton)v.findViewById(R.id.placeorderbutton);
+        placeOrderButton.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                addItemForOrder(o);
+
+            }
+        });
+        
+        TextView no_of_items = (TextView)v.findViewById(R.id.no_of_items);
+        Integer numberOrdered = orderNumbers.get(o);
+        if(numberOrdered != null){
+            no_of_items.setText(numberOrdered.toString());
+            no_of_items.setVisibility(View.VISIBLE);
+            removeButton.setVisibility(View.VISIBLE);
+            removeButton.setEnabled(true);
+        }
+        else{
+            no_of_items.setVisibility(View.INVISIBLE);
+            removeButton.setVisibility(View.INVISIBLE);
+            removeButton.setEnabled(false);
+        }
+
+        
     }
 
     ArrayList<FoodMenuItem> filterMenuItems(long categoryId){
@@ -604,50 +640,54 @@ public class ComandaActivity extends FragmentActivity
             {
                 LayoutInflater vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 //inflate using res/layout/row.xml
-                v = vi.inflate(R.layout.review_order_row, null);
+                v = vi.inflate(R.layout.row, null);
             }
             final FoodMenuItem o = orderItems.get(position);
             if (o != null) 
             {
                 fillWithMenuItemInfo(v, o);
             }
-            
+
             return v;
         }
 
     }
 
     private void addItemForOrder(FoodMenuItem item){
-        int index = orderItems.indexOf(item);
-        if(index != -1){
-            int previousnumber = orderNumbers.get(index);
-            orderNumbers.remove(index);
-            orderNumbers.add(index,previousnumber + 1);
+        if(orderNumbers.containsKey(item)){
+            int previousnumber = orderNumbers.get(item);
+            orderNumbers.put(item,previousnumber + 1);
         }
         else{
             orderItems.add(item);
-            orderNumbers.add(1);
+            orderNumbers.put(item,1);
         }
         reviewOrdersAdapter.notifyDataSetChanged();
+        refreshAllTables();
     }
 
     private void removeItemFromOrder(FoodMenuItem item){
-        int index = orderItems.indexOf(item);
-        if(index != -1){
-            int previousnumber = orderNumbers.get(index);
-            orderNumbers.remove(index);
+        if(orderNumbers.containsKey(item)){
+            int previousnumber = orderNumbers.get(item);
             if(previousnumber > 1){
-                orderNumbers.add(index,previousnumber - 1);
+                orderNumbers.put(item,previousnumber - 1);
             }
             else{
-                orderItems.remove(index);
+                orderItems.remove(item);
+                orderNumbers.remove(item);
             }
             reviewOrdersAdapter.notifyDataSetChanged();
+            refreshAllTables();
         }
         else{
             throw new IllegalStateException("Not in the order list");
         }
     }
 
+    private void refreshAllTables(){
+        for(ItemAdapter adapter : adapters){
+            adapter.notifyDataSetChanged();
+        }
+    }
 
 }

@@ -3,7 +3,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:gravity="center|top"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="@drawable/background" >
 
     <LinearLayout
         android:id="@+id/linearLayout1"
@@ -12,13 +13,6 @@
         android:layout_gravity="top"
         android:gravity="center"
         android:orientation="vertical" >
-
-        <ImageView
-            android:contentDescription="@string/comanda_logo_img_desc"
-            android:id="@+id/imageView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/banner" />
 
     </LinearLayout>
 
@@ -29,16 +23,27 @@
         android:gravity="center_horizontal"
         android:orientation="vertical" >
 
+        <View
+     android:id="@+id/blank"
+     android:layout_height="80dp"
+     android:layout_width="15dip"
+     android:background="#00DDFFDD"
+     android:layout_marginTop="5dip"
+     android:layout_toLeftOf="@+id/placeorderbutton"
+     android:layout_marginBottom="5dip"/>
+        
         <Button
         android:id="@+id/read_code_button"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
+        android:layout_margin="5dp"
         android:text="@string/read_qr_code" />
 
         <Button
             android:id="@+id/order_delivery_button"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:text="@string/order_food" />
 
     </LinearLayout>

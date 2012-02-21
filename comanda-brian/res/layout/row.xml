@@ -13,14 +13,8 @@
         android:contentDescription="@string/menu_item_image"
         android:src="@drawable/ic_launcher" />
 
+        
 
-        <TextView
-            android:id="@+id/item_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/icon"
-            android:text="Texto de prueba" />
         <TextView
             android:id="@+id/no_of_items"
             android:layout_width="wrap_content"
@@ -31,17 +25,42 @@
             android:textColor="#ffff6400"
             android:text="23" />
 
-    <Button
+    <ImageButton
         android:id="@+id/placeorderbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dip"
+        android:layout_height="30dip"
         android:layout_alignParentRight="true"
-        android:text="+" />
-    <Button
+        android:scaleType="fitCenter"
+        android:layout_centerVertical="true"
+        android:paddingRight="10dip"
+        android:background="@drawable/button_plus" />
+
+    <View
+     android:id="@+id/blank"
+     android:layout_height="2dp"
+     android:layout_width="15dip"
+     android:background="#00DDFFDD"
+     android:layout_marginTop="5dip"
+     android:layout_toLeftOf="@+id/placeorderbutton"
+     android:layout_marginBottom="5dip"/>
+    <ImageButton
         android:id="@+id/removeorderbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/placeorderbutton"
-        android:text="-" />
+        android:layout_width="30dip"
+        android:layout_height="30dip"
+        android:scaleType="fitCenter"
+        android:layout_centerVertical="true"
+        android:paddingRight="10dip"
+        android:layout_toLeftOf="@+id/blank"
+        android:background="@drawable/button_less" />
+    
+    <TextView
+            android:id="@+id/item_name"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/icon"
+            android:layout_toLeftOf="@+id/no_of_items"
+            android:gravity="center_vertical"
+            android:text="Texto de prueba" />
 
 </RelativeLayout>

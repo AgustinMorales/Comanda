@@ -13,18 +13,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.company.comanda.brian.helpers.AsyncGetData;
-import com.company.comanda.brian.model.Category;
 import com.company.comanda.brian.model.Restaurant;
-import com.company.comanda.brian.xmlhandlers.CategoriesHandler;
 import com.company.comanda.brian.xmlhandlers.RestaurantListHandler;
-
-import static com.company.comanda.common.HttpParams.*;
+import com.company.comanda.common.HttpParams.SearchRestaurants;
 
 public class ChooseRestaurantActivity extends ListActivity {
 
@@ -40,8 +38,6 @@ public class ChooseRestaurantActivity extends ListActivity {
     
     private ItemAdapter adapter;
     
-    private String restaurantId;
-    private String restaurantName;
     
     
     private static class GetRestaurants extends AsyncGetData<ArrayList<Restaurant>>{
@@ -72,29 +68,7 @@ public class ChooseRestaurantActivity extends ListActivity {
             ((ChooseRestaurantActivity)activity).restaurants = data;
         }
     }
-    
-    private static class AsyncGetCategories extends AsyncGetData<ArrayList<Category>>{
-        
-        @Override
-        public void afterOnUIThread(ArrayList<Category> data,
-                Activity activity) {
-            super.afterOnUIThread(data, activity);
-            final ChooseRestaurantActivity local = (ChooseRestaurantActivity) activity;
-            Intent intent = new Intent(
-                    activity.getApplicationContext(), 
-                    ComandaActivity.class);
-            intent.putExtra(ComandaActivity.EXTRA_REST_ID, 
-                    local.restaurantId);
-            intent.putExtra(ComandaActivity.EXTRA_REST_NAME, 
-                    local.restaurantName);
-            intent.putExtra(ComandaActivity.EXTRA_TABLE_ID, 
-                    "");
-            intent.putExtra(ComandaActivity.EXTRA_TABLE_NAME, 
-                    "");
-            intent.putExtra(ComandaActivity.EXTRA_CATEGORIES, data);
-            local.startActivity(intent);
-        }
-    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,6 +90,26 @@ public class ChooseRestaurantActivity extends ListActivity {
         params.add(new BasicNameValuePair(SearchRestaurants.PARAM_LONGITUDE, "" + longitude));
         getRestaurants.execute(this, SearchRestaurants.SERVICE_NAME, params, 
                 RestaurantListHandler.class);
+        getListView().setOnItemClickListener(new OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+                    long id) {
+                Restaurant restaurant = (Restaurant)arg0.getItemAtPosition(position);
+                Intent intent = new Intent(
+                        getApplicationContext(), 
+                        ComandaActivity.class);
+                intent.putExtra(ComandaActivity.EXTRA_REST_ID, 
+                        restaurant.id);
+                intent.putExtra(ComandaActivity.EXTRA_REST_NAME, 
+                        restaurant.name);
+                intent.putExtra(ComandaActivity.EXTRA_TABLE_ID, 
+                        "");
+                intent.putExtra(ComandaActivity.EXTRA_TABLE_NAME, 
+                        "");
+                startActivity(intent);
+            }
+        });
     }
 
     /*
@@ -152,31 +146,17 @@ public class ChooseRestaurantActivity extends ListActivity {
                 //Set all of the UI components 
                 //with the respective Object data
                 TextView tt = (TextView) v.findViewById(R.id.toptext);
-                restaurantName = o.name;
-                restaurantId = o.id;
+                final String restaurantName = o.name;
                 if (tt != null)
                 {
                     tt.setText(restaurantName);   
                 }
-                
-                v.setOnClickListener(new OnClickListener() {
-                    
-                    @Override
-                    public void onClick(View v) {
-                        AsyncGetCategories getCategories = new AsyncGetCategories();
-                        ArrayList<NameValuePair> params = new ArrayList<NameValuePair>(1);
-                        params.add(new BasicNameValuePair(GetCategories.PARAM_RESTAURANT_ID, restaurantId));
-                        getCategories.execute(ChooseRestaurantActivity.this, 
-                                GetCategories.SERVICE_NAME, params, CategoriesHandler.class);
-                        
-                    }
-                });
                 
             }
             
             
 
             return v;
-        }        
+        }
     }
 }

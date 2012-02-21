@@ -21,6 +21,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -49,7 +51,6 @@ public class ChooseAddressActivity extends ListActivity {
         
         cursor = newQuery();
         
-        startManagingCursor(cursor);
         
         adapter = new AddressAdapter(this, cursor);
         
@@ -63,6 +64,31 @@ public class ChooseAddressActivity extends ListActivity {
             public void onClick(View v) {
                 showDialog(NEW_ADDRESS_DIALOG);
                 
+            }
+        });
+        
+        getListView().setOnItemClickListener(new OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+                    long arg3) {
+                Cursor item = (Cursor)arg0.getItemAtPosition(position);
+                final String niceAddress = item.getString(1);
+                final String additionalData = item.getString(2);
+                final double latitude = item.getDouble(3);
+                final double longitude = item.getDouble(4);
+                Intent intent = new Intent(
+                        getApplicationContext(), 
+                        ChooseRestaurantActivity.class);
+                intent.putExtra(ChooseRestaurantActivity.EXTRA_LATITUDE, 
+                        latitude);
+                intent.putExtra(ChooseRestaurantActivity.EXTRA_LATITUDE, 
+                        longitude);
+                intent.putExtra(ChooseRestaurantActivity.EXTRA_ADDRESS_DETAILS, 
+                        additionalData);
+                intent.putExtra(ChooseRestaurantActivity.EXTRA_NICE_ADDRESS, 
+                        niceAddress);
+                startActivity(intent);
             }
         });
     }
@@ -112,31 +138,9 @@ public class ChooseAddressActivity extends ListActivity {
             TextView textView = (TextView)v.findViewById(
                     R.id.textViewAddressNiceString);
             final String niceAddress = cursor.getString(1);
-            final String additionalData = cursor.getString(2);
-            final double latitude = cursor.getDouble(3);
-            final double longitude = cursor.getDouble(4);
             
             textView.setText(niceAddress);
             
-            v.setOnClickListener(new OnClickListener() {
-                
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(
-                            getApplicationContext(), 
-                            ChooseRestaurantActivity.class);
-                    intent.putExtra(ChooseRestaurantActivity.EXTRA_LATITUDE, 
-                            latitude);
-                    intent.putExtra(ChooseRestaurantActivity.EXTRA_LATITUDE, 
-                            longitude);
-                    intent.putExtra(ChooseRestaurantActivity.EXTRA_ADDRESS_DETAILS, 
-                            additionalData);
-                    intent.putExtra(ChooseRestaurantActivity.EXTRA_NICE_ADDRESS, 
-                            niceAddress);
-                    startActivity(intent);
-                    
-                }
-            });
         }
     }
 
@@ -253,6 +257,12 @@ public class ChooseAddressActivity extends ListActivity {
         else{
             super.onPrepareDialog(id, dialog);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshList();
     }
     
     

@@ -86,14 +86,14 @@ public class HttpRetriever {
                     open(MenuItemList.ITEM) + 
                     enclose(MenuItemList.NAME, "Cosas") + 
                     enclose(MenuItemList.ID, "2") + 
-                    enclose(MenuItemList.DESCRIPTION, "Unos buenos nachos") + 
+                    enclose(MenuItemList.DESCRIPTION, "Cosas") + 
                     enclose(MenuItemList.IMAGE_STRING, "") + 
                     enclose(MenuItemList.CATEGORY_ID, "1") + 
                     close(MenuItemList.ITEM) + 
                     open(MenuItemList.ITEM) + 
                     enclose(MenuItemList.NAME, "Otros nachos") + 
                     enclose(MenuItemList.ID, "3") + 
-                    enclose(MenuItemList.DESCRIPTION, "Unos buenos nachos") + 
+                    enclose(MenuItemList.DESCRIPTION, "...") + 
                     enclose(MenuItemList.IMAGE_STRING, "") + 
                     enclose(MenuItemList.CATEGORY_ID, "1") + 
                     close(MenuItemList.ITEM) + 
