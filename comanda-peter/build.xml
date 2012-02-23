@@ -18,6 +18,12 @@
 	      <include name="**/asm-*.jar"/>
 	    </fileset>
 	  </path>
+	<path id="appengine.test.classpath">
+        <pathelement location="${appengine.sdk}/lib/impl/appengine-api-labs.jar"/>
+        <pathelement location="${appengine.sdk}/lib/impl/appengine-api-stubs.jar"/>
+        <pathelement location="${appengine.sdk}/lib/testing/appengine-testing.jar"/>
+	      </path>
+	
 	
   <path id="project.class.path">
     <pathelement location="war/WEB-INF/classes"/>
@@ -119,4 +125,19 @@
 	      </args>
 	    </appcfg>
 	  </target>
+	
+	<target name="unittest" description="Run tests" depends="javac">
+	<junit printsummary="yes" haltonfailure="yes" showoutput="yes" >
+	    <classpath>
+            <path refid="project.class.path"/>
+            <path refid="appengine.test.classpath"/>
+	    </classpath>
+	    <batchtest fork="yes" todir="${reports}/raw/">
+	        <formatter type="xml"/>
+	        <fileset dir="test">
+	            <include name="**/*Test*.java"/>
+	        </fileset>
+	    </batchtest>
+	</junit>
+		</target>
 </project>

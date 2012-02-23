@@ -5,6 +5,7 @@
 	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER/App Engine"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/objectify-3.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guice-3.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guice-servlet-3.0.jar"/>
@@ -13,5 +14,8 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guice-assistedinject-3.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-lang-2.6.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/comanda-common.jar"/>
+	<classpathentry kind="lib" path="/home/pablo/software/eclipse/plugins/com.google.appengine.eclipse.sdkbundle_1.6.1.v201112160242r37/appengine-java-sdk-1.6.1/lib/testing/appengine-testing.jar"/>
+	<classpathentry kind="lib" path="/home/pablo/software/eclipse/plugins/com.google.appengine.eclipse.sdkbundle_1.6.1.v201112160242r37/appengine-java-sdk-1.6.1/lib/impl/appengine-api-stubs.jar"/>
+	<classpathentry kind="lib" path="/home/pablo/software/eclipse/plugins/com.google.appengine.eclipse.sdkbundle_1.6.1.v201112160242r37/appengine-java-sdk-1.6.1/lib/impl/appengine-api-labs.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
