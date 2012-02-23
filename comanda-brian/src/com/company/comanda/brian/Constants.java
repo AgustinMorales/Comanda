@@ -6,7 +6,7 @@ import android.content.DialogInterface;
 
 public class Constants {
 
-    public static final String SERVER_LOCATION = "pgmtestdemo3.appspot.com";
+    public static final String SERVER_LOCATION = "pgmdevelopment.appspot.com";
 
     public static void showErrorDialog(int messageId, Activity activity){
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
