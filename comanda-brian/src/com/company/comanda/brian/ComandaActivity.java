@@ -326,6 +326,7 @@ public class ComandaActivity extends FragmentActivity
             orderItems.clear();
             orderNumbers.clear();
             reviewOrdersAdapter.notifyDataSetChanged();
+            refreshAllTables();
             if(data){
                 Toast.makeText(getApplicationContext(), 
                         R.string.order_placed, ORDER_PLACED_TOAST_DURATION).show();
