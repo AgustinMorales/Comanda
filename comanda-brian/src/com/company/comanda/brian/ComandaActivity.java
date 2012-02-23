@@ -186,11 +186,6 @@ public class ComandaActivity extends FragmentActivity
     public static final String EXTRA_REST_NAME = "restaurantName";
     public static final String EXTRA_REST_ID = "restaurantId";
 
-    public static final String PARAM_TABLE_ID = "tableId";
-    public static final String PARAM_REST_ID = "restaurantId";
-    public static final String PARAM_ITEM_ID = "itemId";
-    public static final String PARAM_USER_ID = "userId";
-    public static final String PARAM_PASSWORD = "password";
 
     SharedPreferences prefs;
     /** Called when the activity is first created. */
@@ -359,13 +354,14 @@ public class ComandaActivity extends FragmentActivity
                 }
             }
             keyIds.deleteCharAt(keyIds.length() - 1);
-            params.add(new BasicNameValuePair(PARAM_ITEM_ID, keyIds.toString()));
-            params.add(new BasicNameValuePair(PARAM_TABLE_ID, tableId));
-            params.add(new BasicNameValuePair(PARAM_REST_ID, restId));
-            params.add(new BasicNameValuePair(PARAM_USER_ID, 
+            params.add(new BasicNameValuePair(HttpParams.PlaceOrder.PARAM_ITEM_IDS, 
+                    keyIds.toString()));
+            params.add(new BasicNameValuePair(HttpParams.PlaceOrder.PARAM_TABLE_ID, tableId));
+            params.add(new BasicNameValuePair(HttpParams.PlaceOrder.PARAM_RESTAURANT_ID, restId));
+            params.add(new BasicNameValuePair(HttpParams.PlaceOrder.PARAM_USER_ID, 
                     prefs.getString(ComandaPreferences.USER_ID, "")));
-            params.add(new BasicNameValuePair(PARAM_PASSWORD, 
-                    prefs.getString(ComandaPreferences.USER_ID, "")));
+            params.add(new BasicNameValuePair(HttpParams.PlaceOrder.PARAM_PASSWORD, 
+                    prefs.getString(ComandaPreferences.PASSWORD, "")));
         }
 
     }

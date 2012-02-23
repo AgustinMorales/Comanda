@@ -21,7 +21,7 @@ public interface UserManager {
     
     void placeOrder(long userId, String password, 
             long restaurantId,
-            long menuItemId, long tableId);
+            long menuItemId, Long tableId);
     
     CodifiedData getData(String code);
     

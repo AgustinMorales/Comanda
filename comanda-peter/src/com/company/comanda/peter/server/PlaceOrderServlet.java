@@ -36,7 +36,11 @@ public class PlaceOrderServlet extends HttpServlet
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException
     {
         String menuItemIds = req.getParameter(PARAM_ITEM_IDS);
-        long tableId = Long.parseLong(req.getParameter(PARAM_TABLE_ID));
+        String tableIdString = req.getParameter(PARAM_TABLE_ID);
+        Long tableId = null;
+        if(tableIdString.length() > 0){
+            tableId = Long.parseLong(req.getParameter(PARAM_TABLE_ID));
+        }
         long userId = Long.parseLong(req.getParameter(PARAM_USER_ID));
         String password = req.getParameter(PARAM_PASSWORD);
         long restaurantId = Long.parseLong(

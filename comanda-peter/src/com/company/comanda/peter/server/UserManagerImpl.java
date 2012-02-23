@@ -48,13 +48,16 @@ public class UserManagerImpl implements UserManager {
 
     @Override
     public void placeOrder(long userId, String password, long restaurantId,
-            long menuItemId, long tableId) {
+            long menuItemId, Long tableId) {
         // TODO Check password
         
         Key<Restaurant> restaurantKey = new Key<Restaurant>(
                 Restaurant.class,restaurantId);
         Key<MenuItem> menuItemKey = new Key<MenuItem>(restaurantKey, 
                 MenuItem.class, menuItemId);
+        if(tableId == null){
+            tableId = agentFactory.create(restaurantId).getDeliveryTableId();
+        }
         Key<Table> tableKey = new Key<Table>(restaurantKey,Table.class, tableId);
         MenuItem menuItem = ofy.get(menuItemKey);
         if(menuItem == null){

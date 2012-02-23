@@ -47,4 +47,6 @@ public interface RestaurantAgent {
     public long addOrModifyMenuCategory(Long categoryId, String name);
     
     public List<MenuCategory> getCategories();
+    
+    public long getDeliveryTableId();
 }

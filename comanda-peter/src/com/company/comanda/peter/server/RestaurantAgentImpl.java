@@ -20,13 +20,16 @@ import com.googlecode.objectify.Query;
 
 public class RestaurantAgentImpl implements RestaurantAgent {
 
-    
+
+    private static final String DELIVERY_TABLE_NAME = "Delivery";
     private static final Logger log = 
             Logger.getLogger(RestaurantAgentImpl.class.getName());
     private final Objectify ofy;
     private final Key<Restaurant> restaurantKey;
     private final Random random;
-    
+
+    private Long deliveryTableId;
+
     @Inject
     public RestaurantAgentImpl(Objectify ofy, @Assisted long restaurantId){
         this.ofy = ofy;
@@ -34,7 +37,7 @@ public class RestaurantAgentImpl implements RestaurantAgent {
         this.restaurantKey = new Key<Restaurant>(Restaurant.class,
                 restaurantId);
     }
-    
+
     @Override
     public List<MenuItem> getMenuItems(Long categoryId) {
         List<MenuItem> result = new ArrayList<MenuItem>();
@@ -139,7 +142,7 @@ public class RestaurantAgentImpl implements RestaurantAgent {
             log.warning(errorMsg);
             throw new IllegalArgumentException(errorMsg);
         }
-        
+
         Order order = orders.get(0);
         order.setState(newState);
         ofy.put(order);
@@ -166,8 +169,8 @@ public class RestaurantAgentImpl implements RestaurantAgent {
                 Table.TABLE_CODE_RANDOM_PART_MAX_VALUE);
         String code = String.format(
                 "%0" + Table.TABLE_CODE_ID_PART_WIDTH + "d" +
-                "%0" + Table.TABLE_CODE_RANDOM_PART_WIDTH + "d", 
-                id, random_part);
+                        "%0" + Table.TABLE_CODE_RANDOM_PART_WIDTH + "d", 
+                        id, random_part);
         log.info("Setting table code to: " + code);
         table.setCode(code);
         ofy.put(table);
@@ -241,6 +244,24 @@ public class RestaurantAgentImpl implements RestaurantAgent {
     public List<MenuItem> getMenuItems() {
         return getMenuItems(null);
     }
-    
-    
+
+    @Override
+    public long getDeliveryTableId() {
+        if(deliveryTableId == null){
+            List<Table> tableList = ofy.query(Table.class).filter("name", DELIVERY_TABLE_NAME).
+                    ancestor(restaurantKey).list();
+            if(tableList.size()== 1){
+                deliveryTableId = tableList.get(0).getId();
+            }
+            else {
+                if(tableList.size() > 1){
+                    throw new IllegalStateException();
+                }
+                deliveryTableId = addTable(DELIVERY_TABLE_NAME);
+            }
+        }
+        return deliveryTableId;
+    }
+
+
 }
