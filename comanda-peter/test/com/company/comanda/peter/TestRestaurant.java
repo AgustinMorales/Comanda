@@ -105,8 +105,8 @@ public class TestRestaurant {
         createCategory();
         List<MenuCategory> categories = 
                 manager.getAgent().getCategories();
-        assertEquals(1,categories.size());
-        MenuCategory category = categories.get(0);
+        assertEquals(4,categories.size());
+        MenuCategory category = categories.get(3);
         assertEquals(CATEGORY_NAME, category.getName());
         assertEquals(restaurantId, category.
                 getRestaurant().getId());
@@ -121,8 +121,8 @@ public class TestRestaurant {
                 categoryId, NEW_NAME);
         List<MenuCategory> categories = 
                 manager.getAgent().getCategories();
-        assertEquals(1,categories.size());
-        MenuCategory category = categories.get(0);
+        assertEquals(4,categories.size());
+        MenuCategory category = categories.get(3);
         assertEquals(NEW_NAME, category.getName());
         assertEquals(restaurantId, category.
                 getRestaurant().getId());

@@ -3,6 +3,7 @@
   <!-- Configure path to GWT SDK -->
   <property name="gwt.sdk" location="/home/pablo/software/gwt-2.4.0" />
   <property name="appengine.sdk" location="/home/pablo/software/appengine-java-sdk-1.6.1" />
+	<property name="report.dir" location="reports" />
   <import file="${appengine.sdk}/config/user/ant-macros.xml" />
   <condition property="XstartOnFirstThread" value="-XstartOnFirstThread">
     <os family="mac"/>
@@ -23,14 +24,20 @@
         <pathelement location="${appengine.sdk}/lib/impl/appengine-api-stubs.jar"/>
         <pathelement location="${appengine.sdk}/lib/testing/appengine-testing.jar"/>
 	      </path>
+
+	  <path id="javac.classpath">
+	    <pathelement location="war/WEB-INF/classes"/>
+	    <fileset dir="war/WEB-INF/lib" includes="**/*.jar"/>
+	  </path>
 	
+	  <path id="gwt.classpath">
+	    <pathelement location="${gwt.sdk}/gwt-user.jar"/>
+	    <fileset dir="${gwt.sdk}" includes="gwt-dev*.jar"/>
+	  </path>
 	
   <path id="project.class.path">
-    <pathelement location="war/WEB-INF/classes"/>
-    <pathelement location="${gwt.sdk}/gwt-user.jar"/>
-    <fileset dir="${gwt.sdk}" includes="gwt-dev*.jar"/>
-    <!-- Add any additional non-server libs (such as JUnit) -->
-    <fileset dir="war/WEB-INF/lib" includes="**/*.jar"/>
+    <path refid="gwt.classpath"/>
+    <path refid="javac.classpath"/>
   </path>
 
   <target name="libs" description="Copy libs to WEB-INF/lib">
@@ -51,6 +58,24 @@
       <fileset dir="src" excludes="**/*.java"/>
     </copy>
   </target>
+	
+	<target name="compile-tests" depends="libs" description="Compile test classes">
+	    <mkdir dir="test-classes"/>
+	    <javac srcdir="test" includes="**" encoding="utf-8"
+	        destdir="test-classes"
+	        source="1.5" target="1.5" nowarn="true"
+	        debug="true" debuglevel="lines,vars,source">
+	    	<classpath>
+	    		<path refid="project.class.path"/>
+	    		<path refid="appengine.test.classpath"/>
+	    		<pathelement location="lib/junit-4.10.jar"/>
+	    	</classpath>
+	      <classpath refid="project.class.path"/>
+	    </javac>
+	    <copy todir="war/WEB-INF/classes">
+	      <fileset dir="src" excludes="**/*.java"/>
+	    </copy>
+	  </target>
 
   <target name="gwtc" depends="javac" description="GWT compile to JavaScript">
     <java failonerror="true" fork="true" classname="com.google.gwt.dev.Compiler">
@@ -84,11 +109,8 @@
     </java>
   </target>
 
-  <target name="build" depends="gwtc" description="Build this project" />
+  <target name="build" depends="gwtc,unittest" description="Build this project" />
 
-  <target name="war" depends="build" description="Create a war file">
-    <zip destfile="StockWatcher.war" basedir="war"/>
-  </target>
 
   <target name="clean" description="Cleans this project">
     <delete dir="war/WEB-INF/classes" failonerror="false" />
@@ -126,13 +148,15 @@
 	    </appcfg>
 	  </target>
 	
-	<target name="unittest" description="Run tests" depends="javac">
+	<target name="unittest" description="Run tests" depends="javac,compile-tests">
+		<mkdir dir="${report.dir}/raw"/>
 	<junit printsummary="yes" haltonfailure="yes" showoutput="yes" >
 	    <classpath>
-            <path refid="project.class.path"/>
+            <path refid="javac.classpath"/>
             <path refid="appengine.test.classpath"/>
+	    	<pathelement location="test-classes"/>
 	    </classpath>
-	    <batchtest fork="yes" todir="${reports}/raw/">
+	    <batchtest fork="yes" todir="${report.dir}/raw/">
 	        <formatter type="xml"/>
 	        <fileset dir="test">
 	            <include name="**/*Test*.java"/>

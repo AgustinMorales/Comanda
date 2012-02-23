@@ -22,7 +22,7 @@
 				<g:Button width="92px" height="29px" ui:field="btnLogin" text="Acceder">Login</g:Button>
 			</g:at>
 			<g:at left="10" top="189">
-				<g:Button ui:field="btnAdmin" text="Administrar usuarios">Administrar</g:Button>
+				<g:Button ui:field="btnAdmin" text="Administrar comanda">Administrar</g:Button>
 			</g:at>
 		</g:AbsolutePanel>
 	</g:HTMLPanel>
