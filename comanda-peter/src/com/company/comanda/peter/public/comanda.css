@@ -26,15 +26,15 @@
 .gwt-TabLayoutPanel {
 }
 .gwt-TabLayoutPanel .gwt-TabLayoutPanelTabs {
-	background: #ff6400;
+	background: #ef6400;
 }
 .gwt-TabLayoutPanelContentContainer {
-  border-color: #ff6400;
+  border-color: #0f6400;
   border-style: solid;
   border-width: 2px 1px 1px;
 }
 .gwt-TabLayoutPanel .gwt-TabLayoutPanelContent {
-  border-color: #ff6400;
+  border-color: #f34500;
   border-style: solid;
   border-width: 1px;
   overflow: hidden;
@@ -45,12 +45,12 @@
   padding: 3px 6px 3px 6px;
   cursor: pointer;
   cursor: hand;
-  color: #ff6400;
+  color: #f65400;
   font-weight: bold;
   text-align: center;
-  background: #ff6400;
+  background: #006400;
 }
 .gwt-TabLayoutPanel .gwt-TabLayoutPanelTab-selected {
   cursor: default;
-  background: #ff6400;
+  background: #000400;
 }
