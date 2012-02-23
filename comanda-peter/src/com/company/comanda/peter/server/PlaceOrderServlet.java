@@ -2,6 +2,7 @@ package com.company.comanda.peter.server;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -21,6 +22,8 @@ public class PlaceOrderServlet extends HttpServlet
      * 
      */
     private static final long serialVersionUID = 7406683513326724866L;
+    
+    private static final Logger log = Logger.getLogger(PlaceOrderServlet.class.getName());
     
     private UserManager userManager;
 
@@ -47,7 +50,8 @@ public class PlaceOrderServlet extends HttpServlet
                 req.getParameter(PARAM_RESTAURANT_ID));
         
         //FIXME: What happens in case of error?
-        String[] items = menuItemIds.split("|");
+        log.fine("Splitting String: " + menuItemIds);
+        String[] items = menuItemIds.split(":");
         for (String item : items){
             long menuItemId = Long.parseLong(item);
             userManager.placeOrder(userId, password, 

@@ -350,10 +350,11 @@ public class ComandaActivity extends FragmentActivity
                 final String currentKeyId = currentItem.getKeyId();
                 for(int j=0;j<orderNumbers.get(currentItem);j++){
                     keyIds.append(currentKeyId);
-                    keyIds.append("|");
+                    keyIds.append(":");
                 }
             }
             keyIds.deleteCharAt(keyIds.length() - 1);
+            Log.d("Comanda", "keyIds: " + keyIds);
             params.add(new BasicNameValuePair(HttpParams.PlaceOrder.PARAM_ITEM_IDS, 
                     keyIds.toString()));
             params.add(new BasicNameValuePair(HttpParams.PlaceOrder.PARAM_TABLE_ID, tableId));
