@@ -1,6 +1,6 @@
 <!-- Indices written at Tue, 21 Feb 2012 18:37:36 UTC -->
 
-<datastore-indexes>
+<datastore-indexes autogenerate="false">
 
     <!-- Used 3 times in query history -->
     <datastore-index kind="Order" ancestor="false" source="auto">
