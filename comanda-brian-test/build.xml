@@ -80,6 +80,10 @@
          in order to avoid having your file be overridden by tools such as "android update project"
     -->
     <!-- version-tag: 1 -->
+	<target name="use-stubs">
+		<copy file="../comanda-brian/src/com/company/comanda/brian/helpers/HttpRetrieverStub.java_" 
+			tofile="../comanda-brian/src/com/company/comanda/brian/helpers/HttpRetriever.java" overwrite="true"></copy>
+	</target>
     <import file="${sdk.dir}/tools/ant/build.xml" />
 
 </project>
