@@ -2,10 +2,11 @@ package com.company.comanda.brian.xmlhandlers;
 
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-import android.util.Log;
 
 import com.company.comanda.brian.model.Category;
 import static com.company.comanda.common.XmlTags.CategoryList.*;
@@ -16,7 +17,7 @@ public class CategoriesHandler extends ComandaXMLHandler<ArrayList<Category>> {
     // Fields
     // ===========================================================
 
-    
+    private static final Logger log = LoggerFactory.getLogger(CategoriesHandler.class);
     
     private boolean in_category = false;
     private boolean in_id = false;
@@ -34,7 +35,7 @@ public class CategoriesHandler extends ComandaXMLHandler<ArrayList<Category>> {
     @Override
     public void startDocument() throws SAXException 
     {
-        Log.e("XMLHandler", "Initiating parser...");
+        log.debug("Initiating parser...");
         this.categories = new ArrayList<Category>();
     }
 
@@ -56,7 +57,7 @@ public class CategoriesHandler extends ComandaXMLHandler<ArrayList<Category>> {
         {
             this.in_category = true;
             category = new Category();
-            Log.e("XMLHandler", "Found a category");
+            log.debug("Found a category");
         }
         else if (localName.equals(NAME)) 
         {
@@ -98,11 +99,11 @@ public class CategoriesHandler extends ComandaXMLHandler<ArrayList<Category>> {
         {
             String textBetween = new String(ch, start, length);
             if(this.in_name){
-                Log.d("Comanda", "Name: " + textBetween);
+                log.debug("Name: {}", textBetween);
                 category.name = textBetween;
             }
             else if(this.in_id){
-                Log.d("Comanda", "Id: " + textBetween);
+                log.debug("Id: {}", textBetween);
                 category.id = Long.parseLong(textBetween);
             }
         }

@@ -10,12 +10,13 @@ import javax.xml.parsers.SAXParserFactory;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.util.Log;
 
 import com.company.comanda.brian.Constants;
 import com.company.comanda.brian.xmlhandlers.ComandaXMLHandler;
@@ -23,6 +24,8 @@ import com.company.comanda.brian.xmlhandlers.ComandaXMLHandler;
 public abstract class AsyncGetData <T>{
 
     private HttpRetriever retriever = new HttpRetriever();
+    
+    private static final Logger log = LoggerFactory.getLogger(AsyncGetData.class);
     
     private ProgressDialog m_ProgressDialog = null; 
 
@@ -67,7 +70,7 @@ public abstract class AsyncGetData <T>{
                 } 
                 catch (Exception e) 
                 { 
-                    Log.e("ListViewSampleApp", "Unable to retrieve data.", e);
+                    log.error("Unable to retrieve data.", e);
                 }
                 final T finalData = data;
                 afterOnBackground(finalData, activity);
@@ -118,7 +121,7 @@ public abstract class AsyncGetData <T>{
             xr.setContentHandler(xmlHandler);
             InputSource xmlInput = new InputSource(retriever.execute(httppost));
             xmlInput.setEncoding("ISO-8859-1");
-            Log.e("ListViewSampleApp", "Input Source Defined: "+ 
+            log.trace("Input Source Defined: {}", 
                     xmlInput.toString());
             /* Parse the xml-data from our URL. */
             xr.parse(xmlInput);
@@ -128,7 +131,7 @@ public abstract class AsyncGetData <T>{
         } 
         catch (Exception e) 
         {
-            Log.e("ListViewSampleApp XMLParser", "XML Error", e);
+            log.error("XML Error", e);
         }
 
         return result;

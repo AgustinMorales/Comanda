@@ -1,9 +1,11 @@
 package com.company.comanda.brian.xmlhandlers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-import android.util.Log;
+
 
 import static com.company.comanda.common.XmlTags.BooleanResult.*;
 
@@ -14,6 +16,7 @@ public class BooleanHandler extends ComandaXMLHandler<Boolean>
     // Fields
     // ===========================================================
 
+    private static final Logger log = LoggerFactory.getLogger(BooleanHandler.class);
 
     private boolean in_result = false;
 
@@ -35,7 +38,7 @@ public class BooleanHandler extends ComandaXMLHandler<Boolean>
     @Override
     public void startDocument() throws SAXException 
     {
-        Log.e("XMLHandler", "Initiating parser...");
+        log.debug("Initiating parser...");
     }
 
     @Override

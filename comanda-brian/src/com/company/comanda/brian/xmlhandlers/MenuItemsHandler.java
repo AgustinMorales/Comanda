@@ -2,10 +2,11 @@ package com.company.comanda.brian.xmlhandlers;
 
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-import android.util.Log;
 
 import com.company.comanda.brian.model.FoodMenuItem;
 import static com.company.comanda.common.XmlTags.MenuItemList.*;
@@ -19,6 +20,8 @@ public class MenuItemsHandler extends ComandaXMLHandler<ArrayList<FoodMenuItem>>
     // ===========================================================
     
 
+    private static final Logger log = LoggerFactory.getLogger(MenuItemsHandler.class);
+    
     private boolean in_item = false;
     private boolean in_name = false;
     private boolean in_keyId = false;
@@ -37,7 +40,7 @@ public class MenuItemsHandler extends ComandaXMLHandler<ArrayList<FoodMenuItem>>
     @Override
     public void startDocument() throws SAXException 
     {
-        Log.e("XMLHandler", "Initiating parser...");
+        log.debug("Initiating parser...");
         this.items = new ArrayList<FoodMenuItem>();
     }
 
@@ -59,7 +62,7 @@ public class MenuItemsHandler extends ComandaXMLHandler<ArrayList<FoodMenuItem>>
         {
             this.in_item = true;
             item = new FoodMenuItem();
-            Log.e("XMLHandler", "Found an Item");
+            log.debug("Found an Item");
         }
         else if (localName.equals(NAME)) 
         {
@@ -125,25 +128,25 @@ public class MenuItemsHandler extends ComandaXMLHandler<ArrayList<FoodMenuItem>>
         {
             String textBetween = new String(ch, start, length);
             if(this.in_name){
-                Log.d("Comanda", "Name: " + textBetween);
+                log.debug("Name: {}", textBetween);
                 item.setName(textBetween);
             }
             else if(this.in_imageString){
-                Log.d("Comanda", "ImageString: " + textBetween);
+                log.debug("ImageString: {}", textBetween);
                 item.setImageString(textBetween);
             }
                 
             else if(this.in_description){
-                Log.d("Comanda", "Description: " + textBetween);
+                log.debug("Description: {}", textBetween);
                 item.setDescription(textBetween);
             }
             else if(this.in_keyId){
-                Log.d("Comanda", "KeyId: " + textBetween);
+                log.debug("KeyId: {}", textBetween);
                 //We are not parsing the long here. What for?
                 item.setKeyId(textBetween);
             }
             else if(this.in_categoryId){
-                Log.d("Comanda", "CategoryId: " + textBetween);
+                log.debug("CategoryId: {}", textBetween);
                 item.setCategoryId(Long.parseLong(textBetween));
             }
         }

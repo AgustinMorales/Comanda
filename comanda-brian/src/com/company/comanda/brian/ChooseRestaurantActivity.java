@@ -4,13 +4,14 @@ import java.util.ArrayList;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,9 @@ import com.company.comanda.common.HttpParams.SearchRestaurants;
 
 public class ChooseRestaurantActivity extends ListActivity {
 
+    private static final Logger log = 
+            LoggerFactory.getLogger(ChooseRestaurantActivity.class);
+    
     private double latitude;
     private double longitude;
     
@@ -47,14 +51,14 @@ public class ChooseRestaurantActivity extends ListActivity {
                 Activity activity) {
             super.afterOnUIThread(data, activity);
             final ChooseRestaurantActivity local = (ChooseRestaurantActivity)activity;
-            Log.d("Comanda", "afterOnUIThread");
+            log.debug("afterOnUIThread");
             if(local.restaurants != null && local.restaurants.size() > 0)
             {
                 
                 local.adapter.notifyDataSetChanged();
                 local.adapter.clear();
                 for(int i=0;i<local.restaurants.size();i++){
-                    Log.d("Comanda", "Item #" + i);
+                    log.debug("Item #{}", i);
                     local.adapter.add(local.restaurants.get(i));
                 }
             }

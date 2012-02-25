@@ -1,9 +1,10 @@
 package com.company.comanda.brian.xmlhandlers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-import android.util.Log;
 
 import static com.company.comanda.common.XmlTags.UserData.*;
 
@@ -14,7 +15,7 @@ public class UserIdHandler extends ComandaXMLHandler<String>
     // Fields
     // ===========================================================
 
-    
+    private static final Logger log = LoggerFactory.getLogger(UserIdHandler.class);
     private boolean in_user = false;
     private boolean in_id = false;
 
@@ -36,7 +37,7 @@ public class UserIdHandler extends ComandaXMLHandler<String>
     @Override
     public void startDocument() throws SAXException 
     {
-        Log.e("XMLHandler", "Initiating parser...");
+        log.debug("Initiating parser...");
     }
 
     @Override

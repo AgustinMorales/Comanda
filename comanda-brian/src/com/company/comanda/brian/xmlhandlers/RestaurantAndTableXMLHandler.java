@@ -1,15 +1,17 @@
 package com.company.comanda.brian.xmlhandlers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-import android.util.Log;
 
 import static com.company.comanda.common.XmlTags.RestaurantAndTableData.*;
 
 public class RestaurantAndTableXMLHandler extends ComandaXMLHandler<RestaurantAndTableXMLHandler.ParsedData>
 {
 
+    private static final Logger log = LoggerFactory.getLogger(RestaurantAndTableXMLHandler.class);
     public static class ParsedData{
         public String restName;
         public String restId;
@@ -44,7 +46,7 @@ public class RestaurantAndTableXMLHandler extends ComandaXMLHandler<RestaurantAn
     @Override
     public void startDocument() throws SAXException 
     {
-        Log.e("XMLHandler", "Initiating parser...");
+        log.debug("Initiating parser...");
         this.data = new ParsedData();
     }
 
@@ -65,22 +67,22 @@ public class RestaurantAndTableXMLHandler extends ComandaXMLHandler<RestaurantAn
         if (localName.equals(TABLE)) 
         {
             this.in_table = true;
-            Log.e("XMLHandler", "Found a table");
+            log.debug("Found a table");
         }
         else if (localName.equals(RESTAURANT)) 
         {
             this.in_restaurant = true;
-            Log.e("XMLHandler", "Found a restaurant");
+            log.debug("Found a restaurant");
         }
         else if (localName.equals(NAME)) 
         {
             this.in_name = true;
-            Log.e("XMLHandler", "Found a name");
+            log.debug("Found a name");
         }
         else if (localName.equals(ID)) 
         {
             this.in_id = true;
-            Log.e("XMLHandler", "Found an ID");
+            log.debug("Found an ID");
         }
     }
 

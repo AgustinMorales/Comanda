@@ -13,6 +13,8 @@ import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsAdapter;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -28,7 +30,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,6 +59,8 @@ import com.company.comanda.common.HttpParams.GetMenuItems;
 public class ComandaActivity extends FragmentActivity
 {
 
+    private static final Logger log = 
+            LoggerFactory.getLogger(ComandaActivity.class);
     private ArrayList<FoodMenuItem> m_items = null;
     private ArrayList<Category> categories = null;
     private ItemAdapter[] adapters;
@@ -87,7 +90,7 @@ public class ComandaActivity extends FragmentActivity
                 Activity activity) {
             super.afterOnUIThread(data, activity);
             ComandaActivity local = (ComandaActivity)activity;
-            Log.d("Comanda", "afterOnUIThread");
+            log.debug("afterOnUIThread");
             if(local.m_items != null && local.m_items.size() > 0)
             {
 
@@ -98,7 +101,7 @@ public class ComandaActivity extends FragmentActivity
                     ArrayList<FoodMenuItem> currentList =
                             local.filterMenuItems(local.categories.get(i).id);
                     for(FoodMenuItem currentItem : currentList){
-                        Log.d("Comanda", "Item #" + i);
+                        log.debug("Item #{}", i);
                         adapter.add(currentItem);
                     }
                 }
@@ -355,7 +358,7 @@ public class ComandaActivity extends FragmentActivity
                 }
             }
             keyIds.deleteCharAt(keyIds.length() - 1);
-            Log.d("Comanda", "keyIds: " + keyIds);
+            log.debug("keyIds: {}", keyIds);
             params.add(new BasicNameValuePair(HttpParams.PlaceOrder.PARAM_ITEM_IDS, 
                     keyIds.toString()));
             params.add(new BasicNameValuePair(HttpParams.PlaceOrder.PARAM_TABLE_ID, tableId));

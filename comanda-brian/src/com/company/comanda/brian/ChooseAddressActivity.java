@@ -2,6 +2,9 @@ package com.company.comanda.brian;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
@@ -16,7 +19,6 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v4.widget.CursorAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,7 +34,7 @@ import com.company.comanda.brian.helpers.AddressOpenHelper;
 
 public class ChooseAddressActivity extends ListActivity {
 
-    
+    private static final Logger log = LoggerFactory.getLogger(ChooseAddressActivity.class);
     private CursorAdapter adapter;
     private Cursor cursor;
     private AddressOpenHelper openHelper;
@@ -243,7 +245,7 @@ public class ChooseAddressActivity extends ListActivity {
             }
         }
         catch (Exception e) {
-            Log.e("Comanda", "Could not save address...", e);
+            log.error("Could not save address...", e);
         }
         return result;
     }

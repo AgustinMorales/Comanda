@@ -2,10 +2,11 @@ package com.company.comanda.brian.xmlhandlers;
 
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-import android.util.Log;
 
 import com.company.comanda.brian.model.Restaurant;
 
@@ -27,6 +28,7 @@ public class RestaurantListHandler extends ComandaXMLHandler<ArrayList<Restauran
 
     private ArrayList<Restaurant> restaurants = null;
 
+    private static final Logger log = LoggerFactory.getLogger(RestaurantListHandler.class);
 
     // ===========================================================
     // Methods
@@ -34,7 +36,7 @@ public class RestaurantListHandler extends ComandaXMLHandler<ArrayList<Restauran
     @Override
     public void startDocument() throws SAXException 
     {
-        Log.e("XMLHandler", "Initiating parser...");
+        log.debug("Initiating parser...");
         restaurants = new ArrayList<Restaurant>();
     }
 
@@ -56,7 +58,7 @@ public class RestaurantListHandler extends ComandaXMLHandler<ArrayList<Restauran
         {
             this.in_restaurant = true;
             item = new Restaurant();
-            Log.e("XMLHandler", "Found a Restaurant");
+            log.debug("Found a Restaurant");
         }
         else if (localName.equals(NAME)) 
         {
@@ -98,11 +100,11 @@ public class RestaurantListHandler extends ComandaXMLHandler<ArrayList<Restauran
         {
             String textBetween = new String(ch, start, length);
             if(this.in_name){
-                Log.d("Comanda", "Name: " + textBetween);
+                log.debug("Name: {}", textBetween);
                 item.name = textBetween;
             }
             else if(this.in_id){
-                Log.d("Comanda", "Id: " + textBetween);
+                log.debug("Id: {}", textBetween);
                 item.id = textBetween;
             }
         }
