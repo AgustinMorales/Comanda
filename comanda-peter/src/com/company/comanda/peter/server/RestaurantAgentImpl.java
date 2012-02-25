@@ -3,9 +3,11 @@ package com.company.comanda.peter.server;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.logging.Logger;
 
 import javax.inject.Inject;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.company.comanda.peter.server.model.MenuCategory;
 import com.company.comanda.peter.server.model.MenuItem;
@@ -23,7 +25,7 @@ public class RestaurantAgentImpl implements RestaurantAgent {
 
     private static final String DELIVERY_TABLE_NAME = "Delivery";
     private static final Logger log = 
-            Logger.getLogger(RestaurantAgentImpl.class.getName());
+            LoggerFactory.getLogger(RestaurantAgentImpl.class);
     private final Objectify ofy;
     private final Key<Restaurant> restaurantKey;
     private final Random random;
@@ -139,7 +141,7 @@ public class RestaurantAgentImpl implements RestaurantAgent {
         if(size==0){
             String errorMsg = String.format(
                     "Could not order with ID: %s",orderId);
-            log.warning(errorMsg);
+            log.warn(errorMsg);
             throw new IllegalArgumentException(errorMsg);
         }
 

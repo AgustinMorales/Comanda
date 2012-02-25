@@ -3,11 +3,12 @@ package com.company.comanda.peter;
 import static org.junit.Assert.*;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.company.comanda.peter.server.RestaurantAgent;
 import com.company.comanda.peter.server.RestaurantManager;
@@ -43,8 +44,7 @@ public class TestRestaurant {
     private long categoryId;
     
     private static final Logger log = 
-            Logger.getLogger(TestRestaurant.class.getName()
-                    );
+            LoggerFactory.getLogger(TestRestaurant.class);
     
     
     private final LocalServiceTestHelper helper =

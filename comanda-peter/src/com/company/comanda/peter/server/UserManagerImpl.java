@@ -2,9 +2,11 @@ package com.company.comanda.peter.server;
 
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Logger;
 
 import javax.inject.Inject;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.beoui.geocell.GeocellManager;
 import com.beoui.geocell.LocationCapableRepositorySearch;
@@ -22,7 +24,7 @@ import com.googlecode.objectify.Objectify;
 
 public class UserManagerImpl implements UserManager {
 
-    private static final Logger log = Logger.
+    private static final Logger log = LoggerFactory.
             getLogger(UserManagerImpl.class.getName());
     private Objectify ofy;
     private RestaurantAgentFactory agentFactory;
@@ -62,7 +64,7 @@ public class UserManagerImpl implements UserManager {
         MenuItem menuItem = ofy.get(menuItemKey);
         if(menuItem == null){
             String errorMsg = String.format("Could not place order for item ID: %s",menuItemId);
-            log.warning(errorMsg);
+            log.warn(errorMsg);
             throw new IllegalArgumentException(errorMsg);
         }
         Order newOrder = new Order(new Date(), OrderState.ORDERED,
@@ -101,8 +103,8 @@ public class UserManagerImpl implements UserManager {
                 result.table = table;
             }
             catch(NotFoundException e){
-                log.info("Could not find restaurant. Code='" + 
-                        code + "'");
+                log.info("Could not find restaurant. Code='{}'", 
+                        code);
             }
         }
         else{

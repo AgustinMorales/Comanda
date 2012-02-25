@@ -1,6 +1,8 @@
 package com.company.comanda.peter.stubs;
 
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.dev.HighRepJobPolicy;
@@ -8,7 +10,7 @@ import com.google.appengine.api.datastore.dev.HighRepJobPolicy;
 public class FirstOperationOnlyPolicy implements HighRepJobPolicy {
 
     private static final Logger log =
-            Logger.getLogger(FirstOperationOnlyPolicy.class.getName());
+            LoggerFactory.getLogger(FirstOperationOnlyPolicy.class.getName());
     
     int counter;
     

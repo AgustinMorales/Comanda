@@ -2,13 +2,15 @@ package com.company.comanda.peter.server;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.logging.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.company.comanda.common.HttpParams.PlaceOrder.*;
 import static com.company.comanda.common.XmlHelper.*;
@@ -23,7 +25,7 @@ public class PlaceOrderServlet extends HttpServlet
      */
     private static final long serialVersionUID = 7406683513326724866L;
     
-    private static final Logger log = Logger.getLogger(PlaceOrderServlet.class.getName());
+    private static final Logger log = LoggerFactory.getLogger(PlaceOrderServlet.class);
     
     private UserManager userManager;
 
@@ -50,7 +52,7 @@ public class PlaceOrderServlet extends HttpServlet
                 req.getParameter(PARAM_RESTAURANT_ID));
         
         //FIXME: What happens in case of error?
-        log.fine("Splitting String: " + menuItemIds);
+        log.trace("Splitting String: {}", menuItemIds);
         String[] items = menuItemIds.split(":");
         for (String item : items){
             long menuItemId = Long.parseLong(item);

@@ -1,9 +1,11 @@
 package com.company.comanda.peter.server;
 
-import java.util.logging.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.company.comanda.peter.client.services.RestaurantLoginService;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -12,7 +14,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 public class RestaurantLoginServiceImpl extends RemoteServiceServlet implements RestaurantLoginService {
 
     private static final Logger log = 
-            Logger.getLogger(RestaurantLoginServiceImpl.class.getName());
+            LoggerFactory.getLogger(RestaurantLoginServiceImpl.class);
     /**
      * 
      */

@@ -17,5 +17,7 @@
 	<classpathentry kind="lib" path="/home/pablo/software/eclipse/plugins/com.google.appengine.eclipse.sdkbundle_1.6.1.v201112160242r37/appengine-java-sdk-1.6.1/lib/testing/appengine-testing.jar"/>
 	<classpathentry kind="lib" path="/home/pablo/software/eclipse/plugins/com.google.appengine.eclipse.sdkbundle_1.6.1.v201112160242r37/appengine-java-sdk-1.6.1/lib/impl/appengine-api-stubs.jar"/>
 	<classpathentry kind="lib" path="/home/pablo/software/eclipse/plugins/com.google.appengine.eclipse.sdkbundle_1.6.1.v201112160242r37/appengine-java-sdk-1.6.1/lib/impl/appengine-api-labs.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/slf4j-api-1.5.8.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/slf4j-jdk14-1.5.8.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
