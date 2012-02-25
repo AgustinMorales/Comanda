@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static com.company.comanda.common.HttpParams.RegisterUser.*;
 import static com.company.comanda.common.XmlTags.UserData.*;
 import static com.company.comanda.common.XmlHelper.*;
@@ -23,6 +26,7 @@ public class RegisterUserServlet extends HttpServlet {
      */
     private static final long serialVersionUID = 28454201636922480L;
     
+    private static final Logger log = LoggerFactory.getLogger(RegisterUserServlet.class);
     
     private UserManager userManager;
     
@@ -40,6 +44,7 @@ public class RegisterUserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        log.info("Parameters: {}", req.getParameterMap());
         String phoneNumber = req.getParameter(PARAM_PHONE_NUMBER);
         String password = req.getParameter(PARAM_PASSWORD);
         String validationCode = req.getParameter(PARAM_VALIDATION_CODE);

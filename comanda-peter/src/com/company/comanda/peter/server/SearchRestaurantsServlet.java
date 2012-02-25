@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static com.company.comanda.common.XmlHelper.*;
 import static com.company.comanda.common.XmlTags.Restaurantlist.*;
 import static com.company.comanda.common.HttpParams.SearchRestaurants.*;
@@ -26,7 +29,8 @@ public class SearchRestaurantsServlet extends HttpServlet
      */
     private static final long serialVersionUID = 5142871744485848351L;
     
-    
+    private static final Logger log = 
+            LoggerFactory.getLogger(SearchRestaurantsServlet.class);
     
     private static final int defaultMaxResults = 50;
     private static final double defaultRadius = 6000;
@@ -48,6 +52,7 @@ public class SearchRestaurantsServlet extends HttpServlet
 
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException
     {
+        log.info("Parameters: {}", req.getParameterMap());
         final double latitude = Double.parseDouble(req.getParameter(PARAM_LATITUDE));
         final double longitude = Double.parseDouble(req.getParameter(PARAM_LONGITUDE));
         final int maxResults = defaultMaxResults;

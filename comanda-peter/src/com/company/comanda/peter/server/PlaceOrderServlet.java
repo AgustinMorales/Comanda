@@ -40,6 +40,7 @@ public class PlaceOrderServlet extends HttpServlet
     
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException
     {
+        log.info("Parameters: {}", req.getParameterMap());
         String menuItemIds = req.getParameter(PARAM_ITEM_IDS);
         String tableIdString = req.getParameter(PARAM_TABLE_ID);
         Long tableId = null;
@@ -52,9 +53,9 @@ public class PlaceOrderServlet extends HttpServlet
                 req.getParameter(PARAM_RESTAURANT_ID));
         
         //FIXME: What happens in case of error?
-        log.trace("Splitting String: {}", menuItemIds);
         String[] items = menuItemIds.split(":");
         for (String item : items){
+            log.debug("Placing order for item ID: {}", item);
             long menuItemId = Long.parseLong(item);
             userManager.placeOrder(userId, password, 
                     restaurantId, menuItemId, tableId);

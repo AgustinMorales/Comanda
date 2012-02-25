@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.company.comanda.common.HttpParams.DecodeQR;
 import com.company.comanda.peter.server.UserManager.CodifiedData;
 import com.googlecode.objectify.NotFoundException;
@@ -26,6 +29,8 @@ public class QRDecoderServlet extends HttpServlet {
     private static final long serialVersionUID = -1498697910467918329L;
     private UserManager userManager;
     
+    private static final Logger log = LoggerFactory.getLogger(QRDecoderServlet.class);
+    
     
     @Inject
     public QRDecoderServlet(UserManager userManager){
@@ -41,6 +46,7 @@ public class QRDecoderServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        log.info("Parameters: {}", req.getParameterMap());
         final String code = (String)req.getParameter(DecodeQR.PARAM_CODE);
         PrintWriter out = ServletHelper.getXmlWriter(resp);
         try{
