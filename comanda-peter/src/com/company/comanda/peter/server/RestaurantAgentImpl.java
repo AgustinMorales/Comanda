@@ -115,7 +115,8 @@ public class RestaurantAgentImpl implements RestaurantAgent {
 
     @Override
     public List<Order> getOrders(OrderState state, Long tableId) {
-        Query<Order> query = ofy.query(Order.class).order("-date");
+        Query<Order> query = ofy.query(Order.class).ancestor(restaurantKey).
+                order("-date");
         List<Order> orders = null;
         if (state != null){
             query.filter("state", state);
