@@ -1,35 +1,9 @@
-.cellTableCell { 
-    height: 25px; 
-    padding: 2px 25px; 
-} 
-
-.cellTableHeader { 
-        height: 25px; 
-        border-bottom: 2px solid #60a6bf; 
-    padding: 3px 25px; 
-    text-align: left; 
-    color: blue; 
-    text-shadow: #ddf 1px 1px 0; 
-    overflow: hidden; 
-    cursor:pointer; 
-    background-image: url(bollon.gif); 
-    background-repeat:no-repeat; 
-    background-position:80% 50%; 
-} 
-
-.cellTableEvenRow { 
-        background: #fffaf0; 
-        border:solid 1px red; 
-} 
-
-.cellTableEvenRowCell { 
-    border:solid 1px green; 
-} 
 
 .cellTableOddRow { 
-    background: #fff8e8; 
+    background: #fff0b2; 
 } 
 
-.cellTableOddRowCell { 
-     border:solid 1px red; 
+
+.cellTableEvenRow { 
+    background: #ffffff; 
 } 
