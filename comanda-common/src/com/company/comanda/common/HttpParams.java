@@ -38,7 +38,7 @@ public class HttpParams {
         public static final String PARAM_ID = "id";
     }
     
-    //TODO: This is no longer being used
+    //FIXME: This is no longer being used
     public static class GetTables{
         public static final String SERVICE_NAME = "/getTables";
         public static final String ID = "id";
