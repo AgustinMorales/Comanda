@@ -26,12 +26,23 @@
 .gwt-TabLayoutPanel {
 }
 .gwt-TabLayoutPanel .gwt-TabLayoutPanelTabs {
-	background: #ef6400;
+	background: white;
 }
 .gwt-TabLayoutPanelContentContainer {
   border-color: #0f6400;
-  border-style: solid;
-  border-width: 2px 1px 1px;
+  border-top-style:solid;
+  border-right-style:none;
+  border-bottom-style:none;
+  border-left-style:none;
+  border-width: 3px;
+}
+.comanda-InnerTabLayout{
+  border-right-style:solid;
+  border-bottom-style:solid;
+  border-left-style:solid;
+  border-left-width: 2px;
+  border-right-width: 2px;
+  border-bottom-width: 2px;
 }
 .gwt-TabLayoutPanel .gwt-TabLayoutPanelContent {
   border-color: #f34500;
@@ -46,11 +57,11 @@
   cursor: pointer;
   cursor: hand;
   color: #f65400;
-  font-weight: bold;
   text-align: center;
-  background: #006400;
+  background: #ffcc00;
 }
 .gwt-TabLayoutPanel .gwt-TabLayoutPanelTab-selected {
   cursor: default;
-  background: #000400;
+  background: #ff6400;
+  font-weight: bold;
 }

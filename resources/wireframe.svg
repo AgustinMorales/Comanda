@@ -50,8 +50,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.7"
-     inkscape:cx="293.89173"
-     inkscape:cy="781.6427"
+     inkscape:cx="472.62666"
+     inkscape:cy="705.09284"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -94,7 +94,10 @@
        ry="12.020815" />
     <g
        id="g3959"
-       transform="matrix(1.2035123,0,0,1.2035123,-9.4719342,-16.057877)">
+       transform="matrix(1.2035123,0,0,1.2035123,-9.4719342,-16.057877)"
+       inkscape:export-filename="/home/pablo/workspace/comanda/comanda-peter/war/images/banner.png"
+       inkscape:export-xdpi="94.014145"
+       inkscape:export-ydpi="94.014145">
       <path
          transform="matrix(1.08,0,0,1.2098766,-6.2071428,-10.545921)"
          d="m 77.589283,46.313072 c 0,2.995652 -2.49841,5.424107 -5.580357,5.424107 -3.081946,0 -5.580357,-2.428455 -5.580357,-5.424107 0,-2.995651 2.498411,-5.424107 5.580357,-5.424107 3.081947,0 5.580357,2.428456 5.580357,5.424107 z"
@@ -766,7 +769,10 @@ yOXh7/sIQ/8AoxaaEz7XooopkhRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAf//Z
        x="98.928574"
        y="75.576469"
        id="text3931"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/pablo/workspace/comanda/comanda-peter/war/images/banner.png"
+       inkscape:export-xdpi="94.014145"
+       inkscape:export-ydpi="94.014145"><tspan
          sodipodi:role="line"
          id="tspan3933"
          x="98.928574"
@@ -873,12 +879,137 @@ yOXh7/sIQ/8AoxaaEz7XooopkhRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAf//Z
          y="128.75658"
          style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Sans;-inkscape-font-specification:Sans">Opciones</tspan></text>
     <rect
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#ff6400;stroke-opacity:1;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none"
+       style="fill:none;stroke:#ff6400;stroke-width:3;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect3004"
-       width="675.61877"
-       height="498.6861"
-       x="43.609875"
-       y="139.51349"
+       width="607.04694"
+       height="431.54318"
+       x="82.181297"
+       y="228.08492"
+       ry="0" />
+    <path
+       style="fill:none;stroke:#ff6400;stroke-width:2.7;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="m 42.857143,139.50504 671.428567,0"
+       id="path4113"
+       inkscape:connector-curvature="0" />
+    <g
+       id="g4166"
+       transform="translate(-5.050766,0)">
+      <rect
+         ry="3.5714285"
+         y="195.21933"
+         x="85.801102"
+         height="31.428572"
+         width="94.285713"
+         id="rect3986-2"
+         style="fill:#ff6400;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text4038-8"
+         y="218.00441"
+         x="88.858017"
+         style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Sans;-inkscape-font-specification:Sans"
+           y="218.00441"
+           x="88.858017"
+           id="tspan4040-28"
+           sodipodi:role="line">Entrantes</tspan></text>
+    </g>
+    <g
+       id="g4171"
+       transform="translate(-0.18763733,0)">
+      <rect
+         ry="3.5714285"
+         y="195.21933"
+         x="179.36797"
+         height="31.428572"
+         width="94.285713"
+         id="rect3986-5-4"
+         style="fill:#ffcc00;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text4038-9-5"
+         y="217.64406"
+         x="186.57332"
+         style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Sans;-inkscape-font-specification:Sans"
+           y="217.64406"
+           x="186.57332"
+           id="tspan4040-2-9"
+           sodipodi:role="line">Primeros</tspan></text>
+    </g>
+    <g
+       id="g4176"
+       transform="translate(-5.9785156,0)">
+      <rect
+         ry="3.5714285"
+         y="195.21933"
+         x="283.58884"
+         height="31.428572"
+         width="94.285713"
+         id="rect3986-56-9"
+         style="fill:#ffcc00;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text4038-9-1-6"
+         y="217.3672"
+         x="286.2854"
+         style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Sans;-inkscape-font-specification:Sans"
+           y="217.3672"
+           x="286.2854"
+           id="tspan4040-2-0-9"
+           sodipodi:role="line">Segundos</tspan></text>
+    </g>
+    <g
+       id="g4181"
+       transform="translate(-3.0517578e-5,0)">
+      <rect
+         ry="3.5714285"
+         y="195.21933"
+         x="376.04034"
+         height="31.428572"
+         width="94.285713"
+         id="rect3986-6-1"
+         style="fill:#ffcc00;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text4038-9-1-8-4"
+         y="215.89943"
+         x="390.1539"
+         style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Sans;-inkscape-font-specification:Sans"
+           y="215.89943"
+           x="390.1539"
+           id="tspan4040-2-0-2-8"
+           sodipodi:role="line">Postres</tspan></text>
+    </g>
+    <rect
+       style="opacity:0.60769227999999997;fill:#fff0b2;fill-opacity:1;stroke:none"
+       id="rect3004-3-7"
+       width="604.19043"
+       height="38.686108"
+       x="85.04776"
+       y="257.30484"
+       ry="0" />
+    <rect
+       style="opacity:0.60769228;fill:#fff0b2;fill-opacity:1;stroke:none"
+       id="rect3004-3-7-0"
+       width="604.19043"
+       height="38.686108"
+       x="80.761925"
+       y="338.73343"
+       ry="0" />
+    <rect
+       style="opacity:0.60769228;fill:#fff0b2;fill-opacity:1;stroke:none"
+       id="rect3004-3-7-06"
+       width="604.19043"
+       height="38.686108"
+       x="85.047646"
+       y="418.7334"
        ry="0" />
   </g>
 </svg>
