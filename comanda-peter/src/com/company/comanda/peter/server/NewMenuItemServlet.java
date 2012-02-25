@@ -45,7 +45,7 @@ public class NewMenuItemServlet extends HttpServlet{
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        log.debug("Parameters: {}", req.getParameterMap());
+        log.info("Parameters: {}", req.getParameterMap());
         String keyId = req.getParameter("keyId");
         String itemName = req.getParameter("itemName");
         String priceString = req.getParameter("price");
