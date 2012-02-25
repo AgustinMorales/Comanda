@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
@@ -22,6 +25,8 @@ public class NewMenuItemServlet extends HttpServlet{
      * 
      */
     private static final long serialVersionUID = -5754007697909915549L;
+    
+    private static final Logger log = LoggerFactory.getLogger(NewMenuItemServlet.class);
 
     private BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
         
@@ -40,6 +45,7 @@ public class NewMenuItemServlet extends HttpServlet{
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        log.debug("Parameters: {}", req.getParameterMap());
         String keyId = req.getParameter("keyId");
         String itemName = req.getParameter("itemName");
         String priceString = req.getParameter("price");
