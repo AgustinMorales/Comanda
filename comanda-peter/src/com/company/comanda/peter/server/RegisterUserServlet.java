@@ -44,7 +44,7 @@ public class RegisterUserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        log.info("Parameters: {}", req.getParameterMap());
+        ServletHelper.logParameters(req, log);
         String phoneNumber = req.getParameter(PARAM_PHONE_NUMBER);
         String password = req.getParameter(PARAM_PASSWORD);
         String validationCode = req.getParameter(PARAM_VALIDATION_CODE);

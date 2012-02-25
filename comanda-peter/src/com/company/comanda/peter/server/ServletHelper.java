@@ -24,16 +24,28 @@ public class ServletHelper {
     public static void logParameters(HttpServletRequest req, Logger log){
         if(log.isInfoEnabled()){
             @SuppressWarnings("unchecked")
-            Map<String,String> parameterMap = req.getParameterMap();
+            Map<String,String[]> parameterMap = req.getParameterMap();
             Set<String> keys = parameterMap.keySet();
             StringBuffer out = new StringBuffer();
             out.append("{");
             for(String key : keys){
                 out.append(key);
                 out.append("= ");
-                out.append(parameterMap.get(key));
+                String[] values = parameterMap.get(key);
+                out.append("[");
+                for(String value : values){
+                    out.append(value);
+                    if(values.length>1){
+                        out.append(",");
+                    }
+                }
+                if(values.length > 1){
+                    out.deleteCharAt(out.length()-1);
+                }
+                out.append("]");
                 out.append(", ");
             }
+            out.deleteCharAt(out.length() -1);
             out.append("}");
             log.info("Parameters: {}", out );
         }

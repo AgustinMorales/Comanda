@@ -48,8 +48,8 @@ public class GetCategoriesServlet extends HttpServlet
 
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException
     {
+        ServletHelper.logParameters(req, log);
         String restaurantId = req.getParameter(PARAM_RESTAURANT_ID);
-        log.info(PARAM_RESTAURANT_ID + "='{}'",restaurantId);
         List<MenuCategory> categories = 
                 userManager.getMenuCategories(Long.parseLong(restaurantId));
         PrintWriter out = ServletHelper.getXmlWriter(resp);

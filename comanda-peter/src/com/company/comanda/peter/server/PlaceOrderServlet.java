@@ -40,7 +40,7 @@ public class PlaceOrderServlet extends HttpServlet
     
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException
     {
-        log.info("Parameters: {}", req.getParameterMap());
+        ServletHelper.logParameters(req, log);
         String menuItemIds = req.getParameter(PARAM_ITEM_IDS);
         String tableIdString = req.getParameter(PARAM_TABLE_ID);
         Long tableId = null;

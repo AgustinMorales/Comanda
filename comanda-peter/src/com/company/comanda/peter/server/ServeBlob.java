@@ -28,7 +28,7 @@ public class ServeBlob extends HttpServlet
 
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException
     {
-        log.info("Parameters: {}", req.getParameterMap());
+        ServletHelper.logParameters(req, log);
         BlobKey blobKey = new BlobKey(req.getParameter(BlobServer.PARAM_ID));
         blobstoreService.serve(blobKey, resp);
     }

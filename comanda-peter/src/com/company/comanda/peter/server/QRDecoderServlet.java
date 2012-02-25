@@ -46,7 +46,7 @@ public class QRDecoderServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        log.info("Parameters: {}", req.getParameterMap());
+        ServletHelper.logParameters(req, log);
         final String code = (String)req.getParameter(DecodeQR.PARAM_CODE);
         PrintWriter out = ServletHelper.getXmlWriter(resp);
         try{
