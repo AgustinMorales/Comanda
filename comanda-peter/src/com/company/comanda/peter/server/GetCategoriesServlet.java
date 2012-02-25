@@ -53,6 +53,8 @@ public class GetCategoriesServlet extends HttpServlet
         String restaurantId = req.getParameter(PARAM_RESTAURANT_ID);
         log.debug(PARAM_RESTAURANT_ID + "='{}'",restaurantId);
         util.info("Holaaa");
+        
+        System.out.println("Hola por sysout");
         List<MenuCategory> categories = 
                 userManager.getMenuCategories(Long.parseLong(restaurantId));
         PrintWriter out = ServletHelper.getXmlWriter(resp);
