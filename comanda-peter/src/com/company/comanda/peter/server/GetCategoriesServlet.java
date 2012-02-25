@@ -33,8 +33,6 @@ public class GetCategoriesServlet extends HttpServlet
     private static final Logger log = LoggerFactory.getLogger(GetCategoriesServlet.class);
     private UserManager userManager;
     
-    private static final java.util.logging.Logger util = java.util.logging.Logger.getLogger(GetCategoriesServlet.class.getName());
-    
     @Inject
     public GetCategoriesServlet(UserManager userManager){
         this.userManager = userManager;
@@ -51,10 +49,7 @@ public class GetCategoriesServlet extends HttpServlet
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException
     {
         String restaurantId = req.getParameter(PARAM_RESTAURANT_ID);
-        log.debug(PARAM_RESTAURANT_ID + "='{}'",restaurantId);
-        util.info("Holaaa");
-        
-        System.out.println("Hola por sysout");
+        log.info(PARAM_RESTAURANT_ID + "='{}'",restaurantId);
         List<MenuCategory> categories = 
                 userManager.getMenuCategories(Long.parseLong(restaurantId));
         PrintWriter out = ServletHelper.getXmlWriter(resp);
