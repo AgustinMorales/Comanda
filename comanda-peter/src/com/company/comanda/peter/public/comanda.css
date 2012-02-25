@@ -26,7 +26,7 @@
 .gwt-TabLayoutPanel {
 }
 .gwt-TabLayoutPanel .gwt-TabLayoutPanelTabs {
-	background: white;
+	background: transparent;
 }
 .gwt-TabLayoutPanelContentContainer {
   border-color: #0f6400;
