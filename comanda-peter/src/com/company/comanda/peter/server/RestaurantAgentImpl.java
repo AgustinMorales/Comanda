@@ -81,7 +81,7 @@ public class RestaurantAgentImpl implements RestaurantAgent {
             item.setName(itemName);
         }
         if(priceString != null){
-            item.setPrice(Integer.parseInt(priceString));
+            item.setPrice(Float.parseFloat(priceString));
         }
         if(description != null){
             item.setDescription(description);

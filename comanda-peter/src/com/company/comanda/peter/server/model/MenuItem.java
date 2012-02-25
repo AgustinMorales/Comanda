@@ -13,7 +13,7 @@ public class MenuItem
     private String name;
     private String description;
     private String imageString;
-    private int price;
+    private float price;
     @Parent
     private Key<Restaurant> parent;
     private Key<MenuCategory> category;
@@ -59,10 +59,10 @@ public class MenuItem
     public void setImageString(String imageString) {
         this.imageString = imageString;
     }
-    public int getPrice() {
+    public float getPrice() {
         return price;
     }
-    public void setPrice(int price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 

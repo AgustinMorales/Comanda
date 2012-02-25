@@ -89,7 +89,7 @@ GUIService {
                     item.getId().toString(),
                     item.getImageString(), 
                     item.getName(), 
-                    (new Integer(item.getPrice())).toString(),
+                    (new Float(item.getPrice())).toString(),
                     item.getDescription()});
         }
         return new PagedResult<String[]>(resultList, total);

@@ -176,7 +176,7 @@ public class TestRestaurant {
         
         final String ITEM_NAME = "pescado";
         final String ITEM_DESCRIPTION = "Pescado description";
-        final String ITEM_PRICE = "345";
+        final String ITEM_PRICE = "345.56";
         final String BLOB_KEY = "ABCD";
         agent.addOrModifyMenuItem(null, 
                 ITEM_NAME, ITEM_DESCRIPTION, 
@@ -190,7 +190,7 @@ public class TestRestaurant {
         assertEquals(ITEM_NAME, item.getName());
         assertEquals(ITEM_DESCRIPTION, 
                 item.getDescription());
-        assertEquals(Integer.parseInt(ITEM_PRICE), item.getPrice());
+        assertEquals(Float.parseFloat(ITEM_PRICE), item.getPrice(),0);
         assertEquals(BLOB_KEY, item.getImageString());
         
         
@@ -235,7 +235,7 @@ public class TestRestaurant {
         
         final String ITEM_NAME = "pescado";
         final String ITEM_DESCRIPTION = "Pescado description";
-        final String ITEM_PRICE = "345";
+        final String ITEM_PRICE = "345.45";
         final String BLOB_KEY = "ABCD";
         agent.addOrModifyMenuItem(null, 
                 ITEM_NAME, ITEM_DESCRIPTION, 
@@ -245,7 +245,7 @@ public class TestRestaurant {
         
         final String NEW_ITEM_NAME = "nuevonombre";
         final String NEW_ITEM_DESCRIPTION = "Pescado description new";
-        final String NEW_ITEM_PRICE = "35";
+        final String NEW_ITEM_PRICE = "35.23";
         final String NEW_BLOB_KEY = "ABCDEFG";
         
         final long itemId = item.getId();
@@ -258,8 +258,8 @@ public class TestRestaurant {
         assertEquals(NEW_ITEM_NAME, modifiedItem.getName());
         assertEquals(NEW_ITEM_DESCRIPTION, 
                 modifiedItem.getDescription());
-        assertEquals(Integer.parseInt(NEW_ITEM_PRICE), 
-                modifiedItem.getPrice());
+        assertEquals(Float.parseFloat(NEW_ITEM_PRICE), 
+                modifiedItem.getPrice(),0);
         assertEquals(NEW_BLOB_KEY, modifiedItem.getImageString());
         assertEquals(itemId, (long)modifiedItem.getId());
     }
