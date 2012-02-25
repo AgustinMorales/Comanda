@@ -43,7 +43,7 @@ public class ServletHelper {
                     out.deleteCharAt(out.length()-1);
                 }
                 out.append("]");
-                out.append(", ");
+                out.append(",");
             }
             out.deleteCharAt(out.length() -1);
             out.append("}");
