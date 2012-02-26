@@ -31,6 +31,9 @@ public class HttpParams {
         public static final String PARAM_USER_ID = "userId";
         public static final String PARAM_PASSWORD = "password";
         public static final String PARAM_RESTAURANT_ID = "restaurantId";
+        public static final String PARAM_ADDRESS = "address";
+        public static final String PARAM_COMMENTS = "comments";
+        public static final String PARAM_MENU_ITEM_COMMENTS = "menuItemComments";
     }
     
     public static class BlobServer{

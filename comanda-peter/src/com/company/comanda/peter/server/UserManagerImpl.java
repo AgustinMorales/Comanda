@@ -1,5 +1,6 @@
 package com.company.comanda.peter.server;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,7 +18,9 @@ import com.company.comanda.peter.server.model.Order;
 import com.company.comanda.peter.server.model.Restaurant;
 import com.company.comanda.peter.server.model.Table;
 import com.company.comanda.peter.server.model.User;
+import com.company.comanda.peter.server.model.Order.OrderElement;
 import com.company.comanda.peter.shared.OrderState;
+import com.company.comanda.peter.shared.OrderType;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.NotFoundException;
 import com.googlecode.objectify.Objectify;
@@ -50,25 +53,33 @@ public class UserManagerImpl implements UserManager {
 
     @Override
     public void placeOrder(long userId, String password, long restaurantId,
-            long menuItemId, Long tableId) {
+            List<Long> menuItemIds, List<String> menuItemComments, String address, 
+            long tableId,
+            String comments,
+            OrderType type) {
         // TODO Check password
         
-        Key<Restaurant> restaurantKey = new Key<Restaurant>(
+        final Key<Restaurant> restaurantKey = new Key<Restaurant>(
                 Restaurant.class,restaurantId);
-        Key<MenuItem> menuItemKey = new Key<MenuItem>(restaurantKey, 
-                MenuItem.class, menuItemId);
-        if(tableId == null){
-            tableId = agentFactory.create(restaurantId).getDeliveryTableId();
+        Key<Table> tableKey = null;
+        if(type == OrderType.IN_RESTAURANT){
+            tableKey = new Key<Table>(restaurantKey,Table.class, tableId);
         }
-        Key<Table> tableKey = new Key<Table>(restaurantKey,Table.class, tableId);
-        MenuItem menuItem = ofy.get(menuItemKey);
-        if(menuItem == null){
-            String errorMsg = String.format("Could not place order for item ID: %s",menuItemId);
-            log.warn(errorMsg);
-            throw new IllegalArgumentException(errorMsg);
+        final int no_of_elements = menuItemIds.size();
+        if(menuItemComments.size() != no_of_elements){
+            throw new IllegalArgumentException("Different number of comments");
+        }
+        final List<OrderElement> orderElements = 
+                new ArrayList<Order.OrderElement>(no_of_elements);
+        for(int i=0;i<no_of_elements;i++){
+            orderElements.add(new OrderElement(
+                    new Key<MenuItem>(restaurantKey,
+                            MenuItem.class,menuItemIds.get(i)), 
+                            menuItemComments.get(i)));
         }
         Order newOrder = new Order(new Date(), OrderState.ORDERED,
-                tableKey, menuItemKey);
+                tableKey, orderElements, type);
+        newOrder.setComments(comments);
         newOrder.setUser(new Key<User>(User.class, userId));
         ofy.put(newOrder);
 

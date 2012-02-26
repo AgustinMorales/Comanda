@@ -6,6 +6,7 @@ import com.company.comanda.peter.server.model.MenuCategory;
 import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Restaurant;
 import com.company.comanda.peter.server.model.Table;
+import com.company.comanda.peter.shared.OrderType;
 
 public interface UserManager {
 
@@ -21,7 +22,10 @@ public interface UserManager {
     
     void placeOrder(long userId, String password, 
             long restaurantId,
-            long menuItemId, Long tableId);
+            List<Long> menuItemIds, List<String> menuItemComments, 
+            String address, long tableId,
+            String comments,
+            OrderType type);
     
     CodifiedData getData(String code);
     

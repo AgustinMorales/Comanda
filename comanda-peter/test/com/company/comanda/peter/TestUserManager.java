@@ -19,6 +19,7 @@ import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Order;
 import com.company.comanda.peter.server.model.Restaurant;
 import com.company.comanda.peter.server.model.Table;
+import com.company.comanda.peter.shared.OrderState;
 import com.company.comanda.peter.stubs.SessionAttributesHashMap;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
@@ -160,6 +161,42 @@ public class TestUserManager {
         
     }
 
+    @Test
+    public void testModifyOrder(){
+        final String code = tableCodes[0];
+        
+        CodifiedData data = userManager.getData(code);
+        
+        final long restaurantId = data.restaurant.getId();
+        final long tableId = data.table.getId();
+        
+        List<MenuItem> items = userManager.getMenuItems(restaurantId);
+        
+        final long itemId = items.get(0).getId();
+        
+        userManager.placeOrder(userId, USER_PASSWORD, 
+                restaurantId, itemId, tableId);
+        
+        List<Order> orders = manager.
+                getAgent().getOrders(null, tableId);
+        
+        assertEquals(1, orders.size());
+        manager.getAgent().changeOrderState(orders.get(0).getId(), OrderState.ACCEPTED);
+        
+        List<Order> allOrders = manager.
+                getAgent().getOrders(null, tableId);
+        
+        List<Order> acceptedOrders = manager.
+                getAgent().getOrders(OrderState.ACCEPTED, tableId);
+        
+        List<Order> orderedOrders = manager.
+                getAgent().getOrders(OrderState.ORDERED, tableId);
+        
+        assertEquals(1, allOrders.size());
+        assertEquals(0, orderedOrders.size());
+        assertEquals(1, acceptedOrders.size());
+    }
+    
     @Test
     public void testGeographicSearchFound(){
         List<Restaurant> restaurants = userManager.searchRestaurant(

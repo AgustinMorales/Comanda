@@ -2,6 +2,8 @@ package com.company.comanda.peter.server;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -11,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.company.comanda.peter.shared.OrderType;
 
 import static com.company.comanda.common.HttpParams.PlaceOrder.*;
 import static com.company.comanda.common.XmlHelper.*;
@@ -41,8 +45,11 @@ public class PlaceOrderServlet extends HttpServlet
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException
     {
         ServletHelper.logParameters(req, log);
-        String menuItemIds = req.getParameter(PARAM_ITEM_IDS);
+        String menuItemIdsString = req.getParameter(PARAM_ITEM_IDS);
         String tableIdString = req.getParameter(PARAM_TABLE_ID);
+        String address = req.getParameter(PARAM_ADDRESS);
+//        String menuItemComments = req.getParameter(PARAM_MENU_ITEM_COMMENTS);
+        String comments = req.getParameter(PARAM_COMMENTS);
         Long tableId = null;
         if(tableIdString.length() > 0){
             tableId = Long.parseLong(req.getParameter(PARAM_TABLE_ID));
@@ -53,13 +60,21 @@ public class PlaceOrderServlet extends HttpServlet
                 req.getParameter(PARAM_RESTAURANT_ID));
         
         //FIXME: What happens in case of error?
-        String[] items = menuItemIds.split(":");
+        String[] items = menuItemIdsString.split(":");
+        List<Long> menuItemIds = new ArrayList<Long>(items.length);
+        List<String> menuItemComments = new ArrayList<String>(items.length);
         for (String item : items){
-            log.debug("Placing order for item ID: {}", item);
+            log.debug("Adding item ID: {}", item);
             long menuItemId = Long.parseLong(item);
-            userManager.placeOrder(userId, password, 
-                    restaurantId, menuItemId, tableId);
+            menuItemIds.add(menuItemId);
+            menuItemComments.add("");
         }
+        userManager.placeOrder(userId, password, 
+                restaurantId, menuItemIds, menuItemComments,
+                address,
+                tableId,
+                comments,
+                tableId==null?OrderType.DELIVERY:OrderType.IN_RESTAURANT);
         PrintWriter out = ServletHelper.getXmlWriter(resp);
         out.println(enclose(RESULT, "" + true));
     }
