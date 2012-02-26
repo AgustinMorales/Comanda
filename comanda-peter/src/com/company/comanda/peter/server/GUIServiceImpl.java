@@ -41,24 +41,21 @@ GUIService {
     @SuppressWarnings("unchecked")
     public PagedResult<String[]> getOrders(int start, int length, 
             OrderState state, String tableName){
-        ArrayList<String[]> resultList = new ArrayList<String[]>();
+        
         int total;
         List<Order> orders = restaurantManager.getAgent().getOrders( 
                 state, tableName);
 
         total = orders.size();
         orders = cutList(orders, start, length);
-        resultList.ensureCapacity(orders.size());
+        ArrayList<String[]> resultList = new ArrayList<String[]>(orders.size());
 
-        for(Order orderElement: orders){
+        for(Order currentOrder: orders){
             Table table = restaurantManager.getAgent().
-                    getTable(orderElement.getTable());
-            MenuItem menuItem = restaurantManager.getAgent().
-                    getMenuItem(orderElement.getMenuItem());
-            //FIXME: menuItem might be null!!!!
-            resultList.add(new String[]{menuItem.getName(), 
+                    getTable(currentOrder.getTable());
+            resultList.add(new String[]{currentOrder.getAddress(), 
                     table.getName(), 
-                    "" + orderElement.getId()});
+                    currentOrder.getKeyString()});
         }
         return new PagedResult<String[]>(resultList,total);
     }
@@ -116,9 +113,8 @@ GUIService {
 
     @Override
     public void acceptOrder(String orderKey) {
-        long keyId = Long.parseLong(orderKey);
         restaurantManager.getAgent().changeOrderState(
-                keyId, OrderState.ACCEPTED);
+                orderKey, OrderState.ACCEPTED);
     }
 
     @Override

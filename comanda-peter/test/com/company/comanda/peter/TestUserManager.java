@@ -2,6 +2,7 @@ package com.company.comanda.peter;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
@@ -20,6 +21,7 @@ import com.company.comanda.peter.server.model.Order;
 import com.company.comanda.peter.server.model.Restaurant;
 import com.company.comanda.peter.server.model.Table;
 import com.company.comanda.peter.shared.OrderState;
+import com.company.comanda.peter.shared.OrderType;
 import com.company.comanda.peter.stubs.SessionAttributesHashMap;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
@@ -151,8 +153,15 @@ public class TestUserManager {
         
         final long itemId = items.get(0).getId();
         
+        final ArrayList<Long> itemIds = new ArrayList<Long>();
+        final ArrayList<String> itemComments = new ArrayList<String>();
+        itemIds.add(itemId);
+        itemComments.add("Comentarios");
+        
         userManager.placeOrder(userId, USER_PASSWORD, 
-                restaurantId, itemId, tableId);
+                restaurantId, itemIds, itemComments, null, 
+                tableId, "Comentarios generales",
+                OrderType.IN_RESTAURANT);
         
         List<Order> orders = manager.
                 getAgent().getOrders(null, tableId);
@@ -174,14 +183,22 @@ public class TestUserManager {
         
         final long itemId = items.get(0).getId();
         
+        final ArrayList<Long> itemIds = new ArrayList<Long>();
+        final ArrayList<String> itemComments = new ArrayList<String>();
+        itemIds.add(itemId);
+        itemComments.add("Comentarios");
+        
         userManager.placeOrder(userId, USER_PASSWORD, 
-                restaurantId, itemId, tableId);
+                restaurantId, itemIds, itemComments, null, 
+                tableId, "Comentarios generales",
+                OrderType.IN_RESTAURANT);
         
         List<Order> orders = manager.
                 getAgent().getOrders(null, tableId);
         
         assertEquals(1, orders.size());
-        manager.getAgent().changeOrderState(orders.get(0).getId(), OrderState.ACCEPTED);
+        manager.getAgent().changeOrderState(orders.get(0).getKeyString(), 
+                OrderState.ACCEPTED);
         
         List<Order> allOrders = manager.
                 getAgent().getOrders(null, tableId);

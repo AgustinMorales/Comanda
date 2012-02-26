@@ -29,7 +29,7 @@ public interface RestaurantAgent {
     public List<Order> getOrders(OrderState state, 
             String tableName);
     
-    public void changeOrderState(long orderId,
+    public void changeOrderState(String orderKeyString,
             OrderState newState);
     
     public Table getTable(Key<Table> tableKey);

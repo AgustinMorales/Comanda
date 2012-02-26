@@ -77,7 +77,7 @@ public class UIViewAllOrders extends Composite {
                 return object[0];
             }
         };
-        result.addColumn(orderNameColumn, "Pedido");
+        result.addColumn(orderNameColumn, "Direccion");
 
         ButtonCell buttonCell = new ButtonCell(); 
         Column<String[], String> buttonColumn = new Column<String[], String>(buttonCell) { 

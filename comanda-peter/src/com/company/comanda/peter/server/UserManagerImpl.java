@@ -18,7 +18,6 @@ import com.company.comanda.peter.server.model.Order;
 import com.company.comanda.peter.server.model.Restaurant;
 import com.company.comanda.peter.server.model.Table;
 import com.company.comanda.peter.server.model.User;
-import com.company.comanda.peter.server.model.Order.OrderElement;
 import com.company.comanda.peter.shared.OrderState;
 import com.company.comanda.peter.shared.OrderType;
 import com.googlecode.objectify.Key;
@@ -69,16 +68,16 @@ public class UserManagerImpl implements UserManager {
         if(menuItemComments.size() != no_of_elements){
             throw new IllegalArgumentException("Different number of comments");
         }
-        final List<OrderElement> orderElements = 
-                new ArrayList<Order.OrderElement>(no_of_elements);
+        final List<Key<MenuItem>> menuItemElements = 
+                new ArrayList<Key<MenuItem>>(no_of_elements);
         for(int i=0;i<no_of_elements;i++){
-            orderElements.add(new OrderElement(
+            menuItemElements.add(
                     new Key<MenuItem>(restaurantKey,
-                            MenuItem.class,menuItemIds.get(i)), 
-                            menuItemComments.get(i)));
+                            MenuItem.class,menuItemIds.get(i)));
         }
         Order newOrder = new Order(new Date(), OrderState.ORDERED,
-                tableKey, orderElements, type);
+                tableKey, menuItemElements, menuItemComments, type,
+                restaurantKey);
         newOrder.setComments(comments);
         newOrder.setUser(new Key<User>(User.class, userId));
         ofy.put(newOrder);

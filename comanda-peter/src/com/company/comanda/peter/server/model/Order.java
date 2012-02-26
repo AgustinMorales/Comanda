@@ -1,6 +1,5 @@
 package com.company.comanda.peter.server.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,41 +14,6 @@ import com.googlecode.objectify.annotation.Parent;
 public class Order
 {
     
-    public static class OrderElement implements Serializable{
-        
-        /**
-         * 
-         */
-        private static final long serialVersionUID = -2358778499156688102L;
-        private Key<MenuItem> menuItem;
-        private String comments;
-        
-        public OrderElement(){
-            super();
-        }
-        
-        public OrderElement(Key<MenuItem> item, String comments){
-            this();
-            this.menuItem = item;
-            this.comments = comments;
-        }
-        
-        public Key<MenuItem> getMenuItem() {
-            return menuItem;
-        }
-        public void setMenuItem(Key<MenuItem> menuItem) {
-            this.menuItem = menuItem;
-        }
-        public String getComments() {
-            return comments;
-        }
-        public void setComments(String comments) {
-            this.comments = comments;
-        }
-        
-        
-    }
-    
     @Id
     private Long id;
     private Date date;
@@ -57,7 +21,8 @@ public class Order
     @Parent
     private Key<User> user;
     private Key<Table> table;
-    private List<OrderElement> menuItems;
+    private List<Key<MenuItem>> menuItemsIds;
+    private List<String> menuItemComments;
     private Key<Restaurant> restaurant;
     private OrderType type;
     private String address;
@@ -66,30 +31,41 @@ public class Order
     //FIXME: This is here just for objectify (and might not be needed)
     public Order(){
         super();
-        menuItems = new ArrayList<Order.OrderElement>();
+        menuItemsIds = new ArrayList<Key<MenuItem>>();
+        menuItemComments = new ArrayList<String>();
     }
 
     @Deprecated
     public Order(Date date, OrderState state,
-           Key<Table> table, Key<MenuItem> menuItem, OrderType type)
+           Key<Table> table, Key<MenuItem> menuItem, 
+           OrderType type,
+           Key<Restaurant> restaurant)
     {
         this();
         this.date = date;
         this.state = state;
         this.table = table;
         this.type = type;
-        this.menuItems.add(new OrderElement(menuItem,""));
+        this.menuItemsIds.add(menuItem);
+        this.menuItemComments.add("");
     }
     
     public Order(Date date, OrderState state,
-            Key<Table> table, List<OrderElement> orderElements, OrderType type)
+            Key<Table> table, List<Key<MenuItem>> menuItems,
+            List<String> menuItemComments, OrderType type,
+            Key<Restaurant> restaurant)
      {
          this();
+         if(menuItems.size() != menuItemComments.size()){
+             throw new IllegalArgumentException("Wrong number of comments");
+         }
          this.date = date;
          this.state = state;
          this.table = table;
          this.type = type;
-         this.menuItems = orderElements;
+         this.menuItemsIds = menuItems;
+         this.menuItemComments = menuItemComments;
+         this.restaurant = restaurant;
      }
     
     public Long getId() 
@@ -123,12 +99,20 @@ public class Order
         this.user = user;
     }
 
-    public List<OrderElement> getMenuItems() {
-        return menuItems;
+    public List<Key<MenuItem>> getMenuItemsIds() {
+        return menuItemsIds;
     }
 
-    public void setMenuItems(List<OrderElement> menuItems) {
-        this.menuItems = menuItems;
+    public void setMenuItemsIds(List<Key<MenuItem>> menuItemsIds) {
+        this.menuItemsIds = menuItemsIds;
+    }
+
+    public List<String> getMenuItemComments() {
+        return menuItemComments;
+    }
+
+    public void setMenuItemComments(List<String> menuItemComments) {
+        this.menuItemComments = menuItemComments;
     }
 
     public Key<Restaurant> getRestaurant() {
@@ -163,6 +147,8 @@ public class Order
         this.comments = comments;
     }
 
-
+    public String getKeyString(){
+        return (new Key<Order>(user,Order.class,id)).getString();
+    }
     
 }

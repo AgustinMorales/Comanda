@@ -115,7 +115,7 @@ public class RestaurantAgentImpl implements RestaurantAgent {
 
     @Override
     public List<Order> getOrders(OrderState state, Long tableId) {
-        Query<Order> query = ofy.query(Order.class).ancestor(restaurantKey).
+        Query<Order> query = ofy.query(Order.class).filter("restaurant", restaurantKey).
                 order("-date");
         List<Order> orders = null;
         if (state != null){
@@ -131,22 +131,15 @@ public class RestaurantAgentImpl implements RestaurantAgent {
 
     @Override
     public void changeOrderState( 
-            long orderId, OrderState newState) {
-        List<Order> orders = ofy.query(Order.class).
-                filter("id", orderId).list();
-        final int size = orders.size();
-        if(size > 1){
-            throw new IllegalStateException(
-                    "More than one order with id: " + orderId);
-        }
-        if(size==0){
+            String orderKeyString, OrderState newState) {
+        Order order = ofy.get(new Key<Order>(orderKeyString));
+        if(order == null){
             String errorMsg = String.format(
-                    "Could not order with ID: %s",orderId);
+                    "Could not get order with keyString: %s",
+                    orderKeyString);
             log.warn(errorMsg);
             throw new IllegalArgumentException(errorMsg);
         }
-
-        Order order = orders.get(0);
         order.setState(newState);
         ofy.put(order);
     }
