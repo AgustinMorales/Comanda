@@ -2,9 +2,7 @@ package com.company.comanda.peter.server;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -21,8 +19,8 @@ import com.company.comanda.peter.server.model.Order;
 import com.company.comanda.peter.server.model.Restaurant;
 import com.company.comanda.peter.server.model.Table;
 import com.company.comanda.peter.server.model.User;
-import com.company.comanda.peter.shared.OrderState;
 import com.company.comanda.peter.shared.BillType;
+import com.company.comanda.peter.shared.OrderState;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.NotFoundException;
 import com.googlecode.objectify.Objectify;
@@ -89,6 +87,7 @@ public class UserManagerImpl implements UserManager {
         }
         
         Key<Bill> billKey = new Key<Bill>(restaurantKey,Bill.class,bill.getId());
+        billKeyString = billKey.getString();
         final int no_of_elements = menuItemIds.size();
         if(menuItemComments.size() != no_of_elements){
             throw new IllegalArgumentException("Different number of comments");
@@ -202,6 +201,20 @@ public class UserManagerImpl implements UserManager {
     @Override
     public List<MenuCategory> getMenuCategories(long restaurantId) {
         return agentFactory.create(restaurantId).getCategories();
+    }
+
+    @Override
+    public List<Bill> getBills(long userId, String password) {
+        //TODO: Authenticate user
+        Key<User> userKey = new Key<User>(User.class, userId);
+        return ofy.query(Bill.class).filter("user", userKey).list();
+    }
+
+    @Override
+    public List<Order> getOrders(long userId, String password, String billKeyString) {
+        //TODO: Authenticate user
+        Key<Bill> billKey = new Key<Bill>(billKeyString);
+        return ofy.query(Order.class).ancestor(billKey).list();
     }
 
 }

@@ -2,8 +2,10 @@ package com.company.comanda.peter.server;
 
 import java.util.List;
 
+import com.company.comanda.peter.server.model.Bill;
 import com.company.comanda.peter.server.model.MenuCategory;
 import com.company.comanda.peter.server.model.MenuItem;
+import com.company.comanda.peter.server.model.Order;
 import com.company.comanda.peter.server.model.Restaurant;
 import com.company.comanda.peter.server.model.Table;
 import com.company.comanda.peter.shared.BillType;
@@ -36,4 +38,8 @@ public interface UserManager {
             double longitude, int maxResults, double maxDistance);
     
     List<MenuCategory> getMenuCategories(long restaurantId);
+    
+    List<Bill> getBills(long userId, String password);
+    
+    List<Order> getOrders(long userId, String password, String billKeyString);
 }

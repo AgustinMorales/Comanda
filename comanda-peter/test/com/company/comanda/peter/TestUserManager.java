@@ -16,6 +16,7 @@ import com.company.comanda.peter.server.UserManager;
 import com.company.comanda.peter.server.UserManager.CodifiedData;
 import com.company.comanda.peter.server.admin.ComandaAdmin;
 import com.company.comanda.peter.server.guice.BusinessModule;
+import com.company.comanda.peter.server.model.Bill;
 import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Order;
 import com.company.comanda.peter.server.model.Restaurant;
@@ -140,6 +141,7 @@ public class TestUserManager {
         userId = userManager.registerUser(PHONE_NUMBER, USER_PASSWORD, "");
     }
     
+    
     @Test
     public void testPlaceOrder() {
         final String code = tableCodes[0];
@@ -158,19 +160,76 @@ public class TestUserManager {
         itemIds.add(itemId);
         itemComments.add("Comentarios");
         
-        userManager.placeOrder(userId, USER_PASSWORD, 
+        final String billKeyString = userManager.placeOrder(userId, USER_PASSWORD, 
                 restaurantId, itemIds, itemComments, null, 
                 tableId, "Comentarios generales",
                 BillType.IN_RESTAURANT,
                 null);
         
-        List<Order> orders = manager.
+        List<Order> ordersFromRestaurant = manager.
                 getAgent().getOrders(null, tableId);
         
-        assertEquals(1, orders.size());
+        assertEquals(1, ordersFromRestaurant.size());
+        
+        List<Order> ordersFromUser = 
+                userManager.getOrders(userId, 
+                        USER_PASSWORD, billKeyString);
+        
+        assertEquals(1, ordersFromUser.size());
+        
+        List<Bill> billsFromUser = userManager.getBills(userId, USER_PASSWORD);
+        assertEquals(1, billsFromUser.size());
         
     }
 
+    
+    @Test
+    public void testTwoOrdersOneBill() {
+        final String code = tableCodes[0];
+        
+        CodifiedData data = userManager.getData(code);
+        
+        final long restaurantId = data.restaurant.getId();
+        final long tableId = data.table.getId();
+        
+        List<MenuItem> items = userManager.getMenuItems(restaurantId);
+        
+        final long itemId = items.get(0).getId();
+        
+        final ArrayList<Long> itemIds = new ArrayList<Long>();
+        final ArrayList<String> itemComments = new ArrayList<String>();
+        itemIds.add(itemId);
+        itemComments.add("Comentarios");
+        
+        final String billKeyString = userManager.placeOrder(userId, USER_PASSWORD, 
+                restaurantId, itemIds, itemComments, null, 
+                tableId, "Comentarios generales",
+                BillType.IN_RESTAURANT,
+                null);
+        
+        userManager.placeOrder(userId, USER_PASSWORD, 
+                restaurantId, itemIds, itemComments, null, 
+                tableId, "Comentarios generales2",
+                BillType.IN_RESTAURANT,
+                billKeyString);
+        
+        List<Order> ordersFromRestaurant = manager.
+                getAgent().getOrders(null, tableId);
+        
+        assertEquals(2, ordersFromRestaurant.size());
+        
+        List<Order> ordersFromUser = 
+                userManager.getOrders(userId, 
+                        USER_PASSWORD, billKeyString);
+        
+        assertEquals(2, ordersFromUser.size());
+        
+        List<Bill> billsFromUser = userManager.getBills(userId, USER_PASSWORD);
+        assertEquals(1, billsFromUser.size());
+        
+    }
+    
+    
     @Test
     public void testModifyOrder(){
         final String code = tableCodes[0];
