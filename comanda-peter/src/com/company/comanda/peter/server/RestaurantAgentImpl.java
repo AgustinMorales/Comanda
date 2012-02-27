@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.company.comanda.peter.server.model.Bill;
 import com.company.comanda.peter.server.model.MenuCategory;
 import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Order;
@@ -115,14 +116,14 @@ public class RestaurantAgentImpl implements RestaurantAgent {
 
     @Override
     public List<Order> getOrders(OrderState state, Long tableId) {
-        Query<Order> query = ofy.query(Order.class).filter("restaurant", restaurantKey).
+        Query<Order> query = ofy.query(Order.class).ancestor(restaurantKey).
                 order("-date");
         List<Order> orders = null;
         if (state != null){
             query.filter("state", state);
         }
         if(tableId != null){
-            query.filter("table", new Key<Table>(
+            query.filter("table",new Key<Table>(
                     restaurantKey,Table.class,(long)tableId));
         }
         orders = query.list();
@@ -150,8 +151,9 @@ public class RestaurantAgentImpl implements RestaurantAgent {
     }
 
     @Override
-    public MenuItem getMenuItem(Key<MenuItem> menuItemKey) {
-        return ofy.get(menuItemKey);
+    public MenuItem getMenuItem(long menuItemId) {
+        return ofy.get(new Key<MenuItem>(restaurantKey,
+                MenuItem.class,menuItemId));
     }
 
     @Override
@@ -257,6 +259,11 @@ public class RestaurantAgentImpl implements RestaurantAgent {
             }
         }
         return deliveryTableId;
+    }
+
+    @Override
+    public Bill getBill(Key<Bill> billKey) {
+        return ofy.get(billKey);
     }
 
 

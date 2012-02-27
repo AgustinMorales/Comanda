@@ -34,6 +34,7 @@ public class HttpParams {
         public static final String PARAM_ADDRESS = "address";
         public static final String PARAM_COMMENTS = "comments";
         public static final String PARAM_MENU_ITEM_COMMENTS = "menuItemComments";
+        public static final String PARAM_BILL_KEY_STRING = "billKeyString";
     }
     
     public static class BlobServer{

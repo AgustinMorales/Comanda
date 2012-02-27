@@ -1,13 +1,10 @@
 package com.company.comanda.peter.server.model;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Id;
 
 import com.company.comanda.peter.shared.OrderState;
-import com.company.comanda.peter.shared.OrderType;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Parent;
 
@@ -18,137 +15,128 @@ public class Order
     private Long id;
     private Date date;
     private OrderState state;
-    @Parent
-    private Key<User> user;
-    private Key<Table> table;
-    private List<Key<MenuItem>> menuItemsIds;
-    private List<String> menuItemComments;
-    private Key<Restaurant> restaurant;
-    private OrderType type;
-    private String address;
+    private String menuItemName;
+    private float price;
     private String comments;
+    @Parent
+    private Key<Bill> bill;
+    private Key<MenuItem> menuItemKey;
+    private Key<Table> table;
     
     //FIXME: This is here just for objectify (and might not be needed)
     public Order(){
         super();
-        menuItemsIds = new ArrayList<Key<MenuItem>>();
-        menuItemComments = new ArrayList<String>();
     }
 
-    @Deprecated
-    public Order(Date date, OrderState state,
-           Key<Table> table, Key<MenuItem> menuItem, 
-           OrderType type,
-           Key<Restaurant> restaurant)
-    {
-        this();
-        this.date = date;
-        this.state = state;
-        this.table = table;
-        this.type = type;
-        this.menuItemsIds.add(menuItem);
-        this.menuItemComments.add("");
-    }
     
-    public Order(Date date, OrderState state,
-            Key<Table> table, List<Key<MenuItem>> menuItems,
-            List<String> menuItemComments, OrderType type,
-            Key<Restaurant> restaurant)
+    public Order(Date date, OrderState state, 
+            String menuItemName,
+            float price,
+            Key<MenuItem> menuItemKey,
+            String comments,
+            Key<Bill> bill)
      {
          this();
-         if(menuItems.size() != menuItemComments.size()){
-             throw new IllegalArgumentException("Wrong number of comments");
-         }
          this.date = date;
          this.state = state;
-         this.table = table;
-         this.type = type;
-         this.menuItemsIds = menuItems;
-         this.menuItemComments = menuItemComments;
-         this.restaurant = restaurant;
+         this.menuItemName = menuItemName;
+         this.price = price;
+         this.comments = comments;
+         this.bill = bill;
+         this.menuItemKey = menuItemKey;
      }
-    
-    public Long getId() 
-    {
+
+
+    public Long getId() {
         return id;
     }
-    public Key<Table> getTable() {
-        return table;
+
+
+    public void setId(Long id) {
+        this.id = id;
     }
-    public void setTable(Key<Table> table) {
-        this.table = table;
-    }
-    protected synchronized Date getDate() {
+
+
+    public Date getDate() {
         return date;
     }
-    protected synchronized void setDate(Date date) {
+
+
+    public void setDate(Date date) {
         this.date = date;
     }
+
+
     public OrderState getState() {
         return state;
     }
+
+
     public void setState(OrderState state) {
         this.state = state;
-    }
-
-    public Key<User> getUser() {
-        return user;
-    }
-
-    public void setUser(Key<User> user) {
-        this.user = user;
-    }
-
-    public List<Key<MenuItem>> getMenuItemsIds() {
-        return menuItemsIds;
-    }
-
-    public void setMenuItemsIds(List<Key<MenuItem>> menuItemsIds) {
-        this.menuItemsIds = menuItemsIds;
-    }
-
-    public List<String> getMenuItemComments() {
-        return menuItemComments;
-    }
-
-    public void setMenuItemComments(List<String> menuItemComments) {
-        this.menuItemComments = menuItemComments;
-    }
-
-    public Key<Restaurant> getRestaurant() {
-        return restaurant;
-    }
-
-    public void setRestaurant(Key<Restaurant> restaurant) {
-        this.restaurant = restaurant;
-    }
-
-    public OrderType getType() {
-        return type;
-    }
-
-    public void setType(OrderType type) {
-        this.type = type;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public String getComments() {
         return comments;
     }
 
+
     public void setComments(String comments) {
         this.comments = comments;
     }
 
+
+    public Key<Bill> getBill() {
+        return bill;
+    }
+
+
+    public void setBill(Key<Bill> bill) {
+        this.bill = bill;
+    }
+
+
+    public String getMenuItemName() {
+        return menuItemName;
+    }
+
+
+    public void setMenuItemName(String menuItemName) {
+        this.menuItemName = menuItemName;
+    }
+
+
+    public float getPrice() {
+        return price;
+    }
+
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+
+    public Key<MenuItem> getMenuItemKey() {
+        return menuItemKey;
+    }
+
+
+    public void setMenuItemKey(Key<MenuItem> menuItemKey) {
+        this.menuItemKey = menuItemKey;
+    }
+    
     public String getKeyString(){
-        return (new Key<Order>(user,Order.class,id)).getString();
+        return (new Key<Order>(bill,Order.class,id)).getString();
+    }
+
+
+    public Key<Table> getTable() {
+        return table;
+    }
+
+
+    public void setTable(Key<Table> table) {
+        this.table = table;
     }
     
 }

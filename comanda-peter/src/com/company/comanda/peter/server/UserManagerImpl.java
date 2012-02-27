@@ -2,7 +2,9 @@ package com.company.comanda.peter.server;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -12,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import com.beoui.geocell.GeocellManager;
 import com.beoui.geocell.LocationCapableRepositorySearch;
 import com.beoui.geocell.model.Point;
+import com.company.comanda.peter.server.model.Bill;
 import com.company.comanda.peter.server.model.MenuCategory;
 import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Order;
@@ -19,7 +22,7 @@ import com.company.comanda.peter.server.model.Restaurant;
 import com.company.comanda.peter.server.model.Table;
 import com.company.comanda.peter.server.model.User;
 import com.company.comanda.peter.shared.OrderState;
-import com.company.comanda.peter.shared.OrderType;
+import com.company.comanda.peter.shared.BillType;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.NotFoundException;
 import com.googlecode.objectify.Objectify;
@@ -51,37 +54,63 @@ public class UserManagerImpl implements UserManager {
     }
 
     @Override
-    public void placeOrder(long userId, String password, long restaurantId,
+    public String placeOrder(long userId, String password, long restaurantId,
             List<Long> menuItemIds, List<String> menuItemComments, String address, 
             long tableId,
             String comments,
-            OrderType type) {
+            BillType type,
+            String billKeyString) {
         // TODO Check password
-        
+        final Date date = new Date();
+        Key<User> userKey = new Key<User>(User.class, userId);
         final Key<Restaurant> restaurantKey = new Key<Restaurant>(
                 Restaurant.class,restaurantId);
         Key<Table> tableKey = null;
-        if(type == OrderType.IN_RESTAURANT){
+        if(type == BillType.IN_RESTAURANT){
             tableKey = new Key<Table>(restaurantKey,Table.class, tableId);
         }
+        Table table = ofy.get(tableKey);
+        Bill bill = null;
+        if(billKeyString != null){
+            bill = ofy.get(new Key<Bill>(billKeyString));
+        }
+        else{
+            //FIXME: Are there any modifiable Bill fields?
+            bill = new Bill();
+            bill.setUser(userKey);
+            bill.setAddress(address);
+            bill.setTable(tableKey);
+            bill.setType(type);
+            bill.setOpenDate(date);
+            bill.setRestaurant(restaurantKey);
+            bill.setComments(comments);
+            bill.setTableName(table.getName());
+            ofy.put(bill);
+        }
+        
+        Key<Bill> billKey = new Key<Bill>(restaurantKey,Bill.class,bill.getId());
         final int no_of_elements = menuItemIds.size();
         if(menuItemComments.size() != no_of_elements){
             throw new IllegalArgumentException("Different number of comments");
         }
-        final List<Key<MenuItem>> menuItemElements = 
-                new ArrayList<Key<MenuItem>>(no_of_elements);
+        List<Order> newOrders = new ArrayList<Order>(no_of_elements);
+        
         for(int i=0;i<no_of_elements;i++){
-            menuItemElements.add(
-                    new Key<MenuItem>(restaurantKey,
-                            MenuItem.class,menuItemIds.get(i)));
+            
+            final Key<MenuItem> menuItemKey = new Key<MenuItem>(restaurantKey,
+                    MenuItem.class,menuItemIds.get(i));
+            MenuItem menuItem = ofy.get(menuItemKey);
+            Order newOrder = new Order(date, OrderState.ORDERED, 
+                    menuItem.getName(),
+                    menuItem.getPrice(),
+                    menuItemKey,
+                            comments, billKey);
+            newOrder.setTable(tableKey);
+            newOrders.add(newOrder);
         }
-        Order newOrder = new Order(new Date(), OrderState.ORDERED,
-                tableKey, menuItemElements, menuItemComments, type,
-                restaurantKey);
-        newOrder.setComments(comments);
-        newOrder.setUser(new Key<User>(User.class, userId));
-        ofy.put(newOrder);
+        ofy.put(newOrders);
 
+        return billKeyString;
     }
 
     @Override

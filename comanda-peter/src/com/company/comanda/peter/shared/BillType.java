@@ -1,6 +1,6 @@
 package com.company.comanda.peter.shared;
 
-public enum OrderType {
+public enum BillType {
 
     IN_RESTAURANT,
     DELIVERY,

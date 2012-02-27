@@ -2,6 +2,7 @@ package com.company.comanda.peter.server;
 
 import java.util.List;
 
+import com.company.comanda.peter.server.model.Bill;
 import com.company.comanda.peter.server.model.MenuCategory;
 import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Order;
@@ -34,7 +35,7 @@ public interface RestaurantAgent {
     
     public Table getTable(Key<Table> tableKey);
     
-    public MenuItem getMenuItem(Key<MenuItem> menuItemKey);
+    public MenuItem getMenuItem(long menuItemId);
     
     public long addTable(String name);
     
@@ -49,4 +50,6 @@ public interface RestaurantAgent {
     public List<MenuCategory> getCategories();
     
     public long getDeliveryTableId();
+    
+    public Bill getBill(Key<Bill> billKey);
 }

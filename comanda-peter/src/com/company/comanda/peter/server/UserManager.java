@@ -6,7 +6,7 @@ import com.company.comanda.peter.server.model.MenuCategory;
 import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Restaurant;
 import com.company.comanda.peter.server.model.Table;
-import com.company.comanda.peter.shared.OrderType;
+import com.company.comanda.peter.shared.BillType;
 
 public interface UserManager {
 
@@ -20,12 +20,13 @@ public interface UserManager {
             String password,
             String validationCode);
     
-    void placeOrder(long userId, String password, 
+    String placeOrder(long userId, String password, 
             long restaurantId,
             List<Long> menuItemIds, List<String> menuItemComments, 
             String address, long tableId,
             String comments,
-            OrderType type);
+            BillType type,
+            String billKeyString);
     
     CodifiedData getData(String code);
     

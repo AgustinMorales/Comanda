@@ -1,13 +1,16 @@
 package com.company.comanda.peter.server;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import com.company.comanda.peter.client.GUIService;
 import com.company.comanda.peter.server.admin.ComandaAdmin;
+import com.company.comanda.peter.server.model.Bill;
 import com.company.comanda.peter.server.model.MenuCategory;
 import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Order;
@@ -17,6 +20,7 @@ import com.company.comanda.peter.shared.PagedResult;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.googlecode.objectify.Key;
 
 /**
  * The server side implementation of the RPC service.
@@ -49,13 +53,20 @@ GUIService {
         total = orders.size();
         orders = cutList(orders, start, length);
         ArrayList<String[]> resultList = new ArrayList<String[]>(orders.size());
-
+        Map<Key<Bill>, Bill> billMap = new HashMap<Key<Bill>, Bill>();
         for(Order currentOrder: orders){
-            Table table = restaurantManager.getAgent().
-                    getTable(currentOrder.getTable());
-            resultList.add(new String[]{currentOrder.getAddress(), 
-                    table.getName(), 
-                    currentOrder.getKeyString()});
+            Bill currentBill = null;
+            Key<Bill> billKey = currentOrder.getBill();
+            if(billMap.containsKey(billKey)){
+                currentBill = billMap.get(billKey);
+            }
+            else{
+                currentBill = restaurantManager.getAgent().getBill(billKey);
+                billMap.put(billKey, currentBill);
+            }
+            resultList.add(new String[]{currentOrder.getMenuItemName(), 
+                    currentBill.getTableName(), 
+                    "" + currentOrder.getId()});
         }
         return new PagedResult<String[]>(resultList,total);
     }

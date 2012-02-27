@@ -218,9 +218,7 @@ public class TestRestaurant {
         
         assertEquals(0, agent.getMenuItems().size());
         try{
-            agent.getMenuItem(new Key<MenuItem>(
-                new Key<Restaurant>(Restaurant.class, restaurantId),
-                MenuItem.class,item.getId()));
+            agent.getMenuItem(item.getId());
                 fail();
         }
         catch (NotFoundException e) {

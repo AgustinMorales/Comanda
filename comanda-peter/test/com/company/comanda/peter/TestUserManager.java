@@ -21,7 +21,7 @@ import com.company.comanda.peter.server.model.Order;
 import com.company.comanda.peter.server.model.Restaurant;
 import com.company.comanda.peter.server.model.Table;
 import com.company.comanda.peter.shared.OrderState;
-import com.company.comanda.peter.shared.OrderType;
+import com.company.comanda.peter.shared.BillType;
 import com.company.comanda.peter.stubs.SessionAttributesHashMap;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
@@ -161,7 +161,8 @@ public class TestUserManager {
         userManager.placeOrder(userId, USER_PASSWORD, 
                 restaurantId, itemIds, itemComments, null, 
                 tableId, "Comentarios generales",
-                OrderType.IN_RESTAURANT);
+                BillType.IN_RESTAURANT,
+                null);
         
         List<Order> orders = manager.
                 getAgent().getOrders(null, tableId);
@@ -191,7 +192,7 @@ public class TestUserManager {
         userManager.placeOrder(userId, USER_PASSWORD, 
                 restaurantId, itemIds, itemComments, null, 
                 tableId, "Comentarios generales",
-                OrderType.IN_RESTAURANT);
+                BillType.IN_RESTAURANT, null);
         
         List<Order> orders = manager.
                 getAgent().getOrders(null, tableId);

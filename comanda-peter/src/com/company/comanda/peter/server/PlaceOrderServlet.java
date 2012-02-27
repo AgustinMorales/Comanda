@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.company.comanda.peter.shared.OrderType;
+import com.company.comanda.peter.shared.BillType;
 
 import static com.company.comanda.common.HttpParams.PlaceOrder.*;
 import static com.company.comanda.common.XmlHelper.*;
@@ -49,6 +49,7 @@ public class PlaceOrderServlet extends HttpServlet
         String tableIdString = req.getParameter(PARAM_TABLE_ID);
         String address = req.getParameter(PARAM_ADDRESS);
 //        String menuItemComments = req.getParameter(PARAM_MENU_ITEM_COMMENTS);
+        String billKeyString = req.getParameter(PARAM_BILL_KEY_STRING);
         String comments = req.getParameter(PARAM_COMMENTS);
         Long tableId = null;
         if(tableIdString.length() > 0){
@@ -74,7 +75,8 @@ public class PlaceOrderServlet extends HttpServlet
                 address,
                 tableId,
                 comments,
-                tableId==null?OrderType.DELIVERY:OrderType.IN_RESTAURANT);
+                tableId==null?BillType.DELIVERY:BillType.IN_RESTAURANT,
+                        billKeyString);
         PrintWriter out = ServletHelper.getXmlWriter(resp);
         out.println(enclose(RESULT, "" + true));
     }
