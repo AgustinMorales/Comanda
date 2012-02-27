@@ -49,12 +49,9 @@ public class XmlTags {
         public static final String ORDER_LIST = "Orders";
         public static final String ORDER = "Order";
         public static final String KEY_STRING = "KeyString";
-        public static final String TABLE_NAME = "TableName";
-        public static final String TABLE_KEY_STRING = "TableKyString";
-        public static final String MENU_ITEM_LIST = "MenuItems";
-        public static final String RESTAURANT_KEY_STRING = "RestaurantKeyString";
-        public static final String TYPE = "Type";
-        public static final String ADDRESS = "Address";
+        public static final String MENU_ITEM_NAME = "MenuItem";
+        public static final String MENU_ITEM_NUMBER = "MenuItemNumber";
+        public static final String PRICE = "Price";
         public static final String COMMENTS = "Comments";
     }
     

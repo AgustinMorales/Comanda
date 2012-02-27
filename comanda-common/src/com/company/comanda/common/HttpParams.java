@@ -62,4 +62,11 @@ public class HttpParams {
         public static final String PARAM_VALIDATION_CODE = 
                 "validationCode";
     }
+    
+    public static class GetOrders{
+    	public static final String SERVICE_NAME = "/getOrders";
+    	public static final String PARAM_BILL = "billKeyString";
+    	public static final String PARAM_USER_ID = "userId";
+    	public static final String PARAM_PASSWORD = "password";
+    }
 }
