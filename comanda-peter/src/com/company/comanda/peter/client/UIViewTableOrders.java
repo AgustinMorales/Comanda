@@ -1,6 +1,6 @@
 package com.company.comanda.peter.client;
 
-import com.company.comanda.peter.client.OrdersTableUpdater.UpdateListener;
+import com.company.comanda.peter.client.AbstractTableUpdater.UpdateListener;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;

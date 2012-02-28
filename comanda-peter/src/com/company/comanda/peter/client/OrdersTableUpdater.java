@@ -1,91 +1,19 @@
 package com.company.comanda.peter.client;
 
-import com.company.comanda.peter.shared.Constants;
 import com.company.comanda.peter.shared.OrderState;
 import com.company.comanda.peter.shared.PagedResult;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.cellview.client.CellTable;
-import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.view.client.AsyncDataProvider;
-import com.google.gwt.view.client.HasData;
-import com.google.gwt.view.client.Range;
-import com.google.gwt.view.client.RangeChangeEvent;
 
-public class OrdersTableUpdater {
-	
-    public interface UpdateListener{
-        void onUpdate();
+public class OrdersTableUpdater extends AbstractTableUpdater{
+
+	public OrdersTableUpdater(CellTable<String[]> ordersTable) {
+        super(ordersTable);
     }
-	private final GUIServiceAsync greetingService = GWT
-            .create(GUIService.class);
-	private CellTable<String[]> ordersTable;
-	private AsyncDataProvider<String[]> ordersProvider;
-	private OrderState selectedState;
+
+    private OrderState selectedState;
 	private String selectedTable;
 
-	private MyTimer autoUpdateTimer;
-	
-	private UpdateListener updateListener;
-    
-	
-	class MyTimer extends Timer{
-
-        public void run(){
-            refreshTable();
-        }
-    }
-	
-	public OrdersTableUpdater(CellTable<String[]> ordersTable){
-		this.ordersTable = ordersTable;
-	}
-	
-	public void setAutoUpdate(boolean value){
-        if(ordersProvider == null){
-            ordersProvider = new AsyncDataProvider<String[]>() {
-                @Override
-                protected void onRangeChanged(HasData<String[]> display) {
-                    final int start = display.getVisibleRange().getStart();
-                    int length = display.getVisibleRange().getLength();
-                    AsyncCallback<PagedResult<String[]>> callback = new AsyncCallback<PagedResult<String[]>>() {
-                        @Override
-                        public void onFailure(Throwable caught) {
-                            Window.alert(caught.getMessage());
-                        }
-                        @Override
-                        public void onSuccess(PagedResult<String[]> result) {
-                            updateRowData(start, result.getList());
-                            updateRowCount(result.getTotal(), true);
-                        }
-                    };
-                    // The remote service that should be implemented
-                    greetingService.getOrders(start, length, 
-                            selectedState, selectedTable, 
-                            callback);
-                }
-            };
-            ordersProvider.addDataDisplay(ordersTable);
-        }
-        if(autoUpdateTimer == null){
-        	autoUpdateTimer = new MyTimer();
-        }
-        else{
-        	autoUpdateTimer.cancel();
-        }
-        if(value){
-            autoUpdateTimer.run();
-            autoUpdateTimer.scheduleRepeating(Constants.AUTOUPDATE_PERIOD);
-        }
-    }
-	
-	public synchronized void refreshTable(){
-        Range range = ordersTable.getVisibleRange();
-        RangeChangeEvent.fire(ordersTable, range);
-        if(updateListener != null){
-            updateListener.onUpdate();
-        }
-    }
 	
 	public void setSelectedTable(String table){
 		this.selectedTable = table;
@@ -94,8 +22,16 @@ public class OrdersTableUpdater {
 	public void setSelectedState(OrderState state){
 		this.selectedState = state;
 	}
+
+    @Override
+    protected void update(GUIServiceAsync service, int start, 
+            int length,
+            AsyncCallback<PagedResult<String[]>> callback) {
+        service.getOrders(start, length, 
+                selectedState, selectedTable, 
+                callback);
+        
+    }
 	
-	public synchronized void setUpdateListener(UpdateListener listener){
-	    this.updateListener = listener;
-	}
+	
 }
