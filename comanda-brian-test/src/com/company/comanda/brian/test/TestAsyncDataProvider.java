@@ -34,7 +34,6 @@ public class TestAsyncDataProvider extends ActivityInstrumentationTestCase2<Sele
         solo.clickOnText("Puerto de Envalira, 1, Sevilla");
         solo.sleep(1000);
         solo.clickOnText("Ginos");
-        solo.sleep(60000);
         
     }
 }

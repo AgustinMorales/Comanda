@@ -7,6 +7,7 @@ import static com.company.comanda.common.XmlHelper.open;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;
@@ -15,9 +16,11 @@ import com.company.comanda.common.HttpParams.GetCategories;
 import com.company.comanda.common.HttpParams.GetMenuItems;
 import com.company.comanda.common.HttpParams.PlaceOrder;
 import com.company.comanda.common.HttpParams.SearchRestaurants;
+import com.company.comanda.common.HttpParams.GetBills;
 import com.company.comanda.common.XmlTags.CategoryList;
 import com.company.comanda.common.XmlTags.MenuItemList;
 import com.company.comanda.common.XmlTags.Restaurantlist;
+import com.company.comanda.common.XmlTags.Bills;
 import com.company.comanda.common.XmlTags;
 
 public class HttpRetriever {
@@ -166,6 +169,33 @@ public class HttpRetriever {
             XmlTags.HEADER + 
             enclose(XmlTags.BooleanResult.RESULT, "" + true);
     
+    public static final String GET_BILLS_RESPONSE = 
+            XmlTags.HEADER + 
+            open(XmlTags.Bills.BILL_LIST) + 
+            open(XmlTags.Bills.BILL) + 
+            enclose(XmlTags.Bills.KEY_STRING, "telepi") + 
+            enclose(XmlTags.Bills.TOTAL_AMOUNT, "23.45") + 
+            enclose(XmlTags.Bills.STATE, "ACCEPTED") + 
+            enclose(XmlTags.Bills.TYPE, "DELIVERY") + 
+            enclose(XmlTags.Bills.TABLE_NAME, "null") + 
+            enclose(XmlTags.Bills.ADDRESS, "Puerto de Envalira, 1") + 
+            enclose(XmlTags.Bills.RESTAURANT_NAME, "Telepizza") +
+            enclose(XmlTags.Bills.COMMENTS, "Sin comentarios") + 
+            enclose(XmlTags.Bills.OPEN_DATE, (new Date()).toString()) +
+            close(XmlTags.Bills.BILL) +  
+            open(XmlTags.Bills.BILL) + 
+            enclose(XmlTags.Bills.KEY_STRING, "bk") + 
+            enclose(XmlTags.Bills.TOTAL_AMOUNT, "3.50") + 
+            enclose(XmlTags.Bills.STATE, "ACCEPTED") + 
+            enclose(XmlTags.Bills.TYPE, "DELIVERY") + 
+            enclose(XmlTags.Bills.TABLE_NAME, "null") + 
+            enclose(XmlTags.Bills.ADDRESS, "Leon XIII, 19") + 
+            enclose(XmlTags.Bills.RESTAURANT_NAME, "Burguer King") +
+            enclose(XmlTags.Bills.COMMENTS, "Sin comentarios2") + 
+            enclose(XmlTags.Bills.OPEN_DATE, (new Date()).toString()) +
+            close(XmlTags.Bills.BILL) +  
+            close(XmlTags.Bills.BILL_LIST);
+    
     public InputStream execute(HttpPost httpPost) throws IllegalStateException,
             ClientProtocolException, IOException {
         final String uri = httpPost.getURI().toString();
@@ -181,6 +211,9 @@ public class HttpRetriever {
         }
         else if(uri.contains(PlaceOrder.SERVICE_NAME)){
             response = PLACE_ORDER_RESPONSE;
+        }
+        else if(uri.contains(GetBills.SERVICE_NAME)){
+            response = GET_BILLS_RESPONSE;
         }
         return new ByteArrayInputStream(
                 response.getBytes("ISO-8859-1"));

@@ -66,7 +66,7 @@ public class GetBillsServlet extends HttpServlet{
             out.println(enclose(ADDRESS, bill.getAddress()));
             out.println(enclose(RESTAURANT_NAME, bill.getRestaurantName()));
             out.println(enclose(COMMENTS, bill.getComments()));
-            
+            out.println(enclose(OPEN_DATE, bill.getOpenDate().toString()));
             out.println(close(BILL));
         }
         out.println(close(BILL_LIST));
