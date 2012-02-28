@@ -30,5 +30,6 @@
     <string name="restaurant_image">Imagen del restaurante</string>
     <string name="menu_item_image">Imagen del elemento de la carta</string>
     <string name="review_order_dialog_title">Pedido actual</string>
+    <string name="review_deliveries_button">Ver pedidos enviados</string>
     
 </resources>
