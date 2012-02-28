@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.persistence.Id;
 
+import com.company.comanda.peter.shared.BillState;
 import com.company.comanda.peter.shared.BillType;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Parent;
@@ -19,7 +20,9 @@ public class Bill {
     private String tableName;
     @Parent
     private Key<Restaurant> restaurant;
+    private String restaurantName;
     private BillType type;
+    private BillState state;
     private String address;
     private String comments;
    
@@ -87,6 +90,18 @@ public class Bill {
     
     public String getKeyString(){
         return (new Key<Bill>(user,Bill.class,id)).getString();
+    }
+    public BillState getState() {
+        return state;
+    }
+    public void setState(BillState state) {
+        this.state = state;
+    }
+    public String getRestaurantName() {
+        return restaurantName;
+    }
+    public void setRestaurantName(String restaurantName) {
+        this.restaurantName = restaurantName;
     }
     
 }

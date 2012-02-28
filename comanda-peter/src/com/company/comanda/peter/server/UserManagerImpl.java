@@ -63,6 +63,7 @@ public class UserManagerImpl implements UserManager {
         Key<User> userKey = new Key<User>(User.class, userId);
         final Key<Restaurant> restaurantKey = new Key<Restaurant>(
                 Restaurant.class,restaurantId);
+        final String restaurantName = ofy.get(restaurantKey).getName();
         Key<Table> tableKey = null;
         if(type == BillType.IN_RESTAURANT){
             tableKey = new Key<Table>(restaurantKey,Table.class, tableId);
@@ -83,6 +84,7 @@ public class UserManagerImpl implements UserManager {
             bill.setRestaurant(restaurantKey);
             bill.setComments(comments);
             bill.setTableName(table.getName());
+            bill.setRestaurantName(restaurantName);
             ofy.put(bill);
         }
         

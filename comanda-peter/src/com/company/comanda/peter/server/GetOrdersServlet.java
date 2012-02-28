@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +30,7 @@ public class GetOrdersServlet extends HttpServlet{
     
     private UserManager manager;
     
-    
+    @Inject
     public GetOrdersServlet(UserManager manager){
     	this.manager = manager;
     }

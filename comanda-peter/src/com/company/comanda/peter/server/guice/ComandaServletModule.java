@@ -4,12 +4,14 @@ import com.company.comanda.common.HttpParams.BlobServer;
 import com.company.comanda.common.HttpParams.DecodeQR;
 import com.company.comanda.common.HttpParams.GetCategories;
 import com.company.comanda.common.HttpParams.GetMenuItems;
+import com.company.comanda.common.HttpParams.GetOrders;
 import com.company.comanda.common.HttpParams.PlaceOrder;
 import com.company.comanda.common.HttpParams.RegisterUser;
 import com.company.comanda.common.HttpParams.SearchRestaurants;
 import com.company.comanda.peter.server.GUIServiceImpl;
 import com.company.comanda.peter.server.GetCategoriesServlet;
 import com.company.comanda.peter.server.GetItemsServlet;
+import com.company.comanda.peter.server.GetOrdersServlet;
 import com.company.comanda.peter.server.NewMenuItemServlet;
 import com.company.comanda.peter.server.PlaceOrderServlet;
 import com.company.comanda.peter.server.QRDecoderServlet;
@@ -32,5 +34,6 @@ class ComandaServletModule extends ServletModule {
     serve(GetCategories.SERVICE_NAME).with(GetCategoriesServlet.class);
     serve(SearchRestaurants.SERVICE_NAME).with(
             SearchRestaurantsServlet.class);
+    serve(GetOrders.SERVICE_NAME).with(GetOrdersServlet.class);
   }
 }

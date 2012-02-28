@@ -69,4 +69,10 @@ public class HttpParams {
     	public static final String PARAM_USER_ID = "userId";
     	public static final String PARAM_PASSWORD = "password";
     }
+    
+    public static class GetBills{
+        public static final String SERVICE_NAME = "/getBills";
+        public static final String PARAM_USER_ID = "userId";
+        public static final String PARAM_PASSWORD = "password";
+    }
 }

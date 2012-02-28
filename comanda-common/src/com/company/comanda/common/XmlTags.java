@@ -58,4 +58,17 @@ public class XmlTags {
     public static class KeyStringResult{
         public static final String KEY_STRING = "KeyString";
     }
+    
+    public static class Bills{
+        public static final String BILL_LIST = "Bills";
+        public static final String BILL = "Bill";
+        public static final String KEY_STRING = "KeyString";
+        public static final String TOTAL_AMOUNT = "TotalAmount";
+        public static final String STATE = "State";
+        public static final String TYPE = "Type";
+        public static final String TABLE_NAME = "TableName";
+        public static final String ADDRESS = "Address";
+        public static final String RESTAURANT_NAME = "RestaurantName";
+        public static final String COMMENTS = "Comments";
+    }
 }
