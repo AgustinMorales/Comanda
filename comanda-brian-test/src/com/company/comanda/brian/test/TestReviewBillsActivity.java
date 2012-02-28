@@ -30,6 +30,7 @@ public class TestReviewBillsActivity extends ActivityInstrumentationTestCase2<Re
     public void test01(){
         Assert.assertTrue(solo.searchText("Telepizza"));
         Assert.assertTrue(solo.searchText("Burguer King"));
-        
+        solo.clickOnText("Telepizza");
+        Assert.assertTrue(solo.searchText("Carbonara"));
     }
 }

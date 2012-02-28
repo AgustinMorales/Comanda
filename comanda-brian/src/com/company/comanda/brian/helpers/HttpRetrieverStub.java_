@@ -12,16 +12,16 @@ import java.util.Date;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;
 
+import com.company.comanda.common.HttpParams.GetBills;
 import com.company.comanda.common.HttpParams.GetCategories;
 import com.company.comanda.common.HttpParams.GetMenuItems;
+import com.company.comanda.common.HttpParams.GetOrders;
 import com.company.comanda.common.HttpParams.PlaceOrder;
 import com.company.comanda.common.HttpParams.SearchRestaurants;
-import com.company.comanda.common.HttpParams.GetBills;
+import com.company.comanda.common.XmlTags;
 import com.company.comanda.common.XmlTags.CategoryList;
 import com.company.comanda.common.XmlTags.MenuItemList;
 import com.company.comanda.common.XmlTags.Restaurantlist;
-import com.company.comanda.common.XmlTags.Bills;
-import com.company.comanda.common.XmlTags;
 
 public class HttpRetriever {
 
@@ -196,6 +196,26 @@ public class HttpRetriever {
             close(XmlTags.Bills.BILL) +  
             close(XmlTags.Bills.BILL_LIST);
     
+    
+    public static final String GET_ORDERS_RESPONSE = 
+            XmlTags.HEADER + 
+            open(XmlTags.Orders.ORDER_LIST) + 
+            open(XmlTags.Orders.ORDER) + 
+            enclose(XmlTags.Orders.KEY_STRING, "yoquese") + 
+            enclose(XmlTags.Orders.MENU_ITEM_NAME, "Carbonara") + 
+            enclose(XmlTags.Orders.MENU_ITEM_NUMBER, "2") + 
+            enclose(XmlTags.Orders.PRICE, "9.99") + 
+            enclose(XmlTags.Orders.COMMENTS, "Sin comentarios") + 
+            close(XmlTags.Orders.ORDER) +  
+            open(XmlTags.Orders.ORDER) + 
+            enclose(XmlTags.Orders.KEY_STRING, "bk") + 
+            enclose(XmlTags.Orders.MENU_ITEM_NAME, "Barbacoa") + 
+            enclose(XmlTags.Orders.MENU_ITEM_NUMBER, "1") + 
+            enclose(XmlTags.Orders.PRICE, "10.50") + 
+            enclose(XmlTags.Orders.COMMENTS, "Sin comentarios2") + 
+            close(XmlTags.Orders.ORDER) +  
+            close(XmlTags.Orders.ORDER_LIST);
+    
     public InputStream execute(HttpPost httpPost) throws IllegalStateException,
             ClientProtocolException, IOException {
         final String uri = httpPost.getURI().toString();
@@ -214,6 +234,9 @@ public class HttpRetriever {
         }
         else if(uri.contains(GetBills.SERVICE_NAME)){
             response = GET_BILLS_RESPONSE;
+        }
+        else if(uri.contains(GetOrders.SERVICE_NAME)){
+            response = GET_ORDERS_RESPONSE;
         }
         return new ByteArrayInputStream(
                 response.getBytes("ISO-8859-1"));
