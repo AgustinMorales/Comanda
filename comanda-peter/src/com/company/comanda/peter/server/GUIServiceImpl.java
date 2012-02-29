@@ -15,6 +15,7 @@ import com.company.comanda.peter.server.model.MenuCategory;
 import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Order;
 import com.company.comanda.peter.server.model.Table;
+import com.company.comanda.peter.shared.BillState;
 import com.company.comanda.peter.shared.OrderState;
 import com.company.comanda.peter.shared.PagedResult;
 import com.google.appengine.api.blobstore.BlobstoreService;
@@ -187,5 +188,10 @@ GUIService {
             });
         }
         return result;
+    }
+
+    @Override
+    public List<String[]> getBills(BillState state) {
+        return null;
     }
 }

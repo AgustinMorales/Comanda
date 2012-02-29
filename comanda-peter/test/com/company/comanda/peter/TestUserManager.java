@@ -5,6 +5,8 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
+import junit.framework.Assert;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +23,7 @@ import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Order;
 import com.company.comanda.peter.server.model.Restaurant;
 import com.company.comanda.peter.server.model.Table;
+import com.company.comanda.peter.shared.BillState;
 import com.company.comanda.peter.shared.OrderState;
 import com.company.comanda.peter.shared.BillType;
 import com.company.comanda.peter.stubs.SessionAttributesHashMap;
@@ -141,6 +144,65 @@ public class TestUserManager {
         userId = userManager.registerUser(PHONE_NUMBER, USER_PASSWORD, "");
     }
     
+    @Test
+    public void testChangeBillState(){
+        List<MenuItem> items = userManager.getMenuItems(restaurantId);
+        
+        final long itemId = items.get(0).getId();
+        
+        final ArrayList<Long> itemIds = new ArrayList<Long>();
+        final ArrayList<String> itemComments = new ArrayList<String>();
+        itemIds.add(itemId);
+        itemComments.add("Comentarios");
+        
+        final String billKeyString1 = userManager.placeOrder(userId, USER_PASSWORD, 
+                restaurantId, itemIds, itemComments, "Test address", 
+                null, "Comentarios generales",
+                BillType.DELIVERY,
+                null);
+        
+        final String billKeyString2 = userManager.placeOrder(userId, USER_PASSWORD, 
+                restaurantId, itemIds, itemComments, "Test address2", 
+                null, "Comentarios generales2",
+                BillType.DELIVERY,
+                null);
+        
+        List<Bill> inRestaurant = manager.getAgent().getBills(null, 
+                BillType.IN_RESTAURANT);
+        Assert.assertEquals(0, inRestaurant.size());
+        
+        List<Bill> allBills = manager.getAgent().getBills(null, null);
+        Assert.assertEquals(2, allBills.size());
+        
+        List<Bill> delivery = manager.getAgent().getBills(null, BillType.DELIVERY);
+        Assert.assertEquals(2, delivery.size());
+        
+        List<Bill> delivered = manager.getAgent().getBills(BillState.DELIVERED, 
+                BillType.DELIVERY);
+        Assert.assertEquals(0, delivered.size());
+        
+        List<Bill> open = manager.getAgent().getBills(BillState.OPEN, 
+                BillType.DELIVERY);
+        Assert.assertEquals(2, open.size());
+        
+        //Now, change state
+        
+        manager.getAgent().changeBillState(billKeyString1, BillState.DELIVERED);
+        
+        delivery = manager.getAgent().getBills(null, BillType.DELIVERY);
+        Assert.assertEquals(2, delivery.size());
+        
+        delivered = manager.getAgent().getBills(BillState.DELIVERED, 
+                BillType.DELIVERY);
+        Assert.assertEquals(1, delivered.size());
+        
+        open = manager.getAgent().getBills(BillState.OPEN, 
+                BillType.DELIVERY);
+        Assert.assertEquals(1, open.size());
+        
+        Assert.assertEquals("Comentarios generales", delivered.get(0).getComments());
+        Assert.assertEquals("Comentarios generales2", open.get(0).getComments());
+    }
     
     @Test
     public void testPlaceOrder() {

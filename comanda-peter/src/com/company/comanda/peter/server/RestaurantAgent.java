@@ -7,6 +7,8 @@ import com.company.comanda.peter.server.model.MenuCategory;
 import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Order;
 import com.company.comanda.peter.server.model.Table;
+import com.company.comanda.peter.shared.BillState;
+import com.company.comanda.peter.shared.BillType;
 import com.company.comanda.peter.shared.OrderState;
 import com.googlecode.objectify.Key;
 
@@ -52,4 +54,10 @@ public interface RestaurantAgent {
     public long getDeliveryTableId();
     
     public Bill getBill(Key<Bill> billKey);
+    
+    public List<Bill> getBills(BillState state,
+            BillType billType);
+    
+    public void changeBillState(String billKeyString,
+            BillState newState);
 }

@@ -2,6 +2,7 @@ package com.company.comanda.peter.client;
 
 import java.util.List;
 
+import com.company.comanda.peter.shared.BillState;
 import com.company.comanda.peter.shared.OrderState;
 import com.company.comanda.peter.shared.PagedResult;
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -24,4 +25,5 @@ public interface GUIService extends RemoteService {
 	void addTable(String tablename);
 	List<String[]> getTables();
 	List<String[]> getCategories();
+	List<String[]> getBills(BillState state);
 }

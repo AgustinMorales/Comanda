@@ -15,6 +15,8 @@ import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Order;
 import com.company.comanda.peter.server.model.Restaurant;
 import com.company.comanda.peter.server.model.Table;
+import com.company.comanda.peter.shared.BillState;
+import com.company.comanda.peter.shared.BillType;
 import com.company.comanda.peter.shared.OrderState;
 import com.google.inject.assistedinject.Assisted;
 import com.googlecode.objectify.Key;
@@ -264,6 +266,32 @@ public class RestaurantAgentImpl implements RestaurantAgent {
     @Override
     public Bill getBill(Key<Bill> billKey) {
         return ofy.get(billKey);
+    }
+
+    @Override
+    public List<Bill> getBills(BillState state,
+            BillType billType) {
+        Query<Bill> query = ofy.query(Bill.class).
+                ancestor(restaurantKey);
+        if(state != null){
+            query.filter("state", state);
+        }
+        if(billType != null){
+            query.filter("type", billType);
+        }
+        return query.list();
+    }
+
+    @Override
+    public void changeBillState(String billKeyString, BillState newState) {
+        Key<Bill> key = new Key<Bill>(billKeyString);
+        Bill bill = ofy.get(key);
+        if(bill.getState() == BillState.CLOSED){
+            throw new IllegalStateException(
+                    "Trying to modify a closed Bill");
+        }
+        bill.setState(newState);
+        ofy.put(bill);
     }
 
 

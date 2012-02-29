@@ -19,6 +19,7 @@ import com.company.comanda.peter.server.model.Order;
 import com.company.comanda.peter.server.model.Restaurant;
 import com.company.comanda.peter.server.model.Table;
 import com.company.comanda.peter.server.model.User;
+import com.company.comanda.peter.shared.BillState;
 import com.company.comanda.peter.shared.BillType;
 import com.company.comanda.peter.shared.OrderState;
 import com.googlecode.objectify.Key;
@@ -54,7 +55,7 @@ public class UserManagerImpl implements UserManager {
     @Override
     public String placeOrder(long userId, String password, long restaurantId,
             List<Long> menuItemIds, List<String> menuItemComments, String address, 
-            long tableId,
+            Long tableId,
             String comments,
             BillType type,
             String billKeyString) {
@@ -65,13 +66,23 @@ public class UserManagerImpl implements UserManager {
                 Restaurant.class,restaurantId);
         final String restaurantName = ofy.get(restaurantKey).getName();
         Key<Table> tableKey = null;
+        Table table = null;
         if(type == BillType.IN_RESTAURANT){
+            if(tableId == null){
+                throw new IllegalArgumentException(
+                        "tableId needed for IN_RESTAURANT orders");
+            }
             tableKey = new Key<Table>(restaurantKey,Table.class, tableId);
+            table = ofy.get(tableKey);
         }
-        Table table = ofy.get(tableKey);
+        
         Bill bill = null;
         if(billKeyString != null){
             bill = ofy.get(new Key<Bill>(billKeyString));
+            if(bill.getState() == BillState.CLOSED){
+                throw new IllegalStateException(
+                        "Trying to modify a CLOSED bill");
+            }
         }
         else{
             //FIXME: Are there any modifiable Bill fields?
@@ -83,8 +94,9 @@ public class UserManagerImpl implements UserManager {
             bill.setOpenDate(date);
             bill.setRestaurant(restaurantKey);
             bill.setComments(comments);
-            bill.setTableName(table.getName());
+            bill.setTableName(table != null?table.getName():null);
             bill.setRestaurantName(restaurantName);
+            bill.setState(BillState.OPEN);
             ofy.put(bill);
         }
         

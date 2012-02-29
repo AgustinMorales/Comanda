@@ -25,7 +25,7 @@ public interface UserManager {
     String placeOrder(long userId, String password, 
             long restaurantId,
             List<Long> menuItemIds, List<String> menuItemComments, 
-            String address, long tableId,
+            String address, Long tableId,
             String comments,
             BillType type,
             String billKeyString);
