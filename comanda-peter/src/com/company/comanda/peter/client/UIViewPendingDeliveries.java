@@ -10,7 +10,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class ViewPendingDeliveries extends Composite {
+public class UIViewPendingDeliveries extends Composite {
 
     public static final int PAGE_SIZE = 25;
     
@@ -24,10 +24,10 @@ public class ViewPendingDeliveries extends Composite {
     
     
     interface ViewPendingDeliveriesUiBinder extends
-            UiBinder<Widget, ViewPendingDeliveries> {
+            UiBinder<Widget, UIViewPendingDeliveries> {
     }
 
-    public ViewPendingDeliveries() {
+    public UIViewPendingDeliveries() {
         initWidget(uiBinder.createAndBindUi(this));
     }
 
