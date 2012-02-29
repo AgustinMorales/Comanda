@@ -16,6 +16,7 @@ import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Order;
 import com.company.comanda.peter.server.model.Table;
 import com.company.comanda.peter.shared.BillState;
+import com.company.comanda.peter.shared.BillType;
 import com.company.comanda.peter.shared.OrderState;
 import com.company.comanda.peter.shared.PagedResult;
 import com.google.appengine.api.blobstore.BlobstoreService;
@@ -191,7 +192,22 @@ GUIService {
     }
 
     @Override
-    public List<String[]> getBills(BillState state) {
-        return null;
+    public PagedResult<String[]> getBills(int start,
+            int length, BillState state, 
+            BillType type) {
+        List<Bill> bills = 
+                restaurantManager.getAgent().getBills(state, type);
+        final int total = bills.size();
+        bills = cutList(bills, start, length);
+        List<String[]> result = new ArrayList<String[]>(bills.size());
+        
+        for(Bill bill: bills){
+            result.add(new String[]{
+                    bill.getKeyString(),
+                    bill.getAddress(),
+                    bill.getOpenDate().toString(),
+            });
+        }
+        return new PagedResult<String[]>(result, total);
     }
 }

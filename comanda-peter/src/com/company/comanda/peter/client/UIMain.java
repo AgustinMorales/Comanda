@@ -15,6 +15,7 @@ public class UIMain extends Composite {
     @UiField TabLayoutPanel mainTabPanel;
     @UiField UIViewAllOrders viewAllOrders;
     @UiField UISelectAndViewTableOrders selectTableAndViewOrders;
+    @UiField UIViewPendingDeliveries viewDeliveryBills;
 
     interface UIMainUiBinder extends UiBinder<Widget, UIMain> {
     }
@@ -27,11 +28,15 @@ public class UIMain extends Composite {
     public void onSelection(SelectionEvent<Integer> event) {
         viewAllOrders.setAutoUpdate(false);
         selectTableAndViewOrders.setAutoUpdate(false);
+        viewDeliveryBills.setAutoUpdate(false);
         switch (event.getSelectedItem()) {
         case 1:
-            viewAllOrders.setAutoUpdate(true);
+            viewDeliveryBills.setAutoUpdate(true);
             break;
         case 2:
+            viewAllOrders.setAutoUpdate(true);
+            break;
+        case 3:
             selectTableAndViewOrders.setAutoUpdate(true);
             break;
         default:

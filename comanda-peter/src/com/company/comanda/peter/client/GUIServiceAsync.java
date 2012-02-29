@@ -3,6 +3,7 @@ package com.company.comanda.peter.client;
 import java.util.List;
 
 import com.company.comanda.peter.shared.BillState;
+import com.company.comanda.peter.shared.BillType;
 import com.company.comanda.peter.shared.OrderState;
 import com.company.comanda.peter.shared.PagedResult;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -24,5 +25,6 @@ public interface GUIServiceAsync {
 	void addTable(String tablename, AsyncCallback<Void> callback);
 	void getTables(AsyncCallback<List<String[]>> callback);
 	void getCategories(AsyncCallback<List<String[]>> callback);
-	void getBills(BillState state, AsyncCallback<List<String[]>> callback);
+	void getBills(int start, int length, 
+	        BillState state, BillType type, AsyncCallback<PagedResult<String[]>> callback);
 }
