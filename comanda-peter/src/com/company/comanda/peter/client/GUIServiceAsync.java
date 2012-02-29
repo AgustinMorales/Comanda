@@ -21,7 +21,7 @@ public interface GUIServiceAsync {
 	void deleteMenuItems(long[] keyIds, AsyncCallback<Void> callback);
 	void login(String username, String password, AsyncCallback<Boolean> callback);
 	void newRestaurant(String name, String password,
-	        double latitude, double longitude, AsyncCallback<Void> callback);
+	        String address, AsyncCallback<Void> callback);
 	void addTable(String tablename, AsyncCallback<Void> callback);
 	void getTables(AsyncCallback<List<String[]>> callback);
 	void getCategories(AsyncCallback<List<String[]>> callback);

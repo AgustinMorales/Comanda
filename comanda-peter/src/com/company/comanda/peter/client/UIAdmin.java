@@ -25,8 +25,7 @@ public class UIAdmin extends Composite {
     @UiField Button btnNewRestaurant;
     @UiField TextBox tbPassword;
     @UiField Button btnCancel;
-    @UiField DoubleBox dbLatitude;
-    @UiField DoubleBox dbLongitude;
+    @UiField TextBox tbAddress;
 
     interface UIAdminUiBinder extends UiBinder<Widget, UIAdmin> {
     }
@@ -38,8 +37,7 @@ public class UIAdmin extends Composite {
     @UiHandler("btnNewRestaurant")
     void onBtnNewRestaurantClick(ClickEvent event) {
         GUIService.newRestaurant(tbRestaurantName.getText(), 
-                tbPassword.getText(),dbLatitude.getValue(),
-                dbLongitude.getValue(),
+                tbPassword.getText(),tbAddress.getValue(),
                 new AsyncCallback<Void>() {
                     
                     @Override

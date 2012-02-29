@@ -27,17 +27,11 @@
 			<g:at left="247" top="205">
 				<g:Button width="74px" height="29px" ui:field="btnCancel" text="Cancelar">Volver</g:Button>
 			</g:at>
+			<g:at left="32" top="124">
+				<g:Label text="Dirección"/>
+			</g:at>
 			<g:at left="107" top="116">
-				<g:DoubleBox ui:field="dbLatitude"/>
-			</g:at>
-			<g:at left="107" top="151">
-				<g:DoubleBox ui:field="dbLongitude"/>
-			</g:at>
-			<g:at left="32" top="122">
-				<g:Label text="Latitud"/>
-			</g:at>
-			<g:at left="32" top="157">
-				<g:Label text="Longitud"/>
+				<g:TextBox ui:field="tbAddress"/>
 			</g:at>
 		</g:AbsolutePanel>
 	</g:HTMLPanel>
