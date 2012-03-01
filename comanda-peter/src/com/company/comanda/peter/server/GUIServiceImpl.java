@@ -73,7 +73,7 @@ GUIService {
             }
             resultList.add(new String[]{currentOrder.getMenuItemName(), 
                     currentBill.getTableName(), 
-                    "" + currentOrder.getId()});
+                    currentOrder.getKeyString()});
         }
         return new PagedResult<String[]>(resultList,total);
     }
