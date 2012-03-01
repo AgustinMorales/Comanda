@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
+import junit.framework.Assert;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,6 +16,7 @@ import com.company.comanda.peter.server.RestaurantAgent;
 import com.company.comanda.peter.server.RestaurantManager;
 import com.company.comanda.peter.server.SessionAttributes;
 import com.company.comanda.peter.server.SessionAttributesFactory;
+import com.company.comanda.peter.server.UserManager;
 import com.company.comanda.peter.server.admin.ComandaAdmin;
 import com.company.comanda.peter.server.guice.BusinessModule;
 import com.company.comanda.peter.server.model.MenuCategory;
@@ -42,6 +45,7 @@ public class TestRestaurant {
     
     private long restaurantId;
     private long categoryId;
+    private ComandaAdmin admin;
     
     private static final Logger log = 
             LoggerFactory.getLogger(TestRestaurant.class);
@@ -93,7 +97,7 @@ public class TestRestaurant {
     void createRestaurant(){
         manager = 
                 injector.getInstance(RestaurantManager.class);
-        ComandaAdmin admin = injector.getInstance(ComandaAdmin.class);
+        admin = injector.getInstance(ComandaAdmin.class);
         
         restaurantId = admin.createRestaurant(REST_NAME, REST_PASSWORD,
                 0,0);
@@ -342,4 +346,5 @@ public class TestRestaurant {
         
         
     }
+
 }

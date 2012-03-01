@@ -24,11 +24,6 @@ import com.company.comanda.peter.shared.OrderState;
 import com.company.comanda.peter.shared.PagedResult;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
-import com.google.code.geocoder.Geocoder;
-import com.google.code.geocoder.GeocoderRequestBuilder;
-import com.google.code.geocoder.model.GeocodeResponse;
-import com.google.code.geocoder.model.GeocoderRequest;
-import com.google.code.geocoder.model.GeocoderResult;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.googlecode.objectify.Key;
 
@@ -162,20 +157,8 @@ GUIService {
 
     @Override
     public void newRestaurant(String name, String password, String address) {
-        final Geocoder geocoder = new Geocoder();
-        GeocoderRequest geocoderRequest = new GeocoderRequestBuilder().setAddress(address).setLanguage("es").getGeocoderRequest();
-        GeocodeResponse geocoderResponse = geocoder.geocode(geocoderRequest);
-        if(geocoderResponse.getResults().size() == 0){
-            throw new IllegalArgumentException("Could not geocode address");
-        }
-        GeocoderResult result = geocoderResponse.getResults().get(0);
-        double latitude = result.getGeometry().
-                getLocation().getLat().doubleValue();
-        double longitude = result.getGeometry().
-                getLocation().getLat().doubleValue();
-        log.info("Address geocoded: {} -> lat='{}', long='{}'",
-                new Object[]{address, latitude, longitude});
-        admin.createRestaurant(name, password, latitude, longitude);
+        
+        admin.createRestaurant(name, password, address);
         
     }
 
