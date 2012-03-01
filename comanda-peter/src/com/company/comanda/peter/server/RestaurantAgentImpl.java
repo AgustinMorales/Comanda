@@ -18,6 +18,9 @@ import com.company.comanda.peter.server.model.Table;
 import com.company.comanda.peter.shared.BillState;
 import com.company.comanda.peter.shared.BillType;
 import com.company.comanda.peter.shared.OrderState;
+import com.google.appengine.api.blobstore.BlobKey;
+import com.google.appengine.api.images.ImagesService;
+import com.google.appengine.api.images.ImagesServiceFactory;
 import com.google.inject.assistedinject.Assisted;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
@@ -32,6 +35,8 @@ public class RestaurantAgentImpl implements RestaurantAgent {
     private final Objectify ofy;
     private final Key<Restaurant> restaurantKey;
     private final Random random;
+    
+    private ImagesService imagesService;
 
     private Long deliveryTableId;
 
@@ -41,6 +46,8 @@ public class RestaurantAgentImpl implements RestaurantAgent {
         this.random = new Random();
         this.restaurantKey = new Key<Restaurant>(Restaurant.class,
                 restaurantId);
+        imagesService = ImagesServiceFactory.getImagesService();
+
     }
 
     @Override
@@ -90,7 +97,10 @@ public class RestaurantAgentImpl implements RestaurantAgent {
             item.setDescription(description);
         }
         if(imageBlobkey != null){
-            item.setImageString(imageBlobkey);
+            BlobKey blobKey = new BlobKey(imageBlobkey);
+            String servingUrl = 
+                    imagesService.getServingUrl(blobKey);
+            item.setImageString(servingUrl);
         }
         if(categoryId != null){
             item.setCategory(new Key<MenuCategory>(

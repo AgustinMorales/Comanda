@@ -52,7 +52,6 @@ import com.company.comanda.brian.xmlhandlers.BooleanHandler;
 import com.company.comanda.brian.xmlhandlers.CategoriesHandler;
 import com.company.comanda.brian.xmlhandlers.MenuItemsHandler;
 import com.company.comanda.common.HttpParams;
-import com.company.comanda.common.HttpParams.BlobServer;
 import com.company.comanda.common.HttpParams.GetCategories;
 import com.company.comanda.common.HttpParams.GetMenuItems;
 
@@ -68,6 +67,9 @@ public class ComandaActivity extends FragmentActivity
     private String restName;
     private String tableId;
     private String restId;
+    
+    private static final int BIG_IMAGE_SIZE = 100;
+    private static final int SMALL_IMAGE_SIZE = 50;
 
     private HashMap<String, Bitmap> smallBitmaps = new HashMap<String, Bitmap>();
     private HashMap<String, Bitmap> largeBitmaps = new HashMap<String, Bitmap>();
@@ -435,10 +437,8 @@ public class ComandaActivity extends FragmentActivity
                 try      
                 {        
                     //use our image serve page to get the image URL
-                    imageURL = new URL("http://" + Constants.SERVER_LOCATION + 
-                            BlobServer.SERVICE_NAME + 
-                            "?" + BlobServer.PARAM_ID + "="
-                            + imageString);
+                    imageURL = new URL(imageString + "=s"
+                            + BIG_IMAGE_SIZE);
                 } 
                 catch (MalformedURLException e) 
                 {
@@ -451,16 +451,30 @@ public class ComandaActivity extends FragmentActivity
                     //                        .Options();
                     //                options.inJustDecodeBounds = true;
                     //                options.inSampleSize = 1/2;
-                    InputStream bitmapIS = (InputStream)imageURL
-                            .getContent();
-                    rawBitMap = BitmapFactory
-                            .decodeStream(bitmapIS);
-                    bitmapIS.close();
-                    if(rawBitMap != null){
-                        finImg = Bitmap
-                                .createScaledBitmap(rawBitMap, 50, 50, false);
-                        smallBitmaps.put(imageString, finImg);
-
+                    
+                    if(largeBitmaps.containsKey(imageString)){
+                        rawBitMap = largeBitmaps.get(imageString);
+                    }
+                    else{
+                        InputStream bitmapIS = (InputStream)imageURL
+                                .getContent();
+                        rawBitMap = BitmapFactory
+                                .decodeStream(bitmapIS);
+                        bitmapIS.close();
+                        if(rawBitMap != null){
+                            largeBitmaps.put(imageString, rawBitMap);
+                        }
+                    }
+                    if(smallBitmaps.containsKey(imageString) == false){
+                        if(rawBitMap != null){
+                            finImg = Bitmap
+                                    .createScaledBitmap(rawBitMap, SMALL_IMAGE_SIZE, 
+                                            SMALL_IMAGE_SIZE, false);
+                            smallBitmaps.put(imageString, finImg);
+                        }
+                    }
+                    else{
+                        finImg = smallBitmaps.get(imageString);
                     }
                 } 
                 catch (IOException e) 
@@ -473,7 +487,6 @@ public class ComandaActivity extends FragmentActivity
         if(finImg != null){
             icon.setImageBitmap(finImg);
         }
-        final Bitmap bitMap = rawBitMap;
         View.OnClickListener clickListener = new OnClickListener() {
 
             @Override
@@ -504,13 +517,6 @@ public class ComandaActivity extends FragmentActivity
                 Bitmap largeBitmap = null;
                 if(largeBitmaps.containsKey(imageString)){
                     largeBitmap = largeBitmaps.get(imageString);
-                }
-                else{
-                    if(bitMap != null){
-                        largeBitmap = Bitmap
-                                .createScaledBitmap(bitMap, 100, 100, false);
-                        largeBitmaps.put(imageString, largeBitmap);
-                    }
                 }
                 if(largeBitmap != null){
                     ImageView image = (ImageView) view.findViewById(R.id.image);
