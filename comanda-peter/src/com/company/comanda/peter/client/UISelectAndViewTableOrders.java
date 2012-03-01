@@ -11,7 +11,9 @@ public class UISelectAndViewTableOrders extends Composite {
 	private static UISelectAndViewTableOrdersUiBinder uiBinder = GWT
 			.create(UISelectAndViewTableOrdersUiBinder.class);
 	@UiField UITableMap tableMap;
-	@UiField UIViewTableOrders tableOrders;
+	@UiField UIViewPendingTableOrders tableOrders;
+	@UiField UIViewAcceptedTableOrders tableAcceptedOrders;
+	
 
 	interface UISelectAndViewTableOrdersUiBinder extends
 			UiBinder<Widget, UISelectAndViewTableOrders> {
@@ -19,7 +21,14 @@ public class UISelectAndViewTableOrders extends Composite {
 
 	public UISelectAndViewTableOrders() {
 		initWidget(uiBinder.createAndBindUi(this));
-		tableMap.setTableSelectorListener(tableOrders);
+		tableMap.setTableSelectorListener(new TableSelectorListener() {
+            
+            @Override
+            public void onNewTableSelected(String tableName) {
+                tableOrders.onNewTableSelected(tableName);
+                tableAcceptedOrders.onNewTableSelected(tableName);
+            }
+        });
 	}
 
 	public void setAutoUpdate(boolean value){

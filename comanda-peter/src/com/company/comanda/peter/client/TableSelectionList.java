@@ -5,48 +5,43 @@ import java.util.List;
 import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
-import com.google.gwt.view.client.Range;
-import com.google.gwt.view.client.RangeChangeEvent;
 
-public class UIEditTables extends Composite {
+public class TableSelectionList extends Composite implements TableSelector{
 
-    private static UIEditTablesUiBinder uiBinder = GWT
-            .create(UIEditTablesUiBinder.class);
-    
+    private static TableSelectionListUiBinder uiBinder = GWT
+            .create(TableSelectionListUiBinder.class);
+    @UiField(provided=true) CellTable<String[]> cellTable = new CellTable<String[]>();
+
+    private TableSelectorListener tableSelectorListener;
+
     private final GUIServiceAsync GUIService = GWT
             .create(GUIService.class);
-    
-    
-    @UiField Button btnAddTable;
-    @UiField CellTable<String[]> tablesCellTable = new CellTable<String[]>();
-    @UiField TextBox tbNewTableName;
 
-    interface UIEditTablesUiBinder extends UiBinder<Widget, UIEditTables> {
+    interface TableSelectionListUiBinder extends
+    UiBinder<Widget, TableSelectionList> {
     }
 
-    public UIEditTables() {
+    public TableSelectionList() {
         initWidget(uiBinder.createAndBindUi(this));
         configureTable();
+
     }
 
+
     void configureTable(){
-        
-        
+
+
         // Add a text column to show the name.
         TextColumn<String[]> nameColumn = new TextColumn<String[]>() {
             @Override
@@ -54,38 +49,28 @@ public class UIEditTables extends Composite {
                 return object[1];
             }
         };
-        tablesCellTable.addColumn(nameColumn, "Nombre");
-        
-        // Add a text column to show the code.
-        TextColumn<String[]> codeColumn = new TextColumn<String[]>() {
-            @Override
-            public String getValue(String[] object) {
-                return object[2];
-            }
-        };
-        tablesCellTable.addColumn(codeColumn, "QRCode");
-        
+        cellTable.addColumn(nameColumn, "Nombre");
+
+
         ButtonCell buttonCell = new ButtonCell(); 
         Column<String[], String> buttonColumn = new Column<String[], String>(buttonCell) { 
             @Override 
             public String getValue(String[] object) { 
                 // The value to display in the button. 
-                return "Accept"; 
+                return "Seleccionar"; 
             } 
 
         };
 
         buttonColumn.setFieldUpdater(new FieldUpdater<String[], String>(){ 
             public void update(int index, String[] object, String value) { 
-                Window.open(
-                        "https://chart.googleapis.com/chart?cht=qr&chs=256x256&chld=H" + 
-                                "&chl=" + object[2], "_blank", null);
+                tableSelectorListener.onNewTableSelected(object[1]);
 
             } 
         }); 
 
-        tablesCellTable.addColumn(buttonColumn, "Show QR code");
-        
+        cellTable.addColumn(buttonColumn, "Acciones");
+
         AsyncDataProvider<String[]> provider = new AsyncDataProvider<String[]>() {
             @Override
             protected void onRangeChanged(HasData<String[]> display) {
@@ -106,33 +91,15 @@ public class UIEditTables extends Composite {
                 GUIService.getTables(callback);
             }
         };
-        
-        
-        provider.addDataDisplay(tablesCellTable);
-        
+
+
+        provider.addDataDisplay(cellTable);
+
     }
-    
-    @UiHandler("btnAddTable")
-    void onBtnAddTableClick(ClickEvent event) {
-        btnAddTable.setEnabled(false);
-        GUIService.addTable(tbNewTableName.getText(), new AsyncCallback<Void>() {
-            
-            @Override
-            public void onSuccess(Void result) {
-                refreshTable();
-                btnAddTable.setEnabled(true);
-            }
-            
-            @Override
-            public void onFailure(Throwable caught) {
-                Window.alert("Error");
-                btnAddTable.setEnabled(true);
-            }
-        });
+
+    @Override
+    public void setTableSelectorListener(TableSelectorListener listener) {
+        this.tableSelectorListener = listener;
     }
-    
-    public void refreshTable(){
-        Range range = tablesCellTable.getVisibleRange();
-        RangeChangeEvent.fire(tablesCellTable, range);
-    }
+
 }

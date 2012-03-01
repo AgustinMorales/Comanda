@@ -10,7 +10,8 @@
 			<g:Label text="Seleccione una mesa para ver sus pedidos" />
 			<g:HorizontalPanel width="100%">
 			     <c:UITableMap width="374px" ui:field="tableMap"></c:UITableMap>
-			     <c:UIViewTableOrders width="265px" height="428px" ui:field="tableOrders"></c:UIViewTableOrders>
+			     <c:UIViewPendingTableOrders width="265px" height="428px" ui:field="tableOrders"/>
+			     <c:UIViewAcceptedTableOrders width="265px" height="428px" ui:field="tableAcceptedOrders"/>
 			</g:HorizontalPanel>
 		</g:VerticalPanel>
 	</g:HTMLPanel>

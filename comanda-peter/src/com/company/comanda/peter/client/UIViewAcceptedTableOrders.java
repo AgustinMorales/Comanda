@@ -1,6 +1,7 @@
 package com.company.comanda.peter.client;
 
 import com.company.comanda.peter.client.AbstractTableUpdater.UpdateListener;
+import com.company.comanda.peter.shared.OrderState;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -13,7 +14,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class UIViewTableOrders extends Composite 
+public class UIViewAcceptedTableOrders extends Composite 
 implements TableSelectorListener{
 
     public static final int PAGE_SIZE = 25;
@@ -28,11 +29,11 @@ implements TableSelectorListener{
 	
 
 	@UiTemplate("UIViewAllOrders.ui.xml")
-	interface UIViewAllOrders extends UiBinder<Widget, UIViewTableOrders> {}
+	interface UIViewAllOrders extends UiBinder<Widget, UIViewAcceptedTableOrders> {}
 	private static UIViewAllOrders uiBinder = GWT.create(UIViewAllOrders.class);
 
 
-	public UIViewTableOrders() {
+	public UIViewAcceptedTableOrders() {
 		initWidget(uiBinder.createAndBindUi(this));
 
 		ordersTableUpdater = new OrdersTableUpdater(odersTable);
@@ -47,6 +48,8 @@ implements TableSelectorListener{
             }
         });
 
+		ordersTableUpdater.setSelectedState(OrderState.ACCEPTED);
+		
 		odersTable.addColumn(new TextColumn<String[]>() {
             @Override
             public String getValue(String[] object) {
@@ -65,7 +68,7 @@ implements TableSelectorListener{
 	public void setSelectedTable(String tableName){
 	    this.selectedTable = tableName;
 		ordersTableUpdater.setSelectedTable(selectedTable);
-		ordersTableUpdater.setAutoUpdate(true);
+		refresh();
 	}
 	
 	public void setAutoUpdate(boolean value){
@@ -81,5 +84,9 @@ implements TableSelectorListener{
         lblMessage.setVisible(true);
         setSelectedTable(tableName);
         
+    }
+    
+    public void refresh(){
+        ordersTableUpdater.refreshTable();
     }
 }
