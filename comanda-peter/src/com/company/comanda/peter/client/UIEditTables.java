@@ -3,6 +3,8 @@ package com.company.comanda.peter.client;
 import java.util.List;
 
 import com.company.comanda.peter.shared.PagedResult;
+import com.google.gwt.cell.client.ButtonCell;
+import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.user.client.Window;
@@ -12,6 +14,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -64,6 +67,27 @@ public class UIEditTables extends Composite {
         };
         tablesCellTable.addColumn(codeColumn, "QRCode");
         
+        ButtonCell buttonCell = new ButtonCell(); 
+        Column<String[], String> buttonColumn = new Column<String[], String>(buttonCell) { 
+            @Override 
+            public String getValue(String[] object) { 
+                // The value to display in the button. 
+                return "Accept"; 
+            } 
+
+        };
+
+        buttonColumn.setFieldUpdater(new FieldUpdater<String[], String>(){ 
+            public void update(int index, String[] object, String value) { 
+                Window.open(
+                        "https://chart.googleapis.com/chart?cht=qr&chs=256x256&chld=H" + 
+                                "&chl=" + object[2], "_blank", null);
+
+            } 
+        }); 
+
+        tablesCellTable.addColumn(buttonColumn, "Show QR code");
+        
         AsyncDataProvider<String[]> provider = new AsyncDataProvider<String[]>() {
             @Override
             protected void onRangeChanged(HasData<String[]> display) {
@@ -84,6 +108,7 @@ public class UIEditTables extends Composite {
                 GUIService.getTables(callback);
             }
         };
+        
         
         provider.addDataDisplay(tablesCellTable);
         
