@@ -127,46 +127,15 @@ public class UserManagerImpl implements UserManager {
     }
 
     @Override
-    public CodifiedData getData(String code) {
+    public CodifiedData getData(String tableKeyString) {
         CodifiedData result = null;
 
-        int totalLength = code.length();
-        int restaurantLength = totalLength - 
-                (Table.TABLE_CODE_ID_PART_WIDTH +
-                        Table.TABLE_CODE_RANDOM_PART_WIDTH);
-
-        long restaurantId = Long.parseLong(
-                code.substring(0, restaurantLength));
-        String table_code = code.substring(restaurantLength);
-
-        Key<Restaurant> restaurantKey = 
-                new Key<Restaurant>(Restaurant.class, restaurantId);
-
-        List<Table> tables = ofy.query(Table.class).
-                filter("code", table_code).
-                ancestor(restaurantKey).list();
-
-        if(tables.size() == 1){
-            try{
-                Restaurant restaurant = ofy.get(restaurantKey);
-                Table table = tables.get(0);
-                result = new CodifiedData();
-                result.restaurant = restaurant;
-                result.table = table;
-            }
-            catch(NotFoundException e){
-                log.info("Could not find restaurant. Code='{}'", 
-                        code);
-            }
-        }
-        else{
-            if(tables.size() > 1){
-                throw new IllegalStateException(
-                        "More than one table with the same code. " +
-                                "Restaurant: '" + restaurantId + 
-                                "'. Code: '" + table_code + "'");
-            }
-        }
+        Table table = ofy.get(new Key<Table>(tableKeyString));
+        Restaurant restaurant = ofy.get(table.getRestaurant());
+        
+        result = new CodifiedData();
+        result.restaurant = restaurant;
+        result.table = table;
 
         return result;
     }

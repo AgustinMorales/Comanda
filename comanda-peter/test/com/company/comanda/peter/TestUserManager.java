@@ -120,7 +120,7 @@ public class TestUserManager {
         for(int i=1;i<NO_OF_MENU_ITEMS;i++){
             manager.getAgent().addOrModifyMenuItem(null, 
                     "itemName" + i, "description" + i, 
-                    "" + i, "imageBlobkey" + i,
+                    "" + i, null,
                     categoryId);
         }
     }
@@ -135,8 +135,7 @@ public class TestUserManager {
         List<Table> tables = manager.getAgent().getTables();
         tableCodes = new String[tables.size()];
         for(int i=0;i<tables.size();i++){
-            tableCodes[i] = String.format(
-                    "%08d%s", restaurantId,tables.get(i).getCode());
+            tableCodes[i] = tables.get(i).getKeyString();
         }
     }
     

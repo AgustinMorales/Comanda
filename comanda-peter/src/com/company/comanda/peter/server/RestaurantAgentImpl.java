@@ -79,7 +79,6 @@ public class RestaurantAgentImpl implements RestaurantAgent {
         else{
             if(itemName == null ||
                     priceString == null ||
-                    imageBlobkey == null ||
                     description == null ||
                     categoryId == null){
                 throw new IllegalArgumentException("Missing data");
@@ -101,6 +100,9 @@ public class RestaurantAgentImpl implements RestaurantAgent {
             String servingUrl = 
                     imagesService.getServingUrl(blobKey);
             item.setImageString(servingUrl);
+        }
+        else{
+            item.setImageString("");
         }
         if(categoryId != null){
             item.setCategory(new Key<MenuCategory>(
@@ -175,15 +177,6 @@ public class RestaurantAgentImpl implements RestaurantAgent {
         table.setRestaurant(restaurantKey);
         ofy.put(table);
         final long id = table.getId();
-        final int random_part = random.nextInt(
-                Table.TABLE_CODE_RANDOM_PART_MAX_VALUE);
-        String code = String.format(
-                "%0" + Table.TABLE_CODE_ID_PART_WIDTH + "d" +
-                        "%0" + Table.TABLE_CODE_RANDOM_PART_WIDTH + "d", 
-                        id, random_part);
-        log.info("Setting table code to: " + code);
-        table.setCode(code);
-        ofy.put(table);
         return id;
     }
 
@@ -207,16 +200,6 @@ public class RestaurantAgentImpl implements RestaurantAgent {
             }
         }
         return getOrders(state, tableId);
-    }
-
-    @Override
-    public String getFullCode(String tableCode) {
-        return getRestaurantCode() + tableCode;
-    }
-
-    @Override
-    public String getRestaurantCode() {
-        return String.format("%8d", (long)restaurantKey.getId());
     }
 
     @Override

@@ -181,7 +181,7 @@ public class TestRestaurant {
         final String ITEM_NAME = "pescado";
         final String ITEM_DESCRIPTION = "Pescado description";
         final String ITEM_PRICE = "345.56";
-        final String BLOB_KEY = "ABCD";
+        final String BLOB_KEY = null;
         agent.addOrModifyMenuItem(null, 
                 ITEM_NAME, ITEM_DESCRIPTION, 
                 ITEM_PRICE, BLOB_KEY, categoryId);
@@ -195,7 +195,7 @@ public class TestRestaurant {
         assertEquals(ITEM_DESCRIPTION, 
                 item.getDescription());
         assertEquals(Float.parseFloat(ITEM_PRICE), item.getPrice(),0);
-        assertEquals(BLOB_KEY, item.getImageString());
+        assertEquals("", item.getImageString());
         
         
     }
@@ -209,7 +209,7 @@ public class TestRestaurant {
         final String ITEM_NAME = "pescado";
         final String ITEM_DESCRIPTION = "Pescado description";
         final String ITEM_PRICE = "345";
-        final String BLOB_KEY = "ABCD";
+        final String BLOB_KEY = null;
         agent.addOrModifyMenuItem(null, 
                 ITEM_NAME, ITEM_DESCRIPTION, 
                 ITEM_PRICE, BLOB_KEY, categoryId);
@@ -238,7 +238,7 @@ public class TestRestaurant {
         final String ITEM_NAME = "pescado";
         final String ITEM_DESCRIPTION = "Pescado description";
         final String ITEM_PRICE = "345.45";
-        final String BLOB_KEY = "ABCD";
+        final String BLOB_KEY = null;
         agent.addOrModifyMenuItem(null, 
                 ITEM_NAME, ITEM_DESCRIPTION, 
                 ITEM_PRICE, BLOB_KEY, categoryId);
@@ -248,7 +248,7 @@ public class TestRestaurant {
         final String NEW_ITEM_NAME = "nuevonombre";
         final String NEW_ITEM_DESCRIPTION = "Pescado description new";
         final String NEW_ITEM_PRICE = "35.23";
-        final String NEW_BLOB_KEY = "ABCDEFG";
+        final String NEW_BLOB_KEY = null;
         
         final long itemId = item.getId();
         agent.addOrModifyMenuItem(item.getId(), 
@@ -262,7 +262,7 @@ public class TestRestaurant {
                 modifiedItem.getDescription());
         assertEquals(Float.parseFloat(NEW_ITEM_PRICE), 
                 modifiedItem.getPrice(),0);
-        assertEquals(NEW_BLOB_KEY, modifiedItem.getImageString());
+        assertEquals("", modifiedItem.getImageString());
         assertEquals(itemId, (long)modifiedItem.getId());
     }
     
@@ -283,7 +283,7 @@ public class TestRestaurant {
         
         assertEquals(returnedId, (long)table.getId());
         
-        assertEquals(8, table.getCode().length());
+        assertNotSame(0, table.getKeyString().length());
     }
     
     @Test
@@ -305,8 +305,8 @@ public class TestRestaurant {
         Table table1 = tables.get(0);
         Table table2 = tables.get(1);
         
-        assertTrue(table1.getCode().equals(
-                table2.getCode()) == false);
+        assertTrue(table1.getKeyString().equals(
+                table2.getKeyString()) == false);
     }
     
     @Test
@@ -322,7 +322,7 @@ public class TestRestaurant {
         final String ITEM_NAME = "pescado";
         final String ITEM_DESCRIPTION = "Pescado description";
         final String ITEM_PRICE = "345";
-        final String BLOB_KEY = "ABCD";
+        final String BLOB_KEY = null;
         agent.addOrModifyMenuItem(null, 
                 ITEM_NAME, ITEM_DESCRIPTION, 
                 ITEM_PRICE, BLOB_KEY, categoryId);
@@ -330,7 +330,7 @@ public class TestRestaurant {
         final String SECOND_ITEM_NAME = "carne";
         final String SECOND_ITEM_DESCRIPTION = "carne description";
         final String SECOND_ITEM_PRICE = "3435";
-        final String SECOND_BLOB_KEY = "AD";
+        final String SECOND_BLOB_KEY = null;
         agent.addOrModifyMenuItem(null, 
                 SECOND_ITEM_NAME, SECOND_ITEM_DESCRIPTION, 
                 SECOND_ITEM_PRICE, SECOND_BLOB_KEY, secondCategoryId);

@@ -175,8 +175,7 @@ GUIService {
         for(Table table : tables){
             result.add(new String[]{"" + table.getId(), 
                     table.getName(), 
-                    restaurantManager.getAgent().getFullCode(
-                            table.getCode())});
+                    table.getKeyString()});
         }
         return result;
     }

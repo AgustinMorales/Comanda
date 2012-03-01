@@ -43,10 +43,6 @@ public interface RestaurantAgent {
     
     public List<Table> getTables();
     
-    public String getFullCode(String tableCode);
-    
-    public String getRestaurantCode();
-    
     public long addOrModifyMenuCategory(Long categoryId, String name);
     
     public List<MenuCategory> getCategories();
