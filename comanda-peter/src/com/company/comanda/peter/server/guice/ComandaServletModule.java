@@ -2,6 +2,7 @@ package com.company.comanda.peter.server.guice;
 
 import com.company.comanda.common.HttpParams.BlobServer;
 import com.company.comanda.common.HttpParams.DecodeQR;
+import com.company.comanda.common.HttpParams.GetBills;
 import com.company.comanda.common.HttpParams.GetCategories;
 import com.company.comanda.common.HttpParams.GetMenuItems;
 import com.company.comanda.common.HttpParams.GetOrders;
@@ -9,6 +10,7 @@ import com.company.comanda.common.HttpParams.PlaceOrder;
 import com.company.comanda.common.HttpParams.RegisterUser;
 import com.company.comanda.common.HttpParams.SearchRestaurants;
 import com.company.comanda.peter.server.GUIServiceImpl;
+import com.company.comanda.peter.server.GetBillsServlet;
 import com.company.comanda.peter.server.GetCategoriesServlet;
 import com.company.comanda.peter.server.GetItemsServlet;
 import com.company.comanda.peter.server.GetOrdersServlet;
@@ -35,5 +37,6 @@ class ComandaServletModule extends ServletModule {
     serve(SearchRestaurants.SERVICE_NAME).with(
             SearchRestaurantsServlet.class);
     serve(GetOrders.SERVICE_NAME).with(GetOrdersServlet.class);
+    serve(GetBills.SERVICE_NAME).with(GetBillsServlet.class);
   }
 }
