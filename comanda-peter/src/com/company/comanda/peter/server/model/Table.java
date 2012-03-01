@@ -38,4 +38,18 @@ public class Table {
                 id)).getString();
     }
     
+    public String getCode(){
+        String restaurantString = "" + restaurant.getId();
+        return String.format("%02d%s%d", restaurantString.length(), restaurantString, id);
+    }
+    
+    public static Key<Table> parseCode(String code){
+        int restaurant_length = Integer.parseInt(code.substring(0, 2));
+        long restaurantId = Long.parseLong(code.substring(2,2 + restaurant_length));
+        long tableId = Long.parseLong(code.substring(2 + restaurant_length));
+        
+        return new Key<Table>(
+                new Key<Restaurant>(Restaurant.class, restaurantId), 
+                Table.class, tableId);
+    }
 }

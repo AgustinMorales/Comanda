@@ -127,10 +127,11 @@ public class UserManagerImpl implements UserManager {
     }
 
     @Override
-    public CodifiedData getData(String tableKeyString) {
+    public CodifiedData getData(String code) {
         CodifiedData result = null;
 
-        Table table = ofy.get(new Key<Table>(tableKeyString));
+        Key<Table> tableKey = Table.parseCode(code);
+        Table table = ofy.get(tableKey);
         Restaurant restaurant = ofy.get(table.getRestaurant());
         
         result = new CodifiedData();

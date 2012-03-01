@@ -283,7 +283,7 @@ public class TestRestaurant {
         
         assertEquals(returnedId, (long)table.getId());
         
-        assertNotSame(0, table.getKeyString().length());
+        assertNotSame(0, table.getCode().length());
     }
     
     @Test
@@ -305,8 +305,8 @@ public class TestRestaurant {
         Table table1 = tables.get(0);
         Table table2 = tables.get(1);
         
-        assertTrue(table1.getKeyString().equals(
-                table2.getKeyString()) == false);
+        assertTrue(table1.getCode().equals(
+                table2.getCode()) == false);
     }
     
     @Test

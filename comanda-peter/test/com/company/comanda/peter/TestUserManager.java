@@ -135,7 +135,7 @@ public class TestUserManager {
         List<Table> tables = manager.getAgent().getTables();
         tableCodes = new String[tables.size()];
         for(int i=0;i<tables.size();i++){
-            tableCodes[i] = tables.get(i).getKeyString();
+            tableCodes[i] = tables.get(i).getCode();
         }
     }
     

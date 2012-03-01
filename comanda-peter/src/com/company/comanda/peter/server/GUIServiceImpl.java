@@ -175,7 +175,7 @@ GUIService {
         for(Table table : tables){
             result.add(new String[]{"" + table.getId(), 
                     table.getName(), 
-                    table.getKeyString()});
+                    table.getCode()});
         }
         return result;
     }
