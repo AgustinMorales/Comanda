@@ -30,7 +30,7 @@ public abstract class AbstractTableUpdater {
 	class MyTimer extends Timer{
 
         public void run(){
-            refreshTable();
+            doRefresh();
         }
     }
 	
@@ -38,8 +38,8 @@ public abstract class AbstractTableUpdater {
 		this.ordersTable = ordersTable;
 	}
 	
-	public void setAutoUpdate(boolean value){
-        if(ordersProvider == null){
+	private void initProvider(){
+	    if(ordersProvider == null){
             ordersProvider = new AsyncDataProvider<String[]>() {
                 @Override
                 protected void onRangeChanged(HasData<String[]> display) {
@@ -62,6 +62,10 @@ public abstract class AbstractTableUpdater {
             };
             ordersProvider.addDataDisplay(ordersTable);
         }
+	}
+	
+	public void setAutoUpdate(boolean value){
+        initProvider();
         if(autoUpdateTimer == null){
         	autoUpdateTimer = new MyTimer();
         }
@@ -75,13 +79,17 @@ public abstract class AbstractTableUpdater {
     }
 	
 	public synchronized void refreshTable(){
-        Range range = ordersTable.getVisibleRange();
+        initProvider();
+        doRefresh();
+    }
+	
+	private void doRefresh(){
+	    Range range = ordersTable.getVisibleRange();
         RangeChangeEvent.fire(ordersTable, range);
         if(updateListener != null){
             updateListener.onUpdate();
         }
-    }
-	
+	}
 	public synchronized void setUpdateListener(UpdateListener listener){
 	    this.updateListener = listener;
 	}
