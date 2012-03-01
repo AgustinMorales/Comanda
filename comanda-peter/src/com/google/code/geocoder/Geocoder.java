@@ -9,8 +9,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -24,7 +24,7 @@ import java.security.NoSuchAlgorithmException;
  * @author <a href="mailto:panchmp@gmail.com">Michael Panchenko</a>
  */
 public class Geocoder {
-    private static Log log = LogFactory.getLog(Geocoder.class);
+    private static Logger log = LoggerFactory.getLogger(Geocoder.class);
 
     private static final String GEOCODE_REQUEST_SERVER_HTTP = "http://maps.googleapis.com";
     private static final String GEOCODE_REQUEST_SERVER_HTTPS = "https://maps.googleapis.com";
@@ -76,7 +76,7 @@ public class Geocoder {
 
     protected String getURL(final GeocoderRequest geocoderRequest) throws UnsupportedEncodingException {
         if (log.isTraceEnabled()) {
-            log.trace(geocoderRequest);
+            log.trace("{}",geocoderRequest);
         }
         final StringBuilder url = getURLQuery(geocoderRequest);
 
