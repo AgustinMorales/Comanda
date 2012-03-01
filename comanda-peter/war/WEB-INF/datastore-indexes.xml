@@ -3,8 +3,9 @@
 <datastore-indexes autoGenerate="false">
 
     <!-- Used 3 times in query history -->
-    <datastore-index kind="Order" ancestor="true" source="auto">
+    <datastore-index kind="Order" ancestor="true" source="manual">
         <property name="state" direction="asc"/>
+        <property name="table" direction="asc"/>
         <property name="date" direction="desc"/>
     </datastore-index>
 
