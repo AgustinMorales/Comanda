@@ -84,6 +84,20 @@ public class SelectTableActivity extends Activity
                 
             }
         });
+        
+        Button reviewDeliveriesButton = 
+                (Button)findViewById(R.id.review_deliveries_button);
+        reviewDeliveriesButton.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(
+                        getApplicationContext(), 
+                        ReviewBillsActivity.class);
+                startActivity(intent);
+                
+            }
+        });
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
