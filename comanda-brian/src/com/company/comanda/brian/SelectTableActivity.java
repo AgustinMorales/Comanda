@@ -8,7 +8,9 @@ import org.apache.http.message.BasicNameValuePair;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -24,6 +26,8 @@ public class SelectTableActivity extends Activity
 {
     
     private static final int SCAN_CODE_ACTIVITY = 1;
+    private String userId;
+    private String password;
     
     
     public static class GetTableData extends AsyncGetData<ParsedData>{
@@ -59,6 +63,13 @@ public class SelectTableActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.select_table);
         Button read_code_button = (Button)findViewById(R.id.read_code_button);
+        
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(
+                getApplicationContext());
+        
+        userId = preferences.getString(ComandaPreferences.USER_ID, "");
+        //FIXME: Use real password
+        password = "";
         read_code_button.setOnClickListener(new OnClickListener() {
             
             @Override
@@ -94,6 +105,8 @@ public class SelectTableActivity extends Activity
                 Intent intent = new Intent(
                         getApplicationContext(), 
                         ReviewBillsActivity.class);
+                intent.putExtra(ReviewBillsActivity.EXTRA_USER_ID, userId);
+                intent.putExtra(ReviewBillsActivity.EXTRA_PASSWORD, password);
                 startActivity(intent);
                 
             }

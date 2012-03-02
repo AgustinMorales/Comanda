@@ -140,9 +140,9 @@ public class ReviewBillsActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        Bundle extras = getIntent().getExtras();
-//        this.userId = extras.getString(EXTRA_USER_ID);
-//        this.password = extras.getString(EXTRA_PASSWORD);
+        Bundle extras = getIntent().getExtras();
+        this.userId = extras.getString(EXTRA_USER_ID);
+        this.password = extras.getString(EXTRA_PASSWORD);
         
         setContentView(R.layout.bills);
         bills = new ArrayList<Bill>();
