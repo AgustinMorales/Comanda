@@ -89,7 +89,7 @@ public class Bill {
     }
     
     public String getKeyString(){
-        return (new Key<Bill>(user,Bill.class,id)).getString();
+        return (new Key<Bill>(restaurant,Bill.class,id)).getString();
     }
     public BillState getState() {
         return state;
