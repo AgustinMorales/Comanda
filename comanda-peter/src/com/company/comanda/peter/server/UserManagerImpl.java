@@ -117,7 +117,8 @@ public class UserManagerImpl implements UserManager {
                     menuItem.getName(),
                     menuItem.getPrice(),
                     menuItemKey,
-                            comments, billKey);
+                            comments, billKey,
+                            type);
             newOrder.setTable(tableKey);
             newOrders.add(newOrder);
         }

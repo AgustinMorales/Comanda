@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.persistence.Id;
 
+import com.company.comanda.peter.shared.BillType;
 import com.company.comanda.peter.shared.OrderState;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Parent;
@@ -22,6 +23,7 @@ public class Order
     private Key<Bill> bill;
     private Key<MenuItem> menuItemKey;
     private Key<Table> table;
+    private BillType billType;
     
     //FIXME: This is here just for objectify (and might not be needed)
     public Order(){
@@ -34,7 +36,8 @@ public class Order
             float price,
             Key<MenuItem> menuItemKey,
             String comments,
-            Key<Bill> bill)
+            Key<Bill> bill,
+            BillType billType)
      {
          this();
          this.date = date;
@@ -44,6 +47,7 @@ public class Order
          this.comments = comments;
          this.bill = bill;
          this.menuItemKey = menuItemKey;
+         this.billType = billType;
      }
 
 
@@ -137,6 +141,16 @@ public class Order
 
     public void setTable(Key<Table> table) {
         this.table = table;
+    }
+
+
+    public BillType getBillType() {
+        return billType;
+    }
+
+
+    public void setBillType(BillType billType) {
+        this.billType = billType;
     }
     
 }
