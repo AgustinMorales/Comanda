@@ -77,8 +77,7 @@ public class InputYourDataActivity extends Activity {
                 getApplicationContext());
         final String storedPhoneNumber = prefs.getString(ComandaPreferences.PHONE_NUMBER, null);
         if(storedPhoneNumber != null){
-            //FIXME: Should't register again in this case
-            registerUser(storedPhoneNumber);
+            startSelectTable();
         }
         else{
             setContentView(R.layout.enter_personal_data);
