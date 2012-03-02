@@ -1,5 +1,6 @@
 package com.company.comanda.peter.client;
 
+import com.company.comanda.peter.shared.BillType;
 import com.company.comanda.peter.shared.OrderState;
 import com.company.comanda.peter.shared.PagedResult;
 import com.google.gwt.user.cellview.client.CellTable;
@@ -28,6 +29,7 @@ public class OrdersTableUpdater extends AbstractTableUpdater{
             int length,
             AsyncCallback<PagedResult<String[]>> callback) {
         service.getOrders(start, length, 
+                BillType.IN_RESTAURANT,
                 selectedState, selectedTable, 
                 callback);
         

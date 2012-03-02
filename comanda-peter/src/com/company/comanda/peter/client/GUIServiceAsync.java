@@ -14,7 +14,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public interface GUIServiceAsync {
 	void getMenuItems(int start, int length, Long categoryId,
 	        AsyncCallback<PagedResult<String[]>> callback);
-	void getOrders(int start, int length, OrderState state, String tableName,
+	void getOrders(int start, int length, BillType billType, OrderState state, 
+	        String tableKeyString,
 	        AsyncCallback<PagedResult<String[]>> callback);
 	void getUploadUrl(AsyncCallback<String> callback);
 	void acceptOrder(String orderKey, AsyncCallback<Void> callback);

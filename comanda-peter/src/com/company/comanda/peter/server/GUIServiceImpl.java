@@ -51,11 +51,12 @@ GUIService {
 
     @SuppressWarnings("unchecked")
     public PagedResult<String[]> getOrders(int start, int length, 
-            OrderState state, String tableName){
+            BillType billType, OrderState state, String tableKeyString){
         
         int total;
-        List<Order> orders = restaurantManager.getAgent().getOrders( 
-                state, tableName);
+        List<Order> orders = restaurantManager.getAgent().getOrders(
+                billType,
+                state, tableKeyString);
 
         total = orders.size();
         orders = cutList(orders, start, length);
@@ -173,7 +174,7 @@ GUIService {
         List<Table> tables = restaurantManager.getAgent().getTables();
         List<String[]> result = new ArrayList<String[]>(tables.size());
         for(Table table : tables){
-            result.add(new String[]{"" + table.getId(), 
+            result.add(new String[]{table.getKeyString(), 
                     table.getName(), 
                     table.getCode()});
         }

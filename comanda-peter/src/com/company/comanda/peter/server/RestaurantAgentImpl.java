@@ -129,16 +129,19 @@ public class RestaurantAgentImpl implements RestaurantAgent {
     }
 
     @Override
-    public List<Order> getOrders(OrderState state, Long tableId) {
+    public List<Order> getOrders(BillType billType,
+            OrderState state, String tableKeyString) {
         Query<Order> query = ofy.query(Order.class).ancestor(restaurantKey).
                 order("-date");
         List<Order> orders = null;
+        if(billType != null){
+            query.filter("billType", billType);
+        }
         if (state != null){
             query.filter("state", state);
         }
-        if(tableId != null){
-            query.filter("table",new Key<Table>(
-                    restaurantKey,Table.class,(long)tableId));
+        if(tableKeyString != null){
+            query.filter("table",new Key<Table>(tableKeyString));
         }
         orders = query.list();
         return orders;
@@ -186,20 +189,21 @@ public class RestaurantAgentImpl implements RestaurantAgent {
     }
 
     @Override
-    public List<Order> getOrders(OrderState state, String tableName) {
-        Long tableId = null;
+    public List<Order> getOrdersByTableName(BillType billType, 
+            OrderState state, String tableName) {
+        String tableKeyString = null;
         if(tableName != null){
             List<Table> tables = ofy.query(Table.class).filter("name", 
                     tableName).ancestor(restaurantKey).list();
             if(tables.size() == 1){
-                tableId = tables.get(0).getId();
+                tableKeyString = tables.get(0).getKeyString();
             }
             else if( tables.size() > 1){
                 throw new IllegalStateException(
                         "More than one table with the same name");
             }
         }
-        return getOrders(state, tableId);
+        return getOrders(billType, state, tableKeyString);
     }
 
     @Override
