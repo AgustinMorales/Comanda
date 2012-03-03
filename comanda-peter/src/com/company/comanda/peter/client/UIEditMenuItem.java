@@ -24,10 +24,10 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class UIEditMenuItem extends Composite {
 
-	
-	private final GUIServiceAsync greetingService = GWT
+
+    private final GUIServiceAsync greetingService = GWT
             .create(GUIService.class);
-	
+
     private static UIEditMenuItemUiBinder uiBinder = GWT
             .create(UIEditMenuItemUiBinder.class);
     @UiField TextBox tbName;
@@ -40,7 +40,9 @@ public class UIEditMenuItem extends Composite {
     @UiField Button btnCancel;
     @UiField Image imgItem;
     @UiField ListBox lbCategory;
-    
+
+    private boolean editingExistingData;
+
     private NewMenuItemHandler newMenuItemHandler;
 
     interface UIEditMenuItemUiBinder extends UiBinder<Widget, UIEditMenuItem> {
@@ -50,41 +52,44 @@ public class UIEditMenuItem extends Composite {
         initWidget(uiBinder.createAndBindUi(this));
         itemDataFormPanel.setEncoding(FormPanel.ENCODING_MULTIPART);
         itemDataFormPanel.setMethod(FormPanel.METHOD_POST);
-        
+
     }
 
-	@UiHandler("btnSaveChanges")
-	void onBtnSaveChangesClick(ClickEvent event) {
-		greetingService.getUploadUrl(new AsyncCallback<String>() {
+    @UiHandler("btnSaveChanges")
+    void onBtnSaveChangesClick(ClickEvent event) {
+        if(validate()){
+            doCreatingItem();
+            greetingService.getUploadUrl(new AsyncCallback<String>() {
 
-            @Override
-            public void onFailure(Throwable caught) {
-                Window.alert("Error while getting upload URL");
-                
-            }
+                @Override
+                public void onFailure(Throwable caught) {
+                    Window.alert("Error while getting upload URL");
+                    doNotCreatingItem();
+                }
 
-            @Override
-            public void onSuccess(String result) {
-                itemDataFormPanel.setAction(result);
-                itemDataFormPanel.submit();
-                
-            }
-        });
-//	    itemDataFormPanel.setAction("/newMenuItem");
-//	    itemDataFormPanel.submit();
-	}
-	
-	
-	public interface NewMenuItemHandler{
+                @Override
+                public void onSuccess(String result) {
+                    itemDataFormPanel.setAction(result);
+                    itemDataFormPanel.submit();
+
+                }
+            });
+        }
+        //	    itemDataFormPanel.setAction("/newMenuItem");
+        //	    itemDataFormPanel.submit();
+    }
+
+
+    public interface NewMenuItemHandler{
         void onNewMenuItem();
         void onCancel();
     }
-	
-	public void setNewMenuItemHandler(NewMenuItemHandler handler){
+
+    public void setNewMenuItemHandler(NewMenuItemHandler handler){
         this.newMenuItemHandler = handler;
     }
-	
-	public void setData(String[] data){
+
+    public void setData(String[] data){
         tbKeyId.setText(data[0]);
         String imageKey = data[1];
         if(imageKey != null){
@@ -94,18 +99,23 @@ public class UIEditMenuItem extends Composite {
         tbName.setText(data[2]);
         dbPrice.setText(data[3]);
         taDescription.setText(data[4]);
+        editingExistingData = true;
     }
-    
+
     public void reset(){
         loadCategories();
+        doNotCreatingItem();
         itemDataFormPanel.reset();
         imgItem.setVisible(false);
+        editingExistingData = false;
+
     }
-	@UiHandler("itemDataFormPanel")
-	void onItemDataFormPanelSubmitComplete(SubmitCompleteEvent event) {
-		itemDataFormPanel.reset();
-		newMenuItemHandler.onNewMenuItem();
-	}
+    @UiHandler("itemDataFormPanel")
+    void onItemDataFormPanelSubmitComplete(SubmitCompleteEvent event) {
+        itemDataFormPanel.reset();
+        newMenuItemHandler.onNewMenuItem();
+        doNotCreatingItem();
+    }
     @UiHandler("btnCancel")
     void onBtnCancelClick(ClickEvent event) {
         itemDataFormPanel.reset();
@@ -115,7 +125,33 @@ public class UIEditMenuItem extends Composite {
     void onFuImageFileChange(ChangeEvent event) {
         imgItem.setVisible(false);
     }
-    
+
+
+    private boolean validate(){
+        boolean result = true;
+        dbPrice.setText(dbPrice.getText().replaceAll(",", "."));
+        String description = taDescription.getText();
+        String name = tbName.getText();
+        String imageFile = fuImageFile.getFilename();
+        if(dbPrice.getValue() == null){
+            Window.alert("El precio introducido no es correcto");
+            result = false;
+        }
+        else if(description == null || description.length() == 0){
+            Window.alert("Por favor, introduzca algo en la descripción");
+            result = false;
+        }
+        else if(name == null || name.length() == 0){
+            Window.alert("Por favor, introduzca el nombre");
+            result = false;
+        }
+        else if((editingExistingData == false) && (imageFile == null || imageFile.length() ==0)){
+            Window.alert("Por favor, seleccione un fichero válido");
+            result = false;
+        }
+        return result;
+    }
+
     private void loadCategories(){
         greetingService.getCategories(
                 new AsyncCallback<List<String[]>>() {
@@ -134,7 +170,16 @@ public class UIEditMenuItem extends Composite {
                         }
                         lbCategory.setEnabled(true);
                     }
-        });
+                });
     }
-    
+
+    private void doCreatingItem(){
+        btnSaveChanges.setEnabled(false);
+        btnSaveChanges.setText("Saving...");
+    }
+
+    private void doNotCreatingItem(){
+        btnSaveChanges.setText("Save");
+        btnSaveChanges.setEnabled(true);
+    }
 }

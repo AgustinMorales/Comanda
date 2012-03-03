@@ -41,6 +41,9 @@ public class UIAdmin extends Composite {
                     
                     @Override
                     public void onSuccess(Void result) {
+                        tbRestaurantName.setText("");
+                        tbPassword.setText("");
+                        tbAddress.setText("");
                         Window.alert("Creado con éxito");
                         
                     }
