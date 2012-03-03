@@ -73,7 +73,7 @@ public class UIViewPendingDeliveries extends Composite {
                     String[] object = (String[])event.getValue();
                     DialogBox dialog = new DialogBox();
                     dialog.setWidget(new UIViewDeliveryDetails(object[0]));
-                    dialog.show();
+                    dialog.center();
                 }
                 
             }
