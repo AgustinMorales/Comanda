@@ -54,6 +54,9 @@ public abstract class AbstractTableUpdater {
                         public void onSuccess(PagedResult<String[]> result) {
                             updateRowData(start, result.getList());
                             updateRowCount(result.getTotal(), true);
+                            if(updateListener != null){
+                                updateListener.onUpdate();
+                            }
                         }
                     };
                     // The remote service that should be implemented
@@ -86,9 +89,7 @@ public abstract class AbstractTableUpdater {
 	private void doRefresh(){
 	    Range range = ordersTable.getVisibleRange();
         RangeChangeEvent.fire(ordersTable, range);
-        if(updateListener != null){
-            updateListener.onUpdate();
-        }
+        
 	}
 	public synchronized void setUpdateListener(UpdateListener listener){
 	    this.updateListener = listener;

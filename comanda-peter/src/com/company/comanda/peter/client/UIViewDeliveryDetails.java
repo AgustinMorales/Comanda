@@ -54,8 +54,6 @@ public class UIViewDeliveryDetails extends Composite {
         configureTable();
         
         ordersTableUpdater.setSelectecBillKeyString(billKeyString);
-        
-        ordersTableUpdater.refreshTable();
         ordersTableUpdater.setUpdateListener(new AbstractTableUpdater.UpdateListener() {
             
             @Override
@@ -65,6 +63,8 @@ public class UIViewDeliveryDetails extends Composite {
                 
             }
         });
+        ordersTableUpdater.refreshTable();
+        
     }
 
     
