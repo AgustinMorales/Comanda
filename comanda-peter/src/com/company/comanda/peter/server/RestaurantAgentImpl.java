@@ -130,7 +130,7 @@ public class RestaurantAgentImpl implements RestaurantAgent {
 
     @Override
     public List<Order> getOrders(BillType billType,
-            OrderState state, String tableKeyString) {
+            OrderState state, String tableKeyString, String billKeyString) {
         Query<Order> query = ofy.query(Order.class).ancestor(restaurantKey).
                 order("-date");
         List<Order> orders = null;
@@ -142,6 +142,10 @@ public class RestaurantAgentImpl implements RestaurantAgent {
         }
         if(tableKeyString != null){
             query.filter("table",new Key<Table>(tableKeyString));
+        }
+        if(billKeyString != null){
+            Key<Bill> billKey = new Key<Bill>(billKeyString);
+            query.ancestor(billKey);
         }
         orders = query.list();
         return orders;
@@ -203,7 +207,7 @@ public class RestaurantAgentImpl implements RestaurantAgent {
                         "More than one table with the same name");
             }
         }
-        return getOrders(billType, state, tableKeyString);
+        return getOrders(billType, state, tableKeyString, null);
     }
 
     @Override

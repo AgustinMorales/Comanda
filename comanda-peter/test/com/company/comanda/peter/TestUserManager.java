@@ -229,9 +229,9 @@ public class TestUserManager {
                 null);
         
         List<Order> ordersFromRestaurant = manager.
-                getAgent().getOrders(BillType.IN_RESTAURANT, null, tableKeyString);
+                getAgent().getOrders(BillType.IN_RESTAURANT, null, tableKeyString, null);
         List<Order> deliveriesFromRestaurant = manager.
-                getAgent().getOrders(BillType.DELIVERY, null, tableKeyString);
+                getAgent().getOrders(BillType.DELIVERY, null, tableKeyString, null);
         
         assertEquals(1, ordersFromRestaurant.size());
         assertEquals(0, deliveriesFromRestaurant.size());
@@ -280,7 +280,7 @@ public class TestUserManager {
                 billKeyString);
         
         List<Order> ordersFromRestaurant = manager.
-                getAgent().getOrders(BillType.IN_RESTAURANT, null, tableKeyString);
+                getAgent().getOrders(BillType.IN_RESTAURANT, null, tableKeyString, null);
         
         assertEquals(2, ordersFromRestaurant.size());
         
@@ -295,6 +295,64 @@ public class TestUserManager {
         
     }
     
+    
+    @Test
+    public void testTwoOrdersTwoBills() {
+        final String code = tableCodes[0];
+        
+        CodifiedData data = userManager.getData(code);
+        
+        final long restaurantId = data.restaurant.getId();
+        final long tableId = data.table.getId();
+        final String tableKeyString = data.table.getKeyString();
+        
+        List<MenuItem> items = userManager.getMenuItems(restaurantId);
+        
+        final long itemId = items.get(0).getId();
+        
+        final ArrayList<Long> itemIds = new ArrayList<Long>();
+        final ArrayList<String> itemComments = new ArrayList<String>();
+        itemIds.add(itemId);
+        itemComments.add("Comentarios");
+        
+        final String billKeyString1 = userManager.placeOrder(userId, USER_PASSWORD, 
+                restaurantId, itemIds, itemComments, null, 
+                tableId, "Comentarios generales",
+                BillType.IN_RESTAURANT,
+                null);
+        
+        final String billKeyString2 = userManager.placeOrder(userId, USER_PASSWORD, 
+                restaurantId, itemIds, itemComments, null, 
+                tableId, "Comentarios generales2",
+                BillType.IN_RESTAURANT,
+                null);
+        
+        List<Order> ordersFromRestaurant1 = manager.
+                getAgent().getOrders(null, null, null, billKeyString1);
+        
+        assertEquals(1, ordersFromRestaurant1.size());
+        
+        List<Order> ordersFromRestaurant2 = manager.
+                getAgent().getOrders(null, null, null, billKeyString2);
+        
+        assertEquals(1, ordersFromRestaurant2.size());
+        
+        List<Order> ordersFromUser1 = 
+                userManager.getOrders(userId, 
+                        USER_PASSWORD, billKeyString1);
+        
+        assertEquals(1, ordersFromUser1.size());
+        
+        List<Order> ordersFromUser2 = 
+                userManager.getOrders(userId, 
+                        USER_PASSWORD, billKeyString2);
+        
+        assertEquals(1, ordersFromUser2.size());
+        
+        List<Bill> billsFromUser = userManager.getBills(userId, USER_PASSWORD);
+        assertEquals(2, billsFromUser.size());
+        
+    }
     
     @Test
     public void testModifyOrder(){
@@ -322,7 +380,7 @@ public class TestUserManager {
         
         List<Order> orders = manager.
                 getAgent().getOrders(BillType.IN_RESTAURANT,
-                        null, tableKeyString);
+                        null, tableKeyString, null);
         
         assertEquals(1, orders.size());
         manager.getAgent().changeOrderState(orders.get(0).getKeyString(), 
@@ -330,16 +388,16 @@ public class TestUserManager {
         
         List<Order> allOrders = manager.
                 getAgent().getOrders(BillType.IN_RESTAURANT,
-                        null, tableKeyString);
+                        null, tableKeyString, null);
         
         List<Order> acceptedOrders = manager.
                 getAgent().getOrders(BillType.IN_RESTAURANT,
-                        OrderState.ACCEPTED, tableKeyString);
+                        OrderState.ACCEPTED, tableKeyString, null);
         
         List<Order> orderedOrders = manager.
                 getAgent().getOrders(
                         BillType.IN_RESTAURANT, 
-                        OrderState.ORDERED, tableKeyString);
+                        OrderState.ORDERED, tableKeyString, null);
         
         assertEquals(1, allOrders.size());
         assertEquals(0, orderedOrders.size());

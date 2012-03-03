@@ -14,6 +14,7 @@ public class OrdersTableUpdater extends AbstractTableUpdater{
 
     private OrderState selectedState;
 	private String selectedTable;
+	private String selectecBillKeyString;
 
 	
 	public void setSelectedTable(String table){
@@ -24,6 +25,11 @@ public class OrdersTableUpdater extends AbstractTableUpdater{
 		this.selectedState = state;
 	}
 
+	
+    public void setSelectecBillKeyString(String selectecBillKeyString) {
+        this.selectecBillKeyString = selectecBillKeyString;
+    }
+
     @Override
     protected void update(GUIServiceAsync service, int start, 
             int length,
@@ -31,6 +37,7 @@ public class OrdersTableUpdater extends AbstractTableUpdater{
         service.getOrders(start, length, 
                 BillType.IN_RESTAURANT,
                 selectedState, selectedTable, 
+                selectecBillKeyString,
                 callback);
         
     }

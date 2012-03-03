@@ -17,7 +17,8 @@ public interface GUIService extends RemoteService {
 	PagedResult<String[]> getMenuItems(int start, int length, Long categoryId);
 	PagedResult<String[]> getOrders(int start, int length, 
 	        BillType billType, OrderState state, 
-	        String tableKeyString);
+	        String tableKeyString,
+	        String billKeyString);
 	public String getUploadUrl();
 	void acceptOrder(String orderKey);
 	void deleteMenuItems(long[] keyIds);

@@ -9,9 +9,12 @@ import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.CellPreviewEvent;
+import com.google.gwt.view.client.CellPreviewEvent.Handler;
 
 public class UIViewPendingDeliveries extends Composite {
 
@@ -26,6 +29,8 @@ public class UIViewPendingDeliveries extends Composite {
     @UiField VerticalPanel ordersTableContainer;
     
     private BillsTableUpdater billsTableUpdater;
+    
+    private GUIServiceAsync guiService = GWT.create(GUIService.class);
     
     interface ViewPendingDeliveriesUiBinder extends
             UiBinder<Widget, UIViewPendingDeliveries> {
@@ -59,6 +64,20 @@ public class UIViewPendingDeliveries extends Composite {
         odersPager.setDisplay(odersTable);
         odersPager.setPageSize(PAGE_SIZE);
         
+        odersTable.addCellPreviewHandler(new Handler<String[]>() {
+
+            @Override
+            public void onCellPreview(CellPreviewEvent<String[]> event) {
+                boolean isClick = "click".equals(event.getNativeEvent().getType());
+                if(isClick){
+                    String[] object = (String[])event.getValue();
+                    DialogBox dialog = new DialogBox();
+                    dialog.setWidget(new UIViewDeliveryDetails(object[0]));
+                    dialog.show();
+                }
+                
+            }
+        });
         
     }
     

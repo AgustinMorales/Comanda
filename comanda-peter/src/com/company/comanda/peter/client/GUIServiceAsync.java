@@ -16,6 +16,7 @@ public interface GUIServiceAsync {
 	        AsyncCallback<PagedResult<String[]>> callback);
 	void getOrders(int start, int length, BillType billType, OrderState state, 
 	        String tableKeyString,
+	        String billKeyString,
 	        AsyncCallback<PagedResult<String[]>> callback);
 	void getUploadUrl(AsyncCallback<String> callback);
 	void acceptOrder(String orderKey, AsyncCallback<Void> callback);
