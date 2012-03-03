@@ -24,26 +24,26 @@
                 </g:header>
                 <c:UIViewPendingDeliveries ui:field="viewDeliveryBills"/>
             </g:tab>
-			<g:tab>
-				<g:header size='7'>
-					Ver pedidos pendientes (restaurante)
-				</g:header>
-				<c:UIViewAllOrders ui:field="viewAllOrders"/>
-			</g:tab>
-			<g:tab>
-                <g:header size='7'>
-                    Ver mesas
-                </g:header>
-                <c:UISelectAndViewTableOrders 
-                ui:field="selectTableAndViewOrders"/>
-            </g:tab>
-            <g:tab>
-                <g:header size='7'>
-                    Editar mesas
-                </g:header>
-                <c:UIEditTables
-                ui:field="editTables"/>
-            </g:tab>
+<!-- 			<g:tab> -->
+<!-- 				<g:header size='7'> -->
+<!-- 					Ver pedidos pendientes (restaurante) -->
+<!-- 				</g:header> -->
+<!-- 				<c:UIViewAllOrders ui:field="viewAllOrders"/> -->
+<!-- 			</g:tab> -->
+<!-- 			<g:tab> -->
+<!--                 <g:header size='7'> -->
+<!--                     Ver mesas -->
+<!--                 </g:header> -->
+<!--                 <c:UISelectAndViewTableOrders  -->
+<!--                 ui:field="selectTableAndViewOrders"/> -->
+<!--             </g:tab> -->
+<!--             <g:tab> -->
+<!--                 <g:header size='7'> -->
+<!--                     Editar mesas -->
+<!--                 </g:header> -->
+<!--                 <c:UIEditTables -->
+<!--                 ui:field="editTables"/> -->
+<!--             </g:tab> -->
 		</g:TabLayoutPanel>
 	</g:HTMLPanel>
 </ui:UiBinder> 

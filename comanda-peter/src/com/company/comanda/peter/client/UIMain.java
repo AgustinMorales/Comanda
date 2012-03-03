@@ -13,8 +13,8 @@ public class UIMain extends Composite {
 
     private static UIMainUiBinder uiBinder = GWT.create(UIMainUiBinder.class);
     @UiField TabLayoutPanel mainTabPanel;
-    @UiField UIViewAllOrders viewAllOrders;
-    @UiField UISelectAndViewTableOrders selectTableAndViewOrders;
+//    @UiField UIViewAllOrders viewAllOrders;
+//    @UiField UISelectAndViewTableOrders selectTableAndViewOrders;
     @UiField UIViewPendingDeliveries viewDeliveryBills;
 
     interface UIMainUiBinder extends UiBinder<Widget, UIMain> {
@@ -26,19 +26,19 @@ public class UIMain extends Composite {
 
     @UiHandler("mainTabPanel")
     public void onSelection(SelectionEvent<Integer> event) {
-        viewAllOrders.setAutoUpdate(false);
-        selectTableAndViewOrders.setAutoUpdate(false);
+//        viewAllOrders.setAutoUpdate(false);
+//        selectTableAndViewOrders.setAutoUpdate(false);
         viewDeliveryBills.setAutoUpdate(false);
         switch (event.getSelectedItem()) {
         case 1:
             viewDeliveryBills.setAutoUpdate(true);
             break;
-        case 2:
-            viewAllOrders.setAutoUpdate(true);
-            break;
-        case 3:
-            selectTableAndViewOrders.setAutoUpdate(true);
-            break;
+//        case 2:
+//            viewAllOrders.setAutoUpdate(true);
+//            break;
+//        case 3:
+//            selectTableAndViewOrders.setAutoUpdate(true);
+//            break;
         default:
             break;
         }
