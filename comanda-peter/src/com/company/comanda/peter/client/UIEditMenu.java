@@ -139,7 +139,6 @@ public class UIEditMenu extends Composite {
 	@UiHandler("btnNewItem")
 	void onBtnNewItemClick(ClickEvent event) {
 		newMenuItemPanel.reset();
-        dialogBox.show();
         dialogBox.center();
 	}
 	
@@ -153,7 +152,6 @@ public class UIEditMenu extends Composite {
         if(selectedSet.size() == 1){
             newMenuItemPanel.reset();
             newMenuItemPanel.setData(selectedSet.iterator().next());
-            dialogBox.show();
             dialogBox.center();
         }
 	}

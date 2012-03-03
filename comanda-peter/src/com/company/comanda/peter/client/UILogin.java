@@ -43,7 +43,7 @@ public class UILogin extends Composite {
             public void onSuccess(Boolean result) {
                 if(result){
                     RootLayoutPanel.get().clear();
-                    RootLayoutPanel.get().add(new UIMain());
+                    RootLayoutPanel.get().add(new UIMain(tbUsename.getText()));
                     containerDB.hide();
                 }
                 else{

@@ -8,29 +8,33 @@
 	<ui:with field='res' type='com.company.comanda.peter.client.resources.Resources'/>
 	
 	<g:HTMLPanel width="1200" height="600">
+	
+	<g:VerticalPanel>
+	<g:HorizontalPanel>
 	<g:Image resource='{res.banner}'/>
-	<br/>
-		<g:TabLayoutPanel barHeight="2" barUnit="EM" width="100%"
-			height="100%" ui:field="mainTabPanel">
-			<g:tab>
-				<g:header size='7'>
-					Editar menú
-				</g:header>
-				<c:UIEditMenu/>
-			</g:tab>
-			<g:tab>
+	<g:Label ui:field="lblRestaurantName"/>
+	</g:HorizontalPanel>
+	<g:TabLayoutPanel barHeight="2" barUnit="EM" width="100%"
+            height="100%" ui:field="mainTabPanel">
+            <g:tab>
+                <g:header size='7'>
+                    Editar menú
+                </g:header>
+                <c:UIEditMenu/>
+            </g:tab>
+            <g:tab>
                 <g:header size='7'>
                     Ver pedidos pendientes (domicilio)
                 </g:header>
                 <c:UIViewPendingDeliveries ui:field="viewDeliveryBills"/>
             </g:tab>
-<!-- 			<g:tab> -->
-<!-- 				<g:header size='7'> -->
-<!-- 					Ver pedidos pendientes (restaurante) -->
-<!-- 				</g:header> -->
-<!-- 				<c:UIViewAllOrders ui:field="viewAllOrders"/> -->
-<!-- 			</g:tab> -->
-<!-- 			<g:tab> -->
+<!--            <g:tab> -->
+<!--                <g:header size='7'> -->
+<!--                    Ver pedidos pendientes (restaurante) -->
+<!--                </g:header> -->
+<!--                <c:UIViewAllOrders ui:field="viewAllOrders"/> -->
+<!--            </g:tab> -->
+<!--            <g:tab> -->
 <!--                 <g:header size='7'> -->
 <!--                     Ver mesas -->
 <!--                 </g:header> -->
@@ -44,6 +48,8 @@
 <!--                 <c:UIEditTables -->
 <!--                 ui:field="editTables"/> -->
 <!--             </g:tab> -->
-		</g:TabLayoutPanel>
+        </g:TabLayoutPanel>
+	</g:VerticalPanel>
+		
 	</g:HTMLPanel>
 </ui:UiBinder> 

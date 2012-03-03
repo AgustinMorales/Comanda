@@ -5,6 +5,7 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
@@ -16,12 +17,14 @@ public class UIMain extends Composite {
 //    @UiField UIViewAllOrders viewAllOrders;
 //    @UiField UISelectAndViewTableOrders selectTableAndViewOrders;
     @UiField UIViewPendingDeliveries viewDeliveryBills;
+    @UiField Label lblRestaurantName;
 
     interface UIMainUiBinder extends UiBinder<Widget, UIMain> {
     }
 
-    public UIMain() {
+    public UIMain(String restaurantName) {
         initWidget(uiBinder.createAndBindUi(this));
+        lblRestaurantName.setText(restaurantName);
     }
 
     @UiHandler("mainTabPanel")
