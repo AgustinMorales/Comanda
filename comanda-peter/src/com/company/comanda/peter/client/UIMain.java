@@ -24,7 +24,7 @@ public class UIMain extends Composite {
 
     public UIMain(String restaurantName) {
         initWidget(uiBinder.createAndBindUi(this));
-        lblRestaurantName.setText(restaurantName);
+        lblRestaurantName.setText("Restaurante: " + restaurantName);
     }
 
     @UiHandler("mainTabPanel")
