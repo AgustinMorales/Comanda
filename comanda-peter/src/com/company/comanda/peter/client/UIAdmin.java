@@ -24,7 +24,6 @@ public class UIAdmin extends Composite {
     @UiField TextBox tbRestaurantName;
     @UiField Button btnNewRestaurant;
     @UiField TextBox tbPassword;
-    @UiField Button btnCancel;
     @UiField TextBox tbAddress;
 
     interface UIAdminUiBinder extends UiBinder<Widget, UIAdmin> {
@@ -52,10 +51,5 @@ public class UIAdmin extends Composite {
                         
                     }
                 });
-    }
-    @UiHandler("btnCancel")
-    void onBtnCancelClick(ClickEvent event) {
-        RootLayoutPanel.get().clear();
-//        RootLayoutPanel.get().add(new UILogin());
     }
 }

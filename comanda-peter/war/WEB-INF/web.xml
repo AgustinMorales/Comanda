@@ -26,6 +26,7 @@
   <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>Comanda_peter.html</welcome-file>
+    <welcome-file>Comanda_peterAdmin.html</welcome-file>
   </welcome-file-list>
 
 </web-app>

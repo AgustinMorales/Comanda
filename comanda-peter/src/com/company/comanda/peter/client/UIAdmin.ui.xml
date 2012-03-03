@@ -15,7 +15,7 @@
 			<g:at left="107" top="38">
 				<g:TextBox ui:field="tbRestaurantName"/>
 			</g:at>
-			<g:at left="167" top="205">
+			<g:at left="214" top="205">
 				<g:Button ui:field="btnNewRestaurant" width="74px" height="29px">Aceptar</g:Button>
 			</g:at>
 			<g:at left="107" top="77">
@@ -23,9 +23,6 @@
 			</g:at>
 			<g:at left="32" top="85">
 				<g:Label text="Contraseña"/>
-			</g:at>
-			<g:at left="247" top="205">
-				<g:Button width="74px" height="29px" ui:field="btnCancel" text="Cancelar">Volver</g:Button>
 			</g:at>
 			<g:at left="32" top="124">
 				<g:Label text="Dirección"/>

@@ -24,7 +24,6 @@ public class UILogin extends Composite {
     @UiField TextBox tbUsename;
     @UiField PasswordTextBox tbPassword;
     @UiField Button btnLogin;
-    @UiField Button btnAdmin;
     
     private DialogBox containerDB;
 
@@ -59,11 +58,5 @@ public class UILogin extends Composite {
                 
             }
         });
-    }
-    @UiHandler("btnAdmin")
-    void onBtnAdminClick(ClickEvent event) {
-        RootLayoutPanel.get().clear();
-        RootLayoutPanel.get().add(new UIAdmin());
-        containerDB.hide();
     }
 }
