@@ -43,7 +43,7 @@ public class UIViewDeliveryDetails extends Composite {
             UiBinder<Widget, UIViewDeliveryDetails> {
     }
 
-    public UIViewDeliveryDetails(String billKeyString, DialogBox containerDialog) {
+    public UIViewDeliveryDetails(String billKeyString, final DialogBox containerDialog) {
         this.billKeyString = billKeyString;
         this.containerDialog = containerDialog;
         initWidget(uiBinder.createAndBindUi(this));
@@ -60,7 +60,7 @@ public class UIViewDeliveryDetails extends Composite {
             public void onUpdate() {
                 lblMessage.setVisible(false);
                 ordersTableContainer.setVisible(true);
-                
+                containerDialog.center();
             }
         });
         ordersTableUpdater.refreshTable();
