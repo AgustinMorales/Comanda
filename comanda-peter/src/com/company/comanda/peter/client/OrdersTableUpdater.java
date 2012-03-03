@@ -10,11 +10,13 @@ public class OrdersTableUpdater extends AbstractTableUpdater{
 
 	public OrdersTableUpdater(CellTable<String[]> ordersTable) {
         super(ordersTable);
+        selectedBillType = BillType.IN_RESTAURANT;
     }
 
     private OrderState selectedState;
 	private String selectedTable;
 	private String selectecBillKeyString;
+	private BillType selectedBillType;
 
 	
 	public void setSelectedTable(String table){
@@ -30,12 +32,18 @@ public class OrdersTableUpdater extends AbstractTableUpdater{
         this.selectecBillKeyString = selectecBillKeyString;
     }
 
+    
+    
+    public void setSelectedBillType(BillType selectedBillType) {
+        this.selectedBillType = selectedBillType;
+    }
+
     @Override
     protected void update(GUIServiceAsync service, int start, 
             int length,
             AsyncCallback<PagedResult<String[]>> callback) {
         service.getOrders(start, length, 
-                BillType.IN_RESTAURANT,
+                selectedBillType,
                 selectedState, selectedTable, 
                 selectecBillKeyString,
                 callback);

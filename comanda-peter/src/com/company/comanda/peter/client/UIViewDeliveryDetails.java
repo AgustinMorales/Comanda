@@ -1,6 +1,7 @@
 package com.company.comanda.peter.client;
 
 import com.company.comanda.peter.shared.BillState;
+import com.company.comanda.peter.shared.BillType;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -49,6 +50,7 @@ public class UIViewDeliveryDetails extends Composite {
         lblMessage.setVisible(true);
         ordersTableContainer.setVisible(false);
         ordersTableUpdater = new OrdersTableUpdater(ordersTable);
+        ordersTableUpdater.setSelectedBillType(null);
         configureTable();
         
         ordersTableUpdater.setSelectecBillKeyString(billKeyString);
