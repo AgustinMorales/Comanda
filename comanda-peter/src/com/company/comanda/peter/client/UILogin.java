@@ -14,6 +14,8 @@ import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyUpEvent;
 
 public class UILogin extends Composite {
 
@@ -40,32 +42,42 @@ public class UILogin extends Composite {
         doLogin();
     }
     
+    
+    private boolean validate(){
+        return tbUsename.getText().length() >0 && tbPassword.getText().length() > 0;
+    }
+    
     private void doLogin(){
-        doIndicateLogin();
-        GUIService.login(tbUsename.getText(), tbPassword.getText(), new AsyncCallback<Boolean>() {
-            
-            @Override
-            public void onSuccess(Boolean result) {
-                if(result){
-                    RootLayoutPanel.get().clear();
-                    RootLayoutPanel.get().add(new UIMain(tbUsename.getText()));
-                    doNotIndicateLogin();
-                    containerDB.hide();
-                }
-                else{
-                    doNotIndicateLogin();
-                    Window.alert("Login failed");
+        if(validate()){
+            doIndicateLogin();
+            GUIService.login(tbUsename.getText(), tbPassword.getText(), new AsyncCallback<Boolean>() {
+                
+                @Override
+                public void onSuccess(Boolean result) {
+                    if(result){
+                        RootLayoutPanel.get().clear();
+                        RootLayoutPanel.get().add(new UIMain(tbUsename.getText()));
+                        doNotIndicateLogin();
+                        containerDB.hide();
+                    }
+                    else{
+                        doNotIndicateLogin();
+                        Window.alert("Login failed");
+                    }
+                    
                 }
                 
-            }
-            
-            @Override
-            public void onFailure(Throwable caught) {
-                doNotIndicateLogin();
-                Window.alert("Error");
-                
-            }
-        });
+                @Override
+                public void onFailure(Throwable caught) {
+                    doNotIndicateLogin();
+                    Window.alert("Error");
+                    
+                }
+            });
+        }
+        else{
+            Window.alert("Debe introducir nombre de usuario y contrasegna");
+        }
     }
     
     private void doIndicateLogin(){
@@ -76,5 +88,17 @@ public class UILogin extends Composite {
     private void doNotIndicateLogin(){
         btnLogin.setText("Acceder");
         btnLogin.setEnabled(true);
+    }
+    @UiHandler("tbUsename")
+    void onTbUsenameKeyUp(KeyUpEvent event) {
+        if(event.getNativeKeyCode() == KeyCodes.KEY_ENTER){
+            doLogin();
+        }
+    }
+    @UiHandler("tbPassword")
+    void onTbPasswordKeyUp(KeyUpEvent event) {
+        if(event.getNativeKeyCode() == KeyCodes.KEY_ENTER){
+            doLogin();
+        }
     }
 }
