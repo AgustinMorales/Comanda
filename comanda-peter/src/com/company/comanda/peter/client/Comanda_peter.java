@@ -1,5 +1,6 @@
 package com.company.comanda.peter.client;
 
+import com.company.comanda.peter.client.resources.Resources;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
@@ -21,6 +22,7 @@ public class Comanda_peter implements EntryPoint {
      * This is the entry point method.
      */
     public void onModuleLoad() {
+        Resources.INSTANCE.comanda_css().ensureInjected();
         final DialogBox dialogBox = new DialogBox();
         UILogin login = new UILogin(dialogBox);
         dialogBox.setWidget(login);
