@@ -37,6 +37,11 @@ public class UILogin extends Composite {
 
     @UiHandler("btnLogin")
     void onBtnLoginClick(ClickEvent event) {
+        doLogin();
+    }
+    
+    private void doLogin(){
+        doIndicateLogin();
         GUIService.login(tbUsename.getText(), tbPassword.getText(), new AsyncCallback<Boolean>() {
             
             @Override
@@ -44,9 +49,11 @@ public class UILogin extends Composite {
                 if(result){
                     RootLayoutPanel.get().clear();
                     RootLayoutPanel.get().add(new UIMain(tbUsename.getText()));
+                    doNotIndicateLogin();
                     containerDB.hide();
                 }
                 else{
+                    doNotIndicateLogin();
                     Window.alert("Login failed");
                 }
                 
@@ -54,9 +61,20 @@ public class UILogin extends Composite {
             
             @Override
             public void onFailure(Throwable caught) {
+                doNotIndicateLogin();
                 Window.alert("Error");
                 
             }
         });
+    }
+    
+    private void doIndicateLogin(){
+        btnLogin.setEnabled(false);
+        btnLogin.setText("Accediendo...");
+    }
+    
+    private void doNotIndicateLogin(){
+        btnLogin.setText("Acceder");
+        btnLogin.setEnabled(true);
     }
 }
