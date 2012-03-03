@@ -29,4 +29,5 @@ public interface GUIServiceAsync {
 	void getCategories(AsyncCallback<List<String[]>> callback);
 	void getBills(int start, int length, 
 	        BillState state, BillType type, AsyncCallback<PagedResult<String[]>> callback);
+	void changeBillState(String billKeyString, BillState newState, AsyncCallback<Void> callback);
 }

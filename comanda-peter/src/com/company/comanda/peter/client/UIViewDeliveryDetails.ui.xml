@@ -15,6 +15,9 @@
             </g:HorizontalPanel>
             </g:VerticalPanel>
             <g:Label text="Loading..." ui:field="lblMessage" visible="false"/>
+            <g:VerticalPanel width="100%" horizontalAlignment="ALIGN_RIGHT">
+            	<g:Button ui:field="btnAcceptBill">Aceptar pedido</g:Button>
+            </g:VerticalPanel>
         </g:VerticalPanel>
     </g:HTMLPanel>
 </ui:UiBinder>

@@ -77,6 +77,7 @@ GUIService {
                     currentBill.getTableName(), 
                     currentOrder.getKeyString()});
         }
+        log.info("Found {} orders",total);
         return new PagedResult<String[]>(resultList,total);
     }
 
@@ -215,5 +216,11 @@ GUIService {
             });
         }
         return new PagedResult<String[]>(result, total);
+    }
+
+    @Override
+    public void changeBillState(String billKeyString, BillState newState) {
+        restaurantManager.getAgent().changeBillState(billKeyString, newState);
+        
     }
 }
