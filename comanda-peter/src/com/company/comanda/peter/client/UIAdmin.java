@@ -56,6 +56,6 @@ public class UIAdmin extends Composite {
     @UiHandler("btnCancel")
     void onBtnCancelClick(ClickEvent event) {
         RootLayoutPanel.get().clear();
-        RootLayoutPanel.get().add(new UILogin());
+//        RootLayoutPanel.get().add(new UILogin());
     }
 }

@@ -10,4 +10,7 @@ public interface Resources extends ClientBundle {
 
   @Source("images/banner.png")
   ImageResource banner();
+  
+  @Source("images/login_logo.png")
+  ImageResource login_logo();
 }

@@ -4,25 +4,29 @@
 	<ui:style>
 		
 	</ui:style>
+	<ui:with field='res' type='com.company.comanda.peter.client.resources.Resources'/>
 	<g:HTMLPanel>
-		<g:AbsolutePanel height="228px" width="282px">
-			<g:at left="10" top="36">
+		<g:AbsolutePanel height="354px" width="323px">
+			<g:at left="22" top="197">
 				<g:Label text="Usuario"/>
 			</g:at>
-			<g:at left="11" top="75">
+			<g:at left="23" top="236">
 				<g:Label text="Contraseña"/>
 			</g:at>
-			<g:at left="91" top="28">
+			<g:at left="119" top="189">
 				<g:TextBox ui:field="tbUsename"/>
 			</g:at>
-			<g:at left="91" top="67">
+			<g:at left="119" top="228">
 				<g:PasswordTextBox ui:field="tbPassword"/>
 			</g:at>
-			<g:at left="180" top="117">
+			<g:at left="208" top="278">
 				<g:Button width="92px" height="29px" ui:field="btnLogin" text="Acceder">Login</g:Button>
 			</g:at>
-			<g:at left="10" top="189">
+			<g:at left="10" top="309">
 				<g:Button ui:field="btnAdmin" text="Administrar comanda">Administrar</g:Button>
+			</g:at>
+			<g:at left="38" top="8">
+				<g:Image resource='{res.login_logo}'/>
 			</g:at>
 		</g:AbsolutePanel>
 	</g:HTMLPanel>

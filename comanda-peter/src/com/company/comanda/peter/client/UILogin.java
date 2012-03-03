@@ -7,6 +7,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.PasswordTextBox;
@@ -24,12 +25,15 @@ public class UILogin extends Composite {
     @UiField PasswordTextBox tbPassword;
     @UiField Button btnLogin;
     @UiField Button btnAdmin;
+    
+    private DialogBox containerDB;
 
     interface UILoginUiBinder extends UiBinder<Widget, UILogin> {
     }
 
-    public UILogin() {
+    public UILogin(DialogBox containerDB) {
         initWidget(uiBinder.createAndBindUi(this));
+        this.containerDB = containerDB;
     }
 
     @UiHandler("btnLogin")
@@ -41,6 +45,7 @@ public class UILogin extends Composite {
                 if(result){
                     RootLayoutPanel.get().clear();
                     RootLayoutPanel.get().add(new UIMain());
+                    containerDB.hide();
                 }
                 else{
                     Window.alert("Login failed");
@@ -59,5 +64,6 @@ public class UILogin extends Composite {
     void onBtnAdminClick(ClickEvent event) {
         RootLayoutPanel.get().clear();
         RootLayoutPanel.get().add(new UIAdmin());
+        containerDB.hide();
     }
 }
