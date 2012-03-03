@@ -24,19 +24,20 @@ import com.company.comanda.peter.server.ServeBlob;
 import com.google.inject.servlet.ServletModule;
 
 class ComandaServletModule extends ServletModule {
-  @Override protected void configureServlets() {
-    serve("/comanda_peter/greet").with(GUIServiceImpl.class);
-    serve("/comanda_peter/login").with(RestaurantLoginServiceImpl.class);
-    serve(GetMenuItems.SERVICE_NAME).with(GetItemsServlet.class);
-    serve(PlaceOrder.SERVICE_NAME).with(PlaceOrderServlet.class);
-    serve("/newMenuItem").with(NewMenuItemServlet.class);
-    serve(BlobServer.SERVICE_NAME).with(ServeBlob.class);
-    serve(DecodeQR.SERVICE_NAME).with(QRDecoderServlet.class);
-    serve(RegisterUser.SERVICE_NAME).with(RegisterUserServlet.class);
-    serve(GetCategories.SERVICE_NAME).with(GetCategoriesServlet.class);
-    serve(SearchRestaurants.SERVICE_NAME).with(
-            SearchRestaurantsServlet.class);
-    serve(GetOrders.SERVICE_NAME).with(GetOrdersServlet.class);
-    serve(GetBills.SERVICE_NAME).with(GetBillsServlet.class);
-  }
+    @Override protected void configureServlets() {
+        serve("/comanda_peter/greet").with(GUIServiceImpl.class);
+        serve("/comanda_peter_admin/greet").with(GUIServiceImpl.class);
+        serve("/comanda_peter/login").with(RestaurantLoginServiceImpl.class);
+        serve(GetMenuItems.SERVICE_NAME).with(GetItemsServlet.class);
+        serve(PlaceOrder.SERVICE_NAME).with(PlaceOrderServlet.class);
+        serve("/newMenuItem").with(NewMenuItemServlet.class);
+        serve(BlobServer.SERVICE_NAME).with(ServeBlob.class);
+        serve(DecodeQR.SERVICE_NAME).with(QRDecoderServlet.class);
+        serve(RegisterUser.SERVICE_NAME).with(RegisterUserServlet.class);
+        serve(GetCategories.SERVICE_NAME).with(GetCategoriesServlet.class);
+        serve(SearchRestaurants.SERVICE_NAME).with(
+                SearchRestaurantsServlet.class);
+        serve(GetOrders.SERVICE_NAME).with(GetOrdersServlet.class);
+        serve(GetBills.SERVICE_NAME).with(GetBillsServlet.class);
+    }
 }
