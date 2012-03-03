@@ -23,6 +23,8 @@ public class Comanda_peter implements EntryPoint {
      */
     public void onModuleLoad() {
         Resources.INSTANCE.comanda_css().ensureInjected();
+        RootLayoutPanel.get().clear();
+        RootLayoutPanel.get().add(new UIBackground());
         final DialogBox dialogBox = new DialogBox();
         UILogin login = new UILogin(dialogBox);
         dialogBox.setWidget(login);
