@@ -209,8 +209,8 @@ public class ComandaActivity extends FragmentActivity
         restName = extras.getString(EXTRA_REST_NAME);
         restId = extras.getString(EXTRA_REST_ID);
 
+        //FIXME: This wouldn't work on not Euro-locales
         priceFormat = NumberFormat.getCurrencyInstance();
-        priceFormat.setCurrency(Currency.getInstance("EUR"));
         
         AsyncGetCategories getCategories = new AsyncGetCategories();
         ArrayList<NameValuePair> params = new ArrayList<NameValuePair>(1);
