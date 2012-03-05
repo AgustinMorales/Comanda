@@ -15,13 +15,13 @@
 					<g:Label text="Nuevo restaurante" />
 				</g:at>
 				<g:at left="105" top="48">
-					<g:TextBox ui:field="tbRestaurantName" />
+					<g:TextBox ui:field="tbRestaurantName" name="name"/>
 				</g:at>
 				<g:at left="341" top="428">
 					<g:Button ui:field="btnNewRestaurant" width="74px" height="29px">Aceptar</g:Button>
 				</g:at>
 				<g:at left="105" top="150">
-					<g:TextBox ui:field="tbPassword" />
+					<g:TextBox ui:field="tbPassword" name="password"/>
 				</g:at>
 				<g:at left="25" top="158">
 					<g:Label text="Contraseña" />
@@ -30,19 +30,19 @@
 					<g:Label text="Dirección" />
 				</g:at>
 				<g:at left="105" top="201">
-					<g:TextBox ui:field="tbAddress" width="296px" height="17px" />
+					<g:TextBox ui:field="tbAddress" width="296px" height="17px" name="address"/>
 				</g:at>
 				<g:at left="105" top="99">
-					<g:TextBox ui:field="tbLogin"/>
+					<g:TextBox ui:field="tbLogin" name="login"/>
 				</g:at>
 				<g:at left="25" top="107">
 					<g:Label text="Login"/>
 				</g:at>
 				<g:at left="105" top="252">
-					<g:FileUpload/>
+					<g:FileUpload name="restaurantImage"/>
 				</g:at>
 				<g:at left="105" top="300">
-					<g:TextArea width="298px" height="103px" ui:field="taDescription"/>
+					<g:TextArea width="298px" height="103px" ui:field="taDescription" name="description"/>
 				</g:at>
 				<g:at left="25" top="259">
 					<g:Label text="Imagen"/>
