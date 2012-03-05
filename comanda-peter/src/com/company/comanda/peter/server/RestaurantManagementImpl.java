@@ -53,6 +53,7 @@ public class RestaurantManagementImpl implements RestaurantManager {
                 agent.addOrModifyMenuCategory(null, "Entrantes");
                 agent.addOrModifyMenuCategory(null, "Principales");
                 agent.addOrModifyMenuCategory(null, "Bebidas");
+                agent.addOrModifyMenuCategory(null, "Postres");
             }
         }
         return result;
