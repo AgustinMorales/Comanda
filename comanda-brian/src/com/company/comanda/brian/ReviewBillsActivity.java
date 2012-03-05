@@ -24,6 +24,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.company.comanda.brian.helpers.AsyncGetData;
+import com.company.comanda.brian.helpers.DateAndTime;
 import com.company.comanda.brian.model.Bill;
 import com.company.comanda.brian.model.Order;
 import com.company.comanda.brian.xmlhandlers.BillsHandler;
@@ -270,14 +271,10 @@ public class ReviewBillsActivity extends ListActivity {
                     tvRestaurantName.setText(restaurantName);   
                 }
                 TextView tvOpenDate = (TextView) v.findViewById(R.id.date);
-                tvOpenDate.setText(o.openDate.toString());
+                tvOpenDate.setText(DateAndTime.formatToYesterdayOrToday(o.openDate));
                 TextView tvTotalAmount = (TextView) v.findViewById(R.id.total_amount);
                 tvTotalAmount.setText("" + o.totalAmount);
             }
-            
-            
-            
-
             return v;
         }
     }
