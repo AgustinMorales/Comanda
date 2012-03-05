@@ -7,6 +7,8 @@ public class XmlTags {
     public static class Restaurantlist{
         public static final String RESTAURANT_LIST = "RestaurantList";
         public static final String RESTAURANT = "Restaurant";
+        public static final String DESCRIPTION = "Description";
+        public static final String IMAGE_URL = "imageUrl";
         public static final String ID = "Id";
         public static final String NAME = "Name";
     }

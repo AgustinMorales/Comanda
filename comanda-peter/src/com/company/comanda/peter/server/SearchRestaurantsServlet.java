@@ -68,6 +68,12 @@ public class SearchRestaurantsServlet extends HttpServlet
         {
             out.println(open(RESTAURANT));
             out.println(enclose(ID, "" + i.getId()));
+            out.println(enclose(DESCRIPTION, i.getDescription()));
+            String imageURL = i.getImageUrl();
+            if(imageURL == null){
+                imageURL = "";
+            }
+            out.println(enclose(IMAGE_URL, imageURL));
             out.println(enclose(NAME, i.getName()));
             out.println(close(RESTAURANT));
         }
