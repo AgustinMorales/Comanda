@@ -158,7 +158,7 @@ public class MenuItemsHandler extends ComandaXMLHandler<ArrayList<FoodMenuItem>>
                 log.debug("CategoryId: {}", textBetween);
                 item.setCategoryId(Long.parseLong(textBetween));
             }
-            else if(this.in_categoryId){
+            else if(this.in_price){
                 log.debug("Price: {}", textBetween);
                 item.setPrice(Float.parseFloat(textBetween));
             }
