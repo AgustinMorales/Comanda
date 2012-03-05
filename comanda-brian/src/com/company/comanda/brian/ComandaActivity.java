@@ -41,6 +41,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -537,7 +538,10 @@ public class ComandaActivity extends FragmentActivity
 
             }
         };
-        tt.setOnClickListener(clickListener);
+        LinearLayout itemNameAndPrice = 
+                (LinearLayout)v.findViewById(
+                        R.id.item_name_and_price);
+        itemNameAndPrice.setOnClickListener(clickListener);
         icon.setOnClickListener(clickListener);
 
         ImageButton removeButton = (ImageButton)v.findViewById(R.id.removeorderbutton);
