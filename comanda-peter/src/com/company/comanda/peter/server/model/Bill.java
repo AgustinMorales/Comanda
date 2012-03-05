@@ -25,6 +25,7 @@ public class Bill {
     private BillState state;
     private String address;
     private String comments;
+    private float totalAmount;
    
     
     public Long getId() {
@@ -102,6 +103,12 @@ public class Bill {
     }
     public void setRestaurantName(String restaurantName) {
         this.restaurantName = restaurantName;
+    }
+    public float getTotalAmount() {
+        return totalAmount;
+    }
+    public void setTotalAmount(float totalAmount) {
+        this.totalAmount = totalAmount;
     }
     
 }

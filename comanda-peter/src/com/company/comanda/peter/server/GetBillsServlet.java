@@ -59,7 +59,7 @@ public class GetBillsServlet extends HttpServlet{
         for(Bill bill : bills){
             out.println(open(BILL));
             out.println(enclose(KEY_STRING, bill.getKeyString()));
-            out.println(enclose(TOTAL_AMOUNT, "0"));
+            out.println(enclose(TOTAL_AMOUNT, "" + bill.getTotalAmount()));
             out.println(enclose(STATE,bill.getState().toString()));
             out.println(enclose(TYPE, bill.getType().toString()));
             out.println(enclose(TABLE_NAME, bill.getTableName()));

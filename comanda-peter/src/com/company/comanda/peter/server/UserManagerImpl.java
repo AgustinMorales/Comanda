@@ -108,6 +108,7 @@ public class UserManagerImpl implements UserManager {
         }
         List<Order> newOrders = new ArrayList<Order>(no_of_elements);
         
+        float totalAmount = bill.getTotalAmount();
         for(int i=0;i<no_of_elements;i++){
             
             final Key<MenuItem> menuItemKey = new Key<MenuItem>(restaurantKey,
@@ -121,7 +122,10 @@ public class UserManagerImpl implements UserManager {
                             type);
             newOrder.setTable(tableKey);
             newOrders.add(newOrder);
+            totalAmount = totalAmount + menuItem.getPrice();
         }
+        bill.setTotalAmount(totalAmount);
+        ofy.put(bill);
         ofy.put(newOrders);
 
         return billKeyString;
