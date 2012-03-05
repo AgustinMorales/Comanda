@@ -28,6 +28,7 @@ public class XmlTags {
         public static final String DESCRIPTION = "Description";
         public static final String IMAGE_STRING = "ImageString";
         public static final String CATEGORY_ID = "CategoryId";
+        public static final String PRICE = "Price";
     }
     
     public static class BooleanResult{

@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.HashMap;
 import java.util.List;
 
@@ -67,6 +69,7 @@ public class ComandaActivity extends FragmentActivity
     private String restName;
     private String tableId;
     private String restId;
+    private NumberFormat priceFormat;
     
     private static final int BIG_IMAGE_SIZE = 100;
     private static final int SMALL_IMAGE_SIZE = 50;
@@ -205,6 +208,9 @@ public class ComandaActivity extends FragmentActivity
         restName = extras.getString(EXTRA_REST_NAME);
         restId = extras.getString(EXTRA_REST_ID);
 
+        priceFormat = NumberFormat.getCurrencyInstance();
+        priceFormat.setCurrency(Currency.getInstance("EUR"));
+        
         AsyncGetCategories getCategories = new AsyncGetCategories();
         ArrayList<NameValuePair> params = new ArrayList<NameValuePair>(1);
         params.add(new BasicNameValuePair(GetCategories.PARAM_RESTAURANT_ID, restId));
@@ -381,6 +387,7 @@ public class ComandaActivity extends FragmentActivity
     {
         //Hold array of items to be displayed in the list
         private ArrayList<FoodMenuItem> items;
+        
 
         public ItemAdapter(Context context, int textViewResourceId,
                 ArrayList<FoodMenuItem> items) 
@@ -425,6 +432,8 @@ public class ComandaActivity extends FragmentActivity
         {
             tt.setText(menuItemName);   
         }
+        TextView tvPrice = (TextView) v.findViewById(R.id.item_price);
+        tvPrice.setText(priceFormat.format(o.getPrice()));
         Bitmap rawBitMap = null;
         Bitmap finImg = null;
         if(icon != null && imageString != null && imageString.length() > 0)

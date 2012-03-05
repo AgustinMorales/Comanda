@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.company.comanda.common.XmlTags.MenuItemList;
 import com.company.comanda.peter.server.model.MenuItem;
 
 @Singleton
@@ -71,6 +72,7 @@ public class GetItemsServlet extends HttpServlet
             out.println(enclose(DESCRIPTION, i.getDescription()));
             out.println(enclose(IMAGE_STRING, i.getImageString()));
             out.println(enclose(CATEGORY_ID, "" + i.getCategory().getId()));
+            out.println(enclose(MenuItemList.PRICE, "" + i.getPrice()));
             out.println(close(ITEM));
         }
         out.println(close(ITEM_LIST));

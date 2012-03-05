@@ -28,6 +28,7 @@ public class MenuItemsHandler extends ComandaXMLHandler<ArrayList<FoodMenuItem>>
     private boolean in_description = false;
     private boolean in_imageString = false;
     private boolean in_categoryId = false;
+    private boolean in_price = false;
 
     private FoodMenuItem item = null;
 
@@ -84,6 +85,10 @@ public class MenuItemsHandler extends ComandaXMLHandler<ArrayList<FoodMenuItem>>
         {
             this.in_categoryId = true;
         }
+        else if (localName.equals(PRICE)) 
+        {
+            this.in_price = true;
+        }
     }
 
     /** Gets be called on closing tags like: 
@@ -115,6 +120,10 @@ public class MenuItemsHandler extends ComandaXMLHandler<ArrayList<FoodMenuItem>>
         else if (localName.equals(CATEGORY_ID)) 
         {
             this.in_categoryId = false;
+        }
+        else if (localName.equals(PRICE)) 
+        {
+            this.in_price = false;
         }
     }
 
@@ -148,6 +157,10 @@ public class MenuItemsHandler extends ComandaXMLHandler<ArrayList<FoodMenuItem>>
             else if(this.in_categoryId){
                 log.debug("CategoryId: {}", textBetween);
                 item.setCategoryId(Long.parseLong(textBetween));
+            }
+            else if(this.in_categoryId){
+                log.debug("Price: {}", textBetween);
+                item.setPrice(Float.parseFloat(textBetween));
             }
         }
     }

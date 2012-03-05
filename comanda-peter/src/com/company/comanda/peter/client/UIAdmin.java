@@ -15,6 +15,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.user.client.ui.DoubleBox;
 import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
 
 public class UIAdmin extends Composite {
 
@@ -83,5 +84,10 @@ public class UIAdmin extends Composite {
             Window.alert("Debe introducir una descripci-on");
         }
         return result;
+    }
+    @UiHandler("restaurantDataFormPanel")
+    void onRestaurantDataFormPanelSubmitComplete(SubmitCompleteEvent event) {
+        restaurantDataFormPanel.reset();
+        Window.alert("Terminado");
     }
 }

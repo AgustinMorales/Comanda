@@ -130,7 +130,9 @@ GUIService {
     }
 
     public String getUploadUrlForNewRestaurant(){
-        return blobstoreService.createUploadUrl("/newRestaurant");
+        String uploadUrl = blobstoreService.createUploadUrl("/newRestaurant");
+        log.info("Upload URL for new restaurant: " + uploadUrl);
+        return uploadUrl;
     }
     
     @Override

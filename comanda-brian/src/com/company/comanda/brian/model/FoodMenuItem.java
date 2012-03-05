@@ -8,6 +8,7 @@ public class FoodMenuItem
     private String keyId;
     private String description;
     private long categoryId;
+    private float price;
     
     public FoodMenuItem()
     {
@@ -49,6 +50,12 @@ public class FoodMenuItem
     }
     public void setCategoryId(long categoryId) {
         this.categoryId = categoryId;
+    }
+    public float getPrice() {
+        return price;
+    }
+    public void setPrice(float price) {
+        this.price = price;
     }
     
     
