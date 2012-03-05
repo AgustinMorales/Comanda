@@ -1,6 +1,12 @@
 package com.company.comanda.brian;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.WeakHashMap;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -11,6 +17,8 @@ import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +26,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.company.comanda.brian.helpers.AsyncGetData;
@@ -40,8 +49,11 @@ public class ChooseRestaurantActivity extends ListActivity {
     public static final String EXTRA_NICE_ADDRESS = "niceAddress";
     public static final String EXTRA_ADDRESS_DETAILS = "addressDetails";
     
+    private static final int SMALL_IMAGE_SIZE = 50;
+    
     private ItemAdapter adapter;
     
+    private WeakHashMap<String, Bitmap> smallBitmaps;
     
     
     private static class GetRestaurants extends AsyncGetData<ArrayList<Restaurant>>{
@@ -80,6 +92,7 @@ public class ChooseRestaurantActivity extends ListActivity {
         this.latitude = extras.getDouble(EXTRA_LATITUDE);
         this.longitude = extras.getDouble(EXTRA_LONGITUDE);
         
+        smallBitmaps = new WeakHashMap<String, Bitmap>();
         setContentView(R.layout.choose_restaurant);
         
         restaurants = new ArrayList<Restaurant>();
@@ -155,11 +168,39 @@ public class ChooseRestaurantActivity extends ListActivity {
                 {
                     tt.setText(restaurantName);   
                 }
+                if(o.imageURL != null && o.imageURL.length() > 0){
+                    Bitmap bitmap = null;
+                    if(smallBitmaps.containsKey(o.imageURL)){
+                        bitmap = smallBitmaps.get(o.imageURL);
+                    }
+                    else{
+                        try{
+                            URL imageUrl = new URL(
+                                    o.imageURL + "=s" + 
+                            SMALL_IMAGE_SIZE);
+                            InputStream bitmapIS = (InputStream)imageUrl
+                                    .getContent();
+                            bitmap = BitmapFactory
+                                    .decodeStream(bitmapIS);
+                            bitmapIS.close();
+                            smallBitmaps.put(o.imageURL, bitmap);
+                        }
+                        catch(MalformedURLException e){
+                            log.error("Wrong URL while " +
+                            		"retrieving restaurant image", e);
+                        } catch (IOException e) {
+                            log.error("IOException while " +
+                            		"retrieving restaurant image",
+                            		e);
+                        }
+                    }
+                    if(bitmap != null){
+                        ImageView icon = (ImageView) v.findViewById(R.id.icon);
+                        icon.setImageBitmap(bitmap);
+                    }
+                }
                 
             }
-            
-            
-
             return v;
         }
     }
