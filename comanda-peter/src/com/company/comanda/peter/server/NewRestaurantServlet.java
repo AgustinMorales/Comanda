@@ -1,6 +1,7 @@
 package com.company.comanda.peter.server;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 
@@ -63,6 +64,9 @@ public class NewRestaurantServlet extends HttpServlet{
         admin.createRestaurant(name, login, 
                 password, address, 
                 description, imageBlobKey);
+        
+        PrintWriter out = resp.getWriter();
+        out.print("SUCCESS");
     }
 
 

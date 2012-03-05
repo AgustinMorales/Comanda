@@ -88,6 +88,12 @@ public class UIAdmin extends Composite {
     @UiHandler("restaurantDataFormPanel")
     void onRestaurantDataFormPanelSubmitComplete(SubmitCompleteEvent event) {
         restaurantDataFormPanel.reset();
-        Window.alert("Terminado");
+        String result = event.getResults();
+        if(result != null && result.equals("SUCCESS") == true){
+            Window.alert("Creado con éxito");
+        }
+        else{
+            Window.alert("Error");
+        }
     }
 }
