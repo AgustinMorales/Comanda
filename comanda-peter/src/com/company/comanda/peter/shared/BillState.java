@@ -5,4 +5,5 @@ public enum BillState {
     OPEN,
     DELIVERED,
     CLOSED,
+    REJECTED,
 }

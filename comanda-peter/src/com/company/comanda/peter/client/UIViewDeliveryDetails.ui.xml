@@ -15,9 +15,19 @@
             </g:HorizontalPanel>
             </g:VerticalPanel>
             <g:Label text="Loading..." ui:field="lblMessage" visible="false"/>
-            <g:VerticalPanel width="100%" horizontalAlignment="ALIGN_RIGHT">
-            	<g:Button ui:field="btnAcceptBill">Aceptar pedido</g:Button>
-            </g:VerticalPanel>
+            <g:LayoutPanel width="100%" height="44px">
+            	<g:layer right="0px" width="266px">
+            		<g:HorizontalPanel spacing="5">
+            		<g:Button ui:field="btnReject">Rechazar pedido</g:Button>
+            		<g:Button ui:field="btnAcceptBill">Aceptar pedido</g:Button>
+            	</g:HorizontalPanel>
+            	</g:layer>
+            	<g:layer>
+            		<g:HorizontalPanel spacing="5">
+            			<g:Button ui:field="btnBack">Atrás</g:Button>
+            		</g:HorizontalPanel>
+            	</g:layer>
+            </g:LayoutPanel>
         </g:VerticalPanel>
     </g:HTMLPanel>
 </ui:UiBinder>

@@ -1,23 +1,22 @@
 package com.company.comanda.peter.client;
 
 import com.company.comanda.peter.shared.BillState;
-import com.company.comanda.peter.shared.BillType;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.event.dom.client.ClickEvent;
 
 public class UIViewDeliveryDetails extends Composite {
     
@@ -26,6 +25,8 @@ public class UIViewDeliveryDetails extends Composite {
     @UiField VerticalPanel ordersTableContainer;
     @UiField SimplePager ordersPager;
     @UiField Button btnAcceptBill;
+    @UiField Button btnReject;
+    @UiField Button btnBack;
     
     private OrdersTableUpdater ordersTableUpdater;
     private GUIServiceAsync guiSevice = GWT.create(GUIService.class);
@@ -90,12 +91,12 @@ public class UIViewDeliveryDetails extends Composite {
     
     @UiHandler("btnAcceptBill")
     void onButtonClick(ClickEvent event) {
-        btnAcceptBill.setEnabled(false);
+        doChangingStatus();
         guiSevice.changeBillState(billKeyString, BillState.DELIVERED, new AsyncCallback<Void>() {
             
             @Override
             public void onSuccess(Void result) {
-                btnAcceptBill.setEnabled(true);
+                doNotChangingStatus();
                 containerDialog.hide();
                 
             }
@@ -103,9 +104,47 @@ public class UIViewDeliveryDetails extends Composite {
             @Override
             public void onFailure(Throwable caught) {
                 Window.alert("Error");
-                btnAcceptBill.setEnabled(true);
+                doNotChangingStatus();
                 containerDialog.hide();
             }
         });
+    }
+    
+    @UiHandler("btnBack")
+    void onBtnBackClick_1(ClickEvent event) {
+        containerDialog.hide();
+    }
+    
+    @UiHandler("btnReject")
+    void onBtnRejectClick(ClickEvent event) {
+        doChangingStatus();
+        guiSevice.changeBillState(billKeyString, BillState.REJECTED, new AsyncCallback<Void>() {
+            
+            @Override
+            public void onSuccess(Void result) {
+                doNotChangingStatus();
+                containerDialog.hide();
+                
+            }
+            
+            @Override
+            public void onFailure(Throwable caught) {
+                Window.alert("Error");
+                doNotChangingStatus();
+                containerDialog.hide();
+            }
+        });
+    }
+    
+    private void doChangingStatus(){
+        btnAcceptBill.setEnabled(false);
+        btnReject.setEnabled(false);
+        btnBack.setEnabled(false);
+    }
+ 
+    private void doNotChangingStatus(){
+        btnAcceptBill.setEnabled(true);
+        btnReject.setEnabled(true);
+        btnBack.setEnabled(true);
     }
 }
