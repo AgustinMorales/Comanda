@@ -15,6 +15,7 @@ import com.company.comanda.peter.server.GetCategoriesServlet;
 import com.company.comanda.peter.server.GetItemsServlet;
 import com.company.comanda.peter.server.GetOrdersServlet;
 import com.company.comanda.peter.server.NewMenuItemServlet;
+import com.company.comanda.peter.server.NewRestaurantServlet;
 import com.company.comanda.peter.server.PlaceOrderServlet;
 import com.company.comanda.peter.server.QRDecoderServlet;
 import com.company.comanda.peter.server.RegisterUserServlet;
@@ -31,6 +32,7 @@ class ComandaServletModule extends ServletModule {
         serve(GetMenuItems.SERVICE_NAME).with(GetItemsServlet.class);
         serve(PlaceOrder.SERVICE_NAME).with(PlaceOrderServlet.class);
         serve("/newMenuItem").with(NewMenuItemServlet.class);
+        serve("/newRestaurant").with(NewRestaurantServlet.class);
         serve(BlobServer.SERVICE_NAME).with(ServeBlob.class);
         serve(DecodeQR.SERVICE_NAME).with(QRDecoderServlet.class);
         serve(RegisterUser.SERVICE_NAME).with(RegisterUserServlet.class);

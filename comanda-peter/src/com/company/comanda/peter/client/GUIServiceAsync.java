@@ -22,12 +22,11 @@ public interface GUIServiceAsync {
 	void acceptOrder(String orderKey, AsyncCallback<Void> callback);
 	void deleteMenuItems(long[] keyIds, AsyncCallback<Void> callback);
 	void login(String username, String password, AsyncCallback<Boolean> callback);
-	void newRestaurant(String name, String password,
-	        String address, AsyncCallback<Void> callback);
 	void addTable(String tablename, AsyncCallback<Void> callback);
 	void getTables(AsyncCallback<List<String[]>> callback);
 	void getCategories(AsyncCallback<List<String[]>> callback);
 	void getBills(int start, int length, 
 	        BillState state, BillType type, AsyncCallback<PagedResult<String[]>> callback);
 	void changeBillState(String billKeyString, BillState newState, AsyncCallback<Void> callback);
+	void getUploadUrlForNewRestaurant(AsyncCallback<String> callback);
 }

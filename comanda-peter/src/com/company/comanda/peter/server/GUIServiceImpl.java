@@ -40,13 +40,10 @@ GUIService {
     private BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 
     private RestaurantManager restaurantManager;
-    private ComandaAdmin admin;
     
     @Inject
-    public GUIServiceImpl(RestaurantManager restaurantManager,
-            ComandaAdmin admin){
+    public GUIServiceImpl(RestaurantManager restaurantManager){
         this.restaurantManager = restaurantManager;
-        this.admin = admin;
     }
 
     @SuppressWarnings("unchecked")
@@ -132,6 +129,10 @@ GUIService {
         return blobstoreService.createUploadUrl("/newMenuItem");
     }
 
+    public String getUploadUrlForNewRestaurant(){
+        return blobstoreService.createUploadUrl("/newRestaurant");
+    }
+    
     @Override
     public void acceptOrder(String orderKey) {
         restaurantManager.getAgent().changeOrderState(
@@ -156,13 +157,6 @@ GUIService {
             result = restaurantManager.login(username, password);
         }
         return result;
-    }
-
-    @Override
-    public void newRestaurant(String name, String password, String address) {
-        
-        admin.createRestaurant(name, password, address);
-        
     }
 
     @Override

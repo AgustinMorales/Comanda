@@ -26,17 +26,17 @@ public class RestaurantManagementImpl implements RestaurantManager {
     }
 
     @Override
-    public boolean login(String username, String password){
+    public boolean login(String login, String password){
         if(attributesFactory.create().getAttribute(Constants.RESTAURANT_ID) != null){
             throw new IllegalStateException("Already logged in");
         }
         boolean result = false;
         List<Restaurant> restaurants = ofy.
-                query(Restaurant.class).filter("name", username).list();
+                query(Restaurant.class).filter("login", login).list();
         int resultSize = restaurants.size();
         if(resultSize > 1){
             throw new IllegalStateException(
-                    "More than one restaurant with name: " + username);
+                    "More than one restaurant with login: " + login);
         }
         else if (resultSize == 1){
             Restaurant restaurant = restaurants.get(0);

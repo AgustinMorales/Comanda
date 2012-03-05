@@ -5,31 +5,52 @@
 		
 	</ui:style>
 	<g:HTMLPanel>
-		<g:AbsolutePanel height="244px" width="331px">
-			<g:at left="32" top="46">
-				<g:Label text="Nombre"/>
-			</g:at>
-			<g:at left="10" top="10">
-				<g:Label text="Nuevo restaurante"/>
-			</g:at>
-			<g:at left="107" top="38">
-				<g:TextBox ui:field="tbRestaurantName"/>
-			</g:at>
-			<g:at left="214" top="205">
-				<g:Button ui:field="btnNewRestaurant" width="74px" height="29px">Aceptar</g:Button>
-			</g:at>
-			<g:at left="107" top="77">
-				<g:TextBox ui:field="tbPassword"/>
-			</g:at>
-			<g:at left="32" top="85">
-				<g:Label text="Contraseña"/>
-			</g:at>
-			<g:at left="32" top="124">
-				<g:Label text="Dirección"/>
-			</g:at>
-			<g:at left="107" top="116">
-				<g:TextBox ui:field="tbAddress"/>
-			</g:at>
-		</g:AbsolutePanel>
+		<g:FormPanel encoding="ENCODING_MULTIPART" method="METHOD_POST"
+			ui:field="restaurantDataFormPanel">
+			<g:AbsolutePanel height="467px" width="425px">
+				<g:at left="25" top="56">
+					<g:Label text="Nombre" />
+				</g:at>
+				<g:at left="10" top="10">
+					<g:Label text="Nuevo restaurante" />
+				</g:at>
+				<g:at left="105" top="48">
+					<g:TextBox ui:field="tbRestaurantName" />
+				</g:at>
+				<g:at left="341" top="428">
+					<g:Button ui:field="btnNewRestaurant" width="74px" height="29px">Aceptar</g:Button>
+				</g:at>
+				<g:at left="105" top="150">
+					<g:TextBox ui:field="tbPassword" />
+				</g:at>
+				<g:at left="25" top="158">
+					<g:Label text="Contraseña" />
+				</g:at>
+				<g:at left="25" top="207">
+					<g:Label text="Dirección" />
+				</g:at>
+				<g:at left="105" top="201">
+					<g:TextBox ui:field="tbAddress" width="296px" height="17px" />
+				</g:at>
+				<g:at left="105" top="99">
+					<g:TextBox ui:field="tbLogin"/>
+				</g:at>
+				<g:at left="25" top="107">
+					<g:Label text="Login"/>
+				</g:at>
+				<g:at left="105" top="252">
+					<g:FileUpload/>
+				</g:at>
+				<g:at left="105" top="300">
+					<g:TextArea width="298px" height="103px" ui:field="taDescription"/>
+				</g:at>
+				<g:at left="25" top="259">
+					<g:Label text="Imagen"/>
+				</g:at>
+				<g:at left="25" top="300">
+					<g:Label text="Descripción"/>
+				</g:at>
+			</g:AbsolutePanel>
+		</g:FormPanel>
 	</g:HTMLPanel>
 </ui:UiBinder> 

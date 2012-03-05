@@ -66,15 +66,17 @@ public class TestAdmin {
                         SessionAttributesFactory.class).create()).clear();
     }
     
-    
     @Test
     public void testGeoCreateRestaurant(){
         final long sevillaId = admin.createRestaurant("Sevillano",
-                "sevillano", "Puerto de envalira, 1, Sevilla");
+                "sevillano", "sevillano", "Puerto de envalira, 1, Sevilla", 
+                "description", null);
         final long madrid1Id = admin.createRestaurant("En Madrid",
-                "madrid", "Lola Membrives, 13, Madrid");
+                "madrid", "madrid", "Lola Membrives, 13, Madrid", 
+                "Description - Madrid", null);
         final long madrid2Id = admin.createRestaurant("Otro de madrid",
-                "madrid", "Lola Membrives, 12, Madrid");
+                "madrid2", "madrid", "Lola Membrives, 12, Madrid",
+                "description", null);
         
         final UserManager userManager = 
                 injector.getInstance(UserManager.class);
@@ -101,5 +103,20 @@ public class TestAdmin {
         
         Assert.assertTrue(madridIds.contains(madrid1Id));
         Assert.assertTrue(madridIds.contains(madrid2Id));
+    }
+    
+    @Test
+    public void testDuplicateLogin(){
+        final long madrid1Id = admin.createRestaurant("En Madrid",
+                "madrid", "madrid", "Lola Membrives, 13, Madrid", 
+                "Description - Madrid", null);
+        try{
+            final long madrid2Id = admin.createRestaurant("Otro de madrid",
+                    "madrid", "madrid", "Lola Membrives, 12, Madrid",
+                    "description", null);
+            Assert.fail();
+        }
+        catch(IllegalArgumentException e){
+        }
     }
 }

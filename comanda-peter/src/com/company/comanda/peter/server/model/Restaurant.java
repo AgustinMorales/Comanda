@@ -15,7 +15,10 @@ public class Restaurant implements LocationCapable{
     @Id
     private Long id;
     private String name;
+    private String login;
+    private String imageUrl;
     private String hashedPassword;
+    private String description;
     private double latitude;
     private double longitude;
     private List<String> geocells;
@@ -78,6 +81,30 @@ public class Restaurant implements LocationCapable{
     @Override
     public List<String> getGeocells() {
         return this.geocells;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
     
 }
