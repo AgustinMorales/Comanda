@@ -62,7 +62,7 @@ public class SelectTableActivity extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.select_table);
-        Button read_code_button = (Button)findViewById(R.id.read_code_button);
+//        Button read_code_button = (Button)findViewById(R.id.read_code_button);
         
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(
                 getApplicationContext());
@@ -70,17 +70,17 @@ public class SelectTableActivity extends Activity
         userId = preferences.getString(ComandaPreferences.USER_ID, "");
         //FIXME: Use real password
         password = "";
-        read_code_button.setOnClickListener(new OnClickListener() {
-            
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent("com.google.zxing.client.android.SCAN");
-                intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
-                startActivityForResult(intent, SCAN_CODE_ACTIVITY);
-                
-                
-            }
-        });
+//        read_code_button.setOnClickListener(new OnClickListener() {
+//            
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+//                intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+//                startActivityForResult(intent, SCAN_CODE_ACTIVITY);
+//                
+//                
+//            }
+//        });
         
         Button orderDeliveryButton = 
                 (Button)findViewById(R.id.order_delivery_button);

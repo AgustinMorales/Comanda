@@ -31,5 +31,6 @@
     <string name="menu_item_image">Imagen del elemento de la carta</string>
     <string name="review_order_dialog_title">Pedido actual</string>
     <string name="review_deliveries_button">Ver pedidos enviados</string>
+    <string name="empty_address_list">No tiene direcciones guardadas. Por favor, haga clic en el botón para añadir una dirección nueva.</string>
     
 </resources>

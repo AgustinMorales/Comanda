@@ -31,5 +31,6 @@
     <string name="menu_item_image">Menu item image</string>
     <string name="review_order_dialog_title">Current order</string>
     <string name="review_deliveries_button">Review orders</string>
+    <string name="empty_address_list">No addresses found. Please click on button to add new address</string>
     
 </resources>
