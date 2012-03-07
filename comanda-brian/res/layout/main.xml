@@ -12,14 +12,15 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center" 
-        android:textColor="#ffff6400"
-        android:textSize="25dp">
+        >
 
         <TextView
             android:id="@+id/tableNametextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
+            android:textColor="#ffff6400"
+            android:textSize="25dp"
             android:text="" />
 
     </LinearLayout>

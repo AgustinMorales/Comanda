@@ -14,9 +14,9 @@
     <string name="incorrect_phone_number">This phone number you entered is not valid</string>
     <string name="place_order">Add to order</string>
     <string name="menu_item_name">Name:</string>
-    <string name="choose_restaurant">These restaurants serve to your selected location. Please choose one.</string>
+    <string name="choose_restaurant">Restaurants</string>
     <string name="order_food">I want to order a delivery</string>
-    <string name="select_delivery_address">Please choose an address for delivery. If the address is not in the list, press \'Add new address\' button to enter a new one.</string>
+    <string name="select_delivery_address">Send to...</string>
     <string name="add_new_address">Add new address</string>
     <string name="enter_address_details">Enter you address below:</string>
     <string name="nice_address_hint">Street, number, city&#8230;</string>
@@ -37,5 +37,7 @@
     <string name="you_can_create_a_new_order">You can place an order by selecting \"Delivery\" on the initial screen</string>
     <string name="today_at">Today</string>
     <string name="yesterday_at">Yesterday at</string>
-    
+    <string name="empty_restaurant_list">Sorry, at them moment there are no restaurants that serve to the selected address</string>
+    <string name="please_wait">Please wait&#8230;</string>
+    <string name="retrieving_data">Retrieving data&#8230;</string>
 </resources>

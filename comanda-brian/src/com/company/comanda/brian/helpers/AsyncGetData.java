@@ -19,6 +19,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 
 import com.company.comanda.brian.Constants;
+import com.company.comanda.brian.R;
 import com.company.comanda.brian.xmlhandlers.ComandaXMLHandler;
 
 public abstract class AsyncGetData <T>{
@@ -91,8 +92,8 @@ public abstract class AsyncGetData <T>{
         Thread thread =  new Thread(null, retrieveData, "MagentoBackground");
         thread.start();
         //Make a popup progress dialog while we fetch and parse the data
-        m_ProgressDialog = ProgressDialog.show(activity, "Please wait...",
-                "Retrieving data ...", true);
+        m_ProgressDialog = ProgressDialog.show(activity, activity.getString(R.string.please_wait),
+                activity.getString(R.string.retrieving_data), true);
     }
 
     private T getData(String service,

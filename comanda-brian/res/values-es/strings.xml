@@ -14,9 +14,9 @@
     <string name="incorrect_phone_number">El número de teléfono introducido no es válido</string>
     <string name="place_order">Añadir</string>
     <string name="menu_item_name">Nombre:</string>
-    <string name="choose_restaurant">Éstos son los restaurantes que sirven a la dirección escogida. Por favor, selecciona uno para continuar.</string>
+    <string name="choose_restaurant">Restaurantes</string>
     <string name="order_food">A domicilio</string>
-    <string name="select_delivery_address">Selecciona una dirección en la que recibir el pedido. Si no se encuentra en la lista, pulsa el botón para añadir una nueva.</string>
+    <string name="select_delivery_address">Enviar a...</string>
     <string name="add_new_address">Añadir dirección nueva</string>
     <string name="enter_address_details">Introduce los datos de tu dirección de envío:</string>
     <string name="nice_address_hint">Calle, número, ciudad&#8230;</string>
@@ -37,4 +37,7 @@
     <string name="you_can_create_a_new_order">Puedes realizar un pedido escogiendo "A domicilio" en la pantalla inicial</string>
     <string name="today_at">Hoy a las </string>
     <string name="yesterday_at">Ayer a las</string>
+    <string name="empty_restaurant_list">Lo sentimos. Actualmente no hay restaurantes que sirvan a la dirección escogida</string>
+    <string name="please_wait">Por favor, espere&#8230;</string>
+    <string name="retrieving_data">Comunicando con el servidor&#8230;</string>
 </resources>
