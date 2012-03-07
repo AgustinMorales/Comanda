@@ -35,5 +35,7 @@
     <string name="total_amount">Total:</string>
     <string name="no_orders">There are no orders</string>
     <string name="you_can_create_a_new_order">You can place an order by selecting \"Delivery\" on the initial screen</string>
+    <string name="today_at">Today</string>
+    <string name="yesterday_at">Yesterday at</string>
     
 </resources>

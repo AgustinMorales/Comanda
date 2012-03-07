@@ -271,9 +271,9 @@ public class ReviewBillsActivity extends ListActivity {
                     tvRestaurantName.setText(restaurantName);   
                 }
                 TextView tvOpenDate = (TextView) v.findViewById(R.id.date);
-                tvOpenDate.setText(Formatter.formatToYesterdayOrToday(o.openDate));
+                tvOpenDate.setText(Formatter.formatToYesterdayOrToday(o.openDate, getContext()));
                 TextView tvTotalAmount = (TextView) v.findViewById(R.id.total_amount);
-                tvTotalAmount.setText("" + o.totalAmount);
+                tvTotalAmount.setText(Formatter.money(o.totalAmount));
             }
             return v;
         }

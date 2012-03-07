@@ -49,6 +49,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.company.comanda.brian.helpers.AsyncGetData;
+import com.company.comanda.brian.helpers.Formatter;
 import com.company.comanda.brian.model.Category;
 import com.company.comanda.brian.model.FoodMenuItem;
 import com.company.comanda.brian.xmlhandlers.BooleanHandler;
@@ -434,7 +435,7 @@ public class ComandaActivity extends FragmentActivity
             tt.setText(menuItemName);   
         }
         TextView tvPrice = (TextView) v.findViewById(R.id.item_price);
-        tvPrice.setText(o.getPrice() + "€");
+        tvPrice.setText(Formatter.money(o.getPrice()));
         Bitmap rawBitMap = null;
         Bitmap finImg = null;
         if(icon != null && imageString != null && imageString.length() > 0)
@@ -640,7 +641,7 @@ public class ComandaActivity extends FragmentActivity
                 total = total + currentItem.getPrice() * orderNumbers.get(currentItem);
             }
             if(tvTotalAmount != null){
-                tvTotalAmount.setText(total + "€");
+                tvTotalAmount.setText(Formatter.money(total));
             }
         }
     }

@@ -35,5 +35,6 @@
     <string name="total_amount">Total:</string>
     <string name="no_orders">No hay pedidos realizados aún</string>
     <string name="you_can_create_a_new_order">Puedes realizar un pedido escogiendo "A domicilio" en la pantalla inicial</string>
-    
+    <string name="today_at">Hoy a las </string>
+    <string name="yesterday_at">Ayer a las</string>
 </resources>
