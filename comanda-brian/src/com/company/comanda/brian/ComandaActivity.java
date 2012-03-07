@@ -87,7 +87,9 @@ public class ComandaActivity extends FragmentActivity
     private ArrayAdapter<FoodMenuItem> reviewOrdersAdapter;
 
     private static final int REVIEW_ORDER_DIALOG = 1;
+    private static final int ITEM_DETAILS_DIALOG = 2;
 
+    private FoodMenuItem selectedMenuItem;
 
     private static class AsyncGetMenuItems extends AsyncGetData<ArrayList<FoodMenuItem>>{
 
@@ -501,41 +503,8 @@ public class ComandaActivity extends FragmentActivity
 
             @Override
             public void onClick(View v) {
-                LayoutInflater inflater = (LayoutInflater)
-                        ComandaActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View view = inflater.inflate(R.layout.menu_item_details, null, false);
-
-                final PopupWindow pw = new PopupWindow(
-                        view, 
-                        250, 
-                        300, 
-                        true);
-                pw.setBackgroundDrawable(null);
-                TextView text = (TextView) view.findViewById(R.id.contextMenuItemDescription);
-                text.setText(menuItemDescription);
-                TextView textName = (TextView) view.findViewById(R.id.contextMenuItemName);
-                textName.setText(menuItemName);
-                Button btnClose = (Button) view.findViewById(R.id.btnCloseMenuItemPopup);
-                btnClose.setOnClickListener(new OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        pw.dismiss();
-
-                    }
-                });
-                Bitmap largeBitmap = null;
-                if(largeBitmaps.containsKey(imageString)){
-                    largeBitmap = largeBitmaps.get(imageString);
-                }
-                if(largeBitmap != null){
-                    ImageView image = (ImageView) view.findViewById(R.id.image);
-                    image.setImageBitmap(largeBitmap);
-                }
-
-                // The code below assumes that the root container has an id called 'main'
-                pw.showAtLocation(v, Gravity.CENTER, 0, 0);
-
+                selectedMenuItem = o;
+                showDialog(ITEM_DETAILS_DIALOG);
             }
         };
         LinearLayout itemNameAndPrice = 
@@ -645,10 +614,45 @@ public class ComandaActivity extends FragmentActivity
 
             });
         }
+        else if(id == ITEM_DETAILS_DIALOG){
+            result = new Dialog(this);
+            result.setContentView(R.layout.menu_item_details);
+            Button btnClose = (Button) result.findViewById(R.id.btnCloseMenuItemPopup);
+            btnClose.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    dismissDialog(ITEM_DETAILS_DIALOG);
+                }
+            });
+        }
         else{
             result = super.onCreateDialog(id);
         }
         return result;
+    }
+
+
+    @Override
+    protected void onPrepareDialog(int id, Dialog dialog) {
+        if(id == ITEM_DETAILS_DIALOG){
+            TextView text = (TextView) dialog.findViewById(R.id.contextMenuItemDescription);
+            text.setText(selectedMenuItem.getDescription());
+            TextView textName = (TextView) dialog.findViewById(R.id.contextMenuItemName);
+            textName.setText(selectedMenuItem.getName());
+            String imageString = selectedMenuItem.getImageString();
+            Bitmap largeBitmap = null;
+            if(largeBitmaps.containsKey(imageString)){
+                largeBitmap = largeBitmaps.get(imageString);
+            }
+            if(largeBitmap != null){
+                ImageView image = (ImageView) dialog.findViewById(R.id.image);
+                image.setImageBitmap(largeBitmap);
+            }
+        }
+        else{
+            super.onPrepareDialog(id, dialog);
+        }
     }
 
 
