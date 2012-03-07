@@ -3,7 +3,6 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:background="#FF3F3F3F"
     android:padding="10dp" >
 
     <LinearLayout
@@ -17,7 +16,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:contentDescription="@string/menu_item_image" />
+            android:contentDescription="@string/menu_item_image"
+            android:padding="10dp"
+            android:src="@drawable/ic_launcher" />
 
         <LinearLayout
             android:id="@+id/linearLayout4"
@@ -29,7 +30,9 @@
             <TextView
                 android:id="@+id/contextMenuItemName"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:textSize="25dp" />
 
         </LinearLayout>
 
@@ -45,6 +48,8 @@
             android:id="@+id/contextMenuItemDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Description"
             android:textColor="#FFF" />
 
     </LinearLayout>
