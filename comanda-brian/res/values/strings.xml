@@ -32,5 +32,8 @@
     <string name="review_order_dialog_title">Current order</string>
     <string name="review_deliveries_button">Review orders</string>
     <string name="empty_address_list">No addresses found. Please click on button to add new address</string>
+    <string name="total_amount">Total:</string>
+    <string name="no_orders">There are no orders</string>
+    <string name="you_can_create_a_new_order">You can place an order by selecting \"Delivery\" on the initial screen</string>
     
 </resources>

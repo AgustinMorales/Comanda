@@ -6,7 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 
-public class DateAndTime {
+public class Formatter {
 
     public static String formatToYesterdayOrToday(Date dateTime){
         Calendar calendar = Calendar.getInstance();

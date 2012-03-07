@@ -70,8 +70,9 @@ public class ComandaActivity extends FragmentActivity
     private String restName;
     private String tableId;
     private String restId;
-    private NumberFormat priceFormat;
-    
+
+    private TextView tvTotalAmount;
+
     private static final int BIG_IMAGE_SIZE = 100;
     private static final int SMALL_IMAGE_SIZE = 50;
 
@@ -146,9 +147,7 @@ public class ComandaActivity extends FragmentActivity
             super.afterOnUIThread(data, activity);
             categories = data;
             TextView tableNameTextView = (TextView)findViewById(R.id.tableNametextView);
-            tableNameTextView.setText(getString(R.string.you_are_at_table) + 
-                    " " + tableName + ". " + 
-                    getString(R.string.at_restaurant) + " " + restName);
+            tableNameTextView.setText(restName);
 
             m_items = new ArrayList<FoodMenuItem>();
             orderItems = new ArrayList<FoodMenuItem>();
@@ -212,8 +211,7 @@ public class ComandaActivity extends FragmentActivity
         restId = extras.getString(EXTRA_REST_ID);
 
         //FIXME: This wouldn't work on not Euro-locales
-        priceFormat = NumberFormat.getCurrencyInstance();
-        
+
         AsyncGetCategories getCategories = new AsyncGetCategories();
         ArrayList<NameValuePair> params = new ArrayList<NameValuePair>(1);
         params.add(new BasicNameValuePair(GetCategories.PARAM_RESTAURANT_ID, restId));
@@ -390,7 +388,7 @@ public class ComandaActivity extends FragmentActivity
     {
         //Hold array of items to be displayed in the list
         private ArrayList<FoodMenuItem> items;
-        
+
 
         public ItemAdapter(Context context, int textViewResourceId,
                 ArrayList<FoodMenuItem> items) 
@@ -436,7 +434,7 @@ public class ComandaActivity extends FragmentActivity
             tt.setText(menuItemName);   
         }
         TextView tvPrice = (TextView) v.findViewById(R.id.item_price);
-        tvPrice.setText(priceFormat.format(o.getPrice()));
+        tvPrice.setText(o.getPrice() + "€");
         Bitmap rawBitMap = null;
         Bitmap finImg = null;
         if(icon != null && imageString != null && imageString.length() > 0)
@@ -463,7 +461,7 @@ public class ComandaActivity extends FragmentActivity
                     //                        .Options();
                     //                options.inJustDecodeBounds = true;
                     //                options.inSampleSize = 1/2;
-                    
+
                     if(largeBitmaps.containsKey(imageString)){
                         rawBitMap = largeBitmaps.get(imageString);
                     }
@@ -531,7 +529,7 @@ public class ComandaActivity extends FragmentActivity
 
             }
         });
-        
+
         TextView no_of_items = (TextView)v.findViewById(R.id.no_of_items);
         Integer numberOrdered = orderNumbers.get(o);
         if(numberOrdered != null){
@@ -546,7 +544,7 @@ public class ComandaActivity extends FragmentActivity
             removeButton.setEnabled(false);
         }
 
-        
+
     }
 
     ArrayList<FoodMenuItem> filterMenuItems(long categoryId){
@@ -600,6 +598,7 @@ public class ComandaActivity extends FragmentActivity
             else{
                 commitOrderButton.setEnabled(true);
             }
+            tvTotalAmount = (TextView)dialog.findViewById(R.id.tvTotalAmount);
             reviewOrdersAdapter.registerDataSetObserver(new DataSetObserver() {
 
                 @Override
@@ -610,9 +609,11 @@ public class ComandaActivity extends FragmentActivity
                     else{
                         commitOrderButton.setEnabled(false);
                     }
+                    refreshTotalAmount();
                 }
 
             });
+            refreshTotalAmount();
         }
         else if(id == ITEM_DETAILS_DIALOG){
             result = new Dialog(this);
@@ -632,9 +633,21 @@ public class ComandaActivity extends FragmentActivity
         return result;
     }
 
+    private void refreshTotalAmount(){
+        float total = 0;
+        if(orderItems != null){
+            for(FoodMenuItem currentItem : orderItems){
+                total = total + currentItem.getPrice() * orderNumbers.get(currentItem);
+            }
+            if(tvTotalAmount != null){
+                tvTotalAmount.setText(total + "€");
+            }
+        }
+    }
 
     @Override
     protected void onPrepareDialog(int id, Dialog dialog) {
+
         if(id == ITEM_DETAILS_DIALOG){
             TextView text = (TextView) dialog.findViewById(R.id.contextMenuItemDescription);
             text.setText(selectedMenuItem.getDescription());

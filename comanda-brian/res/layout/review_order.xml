@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+    android:layout_width="300dip"
     android:layout_height="350dip"
+    android:gravity="center|right"
     android:orientation="vertical" >
 
     <ListView
@@ -10,6 +11,34 @@
         android:layout_height="0dp"
         android:layout_weight="1" >
     </ListView>
+    
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginRight="5dp"
+            android:text="@string/total_amount"
+            android:textSize="25dp" />
+
+        <TextView
+            android:id="@+id/tvTotalAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginLeft="5dp"
+            android:text="20€"
+            android:textColor="#ffff6400"
+            android:textSize="25dp"/>
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout1"
@@ -21,12 +50,14 @@
             android:id="@+id/buttonReviewOrderBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:text="@string/back" />
 
         <Button
             android:id="@+id/buttonCommitOrder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:text="@string/commit_order" />
 
     </LinearLayout>
