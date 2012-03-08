@@ -43,6 +43,8 @@ public class ChooseAddressActivity extends ListActivity {
     
     private static final int NEW_ADDRESS_DIALOG = 1;
     
+    private static final int CHOOSE_RESTAURANT_CODE = 1;
+    
     
     private EditText etStreetName;
     private EditText etNumber;
@@ -96,7 +98,7 @@ public class ChooseAddressActivity extends ListActivity {
                         additionalData);
                 intent.putExtra(ChooseRestaurantActivity.EXTRA_NICE_ADDRESS, 
                         niceAddress);
-                startActivity(intent);
+                startActivityForResult(intent, CHOOSE_RESTAURANT_CODE);
             }
         });
     }
@@ -282,6 +284,17 @@ public class ChooseAddressActivity extends ListActivity {
     protected void onResume() {
         super.onResume();
         refreshList();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == CHOOSE_RESTAURANT_CODE){
+            if(resultCode == Constants.ORDER_PLACED_RESULT){
+                setResult(Constants.ORDER_PLACED_RESULT);
+                finish();
+            }
+        }
     }
     
     

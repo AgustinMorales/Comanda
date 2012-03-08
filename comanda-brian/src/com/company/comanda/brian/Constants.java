@@ -8,6 +8,7 @@ public class Constants {
 
 //    public static final String SERVER_LOCATION = "10.0.2.2";
     public static final String SERVER_LOCATION = "pgmdevelopment.appspot.com";
+    public static final int ORDER_PLACED_RESULT = 345;
 
 
     public static void showErrorDialog(int messageId, Activity activity){

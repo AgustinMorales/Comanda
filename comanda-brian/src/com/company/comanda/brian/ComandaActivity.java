@@ -72,6 +72,7 @@ public class ComandaActivity extends FragmentActivity
     private String tableId;
     private String restId;
 
+    
     private TextView tvTotalAmount;
 
     private static final int BIG_IMAGE_SIZE = 100;
@@ -190,7 +191,7 @@ public class ComandaActivity extends FragmentActivity
     }
 
 
-    public static final int ORDER_PLACED_TOAST_DURATION = 3;
+    public static final int ORDER_PLACED_TOAST_DURATION = 7;
 
     public static final String EXTRA_TABLE_NAME = "tableName";
     public static final String EXTRA_TABLE_ID = "tableId";
@@ -343,6 +344,8 @@ public class ComandaActivity extends FragmentActivity
             if(data){
                 Toast.makeText(getApplicationContext(), 
                         R.string.order_placed, ORDER_PLACED_TOAST_DURATION).show();
+                setResult(Constants.ORDER_PLACED_RESULT);
+                finish();
             }
             else{
                 Constants.showErrorDialog(

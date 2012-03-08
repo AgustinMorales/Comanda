@@ -51,6 +51,8 @@ public class ChooseRestaurantActivity extends ListActivity {
     
     private static final int SMALL_IMAGE_SIZE = 50;
     
+    private static final int PLACE_ORDER_CODE = 1;
+    
     private ItemAdapter adapter;
     
     private WeakHashMap<String, Bitmap> smallBitmaps;
@@ -124,7 +126,7 @@ public class ChooseRestaurantActivity extends ListActivity {
                         "");
                 intent.putExtra(ComandaActivity.EXTRA_TABLE_NAME, 
                         "");
-                startActivity(intent);
+                startActivityForResult(intent, PLACE_ORDER_CODE);
             }
         });
     }
@@ -204,4 +206,17 @@ public class ChooseRestaurantActivity extends ListActivity {
             return v;
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == PLACE_ORDER_CODE){
+            if(resultCode == Constants.ORDER_PLACED_RESULT){
+                setResult(Constants.ORDER_PLACED_RESULT);
+                finish();
+            }
+        }
+    }
+    
+    
 }
