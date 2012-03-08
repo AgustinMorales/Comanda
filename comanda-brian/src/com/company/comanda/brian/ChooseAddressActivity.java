@@ -43,6 +43,12 @@ public class ChooseAddressActivity extends ListActivity {
     
     private static final int NEW_ADDRESS_DIALOG = 1;
     
+    
+    private EditText etStreetName;
+    private EditText etNumber;
+    private EditText etAdditionalData;
+    private EditText etCity;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -168,17 +174,26 @@ public class ChooseAddressActivity extends ListActivity {
             
             final Button submitNewAddressButton = (Button)
                     result.findViewById(R.id.buttonSubmitNewAddress);
-            final EditText niceAddressEditText = (EditText)
-                    result.findViewById(R.id.editTextNiceAddress);
-            final EditText additionalDetailsEditText = (EditText)
-                    result.findViewById(R.id.editTextAdditionalAddress);
+            etStreetName = (EditText)
+                    result.findViewById(R.id.etAddressStreet);
+            etNumber = (EditText)
+                    result.findViewById(R.id.etAddressNumber);
+            etAdditionalData = (EditText)
+                    result.findViewById(R.id.etAddressAdditionalData);
+            etCity = (EditText)
+                    result.findViewById(R.id.etAddressCity);
             
             submitNewAddressButton.setOnClickListener(new OnClickListener() {
                 
                 @Override
                 public void onClick(View v) {
-                    if(addNewAddress(niceAddressEditText.getText().toString(), 
-                            additionalDetailsEditText.getText().toString())){
+                    StringBuffer address = new StringBuffer(etStreetName.getText());
+                    address.append(", ");
+                    address.append(etNumber.getText());
+                    address.append(", ");
+                    address.append(etCity.getText());
+                    if(addNewAddress(address.toString(), 
+                            etAdditionalData.getText().toString())){
                     
                         dismissDialog(NEW_ADDRESS_DIALOG);
                     }
@@ -253,8 +268,10 @@ public class ChooseAddressActivity extends ListActivity {
     @Override
     protected void onPrepareDialog(int id, Dialog dialog) {
         if(id == NEW_ADDRESS_DIALOG){
-            ((EditText)dialog.findViewById(R.id.editTextNiceAddress)).setText("");
-            ((EditText)dialog.findViewById(R.id.editTextAdditionalAddress)).setText("");
+            etStreetName.setText("");
+            etCity.setText("");
+            etNumber.setText("");
+            etAdditionalData.setText("");
         }
         else{
             super.onPrepareDialog(id, dialog);

@@ -40,4 +40,8 @@
     <string name="empty_restaurant_list">Sorry, at them moment there are no restaurants that serve to the selected address</string>
     <string name="please_wait">Please wait&#8230;</string>
     <string name="retrieving_data">Retrieving data&#8230;</string>
+    <string name="street_name">Street:</string>
+    <string name="inputCity">City:</string>
+    <string name="inputNumber">Number:</string>
+    <string name="inputAddressAdditionalData">Additional data (floor, door, etc.):</string>
 </resources>

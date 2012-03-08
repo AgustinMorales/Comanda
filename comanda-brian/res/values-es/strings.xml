@@ -40,4 +40,8 @@
     <string name="empty_restaurant_list">Lo sentimos. Actualmente no hay restaurantes que sirvan a la dirección escogida</string>
     <string name="please_wait">Por favor, espere&#8230;</string>
     <string name="retrieving_data">Comunicando con el servidor&#8230;</string>
+    <string name="street_name">Nombre de la calle, plaza, avenida:</string>
+    <string name="inputCity">Ciudad:</string>
+    <string name="inputNumber">Número:</string>
+    <string name="inputAddressAdditionalData">Portal, piso, puerta, etc.:</string>
 </resources>
