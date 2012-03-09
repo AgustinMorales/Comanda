@@ -30,6 +30,7 @@ public class BillsHandler extends ComandaXMLHandler<ArrayList<Bill>> {
     private boolean in_restaurant_name = false;
     private boolean in_comments = false;
     private boolean in_open_date = false;
+    private boolean in_estimated_delivery_date = false;
 
 
     private Bill bill;
@@ -104,6 +105,10 @@ public class BillsHandler extends ComandaXMLHandler<ArrayList<Bill>> {
         {
             this.in_open_date = true;
         }
+        else if (localName.equals(ESTIMATED_DELIVERY_DATE)) 
+        {
+            this.in_estimated_delivery_date = true;
+        }
     }
 
     /** Gets be called on closing tags like: 
@@ -152,6 +157,10 @@ public class BillsHandler extends ComandaXMLHandler<ArrayList<Bill>> {
         {
             this.in_open_date = false;
         }
+        else if (localName.equals(ESTIMATED_DELIVERY_DATE)) 
+        {
+            this.in_estimated_delivery_date = false;
+        }
     }
 
     /** Gets be called on the following structure: 
@@ -198,6 +207,10 @@ public class BillsHandler extends ComandaXMLHandler<ArrayList<Bill>> {
             else if(this.in_open_date){
                 log.debug("OpenDate: {}", textBetween);
                 bill.openDate = new Date(textBetween);
+            }
+            else if(this.in_estimated_delivery_date){
+                log.debug("EstimatedDeliveryDate: {}", textBetween);
+                bill.estimatedDeliveryDate = new Date(textBetween);
             }
         }
     }

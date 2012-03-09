@@ -53,11 +53,12 @@
             android:text="Texto de prueba" />
         
         <TextView
-            android:id="@+id/date"
+            android:id="@+id/status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#ffff6400"
-            android:text="23:15" />
+            android:text="23:15"
+            android:textColor="#ffff6400" />
+
     </LinearLayout>
 
 </RelativeLayout>

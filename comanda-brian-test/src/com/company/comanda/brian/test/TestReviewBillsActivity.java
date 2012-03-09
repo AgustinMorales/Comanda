@@ -1,10 +1,13 @@
 package com.company.comanda.brian.test;
 
+import java.util.Date;
+
 import junit.framework.Assert;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 
 import com.company.comanda.brian.ReviewBillsActivity;
+import com.company.comanda.brian.helpers.Formatter;
 import com.jayway.android.robotium.solo.Solo;
 
 public class TestReviewBillsActivity extends ActivityInstrumentationTestCase2<ReviewBillsActivity> {
@@ -32,5 +35,12 @@ public class TestReviewBillsActivity extends ActivityInstrumentationTestCase2<Re
         Assert.assertTrue(solo.searchText("Burguer King"));
         solo.clickOnText("Telepizza");
         Assert.assertTrue(solo.searchText("Carbonara"));
+    }
+    
+    public void testFormatter(){
+        Date today = new Date();
+        String formatted = Formatter.formatToYesterdayOrToday(today, getActivity());
+        Assert.assertTrue(formatted + " does not start as expected",
+                formatted.startsWith(solo.getString(com.company.comanda.brian.R.string.today_at)));
     }
 }

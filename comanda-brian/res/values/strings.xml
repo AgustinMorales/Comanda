@@ -44,4 +44,15 @@
     <string name="inputCity">City:</string>
     <string name="inputNumber">Number:</string>
     <string name="inputAddressAdditionalData">Additional data (floor, door, etc.):</string>
+    <string name="orderSent">Placed. Waiting for response</string>
+    <string name="orderAcceptedEstimatedTime">Delivery estimated at:</string>
+    <string name="orderRejected">Rejected</string>
+    <string name="refresh_list">Refresh list</string>
+    <string name="order_details">Order details</string>
+    <string name="restaurant_name">Restaurant:</string>
+    <string name="order_date">Order date:</string>
+    <string name="state">State:</string>
+    <string name="delvery_address">Delivery address:</string>
+    <string name="items">Items:</string>
+    
 </resources>

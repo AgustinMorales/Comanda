@@ -13,13 +13,17 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -42,12 +46,20 @@ public class ReviewBillsActivity extends ListActivity {
     private String userId;
     private String password;
     
+    private TextView tvRestaurantName;
+    private TextView tvOrderDate;
+    private TextView tvState;
+    private TextView tvDeliveryAddress;
+    
     public static final String EXTRA_USER_ID = "userId";
     public static final String EXTRA_PASSWORD = "password";
     
     private ListView ordersListView;
     private String displayedBillKeyString;
     private String selectedBillKeyString;
+    private Bill selectedBill;
+    
+    private Button btnRefresh;
     
     private ItemAdapter adapter;
     
@@ -109,6 +121,7 @@ public class ReviewBillsActivity extends ListActivity {
                 }
             }
             local.adapter.notifyDataSetChanged();
+            local.doNotrefreshing();
         }
         
         
@@ -117,15 +130,18 @@ public class ReviewBillsActivity extends ListActivity {
         public void beforeOnBackground(List<NameValuePair> params,
                 Activity activity) {
             super.beforeOnBackground(params, activity);
-            ReviewBillsActivity local = (ReviewBillsActivity)activity;
-            params.add(new BasicNameValuePair(
-                    com.company.comanda.common.
-                    HttpParams.GetBills.PARAM_USER_ID, 
-                    local.userId));
-            params.add(new BasicNameValuePair(
-                    com.company.comanda.common.
-                    HttpParams.GetBills.PARAM_PASSWORD, 
-                    local.password));
+            //Check for subsequent invocations (btnRefresh)
+            if(params.size() == 0){
+                ReviewBillsActivity local = (ReviewBillsActivity)activity;
+                params.add(new BasicNameValuePair(
+                        com.company.comanda.common.
+                        HttpParams.GetBills.PARAM_USER_ID, 
+                        local.userId));
+                params.add(new BasicNameValuePair(
+                        com.company.comanda.common.
+                        HttpParams.GetBills.PARAM_PASSWORD, 
+                        local.password));
+            }
         }
 
 
@@ -142,18 +158,21 @@ public class ReviewBillsActivity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle extras = getIntent().getExtras();
-        this.userId = extras.getString(EXTRA_USER_ID);
-        this.password = extras.getString(EXTRA_PASSWORD);
-        
+        if(extras != null){
+            this.userId = extras.getString(EXTRA_USER_ID);
+            this.password = extras.getString(EXTRA_PASSWORD);
+        }
         setContentView(R.layout.bills);
+        btnRefresh = (Button)findViewById(R.id.btnRefresh);
         bills = new ArrayList<Bill>();
         ordersMap = new HashMap<String, ArrayList<Order>>();
         adapter = new ItemAdapter(this, R.layout.bill_row, bills);
         setListAdapter(adapter);
         
-        ArrayList<NameValuePair> params = 
+        final ArrayList<NameValuePair> params = 
                 new ArrayList<NameValuePair>(2);
-        GetBills getBills = new GetBills();
+        final GetBills getBills = new GetBills();
+        doRefreshing();
         getBills.execute(this, 
                 com.company.comanda.common.HttpParams.
                 GetBills.SERVICE_NAME, params, 
@@ -166,6 +185,7 @@ public class ReviewBillsActivity extends ListActivity {
                     long id) {
                 Bill bill = (Bill)arg0.getItemAtPosition(position);
                 selectedBillKeyString = bill.keyString;
+                selectedBill = bill;
                 if(ordersMap.containsKey(bill.keyString)){
                     showDialog(BILL_DETAILS_DIALOG);
                 }
@@ -179,8 +199,31 @@ public class ReviewBillsActivity extends ListActivity {
                 }
             }
         });
+        
+        
+        
+        btnRefresh.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                doRefreshing();
+                getBills.execute(ReviewBillsActivity.this, 
+                        com.company.comanda.common.HttpParams.
+                        GetBills.SERVICE_NAME, params, 
+                        BillsHandler.class);
+                
+            }
+        });
+        
     }
 
+    private void doRefreshing(){
+        btnRefresh.setEnabled(false);
+    }
+    
+    private void doNotrefreshing(){
+        btnRefresh.setEnabled(true);
+    }
     
     private class OrdersAdapter extends ArrayAdapter<Order>{
         
@@ -221,7 +264,7 @@ public class ReviewBillsActivity extends ListActivity {
                 TextView tvNoOfItems = (TextView) v.findViewById(R.id.no_of_items);
                 tvNoOfItems.setText("" + o.menuItemNumber);
                 TextView tvItemPrice = (TextView) v.findViewById(R.id.price);
-                tvItemPrice.setText("" + o.menuItemPrice);
+                tvItemPrice.setText(Formatter.money(o.menuItemPrice));
             }
             
             
@@ -270,8 +313,10 @@ public class ReviewBillsActivity extends ListActivity {
                 {
                     tvRestaurantName.setText(restaurantName);   
                 }
-                TextView tvOpenDate = (TextView) v.findViewById(R.id.date);
-                tvOpenDate.setText(Formatter.formatToYesterdayOrToday(o.openDate, getContext()));
+                TextView tvStatus = (TextView) v.findViewById(R.id.status);
+                StringAndColor stringAndColor = getStateString(o);
+                tvStatus.setTextColor(stringAndColor.color);
+                tvStatus.setText(stringAndColor.string);
                 TextView tvTotalAmount = (TextView) v.findViewById(R.id.total_amount);
                 tvTotalAmount.setText(Formatter.money(o.totalAmount));
             }
@@ -279,6 +324,36 @@ public class ReviewBillsActivity extends ListActivity {
         }
     }
 
+    private static class StringAndColor{
+        public String string;
+        public int color;
+        
+        public StringAndColor(String string, int color){
+            this.string = string;
+            this.color = color;
+        }
+    }
+    
+    private StringAndColor getStateString(Bill bill){
+        String statusString = null;
+        int color = 0;
+        if("OPEN".equals(bill.state)){
+            statusString = getString(R.string.orderSent);
+            color = Color.YELLOW;
+        }
+        else if("REJECTED".equals(bill.state)){
+            statusString = getString(R.string.orderRejected);
+            color = Color.RED;
+        }
+        else if("DELIVERED".equals(bill.state)){
+            statusString = String.format("%s %s", 
+                    getString(R.string.orderAcceptedEstimatedTime),
+                    Formatter.formatToTime(bill.estimatedDeliveryDate, this));
+            color = Color.GREEN;
+        }
+        return new StringAndColor(statusString, color);
+    }
+    
     @Override
     protected Dialog onCreateDialog(int id) {
         Dialog result = null;
@@ -288,7 +363,10 @@ public class ReviewBillsActivity extends ListActivity {
             result.setContentView(R.layout.orders_dialog);
 
             ordersListView = (ListView)result.findViewById(R.id.listViewOrders);
-
+            tvRestaurantName = (TextView)result.findViewById(R.id.tvRestaurantName);
+            tvOrderDate = (TextView)result.findViewById(R.id.tvOrderDate);
+            tvState = (TextView)result.findViewById(R.id.tvState);
+            tvDeliveryAddress = (TextView)result.findViewById(R.id.tvDeliveryAddress);
         }
         else{
             result = super.onCreateDialog(id);
@@ -302,6 +380,11 @@ public class ReviewBillsActivity extends ListActivity {
     protected void onPrepareDialog(int id, Dialog dialog) {
         super.onPrepareDialog(id, dialog);
         if(selectedBillKeyString.equals(displayedBillKeyString) == false){
+            tvRestaurantName.setText(selectedBill.restaurantName);
+            tvState.setText(getStateString(selectedBill).string);
+            tvDeliveryAddress.setText(selectedBill.address);
+            tvOrderDate.setText(Formatter.formatToYesterdayOrToday(selectedBill.openDate, this));
+            
             final ArrayList<Order> orders = ordersMap.get(selectedBillKeyString);
             
             ArrayAdapter<Order> ordersAdapter = new OrdersAdapter(this, R.layout.order_row, orders);
