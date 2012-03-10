@@ -1,8 +1,8 @@
 package com.company.comanda.brian;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.WeakHashMap;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -19,7 +19,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -65,7 +64,7 @@ public class ReviewBillsActivity extends ListActivity {
 
     private ItemAdapter adapter;
 
-    private HashMap<String, ArrayList<Order>> ordersMap;
+    private WeakHashMap<String, ArrayList<Order>> ordersMap;
 
     private static class GetOrders extends AsyncGetData<ArrayList<Order>>{
         @Override
@@ -167,7 +166,7 @@ public class ReviewBillsActivity extends ListActivity {
         setContentView(R.layout.bills);
         btnRefresh = (Button)findViewById(R.id.btnRefresh);
         bills = new ArrayList<Bill>();
-        ordersMap = new HashMap<String, ArrayList<Order>>();
+        ordersMap = new WeakHashMap<String, ArrayList<Order>>();
         adapter = new ItemAdapter(this, R.layout.bill_row, bills);
         setListAdapter(adapter);
 
@@ -224,6 +223,7 @@ public class ReviewBillsActivity extends ListActivity {
     }
 
     private void doNotrefreshing(){
+        ordersMap.clear();
         btnRefresh.setEnabled(true);
     }
 

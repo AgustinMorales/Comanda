@@ -45,7 +45,7 @@
     <string name="inputNumber">Número:</string>
     <string name="inputAddressAdditionalData">Portal, piso, puerta, etc.:</string>
     <string name="orderSent">Esperando respuesta</string>
-    <string name="orderAcceptedEstimatedTime">Aceptado. Recepción estimada:</string>
+    <string name="orderAcceptedEstimatedTime">Recepción estimada:</string>
     <string name="orderRejected">Rechazado por restaurante</string>
     <string name="refresh_list">Actualizar lista</string>
     <string name="order_details">Detalles del pedido</string>
