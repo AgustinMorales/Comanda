@@ -5,7 +5,8 @@
         
     </ui:style>
     <g:HTMLPanel>
-        <g:VerticalPanel width="100%">
+        <g:VerticalPanel width="550px">
+        	<g:AbsolutePanel height="95px"/>
             <g:VerticalPanel width="100%" ui:field="ordersTableContainer">
                 <g:ScrollPanel height="290px">
                 <p1:CellTable ui:field="ordersTable" width="100%" height="100%"/>

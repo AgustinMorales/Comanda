@@ -46,7 +46,7 @@ public class Formatter {
     }
     
     public static String money(float amount){
-        return String.format("%.2f €", amount);
+        return String.format("%.2f €", new Float(amount));
     }
 
 }
