@@ -2,6 +2,7 @@ package com.company.comanda.peter.server;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -27,12 +28,12 @@ public class GetBillsServlet extends HttpServlet{
      * 
      */
     private static final long serialVersionUID = -6628492120040209853L;
-    
+
     private static final Logger log = 
             LoggerFactory.getLogger(GetBillsServlet.class);
-    
+
     private UserManager manager;
-    
+
     @Inject
     public GetBillsServlet(UserManager manager){
         this.manager = manager;
@@ -50,11 +51,11 @@ public class GetBillsServlet extends HttpServlet{
         ServletHelper.logParameters(req, log);
         long userId = Long.parseLong(req.getParameter(GetBills.PARAM_USER_ID));
         String password = req.getParameter(GetBills.PARAM_PASSWORD);
-        
+
         List<Bill> bills = manager.getBills(userId, password);
-        
+
         PrintWriter out = ServletHelper.getXmlWriter(resp);
-        
+
         out.println(open(BILL_LIST));
         for(Bill bill : bills){
             out.println(open(BILL));
@@ -67,8 +68,11 @@ public class GetBillsServlet extends HttpServlet{
             out.println(enclose(RESTAURANT_NAME, bill.getRestaurantName()));
             out.println(enclose(COMMENTS, bill.getComments()));
             out.println(enclose(OPEN_DATE, bill.getOpenDate().toString()));
-            out.println(enclose(ESTIMATED_DELIVERY_DATE, 
-                    bill.getEstimatedDeliveryDate().toString()));
+            Date estimatedDeliveryDate = bill.getEstimatedDeliveryDate();
+            if(estimatedDeliveryDate != null){
+                out.println(enclose(ESTIMATED_DELIVERY_DATE, 
+                        estimatedDeliveryDate.toString()));
+            }
             out.println(close(BILL));
         }
         out.println(close(BILL_LIST));
