@@ -361,7 +361,7 @@ public class ReviewBillsActivity extends ListActivity {
         Dialog result = null;
         if(id == BILL_DETAILS_DIALOG){
             result = new Dialog(this);
-            result.setTitle("Order details:");
+            result.setTitle(getString(R.string.order_details));
             result.setContentView(R.layout.orders_dialog);
 
             ordersListView = (ListView)result.findViewById(R.id.listViewOrders);
