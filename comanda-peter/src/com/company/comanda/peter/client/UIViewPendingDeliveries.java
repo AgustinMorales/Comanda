@@ -1,5 +1,8 @@
 package com.company.comanda.peter.client;
 
+import java.util.Date;
+
+import com.company.comanda.peter.client.helper.Formatter;
 import com.company.comanda.peter.shared.BillState;
 import com.company.comanda.peter.shared.BillType;
 import com.google.gwt.core.client.GWT;
@@ -39,7 +42,7 @@ public class UIViewPendingDeliveries extends Composite {
     public UIViewPendingDeliveries() {
         initWidget(uiBinder.createAndBindUi(this));
         
-        TextColumn<String[]> tableNameColumn = new TextColumn<String[]>() {
+        TextColumn<String[]> addressColumn = new TextColumn<String[]>() {
             @Override
             public String getValue(String[] object) {
                 return object[1];
@@ -47,15 +50,33 @@ public class UIViewPendingDeliveries extends Composite {
         };
         
         
-        odersTable.addColumn(tableNameColumn, "Dirección");
-
-        TextColumn<String[]> orderNameColumn = new TextColumn<String[]>() {
+        odersTable.addColumn(addressColumn, "Dirección");
+        
+        TextColumn<String[]> phoneNumberColumn = new TextColumn<String[]>() {
             @Override
             public String getValue(String[] object) {
-                return object[2];
+                return object[3];
             }
         };
-        odersTable.addColumn(orderNameColumn, "Fecha");
+        
+        
+        odersTable.addColumn(phoneNumberColumn, "Teléfono");
+
+        TextColumn<String[]> orderDateColumn = new TextColumn<String[]>() {
+            @Override
+            public String getValue(String[] object) {
+                return Formatter.formatToYesterdayOrToday(new Date(object[2]));
+            }
+        };
+        odersTable.addColumn(orderDateColumn, "Fecha y hora");
+        
+        TextColumn<String[]> totalAmountColumn = new TextColumn<String[]>() {
+            @Override
+            public String getValue(String[] object) {
+                return Formatter.money(Float.parseFloat(object[4]));
+            }
+        };
+        odersTable.addColumn(totalAmountColumn, "Importe total");
         
         billsTableUpdater = new BillsTableUpdater(odersTable);
         billsTableUpdater.setState(BillState.OPEN);

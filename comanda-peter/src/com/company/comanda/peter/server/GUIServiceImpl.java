@@ -209,6 +209,8 @@ GUIService {
                     bill.getKeyString(),
                     bill.getAddress(),
                     bill.getOpenDate().toString(),
+                    bill.getPhoneNumber(),
+                    "" + bill.getTotalAmount(),
             });
         }
         return new PagedResult<String[]>(result, total);

@@ -62,6 +62,7 @@ public class UserManagerImpl implements UserManager {
         // TODO Check password
         final Date date = new Date();
         Key<User> userKey = new Key<User>(User.class, userId);
+        User user = ofy.get(userKey);
         final Key<Restaurant> restaurantKey = new Key<Restaurant>(
                 Restaurant.class,restaurantId);
         final String restaurantName = ofy.get(restaurantKey).getName();
@@ -97,6 +98,7 @@ public class UserManagerImpl implements UserManager {
             bill.setTableName(table != null?table.getName():null);
             bill.setRestaurantName(restaurantName);
             bill.setState(BillState.OPEN);
+            bill.setPhoneNumber(user.getPhoneNumber());
             ofy.put(bill);
         }
         

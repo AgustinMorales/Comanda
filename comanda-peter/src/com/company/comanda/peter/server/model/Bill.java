@@ -26,6 +26,7 @@ public class Bill {
     private String address;
     private String comments;
     private float totalAmount;
+    private String phoneNumber;
    
     
     public Long getId() {
@@ -109,6 +110,12 @@ public class Bill {
     }
     public void setTotalAmount(float totalAmount) {
         this.totalAmount = totalAmount;
+    }
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
     
 }
