@@ -209,7 +209,7 @@ GUIService {
             result.add(new String[]{
                     bill.getKeyString(),
                     bill.getAddress(),
-                    bill.getOpenDate().toString(),
+                    ServerFormatter.formatToYesterdayOrToday(bill.getOpenDate()),
                     bill.getPhoneNumber(),
                     ServerFormatter.money(bill.getTotalAmount()),
             });

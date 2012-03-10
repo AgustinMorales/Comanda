@@ -1,8 +1,5 @@
 package com.company.comanda.peter.client;
 
-import java.util.Date;
-
-import com.company.comanda.peter.client.helper.Formatter;
 import com.company.comanda.peter.shared.BillState;
 import com.company.comanda.peter.shared.BillType;
 import com.google.gwt.core.client.GWT;
@@ -65,7 +62,7 @@ public class UIViewPendingDeliveries extends Composite {
         TextColumn<String[]> orderDateColumn = new TextColumn<String[]>() {
             @Override
             public String getValue(String[] object) {
-                return Formatter.formatToYesterdayOrToday(new Date(object[2]));
+                return object[2];
             }
         };
         odersTable.addColumn(orderDateColumn, "Fecha y hora");
