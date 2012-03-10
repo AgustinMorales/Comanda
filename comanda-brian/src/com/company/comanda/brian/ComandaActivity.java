@@ -192,7 +192,7 @@ public class ComandaActivity extends FragmentActivity
     }
 
 
-    public static final int ORDER_PLACED_TOAST_DURATION = 7;
+    public static final int ORDER_PLACED_TOAST_DURATION = 10;
 
     public static final String EXTRA_TABLE_NAME = "tableName";
     public static final String EXTRA_TABLE_ID = "tableId";
