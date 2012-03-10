@@ -130,6 +130,10 @@ public class ChooseRestaurantActivity extends ListActivity {
                         "");
                 intent.putExtra(ComandaActivity.EXTRA_TABLE_NAME, 
                         "");
+                intent.putExtra(ComandaActivity.EXTRA_NICE_ADDRESS, 
+                        address);
+                intent.putExtra(ComandaActivity.EXTRA_ADDRESS_DETAILS, 
+                        addressDetails);
                 startActivityForResult(intent, PLACE_ORDER_CODE);
             }
         });

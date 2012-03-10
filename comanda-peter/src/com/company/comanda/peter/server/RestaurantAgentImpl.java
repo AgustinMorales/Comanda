@@ -273,7 +273,7 @@ public class RestaurantAgentImpl implements RestaurantAgent {
     @Override
     public List<Bill> getBills(BillState state,
             BillType billType) {
-        Query<Bill> query = ofy.query(Bill.class).
+        Query<Bill> query = ofy.query(Bill.class).order("-openDate").
                 ancestor(restaurantKey);
         if(state != null){
             query.filter("state", state);

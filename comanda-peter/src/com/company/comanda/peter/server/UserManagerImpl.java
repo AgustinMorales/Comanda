@@ -198,7 +198,7 @@ public class UserManagerImpl implements UserManager {
     public List<Bill> getBills(long userId, String password) {
         //TODO: Authenticate user
         Key<User> userKey = new Key<User>(User.class, userId);
-        return ofy.query(Bill.class).filter("user", userKey).list();
+        return ofy.query(Bill.class).filter("user", userKey).order("-openDate").list();
     }
 
     @Override

@@ -19,4 +19,8 @@
         <property name="date" direction="desc"/>
     </datastore-index>
     
+    <datastore-index kind="Bill" ancestor="true" source="manual">
+        <property name="openDate" direction="desc"/>
+    </datastore-index>
+    
 </datastore-indexes>
