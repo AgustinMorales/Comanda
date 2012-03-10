@@ -16,9 +16,9 @@
 		<g:VerticalPanel width="100%" height="" verticalAlignment="ALIGN_TOP">
 			<g:HorizontalPanel width="100%" horizontalAlignment="ALIGN_LEFT" verticalAlignment="ALIGN_BOTTOM">
 				<g:HorizontalPanel spacing="10">
-					<g:Button text="New" ui:field="btnNewItem">New menu item</g:Button>
-					<g:Button text="Edit" ui:field="btnEditItem" enabled="false"/>
-					<g:Button text="Delete" ui:field="btnDeleteItem" enabled="false"/>
+					<g:Button text="Crear nuevo" ui:field="btnNewItem">New menu item</g:Button>
+					<g:Button text="Editar" ui:field="btnEditItem" enabled="false"/>
+					<g:Button text="Eliminar" ui:field="btnDeleteItem" enabled="false"/>
 				</g:HorizontalPanel>
 			</g:HorizontalPanel>
 			<g:Label text="Cargando..." ui:field="lblLoading"/>
