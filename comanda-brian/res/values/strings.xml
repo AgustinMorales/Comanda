@@ -54,5 +54,6 @@
     <string name="state">State:</string>
     <string name="delvery_address">Delivery address:</string>
     <string name="items">Items:</string>
+    <string name="order_details">Order details:</string>
     
 </resources>

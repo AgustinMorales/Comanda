@@ -50,6 +50,7 @@ import android.widget.Toast;
 
 import com.company.comanda.brian.helpers.AsyncGetData;
 import com.company.comanda.brian.helpers.Formatter;
+import com.company.comanda.brian.helpers.LayoutHelper;
 import com.company.comanda.brian.model.Category;
 import com.company.comanda.brian.model.FoodMenuItem;
 import com.company.comanda.brian.xmlhandlers.BooleanHandler;
@@ -666,6 +667,10 @@ public class ComandaActivity extends FragmentActivity
                 ImageView image = (ImageView) dialog.findViewById(R.id.image);
                 image.setImageBitmap(largeBitmap);
             }
+            LayoutHelper.dialog_fill_parent(dialog);
+        }
+        else if(id == REVIEW_ORDER_DIALOG){
+            LayoutHelper.dialog_fill_parent(dialog);
         }
         else{
             super.onPrepareDialog(id, dialog);

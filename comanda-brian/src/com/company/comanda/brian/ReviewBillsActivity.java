@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -28,43 +29,44 @@ import android.widget.TextView;
 
 import com.company.comanda.brian.helpers.AsyncGetData;
 import com.company.comanda.brian.helpers.Formatter;
+import com.company.comanda.brian.helpers.LayoutHelper;
 import com.company.comanda.brian.model.Bill;
 import com.company.comanda.brian.model.Order;
 import com.company.comanda.brian.xmlhandlers.BillsHandler;
 import com.company.comanda.brian.xmlhandlers.OrdersHandler;
 
 public class ReviewBillsActivity extends ListActivity {
-    
-    
+
+
     private static final int BILL_DETAILS_DIALOG = 1;
-    
+
     private static final Logger log = 
             LoggerFactory.getLogger(ReviewBillsActivity.class);
 
     private ArrayList<Bill> bills;
     private String userId;
     private String password;
-    
+
     private TextView tvRestaurantName;
     private TextView tvOrderDate;
     private TextView tvState;
     private TextView tvDeliveryAddress;
     private TextView tvTotalAmount;
-    
+
     public static final String EXTRA_USER_ID = "userId";
     public static final String EXTRA_PASSWORD = "password";
-    
+
     private ListView ordersListView;
     private String displayedBillKeyString;
     private String selectedBillKeyString;
     private Bill selectedBill;
-    
+
     private Button btnRefresh;
-    
+
     private ItemAdapter adapter;
-    
+
     private HashMap<String, ArrayList<Order>> ordersMap;
-    
+
     private static class GetOrders extends AsyncGetData<ArrayList<Order>>{
         @Override
         public void afterOnUIThread(ArrayList<Order> data,
@@ -72,7 +74,7 @@ public class ReviewBillsActivity extends ListActivity {
             ReviewBillsActivity local = (ReviewBillsActivity)activity;
             local.showDialog(ReviewBillsActivity.BILL_DETAILS_DIALOG);
         }
-        
+
         @Override
         public void beforeOnBackground(List<NameValuePair> params,
                 Activity activity) {
@@ -101,8 +103,8 @@ public class ReviewBillsActivity extends ListActivity {
             local.ordersMap.put(local.selectedBillKeyString,data);
         }
     }
-    
-    
+
+
     private static class GetBills extends AsyncGetData<ArrayList<Bill>>{
         @Override
         public void afterOnUIThread(ArrayList<Bill> data,
@@ -112,7 +114,7 @@ public class ReviewBillsActivity extends ListActivity {
             log.debug("afterOnUIThread");
             if(local.bills != null && local.bills.size() > 0)
             {
-                
+
                 local.adapter.notifyDataSetChanged();
                 local.adapter.clear();
                 for(int i=0;i<local.bills.size();i++){
@@ -123,9 +125,9 @@ public class ReviewBillsActivity extends ListActivity {
             local.adapter.notifyDataSetChanged();
             local.doNotrefreshing();
         }
-        
-        
-        
+
+
+
         @Override
         public void beforeOnBackground(List<NameValuePair> params,
                 Activity activity) {
@@ -153,7 +155,7 @@ public class ReviewBillsActivity extends ListActivity {
             ((ReviewBillsActivity)activity).bills = data;
         }
     }
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -168,7 +170,7 @@ public class ReviewBillsActivity extends ListActivity {
         ordersMap = new HashMap<String, ArrayList<Order>>();
         adapter = new ItemAdapter(this, R.layout.bill_row, bills);
         setListAdapter(adapter);
-        
+
         final ArrayList<NameValuePair> params = 
                 new ArrayList<NameValuePair>(2);
         final GetBills getBills = new GetBills();
@@ -177,7 +179,7 @@ public class ReviewBillsActivity extends ListActivity {
                 com.company.comanda.common.HttpParams.
                 GetBills.SERVICE_NAME, params, 
                 BillsHandler.class);
-        
+
         getListView().setOnItemClickListener(new OnItemClickListener() {
 
             @Override
@@ -199,11 +201,11 @@ public class ReviewBillsActivity extends ListActivity {
                 }
             }
         });
-        
-        
-        
+
+
+
         btnRefresh.setOnClickListener(new OnClickListener() {
-            
+
             @Override
             public void onClick(View v) {
                 doRefreshing();
@@ -211,32 +213,32 @@ public class ReviewBillsActivity extends ListActivity {
                         com.company.comanda.common.HttpParams.
                         GetBills.SERVICE_NAME, params, 
                         BillsHandler.class);
-                
+
             }
         });
-        
+
     }
 
     private void doRefreshing(){
         btnRefresh.setEnabled(false);
     }
-    
+
     private void doNotrefreshing(){
         btnRefresh.setEnabled(true);
     }
-    
+
     private class OrdersAdapter extends ArrayAdapter<Order>{
-        
+
         private ArrayList<Order> items;
-        
+
         public OrdersAdapter(Context context, int textViewResourceId,
                 ArrayList<Order> items) 
         {
             super(context, textViewResourceId, items);
             this.items = items;// TODO Auto-generated catch block
         }
-        
-      //This method returns the actual view
+
+        //This method returns the actual view
         //that is displayed as a row (we will inflate with row.xml)
         @Override
         public View getView(int position, View convertView, ViewGroup parent) 
@@ -266,14 +268,14 @@ public class ReviewBillsActivity extends ListActivity {
                 TextView tvItemPrice = (TextView) v.findViewById(R.id.price);
                 tvItemPrice.setText(Formatter.money(o.menuItemPrice));
             }
-            
-            
-            
+
+
+
 
             return v;
         }
     }
-    
+
     /*
      * PRIVATE ADAPTER CLASS. Assigns data to be displayed on the listview
      */
@@ -327,13 +329,13 @@ public class ReviewBillsActivity extends ListActivity {
     private static class StringAndColor{
         public String string;
         public int color;
-        
+
         public StringAndColor(String string, int color){
             this.string = string;
             this.color = color;
         }
     }
-    
+
     private StringAndColor getStateString(Bill bill){
         String statusString = null;
         int color = 0;
@@ -353,7 +355,7 @@ public class ReviewBillsActivity extends ListActivity {
         }
         return new StringAndColor(statusString, color);
     }
-    
+
     @Override
     protected Dialog onCreateDialog(int id) {
         Dialog result = null;
@@ -370,11 +372,11 @@ public class ReviewBillsActivity extends ListActivity {
             tvTotalAmount = (TextView)result.findViewById(R.id.tvTotalAmount);
             final Button btnClose = (Button)result.findViewById(R.id.btnClose);
             btnClose.setOnClickListener(new OnClickListener() {
-                
+
                 @Override
                 public void onClick(View v) {
                     dismissDialog(BILL_DETAILS_DIALOG);
-                    
+
                 }
             });
         }
@@ -388,25 +390,31 @@ public class ReviewBillsActivity extends ListActivity {
 
     @Override
     protected void onPrepareDialog(int id, Dialog dialog) {
-        super.onPrepareDialog(id, dialog);
-        if(selectedBillKeyString.equals(displayedBillKeyString) == false){
-            tvRestaurantName.setText(selectedBill.restaurantName);
-            tvState.setText(getStateString(selectedBill).string);
-            tvDeliveryAddress.setText(selectedBill.address);
-            tvOrderDate.setText(Formatter.formatToYesterdayOrToday(selectedBill.openDate, this));
-            tvTotalAmount.setText(Formatter.money(selectedBill.totalAmount));
-            
-            final ArrayList<Order> orders = ordersMap.get(selectedBillKeyString);
-            
-            ArrayAdapter<Order> ordersAdapter = new OrdersAdapter(this, R.layout.order_row, orders);
-            
-            ordersListView.setAdapter(ordersAdapter);
-            ordersAdapter.notifyDataSetChanged();
-            displayedBillKeyString = selectedBillKeyString;
+
+        if(id == BILL_DETAILS_DIALOG){
+            if(selectedBillKeyString.equals(displayedBillKeyString) == false){
+                tvRestaurantName.setText(selectedBill.restaurantName);
+                tvState.setText(getStateString(selectedBill).string);
+                tvDeliveryAddress.setText(selectedBill.address);
+                tvOrderDate.setText(Formatter.formatToYesterdayOrToday(selectedBill.openDate, this));
+                tvTotalAmount.setText(Formatter.money(selectedBill.totalAmount));
+
+                final ArrayList<Order> orders = ordersMap.get(selectedBillKeyString);
+
+                ArrayAdapter<Order> ordersAdapter = new OrdersAdapter(this, R.layout.order_row, orders);
+
+                ordersListView.setAdapter(ordersAdapter);
+                ordersAdapter.notifyDataSetChanged();
+                displayedBillKeyString = selectedBillKeyString;
+                LayoutHelper.dialog_fill_parent(dialog);
+            }
         }
-        
+        else{
+            super.onPrepareDialog(id, dialog);
+        }
+
     }
-    
-    
-    
+
+
+
 }
