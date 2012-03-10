@@ -41,6 +41,8 @@ public class ChooseRestaurantActivity extends ListActivity {
     
     private double latitude;
     private double longitude;
+    private String address;
+    private String addressDetails;
     
     private ArrayList<Restaurant> restaurants;
     
@@ -93,6 +95,8 @@ public class ChooseRestaurantActivity extends ListActivity {
         Bundle extras = getIntent().getExtras();
         this.latitude = extras.getDouble(EXTRA_LATITUDE);
         this.longitude = extras.getDouble(EXTRA_LONGITUDE);
+        this.address = extras.getString(EXTRA_NICE_ADDRESS);
+        this.addressDetails = extras.getString(EXTRA_ADDRESS_DETAILS);
         
         smallBitmaps = new WeakHashMap<String, Bitmap>();
         setContentView(R.layout.choose_restaurant);

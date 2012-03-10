@@ -72,6 +72,8 @@ public class ComandaActivity extends FragmentActivity
     private String restName;
     private String tableId;
     private String restId;
+    private String address;
+    private String addressDetails;
 
     
     private TextView tvTotalAmount;
@@ -198,6 +200,8 @@ public class ComandaActivity extends FragmentActivity
     public static final String EXTRA_TABLE_ID = "tableId";
     public static final String EXTRA_REST_NAME = "restaurantName";
     public static final String EXTRA_REST_ID = "restaurantId";
+    public static final String EXTRA_NICE_ADDRESS = "niceAddress";
+    public static final String EXTRA_ADDRESS_DETAILS = "addressDetails";
 
 
     SharedPreferences prefs;
@@ -212,6 +216,8 @@ public class ComandaActivity extends FragmentActivity
         tableId = extras.getString(EXTRA_TABLE_ID);
         restName = extras.getString(EXTRA_REST_NAME);
         restId = extras.getString(EXTRA_REST_ID);
+        address = extras.getString(EXTRA_NICE_ADDRESS);
+        addressDetails = extras.getString(EXTRA_ADDRESS_DETAILS);
 
         //FIXME: This wouldn't work on not Euro-locales
 
@@ -381,6 +387,7 @@ public class ComandaActivity extends FragmentActivity
                     prefs.getString(ComandaPreferences.USER_ID, "")));
             params.add(new BasicNameValuePair(HttpParams.PlaceOrder.PARAM_PASSWORD, 
                     prefs.getString(ComandaPreferences.PASSWORD, "")));
+            params.add(new BasicNameValuePair(HttpParams.PlaceOrder.PARAM_ADDRESS, address + " (Detalles: " + addressDetails + ")"));
         }
 
     }
