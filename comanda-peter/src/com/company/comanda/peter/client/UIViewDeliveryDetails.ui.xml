@@ -41,27 +41,23 @@
             </g:HorizontalPanel>
             </g:VerticalPanel>
             <g:Label text="Loading..." ui:field="lblMessage" visible="false"/>
-            <g:LayoutPanel width="250px" height="30px">
-            	<g:layer left="464px" width="66px" top="0px" height="30px">
-            		<g:ListBox visibleItemCount="1" width="66px" ui:field="lvEstimatedTime"/>
-            	</g:layer>
-            	<g:layer left="329px" width="129px" top="13px" height="17px">
-            		<g:Label text="Tiempo estimado:"/>
-            	</g:layer>
-            </g:LayoutPanel>
-            <g:LayoutPanel width="100%" height="44px">
-            	<g:layer right="0px" width="266px">
+            <g:VerticalPanel width="100%" horizontalAlignment="ALIGN_RIGHT">
+            	<g:HorizontalPanel verticalAlignment="ALIGN_MIDDLE">
+            	<g:Label text="Tiempo estimado:"/>
+            	<g:ListBox visibleItemCount="1" width="130px" ui:field="lvEstimatedTime"/>
+            </g:HorizontalPanel>
+            </g:VerticalPanel>
+            <g:HorizontalPanel width="100%">
+            	<g:HorizontalPanel spacing="5">
+            			<g:Button ui:field="btnBack">Atrás</g:Button>
+            		</g:HorizontalPanel>
+            	<g:VerticalPanel width="100%" horizontalAlignment="ALIGN_RIGHT">
             		<g:HorizontalPanel spacing="5">
             		<g:Button ui:field="btnReject">Rechazar pedido</g:Button>
             		<g:Button ui:field="btnAcceptBill">Aceptar pedido</g:Button>
             	</g:HorizontalPanel>
-            	</g:layer>
-            	<g:layer>
-            		<g:HorizontalPanel spacing="5">
-            			<g:Button ui:field="btnBack">Atrás</g:Button>
-            		</g:HorizontalPanel>
-            	</g:layer>
-            </g:LayoutPanel>
+            	</g:VerticalPanel>
+            </g:HorizontalPanel>
         </g:VerticalPanel>
     </g:HTMLPanel>
 </ui:UiBinder>
