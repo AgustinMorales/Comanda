@@ -41,6 +41,14 @@
             </g:HorizontalPanel>
             </g:VerticalPanel>
             <g:Label text="Loading..." ui:field="lblMessage" visible="false"/>
+            <g:LayoutPanel width="250px" height="30px">
+            	<g:layer left="464px" width="66px" top="0px" height="30px">
+            		<g:ListBox visibleItemCount="1" width="66px" ui:field="lvEstimatedTime"/>
+            	</g:layer>
+            	<g:layer left="329px" width="129px" top="13px" height="17px">
+            		<g:Label text="Tiempo estimado:"/>
+            	</g:layer>
+            </g:LayoutPanel>
             <g:LayoutPanel width="100%" height="44px">
             	<g:layer right="0px" width="266px">
             		<g:HorizontalPanel spacing="5">

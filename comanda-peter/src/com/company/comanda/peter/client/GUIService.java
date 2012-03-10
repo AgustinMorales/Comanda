@@ -28,6 +28,7 @@ public interface GUIService extends RemoteService {
 	List<String[]> getCategories();
 	PagedResult<String[]> getBills(int start, int length, 
 	        BillState state, BillType type);
-	void changeBillState(String billKeyString, BillState newState);
+	void changeBillState(String billKeyString, BillState newState, 
+	        Integer deliveryDelay);
 	String getUploadUrlForNewRestaurant();
 }

@@ -219,8 +219,9 @@ GUIService {
     }
 
     @Override
-    public void changeBillState(String billKeyString, BillState newState) {
-        restaurantManager.getAgent().changeBillState(billKeyString, newState);
+    public void changeBillState(String billKeyString, BillState newState, 
+            Integer deliveryDelay) {
+        restaurantManager.getAgent().changeBillState(billKeyString, newState, deliveryDelay);
         
     }
 }

@@ -15,6 +15,7 @@ public class Bill {
     private Long id;
     private Date openDate;
     private Date closeDate;
+    private Date estimatedDeliveryDate;
     private Key<User> user;
     private Key<Table> table;
     private String tableName;
@@ -116,6 +117,12 @@ public class Bill {
     }
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+    public Date getEstimatedDeliveryDate() {
+        return estimatedDeliveryDate;
+    }
+    public void setEstimatedDeliveryDate(Date estimatedDeliveryDate) {
+        this.estimatedDeliveryDate = estimatedDeliveryDate;
     }
     
 }

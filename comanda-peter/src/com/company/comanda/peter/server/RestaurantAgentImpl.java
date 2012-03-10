@@ -1,6 +1,7 @@
 package com.company.comanda.peter.server;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -284,7 +285,8 @@ public class RestaurantAgentImpl implements RestaurantAgent {
     }
 
     @Override
-    public void changeBillState(String billKeyString, BillState newState) {
+    public void changeBillState(String billKeyString, BillState newState, 
+            Integer deliveryDelay) {
         Key<Bill> key = new Key<Bill>(billKeyString);
         Bill bill = ofy.get(key);
         if(bill.getState() == BillState.CLOSED){
@@ -292,6 +294,10 @@ public class RestaurantAgentImpl implements RestaurantAgent {
                     "Trying to modify a closed Bill");
         }
         bill.setState(newState);
+        if(deliveryDelay != null){
+            long currentMillis = new Date().getTime();
+            bill.setEstimatedDeliveryDate(new Date(currentMillis + deliveryDelay*60*1000));
+        }
         ofy.put(bill);
     }
 

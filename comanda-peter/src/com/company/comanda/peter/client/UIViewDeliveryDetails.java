@@ -17,8 +17,12 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.ListBox;
 
 public class UIViewDeliveryDetails extends Composite {
+    
+    
+    private static final int[] DELIVERY_TIMES = {10,20,30,40,50,60};
     
     @UiField CellTable<String[]> ordersTable;
     @UiField Label lblMessage;
@@ -31,6 +35,7 @@ public class UIViewDeliveryDetails extends Composite {
     @UiField Label lblPhone;
     @UiField Label lblState;
     @UiField Label lblTotalAmount;
+    @UiField ListBox lvEstimatedTime;
     
     private OrdersTableUpdater ordersTableUpdater;
     private GUIServiceAsync guiSevice = GWT.create(GUIService.class);
@@ -74,6 +79,10 @@ public class UIViewDeliveryDetails extends Composite {
         });
         ordersTableUpdater.refreshTable();
         
+        for(int time: DELIVERY_TIMES){
+            lvEstimatedTime.addItem(time + " minutos", "" + time);
+        }
+        
     }
 
     
@@ -100,7 +109,9 @@ public class UIViewDeliveryDetails extends Composite {
     @UiHandler("btnAcceptBill")
     void onButtonClick(ClickEvent event) {
         doChangingStatus();
-        guiSevice.changeBillState(billKeyString, BillState.DELIVERED, new AsyncCallback<Void>() {
+        int delay = Integer.parseInt(lvEstimatedTime.getValue(lvEstimatedTime.getSelectedIndex()));
+        guiSevice.changeBillState(billKeyString, BillState.DELIVERED, 
+                delay, new AsyncCallback<Void>() {
             
             @Override
             public void onSuccess(Void result) {
@@ -126,7 +137,8 @@ public class UIViewDeliveryDetails extends Composite {
     @UiHandler("btnReject")
     void onBtnRejectClick(ClickEvent event) {
         doChangingStatus();
-        guiSevice.changeBillState(billKeyString, BillState.REJECTED, new AsyncCallback<Void>() {
+        guiSevice.changeBillState(billKeyString, BillState.REJECTED, 
+                null, new AsyncCallback<Void>() {
             
             @Override
             public void onSuccess(Void result) {

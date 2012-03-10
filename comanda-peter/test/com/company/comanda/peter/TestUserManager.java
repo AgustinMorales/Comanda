@@ -186,7 +186,8 @@ public class TestUserManager {
         
         //Now, change state
         
-        manager.getAgent().changeBillState(billKeyString1, BillState.DELIVERED);
+        manager.getAgent().changeBillState(billKeyString1, BillState.DELIVERED, 
+                null);
         
         delivery = manager.getAgent().getBills(null, BillType.DELIVERY);
         Assert.assertEquals(2, delivery.size());

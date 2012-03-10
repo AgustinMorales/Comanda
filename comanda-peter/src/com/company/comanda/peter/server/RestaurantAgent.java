@@ -57,5 +57,5 @@ public interface RestaurantAgent {
             BillType billType);
     
     public void changeBillState(String billKeyString,
-            BillState newState);
+            BillState newState, Integer deliveryDelay);
 }
