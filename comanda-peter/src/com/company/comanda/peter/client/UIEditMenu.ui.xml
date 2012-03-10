@@ -23,7 +23,7 @@
 			</g:HorizontalPanel>
 			<g:Label text="Cargando..." ui:field="lblLoading"/>
 			
-			<g:VerticalPanel width="100%" height="466px" ui:field="vpTabPanelContainer" visible="false">
+			<g:VerticalPanel width="100%" height="466px" ui:field="vpTabPanelContainer">
 				<g:TabLayoutPanel barHeight="2" barUnit="EM" width="100%" height="100%" ui:field="tabPanelCategories">
                 </g:TabLayoutPanel>
 			</g:VerticalPanel>
