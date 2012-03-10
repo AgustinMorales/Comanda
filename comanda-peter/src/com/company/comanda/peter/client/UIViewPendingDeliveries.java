@@ -4,6 +4,7 @@ import com.company.comanda.peter.shared.BillState;
 import com.company.comanda.peter.shared.BillType;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiConstructor;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.SimplePager;
@@ -19,7 +20,7 @@ import com.google.gwt.view.client.CellPreviewEvent.Handler;
 public class UIViewPendingDeliveries extends Composite {
 
     public static final int PAGE_SIZE = 25;
-    
+
     private static ViewPendingDeliveriesUiBinder uiBinder = GWT
             .create(ViewPendingDeliveriesUiBinder.class);
 
@@ -27,36 +28,41 @@ public class UIViewPendingDeliveries extends Composite {
     @UiField SimplePager odersPager;
     @UiField Label lblMessage;
     @UiField VerticalPanel ordersTableContainer;
-    
+
     private BillsTableUpdater billsTableUpdater;
-    
+
     private GUIServiceAsync guiService = GWT.create(GUIService.class);
-    
+
     interface ViewPendingDeliveriesUiBinder extends
-            UiBinder<Widget, UIViewPendingDeliveries> {
+    UiBinder<Widget, UIViewPendingDeliveries> {
     }
 
-    public UIViewPendingDeliveries() {
-        initWidget(uiBinder.createAndBindUi(this));
+    public @UiConstructor UIViewPendingDeliveries(String selectedBillStateString) {
+        BillState selectedBillState = null;
+        if(selectedBillStateString.equals("null") == false){
+            selectedBillState = BillState.valueOf(selectedBillStateString);
+        }
         
+        initWidget(uiBinder.createAndBindUi(this));
+
         TextColumn<String[]> addressColumn = new TextColumn<String[]>() {
             @Override
             public String getValue(String[] object) {
                 return object[1];
             }
         };
-        
-        
+
+
         odersTable.addColumn(addressColumn, "Dirección");
-        
+
         TextColumn<String[]> phoneNumberColumn = new TextColumn<String[]>() {
             @Override
             public String getValue(String[] object) {
                 return object[3];
             }
         };
-        
-        
+
+
         odersTable.addColumn(phoneNumberColumn, "Teléfono");
 
         TextColumn<String[]> orderDateColumn = new TextColumn<String[]>() {
@@ -66,7 +72,7 @@ public class UIViewPendingDeliveries extends Composite {
             }
         };
         odersTable.addColumn(orderDateColumn, "Fecha y hora");
-        
+
         TextColumn<String[]> totalAmountColumn = new TextColumn<String[]>() {
             @Override
             public String getValue(String[] object) {
@@ -74,14 +80,14 @@ public class UIViewPendingDeliveries extends Composite {
             }
         };
         odersTable.addColumn(totalAmountColumn, "Importe total");
-        
+
         billsTableUpdater = new BillsTableUpdater(odersTable);
-        billsTableUpdater.setState(BillState.OPEN);
+        billsTableUpdater.setState(selectedBillState);
         billsTableUpdater.setType(BillType.DELIVERY);
-        
+
         odersPager.setDisplay(odersTable);
         odersPager.setPageSize(PAGE_SIZE);
-        
+
         odersTable.addCellPreviewHandler(new Handler<String[]>() {
 
             @Override
@@ -93,13 +99,13 @@ public class UIViewPendingDeliveries extends Composite {
                     dialog.setWidget(new UIViewDeliveryDetails(object, dialog));
                     dialog.center();
                 }
-                
+
             }
         });
-        
+
     }
-    
-    
+
+
     public void setAutoUpdate(boolean value){
         billsTableUpdater.setAutoUpdate(value);
     }

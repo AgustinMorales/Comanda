@@ -30,8 +30,14 @@
 					<g:header size='7'>
 						Ver pedidos pendientes (domicilio)
 					</g:header>
-					<c:UIViewPendingDeliveries ui:field="viewDeliveryBills" />
+					<c:UIViewPendingDeliveries ui:field="viewDeliveryBills" selectedBillStateString="OPEN"/>
 				</g:tab>
+				<g:tab>
+                    <g:header size='7'>
+                        Ver todos los pedidos
+                    </g:header>
+                    <c:UIViewPendingDeliveries ui:field="viewAllDeliveryBills" selectedBillStateString="null"/>
+                </g:tab>
 				<!-- <g:tab> -->
 				<!-- <g:header size='7'> -->
 				<!-- Ver pedidos pendientes (restaurante) -->

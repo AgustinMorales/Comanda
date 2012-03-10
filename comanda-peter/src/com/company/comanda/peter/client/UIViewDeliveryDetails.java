@@ -83,6 +83,10 @@ public class UIViewDeliveryDetails extends Composite {
             lvEstimatedTime.addItem(time + " minutos", "" + time);
         }
         
+        if(object[5].equals("OPEN") == false){
+            btnAcceptBill.setEnabled(false);
+            btnReject.setEnabled(false);
+        }
     }
 
     

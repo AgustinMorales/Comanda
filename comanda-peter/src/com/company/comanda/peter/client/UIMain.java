@@ -17,6 +17,7 @@ public class UIMain extends Composite {
 //    @UiField UIViewAllOrders viewAllOrders;
 //    @UiField UISelectAndViewTableOrders selectTableAndViewOrders;
     @UiField UIViewPendingDeliveries viewDeliveryBills;
+    @UiField UIViewPendingDeliveries viewAllDeliveryBills;
     @UiField Label lblRestaurantName;
 
     interface UIMainUiBinder extends UiBinder<Widget, UIMain> {
@@ -32,13 +33,14 @@ public class UIMain extends Composite {
 //        viewAllOrders.setAutoUpdate(false);
 //        selectTableAndViewOrders.setAutoUpdate(false);
         viewDeliveryBills.setAutoUpdate(false);
+        viewAllDeliveryBills.setAutoUpdate(false);
         switch (event.getSelectedItem()) {
         case 1:
             viewDeliveryBills.setAutoUpdate(true);
             break;
-//        case 2:
-//            viewAllOrders.setAutoUpdate(true);
-//            break;
+        case 2:
+            viewAllDeliveryBills.setAutoUpdate(true);
+            break;
 //        case 3:
 //            selectTableAndViewOrders.setAutoUpdate(true);
 //            break;
