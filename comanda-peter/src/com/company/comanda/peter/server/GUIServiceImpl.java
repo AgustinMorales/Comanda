@@ -212,6 +212,7 @@ GUIService {
                     ServerFormatter.formatToYesterdayOrToday(bill.getOpenDate()),
                     bill.getPhoneNumber(),
                     ServerFormatter.money(bill.getTotalAmount()),
+                    bill.getState().toString(),
             });
         }
         return new PagedResult<String[]>(result, total);

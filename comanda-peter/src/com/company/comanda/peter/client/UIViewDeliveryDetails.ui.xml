@@ -6,7 +6,32 @@
     </ui:style>
     <g:HTMLPanel>
         <g:VerticalPanel width="550px">
-        	<g:AbsolutePanel height="95px"/>
+        	<g:AbsolutePanel height="118px">
+        		<g:at left="10" top="10">
+        			<g:Label text="Dirección:"/>
+        		</g:at>
+        		<g:at left="81" top="10">
+        			<g:Label text="New Label" ui:field="lblAddress"/>
+        		</g:at>
+        		<g:at left="10" top="33">
+        			<g:Label text="Teléfono:"/>
+        		</g:at>
+        		<g:at left="10" top="56">
+        			<g:Label text="Estado:"/>
+        		</g:at>
+        		<g:at left="10" top="91">
+        			<g:Label text="Importe:"/>
+        		</g:at>
+        		<g:at left="81" top="33">
+        			<g:Label text="New Label" ui:field="lblPhone"/>
+        		</g:at>
+        		<g:at left="81" top="56">
+        			<g:Label text="New Label" ui:field="lblState"/>
+        		</g:at>
+        		<g:at left="81" top="91">
+        			<g:Label text="New Label" ui:field="lblTotalAmount"/>
+        		</g:at>
+        	</g:AbsolutePanel>
             <g:VerticalPanel width="100%" ui:field="ordersTableContainer">
                 <g:ScrollPanel height="290px">
                 <p1:CellTable ui:field="ordersTable" width="100%" height="100%"/>

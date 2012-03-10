@@ -27,6 +27,10 @@ public class UIViewDeliveryDetails extends Composite {
     @UiField Button btnAcceptBill;
     @UiField Button btnReject;
     @UiField Button btnBack;
+    @UiField Label lblAddress;
+    @UiField Label lblPhone;
+    @UiField Label lblState;
+    @UiField Label lblTotalAmount;
     
     private OrdersTableUpdater ordersTableUpdater;
     private GUIServiceAsync guiSevice = GWT.create(GUIService.class);
@@ -44,8 +48,8 @@ public class UIViewDeliveryDetails extends Composite {
             UiBinder<Widget, UIViewDeliveryDetails> {
     }
 
-    public UIViewDeliveryDetails(String billKeyString, final DialogBox containerDialog) {
-        this.billKeyString = billKeyString;
+    public UIViewDeliveryDetails(String[] object, final DialogBox containerDialog) {
+        this.billKeyString = object[0];
         this.containerDialog = containerDialog;
         initWidget(uiBinder.createAndBindUi(this));
         lblMessage.setVisible(true);
@@ -54,6 +58,10 @@ public class UIViewDeliveryDetails extends Composite {
         ordersTableUpdater.setSelectedBillType(null);
         configureTable();
         
+        lblAddress.setText(object[1]);
+        lblPhone.setText(object[3]);
+        lblState.setText(object[5]);
+        lblTotalAmount.setText(object[4]);
         ordersTableUpdater.setSelectecBillKeyString(billKeyString);
         ordersTableUpdater.setUpdateListener(new AbstractTableUpdater.UpdateListener() {
             
