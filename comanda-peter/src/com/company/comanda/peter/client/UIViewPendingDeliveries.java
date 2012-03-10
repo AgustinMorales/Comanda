@@ -73,7 +73,7 @@ public class UIViewPendingDeliveries extends Composite {
         TextColumn<String[]> totalAmountColumn = new TextColumn<String[]>() {
             @Override
             public String getValue(String[] object) {
-                return Formatter.money(Float.parseFloat(object[4]));
+                return object[4];
             }
         };
         odersTable.addColumn(totalAmountColumn, "Importe total");

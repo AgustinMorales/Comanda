@@ -44,9 +44,5 @@ public class Formatter {
         
         return timeFormatter.format(dateTime);
     }
-    
-    public static String money(float amount){
-        return String.format("%.2f €", new Float(amount));
-    }
 
 }

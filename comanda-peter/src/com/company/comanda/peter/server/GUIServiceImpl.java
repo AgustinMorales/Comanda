@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import com.company.comanda.peter.client.GUIService;
 import com.company.comanda.peter.server.admin.ComandaAdmin;
+import com.company.comanda.peter.server.helper.ServerFormatter;
 import com.company.comanda.peter.server.model.Bill;
 import com.company.comanda.peter.server.model.MenuCategory;
 import com.company.comanda.peter.server.model.MenuItem;
@@ -210,7 +211,7 @@ GUIService {
                     bill.getAddress(),
                     bill.getOpenDate().toString(),
                     bill.getPhoneNumber(),
-                    "" + bill.getTotalAmount(),
+                    ServerFormatter.money(bill.getTotalAmount()),
             });
         }
         return new PagedResult<String[]>(result, total);
