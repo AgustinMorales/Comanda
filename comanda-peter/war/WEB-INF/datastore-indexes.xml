@@ -23,4 +23,9 @@
         <property name="openDate" direction="desc"/>
     </datastore-index>
     
+    <datastore-index kind="Bill" ancestor="false" source="manual">
+        <property name="user" direction="asc"/>
+        <property name="openDate" direction="desc"/>
+    </datastore-index>
+    
 </datastore-indexes>
