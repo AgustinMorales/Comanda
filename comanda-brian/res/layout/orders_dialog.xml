@@ -90,12 +90,13 @@
         android:id="@+id/tvDeliveryAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/textView6"
-            android:layout_below="@+id/tvState"
-            android:layout_alignLeft="@+id/tvState"
-            
-        android:text="TextView" 
-        android:textSize="20dp"/>
+        android:layout_alignLeft="@+id/tvState"
+        android:layout_below="@+id/tvState"
+        android:layout_toRightOf="@+id/textView6"
+        android:maxLines="2"
+        android:text="TextView"
+        android:textSize="20dp"
+        android:ellipsize="end" />
     
     </RelativeLayout>
 
