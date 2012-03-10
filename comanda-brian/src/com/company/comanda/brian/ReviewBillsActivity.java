@@ -13,7 +13,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -50,6 +49,7 @@ public class ReviewBillsActivity extends ListActivity {
     private TextView tvOrderDate;
     private TextView tvState;
     private TextView tvDeliveryAddress;
+    private TextView tvTotalAmount;
     
     public static final String EXTRA_USER_ID = "userId";
     public static final String EXTRA_PASSWORD = "password";
@@ -367,6 +367,16 @@ public class ReviewBillsActivity extends ListActivity {
             tvOrderDate = (TextView)result.findViewById(R.id.tvOrderDate);
             tvState = (TextView)result.findViewById(R.id.tvState);
             tvDeliveryAddress = (TextView)result.findViewById(R.id.tvDeliveryAddress);
+            tvTotalAmount = (TextView)result.findViewById(R.id.tvTotalAmount);
+            final Button btnClose = (Button)result.findViewById(R.id.btnClose);
+            btnClose.setOnClickListener(new OnClickListener() {
+                
+                @Override
+                public void onClick(View v) {
+                    dismissDialog(BILL_DETAILS_DIALOG);
+                    
+                }
+            });
         }
         else{
             result = super.onCreateDialog(id);
@@ -384,6 +394,7 @@ public class ReviewBillsActivity extends ListActivity {
             tvState.setText(getStateString(selectedBill).string);
             tvDeliveryAddress.setText(selectedBill.address);
             tvOrderDate.setText(Formatter.formatToYesterdayOrToday(selectedBill.openDate, this));
+            tvTotalAmount.setText(Formatter.money(selectedBill.totalAmount));
             
             final ArrayList<Order> orders = ordersMap.get(selectedBillKeyString);
             

@@ -5,29 +5,30 @@
     android:background="#ffffff" >
 
         <Button
-            android:id="@+id/review_deliveries_button"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="@string/review_deliveries_button"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true" />
-
-        <Button
             android:id="@+id/order_delivery_button"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/review_deliveries_button"
-            android:layout_centerHorizontal="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_margin="5dp"
             android:text="@string/order_food" />
+
+        <Button
+            android:id="@+id/review_deliveries_button"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/order_delivery_button"
+            android:layout_margin="5dp"
+            android:text="@string/review_deliveries_button" />
 
         <ImageView
             android:id="@+id/imageView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/order_delivery_button"
+            android:layout_centerVertical="true"
             android:src="@drawable/full_logo" />
 
 </RelativeLayout>

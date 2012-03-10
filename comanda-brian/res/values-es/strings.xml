@@ -30,7 +30,7 @@
     <string name="restaurant_image">Imagen del restaurante</string>
     <string name="menu_item_image">Imagen del elemento de la carta</string>
     <string name="review_order_dialog_title">Pedido actual</string>
-    <string name="review_deliveries_button">Ver pedidos enviados</string>
+    <string name="review_deliveries_button">Ver pedidos realizados</string>
     <string name="empty_address_list">No tiene direcciones guardadas. Por favor, haga clic en el botón para añadir una dirección nueva.</string>
     <string name="total_amount">Total:</string>
     <string name="no_orders">No hay pedidos realizados aún</string>
@@ -49,5 +49,10 @@
     <string name="orderRejected">Rechazado por restaurante</string>
     <string name="refresh_list">Actualizar lista</string>
     <string name="order_details">Detalles del pedido</string>
+    <string name="restaurant_name">Restaurante:</string>
+    <string name="order_date">Fecha pedido:</string>
+    <string name="state">Estado:</string>
+    <string name="delvery_address">Dirección envío:</string>
+    <string name="items">Elementos:</string>
     
 </resources>

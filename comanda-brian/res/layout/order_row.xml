@@ -11,8 +11,7 @@
             android:layout_centerVertical="true"
             android:paddingRight="10dip"
             android:layout_toLeftOf="@+id/price"
-            android:text="3"
-            android:textColor="#ffff6400" />
+            android:text="3" />
         
         <TextView
             android:id="@+id/price"
@@ -21,7 +20,8 @@
             android:layout_centerVertical="true"
             android:paddingRight="10dip"
             android:layout_alignParentRight="true"
-            android:text="23.50" />
+            android:text="23.50"
+            android:textColor="#ffc94f00" />
 
     
     <TextView
