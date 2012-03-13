@@ -477,7 +477,7 @@ public class ComandaActivity extends FragmentActivity
                     if(largeBitmaps.containsKey(imageString)){
                         rawBitMap = largeBitmaps.get(imageString);
                     }
-                    else{
+                    else if (imageURL != null){
                         InputStream bitmapIS = (InputStream)imageURL
                                 .getContent();
                         rawBitMap = BitmapFactory
