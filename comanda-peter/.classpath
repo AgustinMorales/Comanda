@@ -14,11 +14,12 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guice-assistedinject-3.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-lang-2.6.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/comanda-common.jar"/>
-	<classpathentry kind="lib" path="/home/pablo/software/eclipse/plugins/com.google.appengine.eclipse.sdkbundle_1.6.1.v201112160242r37/appengine-java-sdk-1.6.1/lib/testing/appengine-testing.jar"/>
-	<classpathentry kind="lib" path="/home/pablo/software/eclipse/plugins/com.google.appengine.eclipse.sdkbundle_1.6.1.v201112160242r37/appengine-java-sdk-1.6.1/lib/impl/appengine-api-stubs.jar"/>
-	<classpathentry kind="lib" path="/home/pablo/software/eclipse/plugins/com.google.appengine.eclipse.sdkbundle_1.6.1.v201112160242r37/appengine-java-sdk-1.6.1/lib/impl/appengine-api-labs.jar"/>
+	<classpathentry kind="lib" path="/Applications/eclipse/plugins/com.google.appengine.eclipse.sdkbundle_1.6.3.v201202290255r37/appengine-java-sdk-1.6.3/lib/testing/appengine-testing.jar"/>
+	<classpathentry kind="lib" path="/Applications/eclipse/plugins/com.google.appengine.eclipse.sdkbundle_1.6.3.v201202290255r37/appengine-java-sdk-1.6.3/lib/impl/appengine-api-labs.jar"/>
+	<classpathentry kind="lib" path="/Applications/eclipse/plugins/com.google.appengine.eclipse.sdkbundle_1.6.3.v201202290255r37/appengine-java-sdk-1.6.3/lib/impl/appengine-api-stubs.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/slf4j-api-1.5.8.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/slf4j-jdk14-1.5.8.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gson-2.1.jar"/>
+	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
