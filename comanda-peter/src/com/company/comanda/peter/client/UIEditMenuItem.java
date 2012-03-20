@@ -137,16 +137,8 @@ public class UIEditMenuItem extends Composite {
             Window.alert("El precio introducido no es correcto");
             result = false;
         }
-        else if(description == null || description.length() == 0){
-            Window.alert("Por favor, introduzca algo en la descripción");
-            result = false;
-        }
         else if(name == null || name.length() == 0){
             Window.alert("Por favor, introduzca el nombre");
-            result = false;
-        }
-        else if((editingExistingData == false) && (imageFile == null || imageFile.length() ==0)){
-            Window.alert("Por favor, seleccione un fichero válido");
             result = false;
         }
         return result;
