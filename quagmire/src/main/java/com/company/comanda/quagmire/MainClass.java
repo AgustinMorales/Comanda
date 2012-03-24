@@ -71,6 +71,14 @@ public class MainClass {
                 createAndShowGUI();
             }
         });
+        
+        BillsCheckerFactory checkerFactory = injector.getInstance(BillsCheckerFactory.class);
+        
+        BillsCheckerImpl checker = checkerFactory.create("user", "password");
+        
+        Thread checkerThread = new Thread(checker);
+        
+        checkerThread.start();
     }
     
     private static void createAndShowGUI() {

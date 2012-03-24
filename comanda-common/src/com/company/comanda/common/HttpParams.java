@@ -75,4 +75,9 @@ public class HttpParams {
         public static final String PARAM_USER_ID = "userId";
         public static final String PARAM_PASSWORD = "password";
     }
+    
+    public static class GetPendingBills{
+    	public static final String PARAM_USERNAME = "username";
+    	public static final String PARAM_PASSWORD = "password";
+    }
 }

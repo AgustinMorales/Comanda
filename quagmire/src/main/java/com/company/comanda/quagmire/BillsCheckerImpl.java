@@ -21,7 +21,7 @@ public class BillsCheckerImpl implements Runnable{
     
     @Inject
     public BillsCheckerImpl(ServerConnector connector, QuagmireUI uiManager,
-            @Assisted String username, @Assisted String password){
+            @Assisted("username") String username, @Assisted("password") String password){
         this.connector = connector;
         this.uiManager = uiManager;
         this.username = username;

@@ -37,7 +37,7 @@ public class QuagmmireUIImpl implements QuagmireUI {
     private void configure() throws IOException{
         GntpApplicationInfo info = Gntp.appInfo("Test").icon(getImage(APPLICATION_ICON)).build();
         client = Gntp.client(info).build();
-        notif1 = Gntp.notificationInfo(info, "Notify 1").icon(getImage(RING_ICON)).build();
+        notif1 = Gntp.notificationInfo(info, "Notify 1").icon(getImage(APPLICATION_ICON)).build();
         
         client.register();
     }
