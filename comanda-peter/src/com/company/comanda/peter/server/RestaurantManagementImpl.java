@@ -55,7 +55,7 @@ public class RestaurantManagementImpl implements RestaurantManager {
         Long restaurantId = (Long)attributesFactory.create().
                 getAttribute(Constants.RESTAURANT_ID);
         if(restaurantId != null){
-            getAgent(restaurantId);
+            result = getAgent(restaurantId);
         }
         return result;
     }
