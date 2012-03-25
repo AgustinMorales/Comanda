@@ -1,5 +1,6 @@
 package com.company.comanda.quagmire;
 
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,8 +15,8 @@ public class TestGUI {
 	private static final Logger log = LoggerFactory.getLogger(TestGUI.class);
 	
 	
-	
-	public static void main(){
+	@Test
+	public void testManual(){
 		
 		Injector injector = Guice.createInjector(new AbstractModule() {
 			
