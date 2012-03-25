@@ -33,11 +33,23 @@ public class TestGUI {
 		
 		BillsCheckerImpl checker = factory.create("", "");
 		
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		log.debug("First check...");
 		checker.doCheck();
 		
 		log.debug("Second check...");
 		checker.doCheck();
 		
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
