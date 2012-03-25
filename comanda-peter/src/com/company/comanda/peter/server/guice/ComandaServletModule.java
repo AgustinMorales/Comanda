@@ -14,6 +14,7 @@ import com.company.comanda.peter.server.GetBillsServlet;
 import com.company.comanda.peter.server.GetCategoriesServlet;
 import com.company.comanda.peter.server.GetItemsServlet;
 import com.company.comanda.peter.server.GetOrdersServlet;
+import com.company.comanda.peter.server.GetPendingBillsServlet;
 import com.company.comanda.peter.server.NewMenuItemServlet;
 import com.company.comanda.peter.server.NewRestaurantServlet;
 import com.company.comanda.peter.server.PlaceOrderServlet;
@@ -41,5 +42,6 @@ class ComandaServletModule extends ServletModule {
                 SearchRestaurantsServlet.class);
         serve(GetOrders.SERVICE_NAME).with(GetOrdersServlet.class);
         serve(GetBills.SERVICE_NAME).with(GetBillsServlet.class);
+        serve("/getNumberOfPendingBills").with(GetPendingBillsServlet.class);
     }
 }

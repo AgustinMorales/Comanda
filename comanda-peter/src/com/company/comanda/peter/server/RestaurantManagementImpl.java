@@ -31,20 +31,11 @@ public class RestaurantManagementImpl implements RestaurantManager {
             throw new IllegalStateException("Already logged in");
         }
         boolean result = false;
-        List<Restaurant> restaurants = ofy.
-                query(Restaurant.class).filter("login", login).list();
-        int resultSize = restaurants.size();
-        if(resultSize > 1){
-            throw new IllegalStateException(
-                    "More than one restaurant with login: " + login);
-        }
-        else if (resultSize == 1){
-            Restaurant restaurant = restaurants.get(0);
-            if(BCrypt.checkpw(password, restaurant.getHashedPassword())){
-                result = true;
-                attributesFactory.create().setAttribute(
-                        Constants.RESTAURANT_ID,restaurant.getId());
-            }
+        Restaurant restaurant = doLogin(login, password);
+        if(restaurant != null){
+        	result = true;
+            attributesFactory.create().setAttribute(
+                    Constants.RESTAURANT_ID,restaurant.getId());
         }
         //FIXME: Should be deleted when we can add categories from the interface
         RestaurantAgent agent = getAgent();
@@ -64,8 +55,40 @@ public class RestaurantManagementImpl implements RestaurantManager {
         Long restaurantId = (Long)attributesFactory.create().
                 getAttribute(Constants.RESTAURANT_ID);
         if(restaurantId != null){
-            result = agentFactory.create(restaurantId);
+            getAgent(restaurantId);
         }
         return result;
     }
+
+    private RestaurantAgent getAgent(long restaurantId){
+    	return agentFactory.create(restaurantId);
+    }
+    
+    private Restaurant doLogin(String username, String password){
+    	Restaurant result = null;
+    	List<Restaurant> restaurants = ofy.
+                query(Restaurant.class).filter("login", username).list();
+        int resultSize = restaurants.size();
+        if(resultSize > 1){
+            throw new IllegalStateException(
+                    "More than one restaurant with login: " + username);
+        }
+        else if (resultSize == 1){
+            Restaurant restaurant = restaurants.get(0);
+            if(BCrypt.checkpw(password, restaurant.getHashedPassword())){
+                result = restaurant;
+            }
+        }
+        return result;
+    }
+    
+	@Override
+	public RestaurantAgent getAgent(String login, String password) {
+		Restaurant restaurant = doLogin(login, password);
+		RestaurantAgent result = null;
+		if(restaurant != null){
+			result = getAgent(restaurant.getId());
+		}
+		return result;
+	}
 }
