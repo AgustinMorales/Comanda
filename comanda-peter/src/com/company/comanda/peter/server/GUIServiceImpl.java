@@ -224,4 +224,16 @@ GUIService {
         restaurantManager.getAgent().changeBillState(billKeyString, newState, deliveryDelay);
         
     }
+
+    @Override
+    public void addOrModifyCategory(Long id, String name) {
+        restaurantManager.getAgent().
+        addOrModifyMenuCategory(id, name);
+        
+    }
+
+    @Override
+    public void removeCategory(long id) {
+        restaurantManager.getAgent().deleteCategory(id);
+    }
 }

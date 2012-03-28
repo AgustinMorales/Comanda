@@ -1,0 +1,292 @@
+package com.company.comanda.peter.client;
+
+import java.util.List;
+import java.util.Set;
+
+import com.company.comanda.peter.client.UIEditCategory.NewCategoryHandler;
+import com.company.comanda.peter.client.UIEditMenuItem.NewMenuItemHandler;
+import com.company.comanda.peter.shared.PagedResult;
+import com.google.gwt.cell.client.CheckboxCell;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.TabLayoutPanel;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.AsyncDataProvider;
+import com.google.gwt.view.client.DefaultSelectionEventManager;
+import com.google.gwt.view.client.HasData;
+import com.google.gwt.view.client.MultiSelectionModel;
+import com.google.gwt.view.client.Range;
+import com.google.gwt.view.client.RangeChangeEvent;
+import com.google.gwt.view.client.SelectionChangeEvent;
+import com.google.gwt.view.client.SelectionChangeEvent.Handler;
+import com.google.gwt.user.client.ui.VerticalPanel;
+
+public class UIEditCategories extends Composite {
+
+    
+    private static UIEditCategoriesUiBinder uiBinder = GWT
+            .create(UIEditCategoriesUiBinder.class);
+    private final GUIServiceAsync GUIService = GWT
+            .create(GUIService.class);
+    @UiField Button btnNewItem;
+    @UiField Button btnDeleteItem;
+    @UiField TabLayoutPanel tabPanelCategories;
+    @UiField Label lblLoading;
+    @UiField VerticalPanel vpTabPanelContainer;
+    @UiField CellTable categoriesTable;
+    @UiField SimplePager categoriesPager;
+    private MultiSelectionModel<String[]> selectionModel;
+    private DialogBox dialogBox;
+    private UIEditCategory newCategoryPanel;
+    private UIMenuTable[] menuTables;
+
+    interface UIEditCategoriesUiBinder extends UiBinder<Widget, UIEditCategories> {
+    }
+
+    public UIEditCategories() {
+        initWidget(uiBinder.createAndBindUi(this));
+        configurecategoriesTable();
+        configureCategoryDialogBox();
+    }
+
+    protected void configureCategoryDialogBox(){
+    	
+    	dialogBox = new DialogBox();
+    	newCategoryPanel = new UIEditCategory();
+        dialogBox.setWidget(newCategoryPanel);
+        
+        newCategoryPanel.setNewCategoryHandler(new NewCategoryHandler() {
+
+            @Override
+            public void onNewCategory() {
+                selectionModel.clear();
+                refreshTable();
+                dialogBox.hide();
+
+            }
+
+            @Override
+            public void onCancel() {
+                dialogBox.hide();
+
+            }
+        });
+    }
+    
+    protected void configureCategoriesTable(){
+        
+        
+        
+        selectionModel = new MultiSelectionModel<String[]>();
+        
+        
+        
+        categoriesTable.setSelectionModel(selectionModel,
+                DefaultSelectionEventManager.<String[]> createCheckboxManager());
+        Column<String[], Boolean> checkColumn = new Column<String[], Boolean>(
+                new CheckboxCell(true, false)) {
+            @Override
+            public Boolean getValue(String[] object) {
+                // Get the value from the selection model.
+                return selectionModel.isSelected(object);
+            }
+        };
+        
+        categoriesTable.addColumn(checkColumn, SafeHtmlUtils.fromSafeConstant("<br/>"));
+        categoriesTable.setColumnWidth(checkColumn, 40, Unit.PX);
+        
+        
+        // Add a text column to show the name.
+        TextColumn<String[]> nameColumn = new TextColumn<String[]>() {
+            @Override
+            public String getValue(String[] object) {
+                return object[2];
+            }
+        };
+        categoriesTable.addColumn(nameColumn, "Name");
+        
+        TextColumn<String[]> priceColumn = new TextColumn<String[]>() {
+            @Override
+            public String getValue(String[] object) {
+                return object[3];
+            }
+        };
+        categoriesTable.addColumn(priceColumn, "Price");
+
+        AsyncDataProvider<String[]> provider = new AsyncDataProvider<String[]>() {
+            @Override
+            protected void onRangeChanged(HasData<String[]> display) {
+                final int start = display.getVisibleRange().getStart();
+                int length = display.getVisibleRange().getLength();
+                AsyncCallback<PagedResult<String[]>> callback = new AsyncCallback<PagedResult<String[]>>() {
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        Window.alert(caught.getMessage());
+                    }
+                    @Override
+                    public void onSuccess(PagedResult<String[]> result) {
+                        updateRowData(start, result.getList());
+                        updateRowCount(result.getTotal(), true);
+                    }
+                };
+                // The remote service that should be implemented
+                GUIService.getMenuItems(start, length, categoryId, callback);
+            }
+        };
+        
+        provider.addDataDisplay(categoriesTable);
+        
+        categoriesPager.setDisplay(categoriesTable);
+        categoriesPager.setPageSize(PAGE_SIZE);
+        
+        configured = true;
+        
+        
+        
+        selectionModel.addSelectionChangeHandler(new Handler() {
+            
+            @Override
+            public void onSelectionChange(SelectionChangeEvent event) {
+                int size = selectionModel.getSelectedSet().size();
+                switch (size) {
+                case 0:
+                    btnDeleteItem.setEnabled(false);
+                    break;
+                case 1:
+                    btnDeleteItem.setEnabled(true);
+                    break;
+                default:
+                    btnDeleteItem.setEnabled(true);
+                    break;
+                }
+                
+            }
+        });
+    }
+
+
+	@UiHandler("btnNewItem")
+	void onBtnNewItemClick(ClickEvent event) {
+		newCategoryPanel.reset();
+        dialogBox.center();
+	}
+	
+	public void refreshTable(){
+        int selected = tabPanelCategories.getSelectedIndex();
+        menuTables[selected].refreshTable();
+    }
+	
+	@UiHandler("btnDeleteItem")
+	void onBtnDeleteItemClick(ClickEvent event) {
+		Set<String[]> selectedSet = selectionModel.getSelectedSet();
+        int size = selectedSet.size();
+        long[] keysToDelete = new long[size];
+        int counter = 0;
+        for(String[] item : selectedSet){
+            keysToDelete[counter] = Long.parseLong(item[0]);
+            counter++;
+        };
+        greetingService.deleteMenuItems(keysToDelete, new AsyncCallback<Void>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                Window.alert("Error while deleting");
+                
+            }
+
+            @Override
+            public void onSuccess(Void result) {
+                refreshTable();
+                
+            }
+        });
+        
+        selectionModel.clear();
+	}
+    @UiHandler("tabPanelCategories")
+    void onTabPanelCategoriesSelection(SelectionEvent<Integer> event) {
+        refreshTable();
+    }
+    
+    categoriesTable.setSelectionModel(selectionModel,
+            DefaultSelectionEventManager.<String[]> createCheckboxManager());
+    Column<String[], Boolean> checkColumn = new Column<String[], Boolean>(
+            new CheckboxCell(true, false)) {
+        @Override
+        public Boolean getValue(String[] object) {
+            // Get the value from the selection model.
+            return selectionModel.isSelected(object);
+        }
+    };
+    
+    categoriesTable.addColumn(checkColumn, SafeHtmlUtils.fromSafeConstant("<br/>"));
+    categoriesTable.setColumnWidth(checkColumn, 40, Unit.PX);
+    
+    
+    // Add a text column to show the name.
+    TextColumn<String[]> nameColumn = new TextColumn<String[]>() {
+        @Override
+        public String getValue(String[] object) {
+            return object[1];
+        }
+    };
+    categoriesTable.addColumn(nameColumn, "Name");
+    
+    
+
+    AsyncDataProvider<String[]> provider = new AsyncDataProvider<String[]>() {
+        @Override
+        protected void onRangeChanged(HasData<String[]> display) {
+            final int start = display.getVisibleRange().getStart();
+            int length = display.getVisibleRange().getLength();
+            AsyncCallback<PagedResult<String[]>> callback = new AsyncCallback<PagedResult<String[]>>() {
+                @Override
+                public void onFailure(Throwable caught) {
+                    Window.alert(caught.getMessage());
+                }
+                @Override
+                public void onSuccess(PagedResult<String[]> result) {
+                    updateRowData(start, result.getList());
+                    updateRowCount(result.getTotal(), true);
+                }
+            };
+            // The remote service that should be implemented
+            GUIService.getCategories(callback);
+        }
+    };
+    
+    provider.addDataDisplay(categoriesTable);
+    
+    categoriesPager.setDisplay(categoriesTable);
+    categoriesPager.setPageSize(PAGE_SIZE);
+    
+    configured = true;
+    
+}
+
+public void refreshTable(){
+    if(configured == false){
+        configurecategoriesTable();
+    }
+    else{
+        Range range = categoriesTable.getVisibleRange();
+        RangeChangeEvent.fire(categoriesTable, range);
+    }
+}
+}

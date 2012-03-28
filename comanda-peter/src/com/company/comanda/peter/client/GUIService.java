@@ -26,6 +26,8 @@ public interface GUIService extends RemoteService {
 	void addTable(String tablename);
 	List<String[]> getTables();
 	List<String[]> getCategories();
+	void addOrModifyCategory(Long id, String name);
+	void removeCategory(long id);
 	PagedResult<String[]> getBills(int start, int length, 
 	        BillState state, BillType type);
 	void changeBillState(String billKeyString, BillState newState, 

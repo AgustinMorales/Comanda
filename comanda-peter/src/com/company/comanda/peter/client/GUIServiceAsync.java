@@ -25,6 +25,8 @@ public interface GUIServiceAsync {
 	void addTable(String tablename, AsyncCallback<Void> callback);
 	void getTables(AsyncCallback<List<String[]>> callback);
 	void getCategories(AsyncCallback<List<String[]>> callback);
+	void addOrModifyCategory(Long id, String name, AsyncCallback<Void> callback);
+	void removeCategory(long id, AsyncCallback<Void> callback);
 	void getBills(int start, int length, 
 	        BillState state, BillType type, AsyncCallback<PagedResult<String[]>> callback);
 	void changeBillState(String billKeyString, BillState newState, 
