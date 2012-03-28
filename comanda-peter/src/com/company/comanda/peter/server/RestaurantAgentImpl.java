@@ -215,11 +215,7 @@ public class RestaurantAgentImpl implements RestaurantAgent {
     public long addOrModifyMenuCategory(Long categoryId, String name) {
         MenuCategory category = null;
         if(categoryId != null){
-            Key<MenuCategory> key = new Key<MenuCategory>(
-                    restaurantKey,
-                    MenuCategory.class,
-                    (long)categoryId);
-            category = ofy.get(key);
+            category = getCategory(categoryId);
         }
         else{
             category = new MenuCategory();
@@ -236,6 +232,14 @@ public class RestaurantAgentImpl implements RestaurantAgent {
         return category.getId();
     }
 
+    private MenuCategory getCategory(long id){
+        Key<MenuCategory> key = new Key<MenuCategory>(
+                restaurantKey,
+                MenuCategory.class,
+                id);
+        return ofy.get(key);
+    }
+    
     @Override
     public List<MenuCategory> getCategories() {
         return ofy.query(MenuCategory.class).
@@ -299,6 +303,20 @@ public class RestaurantAgentImpl implements RestaurantAgent {
             bill.setEstimatedDeliveryDate(new Date(currentMillis + deliveryDelay*60*1000));
         }
         ofy.put(bill);
+    }
+
+    @Override
+    public void deleteCategory(long categoryId) {
+        Key<MenuCategory> key = new Key<MenuCategory>(
+                restaurantKey,
+                MenuCategory.class,
+                categoryId);
+        List<Key<MenuItem>> menuItemKeys = 
+                ofy.query(MenuItem.class).filter(
+                "category", categoryId).ancestor(
+                        restaurantKey).listKeys();
+        ofy.delete(menuItemKeys);
+        ofy.delete(key);
     }
 
 

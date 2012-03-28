@@ -347,4 +347,18 @@ public class TestRestaurant {
         
     }
 
+    @Test
+    public void testDeleteCategory(){
+        manager.login(REST_NAME, REST_PASSWORD);
+        List<MenuCategory> categories = manager.getAgent().getCategories();
+        assertEquals(4, categories.size());
+        MenuCategory category = categories.get(2);
+        final String name = category.getName();
+        manager.getAgent().deleteCategory(category.getId());
+        categories = manager.getAgent().getCategories();
+        assertEquals(3, categories.size());
+        for(MenuCategory currentCategory : categories){
+            assertNotSame(name, currentCategory.getName());
+        }
+    }
 }

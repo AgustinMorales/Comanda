@@ -49,6 +49,8 @@ public interface RestaurantAgent {
     
     public List<MenuCategory> getCategories();
     
+    public void deleteCategory(long categoryId);
+    
     public long getDeliveryTableId();
     
     public Bill getBill(Key<Bill> billKey);
