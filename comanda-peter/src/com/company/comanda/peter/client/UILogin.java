@@ -101,4 +101,8 @@ public class UILogin extends Composite {
             doLogin();
         }
     }
+    
+    public void focus(){
+    	tbUsename.setFocus(true);
+    }
 }

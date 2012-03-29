@@ -306,17 +306,22 @@ public class RestaurantAgentImpl implements RestaurantAgent {
     }
 
     @Override
-    public void deleteCategory(long categoryId) {
-        Key<MenuCategory> key = new Key<MenuCategory>(
-                restaurantKey,
-                MenuCategory.class,
-                categoryId);
-        List<Key<MenuItem>> menuItemKeys = 
-                ofy.query(MenuItem.class).filter(
-                "category", categoryId).ancestor(
-                        restaurantKey).listKeys();
-        ofy.delete(menuItemKeys);
-        ofy.delete(key);
+    public void deleteCategories(long[] categoryIds) {
+    	//FIXME: Use transactions
+    	List<Key<MenuCategory>> keys = new ArrayList<Key<MenuCategory>>(categoryIds.length);
+    	for(long currentId : categoryIds){
+    		Key<MenuCategory> key = new Key<MenuCategory>(
+                    restaurantKey,
+                    MenuCategory.class,
+                    currentId);
+    		keys.add(key);
+            List<Key<MenuItem>> menuItemKeys = 
+                    ofy.query(MenuItem.class).filter(
+                    "category", currentId).ancestor(
+                            restaurantKey).listKeys();
+            ofy.delete(menuItemKeys);
+    	}
+        ofy.delete(keys);
     }
 
 

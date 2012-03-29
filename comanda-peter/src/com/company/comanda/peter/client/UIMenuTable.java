@@ -80,7 +80,7 @@ public class UIMenuTable extends Composite {
                 return object[2];
             }
         };
-        menuItemsTable.addColumn(nameColumn, "Name");
+        menuItemsTable.addColumn(nameColumn, "Nombre");
         
         TextColumn<String[]> priceColumn = new TextColumn<String[]>() {
             @Override
@@ -88,7 +88,7 @@ public class UIMenuTable extends Composite {
                 return object[3];
             }
         };
-        menuItemsTable.addColumn(priceColumn, "Price");
+        menuItemsTable.addColumn(priceColumn, "Importe");
 
         AsyncDataProvider<String[]> provider = new AsyncDataProvider<String[]>() {
             @Override

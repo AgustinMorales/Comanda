@@ -28,6 +28,12 @@
 				</g:tab>
 				<g:tab>
 					<g:header size='7'>
+						Editar categorías
+					</g:header>
+					<c:UIEditCategories/>
+				</g:tab>
+				<g:tab>
+					<g:header size='7'>
 						Ver pedidos pendientes (domicilio)
 					</g:header>
 					<c:UIViewPendingDeliveries ui:field="viewDeliveryBills" selectedBillStateString="OPEN"/>

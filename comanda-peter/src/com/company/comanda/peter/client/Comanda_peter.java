@@ -29,6 +29,7 @@ public class Comanda_peter implements EntryPoint {
         UILogin login = new UILogin(dialogBox);
         dialogBox.setWidget(login);
         dialogBox.center();
+        login.focus();
         final HandlerRegistration registration = 
                 com.google.gwt.user.client.Window.addResizeHandler(new ResizeHandler() {
             

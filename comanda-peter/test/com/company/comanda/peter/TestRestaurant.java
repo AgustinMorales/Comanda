@@ -354,7 +354,7 @@ public class TestRestaurant {
         assertEquals(4, categories.size());
         MenuCategory category = categories.get(2);
         final String name = category.getName();
-        manager.getAgent().deleteCategory(category.getId());
+        manager.getAgent().deleteCategories(new long[]{category.getId()});
         categories = manager.getAgent().getCategories();
         assertEquals(3, categories.size());
         for(MenuCategory currentCategory : categories){

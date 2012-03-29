@@ -26,15 +26,11 @@
 			<g:Label text="Cargando..." ui:field="lblLoading" />
 
 			<g:VerticalPanel width="100%" height=""
-				verticalAlignment="ALIGN_TOP" ui:field="categoriesPanel">
+				verticalAlignment="ALIGN_TOP" ui:field="categoriesPanel" visible="false">
 				<g:ScrollPanel height="387px">
 					<p1:CellTable ui:field="categoriesTable" width="100%"
 						height="100%" />
 				</g:ScrollPanel>
-				<g:HorizontalPanel horizontalAlignment="ALIGN_CENTER"
-					width="100%">
-					<p1:SimplePager location="CENTER" ui:field="categoriesPager" />
-				</g:HorizontalPanel>
 			</g:VerticalPanel>
 		</g:VerticalPanel>
 

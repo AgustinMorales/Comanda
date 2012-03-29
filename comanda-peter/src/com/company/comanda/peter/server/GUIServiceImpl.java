@@ -233,7 +233,7 @@ GUIService {
     }
 
     @Override
-    public void removeCategory(long id) {
-        restaurantManager.getAgent().deleteCategory(id);
+    public void removeCategories(long[] ids) {
+        restaurantManager.getAgent().deleteCategories(ids);
     }
 }

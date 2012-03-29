@@ -49,7 +49,7 @@ public interface RestaurantAgent {
     
     public List<MenuCategory> getCategories();
     
-    public void deleteCategory(long categoryId);
+    public void deleteCategories(long[] categoryIds);
     
     public long getDeliveryTableId();
     

@@ -51,6 +51,7 @@ public class UIEditCategories extends Composite {
 	@UiField Button btnDeleteItem;
 	@UiField Label lblLoading;
 	@UiField CellTable categoriesTable;
+	@UiField VerticalPanel categoriesPanel;
 	private MultiSelectionModel<String[]> selectionModel;
 	private DialogBox dialogBox;
 	private UIEditCategory newCategoryPanel;
@@ -118,10 +119,10 @@ public class UIEditCategories extends Composite {
 		TextColumn<String[]> nameColumn = new TextColumn<String[]>() {
 			@Override
 			public String getValue(String[] object) {
-				return object[2];
+				return object[1];
 			}
 		};
-		categoriesTable.addColumn(nameColumn, "Name");
+		categoriesTable.addColumn(nameColumn, "Nombre");
 
 
 		AsyncDataProvider<String[]> provider = new AsyncDataProvider<String[]>() {
@@ -136,6 +137,8 @@ public class UIEditCategories extends Composite {
 					public void onSuccess(List<String[]> result) {
 						updateRowData(0, result);
 						updateRowCount(result.size(), true);
+						lblLoading.setVisible(false);
+						categoriesPanel.setVisible(true);
 					}
 				};
 				// The remote service that should be implemented
@@ -176,6 +179,7 @@ public class UIEditCategories extends Composite {
 	void onBtnNewItemClick(ClickEvent event) {
 		newCategoryPanel.reset();
 		dialogBox.center();
+		newCategoryPanel.focus();
 	}
 
 	@UiHandler("btnDeleteItem")
@@ -188,7 +192,7 @@ public class UIEditCategories extends Composite {
 			keysToDelete[counter] = Long.parseLong(item[0]);
 			counter++;
 		};
-		GUIService.deleteMenuItems(keysToDelete, new AsyncCallback<Void>() {
+		GUIService.removeCategories(keysToDelete, new AsyncCallback<Void>() {
 
 			@Override
 			public void onFailure(Throwable caught) {

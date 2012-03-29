@@ -35,10 +35,10 @@ public class UIMain extends Composite {
         viewDeliveryBills.setAutoUpdate(false);
         viewAllDeliveryBills.setAutoUpdate(false);
         switch (event.getSelectedItem()) {
-        case 1:
+        case 2:
             viewDeliveryBills.setAutoUpdate(true);
             break;
-        case 2:
+        case 3:
             viewAllDeliveryBills.setAutoUpdate(true);
             break;
 //        case 3:
