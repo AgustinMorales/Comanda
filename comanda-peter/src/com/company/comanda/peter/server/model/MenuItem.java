@@ -1,5 +1,9 @@
 package com.company.comanda.peter.server.model;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Id;
 
 import com.googlecode.objectify.Key;
@@ -13,22 +17,27 @@ public class MenuItem
     private String name;
     private String description;
     private String imageString;
-    private float price;
     @Parent
     private Key<Restaurant> parent;
     private Key<MenuCategory> category;
-    
+    private List<Float> prices;
+    private List<String> qualifiers;
+
 
     public MenuItem(){
+    	super();
+    	prices = new ArrayList<Float>(1);
+    	qualifiers = new ArrayList<String>(1);
     }
     
     public MenuItem(String name, String desc, String imageString, 
-            int price)
+            float price)
     {
         this.name = name;
         this.description = desc;
         this.imageString = imageString;
-        this.price = price;
+        this.prices.add(price);
+        this.qualifiers.add("");
     }
     public Long getId() 
     {
@@ -59,12 +68,6 @@ public class MenuItem
     public void setImageString(String imageString) {
         this.imageString = imageString;
     }
-    public float getPrice() {
-        return price;
-    }
-    public void setPrice(float price) {
-        this.price = price;
-    }
 
     public Key<Restaurant> getParent() {
         return parent;
@@ -80,7 +83,25 @@ public class MenuItem
 
     public void setCategory(Key<MenuCategory> category) {
         this.category = category;
-    } 
+    }
+
+	public List<Float> getPrices() {
+		return prices;
+	}
+
+	public void setPrices(List<Float> prices) {
+		this.prices = prices;
+	}
+
+	public List<String> getQualifiers() {
+		return qualifiers;
+	}
+
+	public void setQualifiers(List<String> qualifiers) {
+		this.qualifiers = qualifiers;
+	}
+
+	
     
     
 }

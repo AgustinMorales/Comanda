@@ -2,6 +2,7 @@ package com.company.comanda.peter;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -12,6 +13,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.company.comanda.common.Qualifiers;
 import com.company.comanda.peter.server.RestaurantAgent;
 import com.company.comanda.peter.server.RestaurantManager;
 import com.company.comanda.peter.server.SessionAttributes;
@@ -180,11 +182,15 @@ public class TestRestaurant {
         
         final String ITEM_NAME = "pescado";
         final String ITEM_DESCRIPTION = "Pescado description";
-        final String ITEM_PRICE = "345.56";
+        final float ITEM_PRICE = 345.56f;
         final String BLOB_KEY = null;
+        List<Float> prices = new ArrayList<Float>(1);
+        List<String> qualifiers = new ArrayList<String>(1);
+        prices.add(ITEM_PRICE);
+        qualifiers.add(Qualifiers.SINGLE.toString());
         agent.addOrModifyMenuItem(null, 
                 ITEM_NAME, ITEM_DESCRIPTION, 
-                ITEM_PRICE, BLOB_KEY, categoryId);
+                prices, qualifiers, BLOB_KEY, categoryId);
         
         List<MenuItem> items = agent.getMenuItems();
         assertEquals(1, items.size());
@@ -194,7 +200,7 @@ public class TestRestaurant {
         assertEquals(ITEM_NAME, item.getName());
         assertEquals(ITEM_DESCRIPTION, 
                 item.getDescription());
-        assertEquals(Float.parseFloat(ITEM_PRICE), item.getPrice(),0);
+        assertEquals(ITEM_PRICE, item.getPrices().get(0),0);
         assertEquals("", item.getImageString());
         
         
@@ -208,11 +214,15 @@ public class TestRestaurant {
         
         final String ITEM_NAME = "pescado";
         final String ITEM_DESCRIPTION = "Pescado description";
-        final String ITEM_PRICE = "345";
+        final float ITEM_PRICE = 345f;
         final String BLOB_KEY = null;
+        List<Float> prices = new ArrayList<Float>(1);
+        List<String> qualifiers = new ArrayList<String>(1);
+        prices.add(ITEM_PRICE);
+        qualifiers.add(Qualifiers.SINGLE.toString());
         agent.addOrModifyMenuItem(null, 
                 ITEM_NAME, ITEM_DESCRIPTION, 
-                ITEM_PRICE, BLOB_KEY, categoryId);
+                prices, qualifiers, BLOB_KEY, categoryId);
         
         List<MenuItem> items = agent.getMenuItems();
         
@@ -237,31 +247,38 @@ public class TestRestaurant {
         
         final String ITEM_NAME = "pescado";
         final String ITEM_DESCRIPTION = "Pescado description";
-        final String ITEM_PRICE = "345.45";
+        final float ITEM_PRICE = 345.45f;
         final String BLOB_KEY = null;
+        List<Float> prices = new ArrayList<Float>(1);
+        List<String> qualifiers = new ArrayList<String>(1);
+        prices.add(ITEM_PRICE);
+        qualifiers.add(Qualifiers.SINGLE.toString());
         agent.addOrModifyMenuItem(null, 
                 ITEM_NAME, ITEM_DESCRIPTION, 
-                ITEM_PRICE, BLOB_KEY, categoryId);
+                prices, qualifiers, BLOB_KEY, categoryId);
         
         MenuItem item = agent.getMenuItems().get(0);
         
         final String NEW_ITEM_NAME = "nuevonombre";
         final String NEW_ITEM_DESCRIPTION = "Pescado description new";
-        final String NEW_ITEM_PRICE = "35.23";
+        final float NEW_ITEM_PRICE = 35.23f;
         final String NEW_BLOB_KEY = null;
-        
+        List<Float> newPrices = new ArrayList<Float>(1);
+        List<String> newQualifiers = new ArrayList<String>(1);
+        newPrices.add(NEW_ITEM_PRICE);
+        newQualifiers.add(Qualifiers.SINGLE.toString());
         final long itemId = item.getId();
         agent.addOrModifyMenuItem(item.getId(), 
                 NEW_ITEM_NAME, NEW_ITEM_DESCRIPTION, 
-                NEW_ITEM_PRICE, NEW_BLOB_KEY, categoryId);
+                newPrices, newQualifiers, NEW_BLOB_KEY, categoryId);
         
         MenuItem modifiedItem = agent.getMenuItems().get(0);
         
         assertEquals(NEW_ITEM_NAME, modifiedItem.getName());
         assertEquals(NEW_ITEM_DESCRIPTION, 
                 modifiedItem.getDescription());
-        assertEquals(Float.parseFloat(NEW_ITEM_PRICE), 
-                modifiedItem.getPrice(),0);
+        assertEquals(NEW_ITEM_PRICE, 
+                modifiedItem.getPrices().get(0),0);
         assertEquals("", modifiedItem.getImageString());
         assertEquals(itemId, (long)modifiedItem.getId());
     }
@@ -321,19 +338,28 @@ public class TestRestaurant {
                 createCategory(SECOND_CATEGORY_NAME);
         final String ITEM_NAME = "pescado";
         final String ITEM_DESCRIPTION = "Pescado description";
-        final String ITEM_PRICE = "345";
+        final float ITEM_PRICE = 345f;
         final String BLOB_KEY = null;
+        List<Float> prices = new ArrayList<Float>(1);
+        List<String> qualifiers = new ArrayList<String>(1);
+        prices.add(ITEM_PRICE);
+        qualifiers.add(Qualifiers.SINGLE.toString());
         agent.addOrModifyMenuItem(null, 
                 ITEM_NAME, ITEM_DESCRIPTION, 
-                ITEM_PRICE, BLOB_KEY, categoryId);
+                prices, qualifiers, BLOB_KEY, categoryId);
+        
         
         final String SECOND_ITEM_NAME = "carne";
         final String SECOND_ITEM_DESCRIPTION = "carne description";
-        final String SECOND_ITEM_PRICE = "3435";
+        final float SECOND_ITEM_PRICE = 3435f;
         final String SECOND_BLOB_KEY = null;
+        List<Float> secondPrices = new ArrayList<Float>(1);
+        List<String> secondQualifiers = new ArrayList<String>(1);
+        secondPrices.add(SECOND_ITEM_PRICE);
+        secondQualifiers.add(Qualifiers.SINGLE.toString());
         agent.addOrModifyMenuItem(null, 
                 SECOND_ITEM_NAME, SECOND_ITEM_DESCRIPTION, 
-                SECOND_ITEM_PRICE, SECOND_BLOB_KEY, secondCategoryId);
+                secondPrices, secondQualifiers, SECOND_BLOB_KEY, secondCategoryId);
         
         List<MenuItem> categoryOneItems = agent.getMenuItems(categoryId);
         List<MenuItem> categoryTwoItems = agent.getMenuItems(secondCategoryId);

@@ -28,7 +28,8 @@ public interface UserManager {
             String address, Long tableId,
             String comments,
             BillType type,
-            String billKeyString);
+            String billKeyString,
+            int qualifierIndex);
     
     CodifiedData getData(String code);
     

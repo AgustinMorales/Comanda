@@ -1,5 +1,6 @@
 package com.company.comanda.peter.client;
 
+import com.company.comanda.common.Qualifiers;
 import com.company.comanda.peter.shared.PagedResult;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.core.client.GWT;
@@ -85,7 +86,16 @@ public class UIMenuTable extends Composite {
         TextColumn<String[]> priceColumn = new TextColumn<String[]>() {
             @Override
             public String getValue(String[] object) {
-                return object[3];
+            	Qualifiers[] qualifiers = Qualifiers.values();
+            	StringBuffer priceString = new StringBuffer();
+            	for(int i=0;i<qualifiers.length;i++){
+            		if(object[3+i] != null){
+            			priceString.append(qualifiers[i].toString());
+            			priceString.append(": ");
+            			priceString.append(object[3+i]);
+            		}
+            	}
+                return priceString.toString();
             }
         };
         menuItemsTable.addColumn(priceColumn, "Importe");

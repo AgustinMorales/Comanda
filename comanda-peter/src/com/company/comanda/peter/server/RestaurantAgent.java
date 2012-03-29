@@ -20,7 +20,8 @@ public interface RestaurantAgent {
     public void addOrModifyMenuItem(Long itemId,
             String itemName,
             String description,
-            String priceString,
+            List<Float> prices,
+            List<String> qualifiers,
             String imageBlobkey,
             Long categoryId);
     

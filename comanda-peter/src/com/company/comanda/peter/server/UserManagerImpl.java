@@ -58,7 +58,8 @@ public class UserManagerImpl implements UserManager {
             Long tableId,
             String comments,
             BillType type,
-            String billKeyString) {
+            String billKeyString,
+            int qualifierIndex) {
         // TODO Check password
         final Date date = new Date();
         Key<User> userKey = new Key<User>(User.class, userId);
@@ -116,15 +117,16 @@ public class UserManagerImpl implements UserManager {
             final Key<MenuItem> menuItemKey = new Key<MenuItem>(restaurantKey,
                     MenuItem.class,menuItemIds.get(i));
             MenuItem menuItem = ofy.get(menuItemKey);
+            float price = menuItem.getPrices().get(qualifierIndex);
             Order newOrder = new Order(date, OrderState.ORDERED, 
                     menuItem.getName(),
-                    menuItem.getPrice(),
+                    price,
                     menuItemKey,
                             comments, billKey,
                             type);
             newOrder.setTable(tableKey);
             newOrders.add(newOrder);
-            totalAmount = totalAmount + menuItem.getPrice();
+            totalAmount = totalAmount + price;
         }
         bill.setTotalAmount(totalAmount);
         ofy.put(bill);

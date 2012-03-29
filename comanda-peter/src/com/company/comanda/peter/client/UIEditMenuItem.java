@@ -21,6 +21,8 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.RadioButton;
 
 public class UIEditMenuItem extends Composite {
 
@@ -31,7 +33,6 @@ public class UIEditMenuItem extends Composite {
     private static UIEditMenuItemUiBinder uiBinder = GWT
             .create(UIEditMenuItemUiBinder.class);
     @UiField TextBox tbName;
-    @UiField DoubleBox dbPrice;
     @UiField FileUpload fuImageFile;
     @UiField TextArea taDescription;
     @UiField Button btnSaveChanges;
@@ -40,6 +41,21 @@ public class UIEditMenuItem extends Composite {
     @UiField Button btnCancel;
     @UiField Image imgItem;
     @UiField ListBox lbCategory;
+    @UiField CheckBox cbSmall;
+    @UiField CheckBox cbMedium;
+    @UiField CheckBox cbLarge;
+    @UiField CheckBox cbTapa;
+    @UiField CheckBox cbHalf;
+    @UiField CheckBox cbFull;
+    @UiField DoubleBox dbSinglePrice;
+    @UiField DoubleBox dbSmallPrice;
+    @UiField DoubleBox dbMediumPrice;
+    @UiField DoubleBox dbLargePrice;
+    @UiField DoubleBox dbTapaPrice;
+    @UiField DoubleBox dbHalfPrice;
+    @UiField DoubleBox dbFullPrice;
+    @UiField RadioButton rbSinglePrice;
+    @UiField RadioButton rbMultiplePrice;
 
     private boolean editingExistingData;
 
@@ -97,8 +113,7 @@ public class UIEditMenuItem extends Composite {
             imgItem.setVisible(true);
         }
         tbName.setText(data[2]);
-        dbPrice.setText(data[3]);
-        taDescription.setText(data[4]);
+        taDescription.setText(data[3]);
         editingExistingData = true;
     }
 
@@ -129,21 +144,80 @@ public class UIEditMenuItem extends Composite {
 
     private boolean validate(){
         boolean result = true;
-        dbPrice.setText(dbPrice.getText().replaceAll(",", "."));
         String description = taDescription.getText();
         String name = tbName.getText();
         String imageFile = fuImageFile.getFilename();
-        if(dbPrice.getValue() == null){
-            Window.alert("El precio introducido no es correcto");
-            result = false;
+        if(rbSinglePrice.getValue()){
+        	fixPriceFormat(dbSinglePrice);
+        	if(dbSinglePrice.getValue() == null){
+        		Window.alert("El precio introducido no es válido");
+        		result = false;
+        	}
         }
-        else if(name == null || name.length() == 0){
-            Window.alert("Por favor, introduzca el nombre");
-            result = false;
+        else{
+        	boolean oneChecked = false;
+        	if(cbSmall.getValue()){
+        		oneChecked = true;
+        		fixPriceFormat(dbSmallPrice);
+        		if(dbSmallPrice.getValue() == null){
+        			Window.alert("El precio introducido para 'Pequeña' no es válido");
+        			result = false;
+        		}
+        	}
+        	if(result && cbMedium.getValue()){
+        		oneChecked = true;
+        		fixPriceFormat(dbMediumPrice);
+        		if(dbMediumPrice.getValue() == null){
+        			Window.alert("El precio introducido para 'Mediana' no es válido");
+        			result = false;
+        		}
+        	}
+        	if(result && cbLarge.getValue()){
+        		oneChecked = true;
+        		fixPriceFormat(dbLargePrice);
+        		if(dbLargePrice.getValue() == null){
+        			Window.alert("El precio introducido para 'Grande' no es válido");
+        			result = false;
+        		}
+        	}
+        	if(result && cbTapa.getValue()){
+        		oneChecked = true;
+        		fixPriceFormat(dbTapaPrice);
+        		if(dbTapaPrice.getValue() == null){
+        			Window.alert("El precio introducido para 'Tapa' no es válido");
+        			result = false;
+        		}
+        	}
+        	if(result && cbHalf.getValue()){
+        		oneChecked = true;
+        		fixPriceFormat(dbHalfPrice);
+        		if(dbHalfPrice.getValue() == null){
+        			Window.alert("El precio introducido para '1/2 Ración' no es válido");
+        			result = false;
+        		}
+        	}
+        	if(result && cbFull.getValue()){
+        		oneChecked = true;
+        		fixPriceFormat(dbFullPrice);
+        		if(dbFullPrice.getValue() == null){
+        			Window.alert("El precio introducido para 'Ración' no es válido");
+        			result = false;
+        		}
+        	}
+        }
+        
+        if(result){
+        	if(name == null || name.length() == 0){
+        		Window.alert("Por favor, introduzca el nombre");
+        		result = false;
+        	}
         }
         return result;
     }
 
+    private void fixPriceFormat(DoubleBox dbPrice){
+    	dbPrice.setText(dbPrice.getText().replaceAll(",", "."));
+    }
     private void loadCategories(){
         greetingService.getCategories(
                 new AsyncCallback<List<String[]>>() {

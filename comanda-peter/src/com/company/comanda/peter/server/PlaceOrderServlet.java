@@ -70,13 +70,14 @@ public class PlaceOrderServlet extends HttpServlet
             menuItemIds.add(menuItemId);
             menuItemComments.add("");
         }
+        //FIXME: User real qualifierIndex
         userManager.placeOrder(userId, password, 
                 restaurantId, menuItemIds, menuItemComments,
                 address,
                 tableId,
                 comments,
                 tableId==null?BillType.DELIVERY:BillType.IN_RESTAURANT,
-                        billKeyString);
+                        billKeyString,0);
         PrintWriter out = ServletHelper.getXmlWriter(resp);
         out.println(enclose(RESULT, "" + true));
     }

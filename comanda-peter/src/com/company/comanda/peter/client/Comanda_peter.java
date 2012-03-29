@@ -1,5 +1,7 @@
 package com.company.comanda.peter.client;
 
+import java.io.Serializable;
+
 import com.company.comanda.peter.client.resources.Resources;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.event.logical.shared.CloseEvent;
@@ -17,6 +19,29 @@ import com.google.gwt.user.client.ui.RootLayoutPanel;
  */
 public class Comanda_peter implements EntryPoint {
 
+	public static class MenuItemVariant implements Serializable{
+		
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 4990857567588018658L;
+		private String name;
+		private float price;
+		public String getName() {
+			return name;
+		}
+		public void setName(String name) {
+			this.name = name;
+		}
+		public float getPrice() {
+			return price;
+		}
+		public void setPrice(float price) {
+			this.price = price;
+		}
+		
+		
+	}
 
     /**
      * This is the entry point method.

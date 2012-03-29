@@ -3,7 +3,6 @@ package com.company.comanda.peter.server;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 import javax.inject.Inject;
 
@@ -35,7 +34,6 @@ public class RestaurantAgentImpl implements RestaurantAgent {
             LoggerFactory.getLogger(RestaurantAgentImpl.class);
     private final Objectify ofy;
     private final Key<Restaurant> restaurantKey;
-    private final Random random;
     
     private ImagesService imagesService;
 
@@ -44,7 +42,6 @@ public class RestaurantAgentImpl implements RestaurantAgent {
     @Inject
     public RestaurantAgentImpl(Objectify ofy, @Assisted long restaurantId){
         this.ofy = ofy;
-        this.random = new Random();
         this.restaurantKey = new Key<Restaurant>(Restaurant.class,
                 restaurantId);
         imagesService = ImagesServiceFactory.getImagesService();
@@ -69,7 +66,8 @@ public class RestaurantAgentImpl implements RestaurantAgent {
 
     @Override
     public void addOrModifyMenuItem(Long itemId, String itemName,
-            String description, String priceString, String imageBlobkey,
+            String description, List<Float> prices, List<String> qualifiers, 
+            String imageBlobkey,
             Long categoryId) {
         MenuItem item = null;
         if(itemId != null ){
@@ -79,7 +77,8 @@ public class RestaurantAgentImpl implements RestaurantAgent {
         }
         else{
             if(itemName == null ||
-                    priceString == null ||
+                    prices == null ||
+                    qualifiers == null ||
                     description == null ||
                     categoryId == null){
                 throw new IllegalArgumentException("Missing data");
@@ -90,8 +89,11 @@ public class RestaurantAgentImpl implements RestaurantAgent {
         if(itemName != null){
             item.setName(itemName);
         }
-        if(priceString != null){
-            item.setPrice(Float.parseFloat(priceString));
+        if(prices != null){
+            item.setPrices(prices);
+        }
+        if(qualifiers != null){
+        	item.setQualifiers(qualifiers);
         }
         if(description != null){
             item.setDescription(description);

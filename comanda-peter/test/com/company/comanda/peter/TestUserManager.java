@@ -11,6 +11,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.company.comanda.common.Qualifiers;
 import com.company.comanda.peter.server.RestaurantManager;
 import com.company.comanda.peter.server.SessionAttributes;
 import com.company.comanda.peter.server.SessionAttributesFactory;
@@ -118,9 +119,13 @@ public class TestUserManager {
     
     void createMenuItems(){
         for(int i=1;i<NO_OF_MENU_ITEMS;i++){
+        	List<Float> prices = new ArrayList<Float>(1);
+        	List<String> qualifiers = new ArrayList<String>(1);
+        	prices.add((float)i);
+        	qualifiers.add(Qualifiers.SINGLE.toString());
             manager.getAgent().addOrModifyMenuItem(null, 
                     "itemName" + i, "description" + i, 
-                    "" + i, null,
+                    prices, qualifiers, null,
                     categoryId);
         }
     }
@@ -158,13 +163,13 @@ public class TestUserManager {
                 restaurantId, itemIds, itemComments, "Test address", 
                 null, "Comentarios generales",
                 BillType.DELIVERY,
-                null);
+                null, 0);
         
         final String billKeyString2 = userManager.placeOrder(userId, USER_PASSWORD, 
                 restaurantId, itemIds, itemComments, "Test address2", 
                 null, "Comentarios generales2",
                 BillType.DELIVERY,
-                null);
+                null, 0);
         
         List<Bill> inRestaurant = manager.getAgent().getBills(null, 
                 BillType.IN_RESTAURANT);
@@ -227,7 +232,7 @@ public class TestUserManager {
                 restaurantId, itemIds, itemComments, null, 
                 tableId, "Comentarios generales",
                 BillType.IN_RESTAURANT,
-                null);
+                null, 0);
         
         List<Order> ordersFromRestaurant = manager.
                 getAgent().getOrders(BillType.IN_RESTAURANT, null, tableKeyString, null);
@@ -272,13 +277,13 @@ public class TestUserManager {
                 restaurantId, itemIds, itemComments, null, 
                 tableId, "Comentarios generales",
                 BillType.IN_RESTAURANT,
-                null);
+                null, 0);
         
         userManager.placeOrder(userId, USER_PASSWORD, 
                 restaurantId, itemIds, itemComments, null, 
                 tableId, "Comentarios generales2",
                 BillType.IN_RESTAURANT,
-                billKeyString);
+                billKeyString, 0);
         
         List<Order> ordersFromRestaurant = manager.
                 getAgent().getOrders(BillType.IN_RESTAURANT, null, tableKeyString, null);
@@ -320,13 +325,13 @@ public class TestUserManager {
                 restaurantId, itemIds, itemComments, null, 
                 tableId, "Comentarios generales",
                 BillType.IN_RESTAURANT,
-                null);
+                null, 0);
         
         final String billKeyString2 = userManager.placeOrder(userId, USER_PASSWORD, 
                 restaurantId, itemIds, itemComments, null, 
                 tableId, "Comentarios generales2",
                 BillType.IN_RESTAURANT,
-                null);
+                null, 0);
         
         List<Order> ordersFromRestaurant1 = manager.
                 getAgent().getOrders(null, null, null, billKeyString1);
@@ -377,7 +382,7 @@ public class TestUserManager {
         userManager.placeOrder(userId, USER_PASSWORD, 
                 restaurantId, itemIds, itemComments, null, 
                 tableId, "Comentarios generales",
-                BillType.IN_RESTAURANT, null);
+                BillType.IN_RESTAURANT, null, 0);
         
         List<Order> orders = manager.
                 getAgent().getOrders(BillType.IN_RESTAURANT,

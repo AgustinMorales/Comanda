@@ -9,34 +9,34 @@
 			<g:VerticalPanel width="100%" height="100%">
 				<g:HorizontalPanel horizontalAlignment="ALIGN_RIGHT" width="100%" verticalAlignment="ALIGN_BOTTOM">
 					<g:HorizontalPanel width="100%" spacing="10" horizontalAlignment="ALIGN_RIGHT">
-						<g:HorizontalPanel width="100%">
-							<g:AbsolutePanel height="188px" width="388px">
+						<g:HorizontalPanel width="100%" height="279px">
+							<g:AbsolutePanel height="274px" width="466px">
 							<g:at left="10" top="26">
 								<g:Label text="Nombre:"/>
 							</g:at>
 							<g:at left="93" top="15">
 								<g:TextBox ui:field="tbName" name="itemName"/>
 							</g:at>
-							<g:at left="93" top="63">
-								<g:DoubleBox styleName="gwt-TextBox" ui:field="dbPrice" name="price"/>
-							</g:at>
-							<g:at left="10" top="72">
-								<g:Label text="Precio:"/>
-							</g:at>
-							<g:at left="93" top="152">
+							<g:at left="93" top="105">
 								<g:FileUpload width="177px" height="26px" ui:field="fuImageFile" name="itemImage"/>
 							</g:at>
-							<g:at left="10" top="157">
+							<g:at left="10" top="110">
 								<g:Label text="Imagen:"/>
 							</g:at>
 							<g:at left="336" top="15">
 								<g:TextBox visible="false" name="keyId" ui:field="tbKeyId"/>
 							</g:at>
-							<g:at left="10" top="116">
+							<g:at left="10" top="69">
 								<g:Label text="Categoría:"/>
 							</g:at>
-							<g:at left="93" top="111">
+							<g:at left="93" top="64">
 								<g:ListBox visibleItemCount="1" name="categoryId" width="177px" height="27px" ui:field="lbCategory" enabled="false"/>
+							</g:at>
+							<g:at left="10" top="137">
+								<g:Label text="Descripción:"/>
+							</g:at>
+							<g:at left="10" top="161">
+								<g:TextArea width="436px" height="93px" ui:field="taDescription" name="description"/>
 							</g:at>
 						</g:AbsolutePanel>
 						</g:HorizontalPanel>
@@ -44,8 +44,58 @@
 					</g:HorizontalPanel>
 				</g:HorizontalPanel>
 				<g:VerticalPanel width="100%" spacing="10">
-					<g:Label text="Descripción:"/>
-					<g:TextArea width="98%" height="182px" ui:field="taDescription" name="description"/>
+					<g:Label text="Precios:"/>
+					<g:AbsolutePanel height="179px">
+						<g:at left="10" top="10">
+							<g:RadioButton name="priceScheme" text="Único" formValue="single" checked="true" ui:field="rbSinglePrice"/>
+						</g:at>
+						<g:at left="10" top="35">
+							<g:RadioButton name="priceScheme" text="Varios" formValue="multiple" ui:field="rbMultiplePrice"/>
+						</g:at>
+						<g:at left="10" top="60">
+							<g:AbsolutePanel width="777px" height="110px">
+								<g:at left="10" top="13">
+									<g:CheckBox text="Pequeña" ui:field="cbSmall"/>
+								</g:at>
+								<g:at left="10" top="45">
+									<g:CheckBox text="Mediana" ui:field="cbMedium"/>
+								</g:at>
+								<g:at left="10" top="77">
+									<g:CheckBox text="Grande" ui:field="cbLarge"/>
+								</g:at>
+								<g:at left="88" top="11">
+									<g:DoubleBox ui:field="dbSmallPrice" name="smallPrice"/>
+								</g:at>
+								<g:at left="88" top="43">
+									<g:DoubleBox ui:field="dbMediumPrice" name="mediumPrice"/>
+								</g:at>
+								<g:at left="88" top="75">
+									<g:DoubleBox ui:field="dbLargePrice" name="largePrice"/>
+								</g:at>
+								<g:at left="331" top="13">
+									<g:CheckBox text="Tapa" ui:field="cbTapa"/>
+								</g:at>
+								<g:at left="331" top="45">
+									<g:CheckBox text="1/2 Ración" ui:field="cbHalf"/>
+								</g:at>
+								<g:at left="331" top="77">
+									<g:CheckBox text="Ración" ui:field="cbFull"/>
+								</g:at>
+								<g:at left="428" top="9">
+									<g:DoubleBox ui:field="dbTapaPrice" name="tapaPrice"/>
+								</g:at>
+								<g:at left="428" top="45">
+									<g:DoubleBox ui:field="dbHalfPrice" name="halfPrice"/>
+								</g:at>
+								<g:at left="428" top="77">
+									<g:DoubleBox ui:field="dbFullPrice" name="fullPrice"/>
+								</g:at>
+							</g:AbsolutePanel>
+						</g:at>
+						<g:at left="96" top="8">
+							<g:DoubleBox ui:field="dbSinglePrice" name="singlePrice"/>
+						</g:at>
+					</g:AbsolutePanel>
 					<g:HorizontalPanel width="100%" horizontalAlignment="ALIGN_RIGHT">
 						<g:HorizontalPanel spacing="10">
 							<g:Button ui:field="btnCancel">Cancelar</g:Button>
