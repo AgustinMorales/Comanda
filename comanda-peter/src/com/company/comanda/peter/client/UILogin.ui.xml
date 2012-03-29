@@ -14,10 +14,10 @@
 				<g:Label text="Contraseña"/>
 			</g:at>
 			<g:at left="119" top="189">
-				<g:TextBox ui:field="tbUsename"/>
+				<g:TextBox ui:field="tbUsename" width="171px" height="18px"/>
 			</g:at>
 			<g:at left="119" top="228">
-				<g:PasswordTextBox ui:field="tbPassword"/>
+				<g:PasswordTextBox ui:field="tbPassword" width="171px" height="18px"/>
 			</g:at>
 			<g:at left="208" top="278">
 				<g:Button width="92px" height="29px" ui:field="btnLogin" text="Acceder">Login</g:Button>
