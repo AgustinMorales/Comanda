@@ -28,5 +28,7 @@ public class UIEditCategory extends Composite {
         this.handler = handler;
     }
     
-    public void reset();
+    public void reset(){
+    	
+    }
 }

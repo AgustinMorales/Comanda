@@ -53,9 +53,15 @@ public class NewRestaurantServlet extends HttpServlet{
         String password = req.getParameter("password");
         String address = req.getParameter("address");
         String description = req.getParameter("description");
-        Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(req);
-        List<BlobKey> blobKeyList = blobs.get("restaurantImage");
         String imageBlobKey = null;
+        List<BlobKey> blobKeyList = null;
+        try{
+        	Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(req);
+            blobKeyList = blobs.get("restaurantImage");
+        }
+        catch(IllegalStateException e){
+        	log.warn("Looks like we have no upload framework. Will use null image", e);
+        }
         if(blobKeyList != null){
             assert blobKeyList.size() == 1;
             imageBlobKey = blobKeyList.get(0).getKeyString();

@@ -58,7 +58,14 @@ public class UIAdmin extends Composite {
 
                 @Override
                 public void onSuccess(String result) {
-                    restaurantDataFormPanel.setAction(result);
+                	if(result.contains("MacBook") == false){
+                		restaurantDataFormPanel.setAction(result);
+                	}
+                	else{
+                		restaurantDataFormPanel.setEncoding(FormPanel.ENCODING_URLENCODED);
+                		restaurantDataFormPanel.setEncoding(FormPanel.METHOD_GET);
+                		restaurantDataFormPanel.setAction("/newRestaurant");
+                	}
                     restaurantDataFormPanel.submit();
                     
                 }
@@ -89,7 +96,7 @@ public class UIAdmin extends Composite {
     void onRestaurantDataFormPanelSubmitComplete(SubmitCompleteEvent event) {
         restaurantDataFormPanel.reset();
         String result = event.getResults();
-        if(result != null && result.equals("SUCCESS") == true){
+        if(result != null && result.contains("SUCCESS") == true){
             Window.alert("Creado con éxito");
         }
         else{
