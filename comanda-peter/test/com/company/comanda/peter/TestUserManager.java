@@ -11,7 +11,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.company.comanda.common.Qualifiers;
+import com.company.comanda.peter.shared.Qualifiers;
 import com.company.comanda.peter.server.RestaurantManager;
 import com.company.comanda.peter.server.SessionAttributes;
 import com.company.comanda.peter.server.SessionAttributesFactory;

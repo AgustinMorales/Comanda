@@ -1,7 +1,7 @@
 package com.company.comanda.peter.client;
 
-import com.company.comanda.common.Qualifiers;
 import com.company.comanda.peter.shared.PagedResult;
+import com.company.comanda.peter.shared.Qualifiers;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;

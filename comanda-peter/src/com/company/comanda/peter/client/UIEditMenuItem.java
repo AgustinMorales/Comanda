@@ -242,11 +242,11 @@ public class UIEditMenuItem extends Composite {
     private void doCreatingItem(){
         btnSaveChanges.setEnabled(false);
         btnCancel.setEnabled(false);
-        btnSaveChanges.setText("Saving...");
+        btnSaveChanges.setText("Guardando...");
     }
 
     private void doNotCreatingItem(){
-        btnSaveChanges.setText("Save");
+        btnSaveChanges.setText("Guardar");
         btnSaveChanges.setEnabled(true);
         btnCancel.setEnabled(true);
     }

@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.company.comanda.common.Qualifiers;
+import com.company.comanda.peter.shared.Qualifiers;
 import com.company.comanda.peter.server.RestaurantAgent;
 import com.company.comanda.peter.server.RestaurantManager;
 import com.company.comanda.peter.server.SessionAttributes;
@@ -206,6 +206,54 @@ public class TestRestaurant {
         
     }
 
+    @Test
+    public void testAddMenuItemSeveralQualifiers() {
+        
+        manager.login(REST_NAME, REST_PASSWORD);
+        createCategory();
+        
+        RestaurantAgent agent = manager.getAgent();
+        
+        final String ITEM_NAME = "pescado";
+        final String ITEM_DESCRIPTION = "Pescado description";
+        final float ITEM_PRICE_TAPA = 345.56f;
+        final float ITEM_PRICE_HALF= 3450.56f;
+        final float ITEM_PRICE_FULL = 81923.43f;
+        
+        final String BLOB_KEY = null;
+        List<Float> prices = new ArrayList<Float>(3);
+        List<String> qualifiers = new ArrayList<String>(3);
+        prices.add(ITEM_PRICE_TAPA);
+        prices.add(ITEM_PRICE_HALF);
+        prices.add(ITEM_PRICE_FULL);
+        qualifiers.add(Qualifiers.TAPA.toString());
+        qualifiers.add(Qualifiers.HALF.toString());
+        qualifiers.add(Qualifiers.FULL.toString());
+        agent.addOrModifyMenuItem(null, 
+                ITEM_NAME, ITEM_DESCRIPTION, 
+                prices, qualifiers, BLOB_KEY, categoryId);
+        
+        List<MenuItem> items = agent.getMenuItems();
+        assertEquals(1, items.size());
+        
+        MenuItem item = items.get(0);
+        
+        assertEquals(ITEM_NAME, item.getName());
+        assertEquals(ITEM_DESCRIPTION, 
+                item.getDescription());
+        assertEquals(3, item.getPrices().size());
+        assertEquals(3, item.getQualifiers().size());
+        assertEquals(ITEM_PRICE_TAPA, item.getPrices().get(0),0);
+        assertEquals(ITEM_PRICE_HALF, item.getPrices().get(1),0);
+        assertEquals(ITEM_PRICE_FULL, item.getPrices().get(2),0);
+        assertEquals(Qualifiers.TAPA.toString(), item.getQualifiers().get(0));
+        assertEquals(Qualifiers.HALF.toString(), item.getQualifiers().get(1));
+        assertEquals(Qualifiers.FULL.toString(), item.getQualifiers().get(2));
+        assertEquals("", item.getImageString());
+        
+        
+    }
+    
     @Test
     public void testDeleteMenuItem(){
         manager.login(REST_NAME, REST_PASSWORD);

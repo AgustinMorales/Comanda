@@ -1,4 +1,4 @@
-package com.company.comanda.common;
+package com.company.comanda.peter.shared;
 
 public enum Qualifiers {
 	SINGLE,

@@ -55,6 +55,7 @@ public class UIEditMenu extends Composite {
     	dialogBox = new DialogBox();
         newMenuItemPanel = new UIEditMenuItem();
         dialogBox.setWidget(newMenuItemPanel);
+        dialogBox.setSize("652px", "581px");
         
         newMenuItemPanel.setNewMenuItemHandler(new NewMenuItemHandler() {
 
