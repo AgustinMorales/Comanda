@@ -23,6 +23,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.RadioButton;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
 
 public class UIEditMenuItem extends Composite {
 
@@ -85,8 +86,15 @@ public class UIEditMenuItem extends Composite {
 
                 @Override
                 public void onSuccess(String result) {
-                    itemDataFormPanel.setAction(result);
-                    itemDataFormPanel.submit();
+                	if(result.contains("MacBook") == false){
+                		itemDataFormPanel.setAction(result);
+                	}
+                	else{
+                		itemDataFormPanel.setEncoding(FormPanel.ENCODING_URLENCODED);
+                		itemDataFormPanel.setEncoding(FormPanel.METHOD_GET);
+                		itemDataFormPanel.setAction("/newMenuItem");
+                	}
+                	itemDataFormPanel.submit();
 
                 }
             });
@@ -115,6 +123,40 @@ public class UIEditMenuItem extends Composite {
         tbName.setText(data[2]);
         taDescription.setText(data[3]);
         editingExistingData = true;
+        if(data[4] != null){
+        	rbSinglePrice.setValue(true);
+        	rbSinglePrice.setFormValue("single");
+        	dbSinglePrice.setValue(Double.parseDouble(data[4]));
+        }
+        else{
+        	rbMultiplePrice.setValue(true);
+        	rbMultiplePrice.setFormValue("multiple");
+        	if(data[5] != null){
+            	cbSmall.setValue(true);
+            	dbSmallPrice.setValue(Double.parseDouble(data[5]));
+            }
+            if(data[6] != null){
+            	cbMedium.setValue(true);
+            	dbMediumPrice.setValue(Double.parseDouble(data[6]));
+            }
+            if(data[7] != null){
+            	cbLarge.setValue(true);
+            	dbLargePrice.setValue(Double.parseDouble(data[7]));
+            }
+            if(data[8] != null){
+            	cbTapa.setValue(true);
+            	dbTapaPrice.setValue(Double.parseDouble(data[8]));
+            }
+            if(data[9] != null){
+            	cbHalf.setValue(true);
+            	dbHalfPrice.setValue(Double.parseDouble(data[9]));
+            }
+            if(data[10] != null){
+            	cbFull.setValue(true);
+            	dbFullPrice.setValue(Double.parseDouble(data[10]));
+            }
+        }
+        
     }
 
     public void reset(){
@@ -128,6 +170,10 @@ public class UIEditMenuItem extends Composite {
     @UiHandler("itemDataFormPanel")
     void onItemDataFormPanelSubmitComplete(SubmitCompleteEvent event) {
         itemDataFormPanel.reset();
+        String result = event.getResults();
+        if(result == null || (result.contains("SUCCESS") == false)){
+        	Window.alert("Error");
+        }
         newMenuItemHandler.onNewMenuItem();
         doNotCreatingItem();
     }
@@ -250,4 +296,5 @@ public class UIEditMenuItem extends Composite {
         btnSaveChanges.setEnabled(true);
         btnCancel.setEnabled(true);
     }
+	
 }

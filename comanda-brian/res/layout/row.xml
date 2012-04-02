@@ -13,16 +13,6 @@
         android:contentDescription="@string/menu_item_image"
         android:src="@drawable/ic_launcher" />
 
-    <TextView
-        android:id="@+id/no_of_items"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/removeorderbutton"
-        android:paddingRight="10dip"
-        android:text="23"
-        android:textColor="#ffff6400" />
-
     <ImageButton
         android:id="@+id/placeorderbutton"
         android:layout_width="30dip"
@@ -52,14 +42,11 @@
         android:paddingRight="10dip"
         android:scaleType="fitCenter" />
 
-    
-
     <LinearLayout
         android:id="@+id/item_name_and_price"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/no_of_items"
         android:layout_toRightOf="@+id/icon"
         android:orientation="vertical" >
 
@@ -70,14 +57,107 @@
             android:gravity="center_vertical"
             android:text="Texto de prueba"
             android:textSize="20dp" />
-        <TextView
-            android:id="@+id/item_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:text="4.50€"
-            android:textColor="#ffff6400"/>
 
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <LinearLayout
+                android:id="@+id/qualifiersPanel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/labelQualifier1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tapa:" />
+
+                <TextView
+                    android:id="@+id/labelQualifier2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Media:" />
+
+                <TextView
+                    android:id="@+id/labelQualifier3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Entera:" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/item_price1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="4.50€"
+                    android:textColor="#ffff6400" />
+
+                <TextView
+                    android:id="@+id/item_price2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="4.50€"
+                    android:textColor="#ffff6400" />
+
+                <TextView
+                    android:id="@+id/item_price3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="4.50€"
+                    android:textColor="#ffff6400" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="35dp"
+                android:layout_height="fill_parent"
+                android:orientation="vertical" >
+            </LinearLayout>
+
+            
+
+            <LinearLayout
+                android:id="@+id/linearLayout4"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:orientation="vertical" >
+                <TextView
+                android:id="@+id/no_of_items1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="10dip"
+                android:text="x 5"
+                android:textColor="#ffff6400" />
+                <TextView
+                android:id="@+id/no_of_items2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="10dip"
+                android:text="x 5"
+                android:textColor="#ffff6400" />
+                <TextView
+                android:id="@+id/no_of_items3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="10dip"
+                android:text="x 5"
+                android:textColor="#ffff6400" />
+                
+            </LinearLayout>
+
+        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>

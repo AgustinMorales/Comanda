@@ -55,13 +55,13 @@
 						<g:at left="10" top="60">
 							<g:AbsolutePanel width="612px" height="110px">
 								<g:at left="10" top="13">
-									<g:CheckBox text="Pequeña" ui:field="cbSmall"/>
+									<g:CheckBox text="Pequeña" ui:field="cbSmall" name="cbSmall"/>
 								</g:at>
 								<g:at left="10" top="45">
-									<g:CheckBox text="Mediana" ui:field="cbMedium"/>
+									<g:CheckBox text="Mediana" ui:field="cbMedium" name="cbMedium"/>
 								</g:at>
 								<g:at left="10" top="77">
-									<g:CheckBox text="Grande" ui:field="cbLarge"/>
+									<g:CheckBox text="Grande" ui:field="cbLarge" name="cbLarge"/>
 								</g:at>
 								<g:at left="88" top="11">
 									<g:DoubleBox ui:field="dbSmallPrice" name="smallPrice"/>
@@ -73,13 +73,13 @@
 									<g:DoubleBox ui:field="dbLargePrice" name="largePrice"/>
 								</g:at>
 								<g:at left="331" top="13">
-									<g:CheckBox text="Tapa" ui:field="cbTapa"/>
+									<g:CheckBox text="Tapa" ui:field="cbTapa" name="cbTapa"/>
 								</g:at>
 								<g:at left="331" top="45">
-									<g:CheckBox text="1/2 Ración" ui:field="cbHalf"/>
+									<g:CheckBox text="1/2 Ración" ui:field="cbHalf" name="cbHalf"/>
 								</g:at>
 								<g:at left="331" top="77">
-									<g:CheckBox text="Ración" ui:field="cbFull"/>
+									<g:CheckBox text="Ración" ui:field="cbFull" name="cbFull"/>
 								</g:at>
 								<g:at left="428" top="9">
 									<g:DoubleBox ui:field="dbTapaPrice" name="tapaPrice"/>

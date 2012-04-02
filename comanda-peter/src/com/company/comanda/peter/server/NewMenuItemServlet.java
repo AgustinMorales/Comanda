@@ -1,6 +1,7 @@
 package com.company.comanda.peter.server;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -51,11 +52,17 @@ public class NewMenuItemServlet extends HttpServlet{
         String keyId = req.getParameter("keyId");
         String itemName = req.getParameter("itemName");
         String description = req.getParameter("description");
-        String pricingScheme = req.getParameter("pricingScheme");
+        String pricingScheme = req.getParameter("priceScheme");
         Long categoryId = Long.parseLong(req.getParameter("categoryId"));
-        Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(req);
-        List<BlobKey> blobKeyList = blobs.get("itemImage");
+        List<BlobKey> blobKeyList = null;
         String imageBlobKey = null;
+        try{
+        	Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(req);
+            blobKeyList = blobs.get("itemImage");
+        }
+        catch(IllegalStateException e){
+        	log.warn("Looks like we have no upload framework. Will use null image", e);
+        }
         if(blobKeyList != null){
             assert blobKeyList.size() == 1;
             imageBlobKey = blobKeyList.get(0).getKeyString();
@@ -74,13 +81,51 @@ public class NewMenuItemServlet extends HttpServlet{
         	qualifiers.add(Qualifiers.SINGLE.toString());
         }
         else{
-        	String test = req.getParameter("cbSmall");
+        	boolean cbSmall = cb(req,"cbSmall");
+        	boolean cbMedium = cb(req,"cbMedium");
+        	boolean cbLarge = cb(req,"cbLarge");
+        	boolean cbTapa = cb(req, "cbTapa");
+        	boolean cbHalf = cb(req, "cbHalf");
+        	boolean cbFull = cb(req, "cbFull");
+        	if(cbSmall){
+        		qualifiers.add(Qualifiers.SMALL.toString());
+        		prices.add(price(req,"smallPrice"));
+        	}
+        	if(cbMedium){
+        		qualifiers.add(Qualifiers.MEDIUM.toString());
+        		prices.add(price(req,"mediumPrice"));
+        	}
+        	if(cbLarge){
+        		qualifiers.add(Qualifiers.LARGE.toString());
+        		prices.add(price(req,"largePrice"));
+        	}
+        	if(cbTapa){
+        		qualifiers.add(Qualifiers.TAPA.toString());
+        		prices.add(price(req,"tapaPrice"));
+        	}
+        	if(cbHalf){
+        		qualifiers.add(Qualifiers.HALF.toString());
+        		prices.add(price(req,"halfPrice"));
+        	}
+        	if(cbFull){
+        		qualifiers.add(Qualifiers.FULL.toString());
+        		prices.add(price(req,"fullPrice"));
+        	}
         }
         manager.getAgent().addOrModifyMenuItem(itemId, 
                 itemName, description, prices, qualifiers, 
                 imageBlobKey, categoryId);
+        PrintWriter out = resp.getWriter();
+        out.println("SUCCESS");
     }
 
 
+    private boolean cb(HttpServletRequest req, String name){
+    	String parameter = req.getParameter(name);
+    	return ( parameter != null && parameter.equals("on"));
+    }
 
+    private float price(HttpServletRequest req, String name){
+    	return Float.parseFloat(req.getParameter(name));
+    }
 }

@@ -23,6 +23,7 @@ import com.company.comanda.peter.server.RegisterUserServlet;
 import com.company.comanda.peter.server.RestaurantLoginServiceImpl;
 import com.company.comanda.peter.server.SearchRestaurantsServlet;
 import com.company.comanda.peter.server.ServeBlob;
+import com.company.comanda.peter.server.maintenance.UpdateModelServlet;
 import com.google.inject.servlet.ServletModule;
 
 class ComandaServletModule extends ServletModule {
@@ -43,5 +44,6 @@ class ComandaServletModule extends ServletModule {
         serve(GetOrders.SERVICE_NAME).with(GetOrdersServlet.class);
         serve(GetBills.SERVICE_NAME).with(GetBillsServlet.class);
         serve("/getNumberOfPendingBills").with(GetPendingBillsServlet.class);
+        serve("/updateModel").with(UpdateModelServlet.class);
     }
 }

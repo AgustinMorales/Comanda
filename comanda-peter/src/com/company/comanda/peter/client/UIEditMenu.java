@@ -186,5 +186,6 @@ public class UIEditMenu extends Composite {
     @UiHandler("tabPanelCategories")
     void onTabPanelCategoriesSelection(SelectionEvent<Integer> event) {
         refreshTable();
+        selectionModel.clear();
     }
 }

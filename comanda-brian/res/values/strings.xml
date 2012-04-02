@@ -55,5 +55,6 @@
     <string name="delvery_address">Delivery address:</string>
     <string name="items">Items:</string>
     <string name="order_details">Order details:</string>
+    <string name="choose_qualifier">Choose size:</string>
     
 </resources>

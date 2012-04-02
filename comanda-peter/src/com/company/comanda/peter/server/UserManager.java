@@ -24,12 +24,13 @@ public interface UserManager {
     
     String placeOrder(long userId, String password, 
             long restaurantId,
-            List<Long> menuItemIds, List<String> menuItemComments, 
+            List<Long> menuItemIds, 
+            List<Integer> menuItemQualifierIndexes,
+            List<String> menuItemComments, 
             String address, Long tableId,
             String comments,
             BillType type,
-            String billKeyString,
-            int qualifierIndex);
+            String billKeyString);
     
     CodifiedData getData(String code);
     

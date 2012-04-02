@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Currency;
 import java.util.HashMap;
 import java.util.List;
 
@@ -22,6 +20,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.LabeledIntent;
 import android.database.DataSetObserver;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -32,7 +31,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -44,7 +42,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +50,7 @@ import com.company.comanda.brian.helpers.Formatter;
 import com.company.comanda.brian.helpers.LayoutHelper;
 import com.company.comanda.brian.model.Category;
 import com.company.comanda.brian.model.FoodMenuItem;
+import com.company.comanda.brian.model.OrderElement;
 import com.company.comanda.brian.xmlhandlers.BooleanHandler;
 import com.company.comanda.brian.xmlhandlers.CategoriesHandler;
 import com.company.comanda.brian.xmlhandlers.MenuItemsHandler;
@@ -87,15 +85,18 @@ public class ComandaActivity extends FragmentActivity
     private SwipeyTabs categoriesTabs;
     private ViewPager categoriesPager;
 
-    private ArrayList<FoodMenuItem> orderItems;
-    private HashMap<FoodMenuItem, Integer> orderNumbers;
+    private ArrayList<OrderElement> orderItems;
+    private HashMap<OrderElement, Integer> orderNumbers;
 
-    private ArrayAdapter<FoodMenuItem> reviewOrdersAdapter;
+    private ArrayAdapter<OrderElement> reviewOrdersAdapter;
 
     private static final int REVIEW_ORDER_DIALOG = 1;
     private static final int ITEM_DETAILS_DIALOG = 2;
+    private static final int ADD_CHOOSE_QUALIFIER_DIALOG = 3;
+    private static final int REMOVE_CHOOSE_QUALIFIER_DIALOG = 4;
 
     private FoodMenuItem selectedMenuItem;
+    
 
     private static class AsyncGetMenuItems extends AsyncGetData<ArrayList<FoodMenuItem>>{
 
@@ -155,8 +156,8 @@ public class ComandaActivity extends FragmentActivity
             tableNameTextView.setText(restName);
 
             m_items = new ArrayList<FoodMenuItem>();
-            orderItems = new ArrayList<FoodMenuItem>();
-            orderNumbers = new HashMap<FoodMenuItem, Integer>();
+            orderItems = new ArrayList<OrderElement>();
+            orderNumbers = new HashMap<OrderElement, Integer>();
             //set ListView adapter to basic ItemAdapter 
             //(it's a coincidence they are both called Item)
             final int noOfCategories = categories.size();
@@ -369,18 +370,25 @@ public class ComandaActivity extends FragmentActivity
 
             // Add your data
             StringBuffer keyIds = new StringBuffer();
+            StringBuffer qualifierIds = new StringBuffer();
             for(int i=0;i<orderItems.size();i++){
-                final FoodMenuItem currentItem = orderItems.get(i);
+                final FoodMenuItem currentItem = orderItems.get(i).menuItem;
+                final int currentQualifierIndex = orderItems.get(i).qualifierIndex;
                 final String currentKeyId = currentItem.getKeyId();
                 for(int j=0;j<orderNumbers.get(currentItem);j++){
                     keyIds.append(currentKeyId);
                     keyIds.append(":");
+                    qualifierIds.append(currentQualifierIndex);
+                    qualifierIds.append(":");
                 }
             }
             keyIds.deleteCharAt(keyIds.length() - 1);
+            qualifierIds.deleteCharAt(qualifierIds.length() - 1);
             log.debug("keyIds: {}", keyIds);
             params.add(new BasicNameValuePair(HttpParams.PlaceOrder.PARAM_ITEM_IDS, 
                     keyIds.toString()));
+            params.add(new BasicNameValuePair(HttpParams.PlaceOrder.PARAM_QUALIFIERS, 
+            		qualifierIds.toString()));
             params.add(new BasicNameValuePair(HttpParams.PlaceOrder.PARAM_TABLE_ID, tableId));
             params.add(new BasicNameValuePair(HttpParams.PlaceOrder.PARAM_RESTAURANT_ID, restId));
             params.add(new BasicNameValuePair(HttpParams.PlaceOrder.PARAM_USER_ID, 
@@ -445,8 +453,20 @@ public class ComandaActivity extends FragmentActivity
         {
             tt.setText(menuItemName);   
         }
-        TextView tvPrice = (TextView) v.findViewById(R.id.item_price);
-        tvPrice.setText(Formatter.money(o.getPrice()));
+        TextView[] tvPrice = new TextView[3];
+        tvPrice[0] = (TextView) v.findViewById(R.id.item_price1);
+        tvPrice[1] = (TextView) v.findViewById(R.id.item_price2);
+        tvPrice[2] = (TextView) v.findViewById(R.id.item_price3);
+        final int noOfPrices = o.getPrices().size();
+        for(int i=0;i<tvPrice.length;i++){
+        	if(i<noOfPrices){
+        		tvPrice[i].setText(Formatter.money(o.getPrices().get(i)));
+        	}
+        	else{
+        		tvPrice[i].setVisibility(View.GONE);
+        	}
+        	
+        }
         Bitmap rawBitMap = null;
         Bitmap finImg = null;
         if(icon != null && imageString != null && imageString.length() > 0)
@@ -528,7 +548,13 @@ public class ComandaActivity extends FragmentActivity
 
             @Override
             public void onClick(View v) {
-                removeItemFromOrder(o);
+            	if(noOfPrices == 1){
+            		removeItemFromOrder(o,0);
+            	}
+            	else{
+            		selectedMenuItem = o;
+            		showDialog(REMOVE_CHOOSE_QUALIFIER_DIALOG);
+            	}
             }
         });
 
@@ -537,7 +563,13 @@ public class ComandaActivity extends FragmentActivity
 
             @Override
             public void onClick(View v) {
-                addItemForOrder(o);
+            	if(noOfPrices == 1){
+            		addItemForOrder(o,0);
+            	}
+            	else{
+            		selectedMenuItem = o;
+            		showDialog(ADD_CHOOSE_QUALIFIER_DIALOG);
+            	}
 
             }
         });
@@ -639,6 +671,42 @@ public class ComandaActivity extends FragmentActivity
                 }
             });
         }
+        else if(id == ADD_CHOOSE_QUALIFIER_DIALOG){
+        	result = new Dialog(this);
+        	result.setContentView(R.layout.choose_qualifier);
+        	Button[] btnQualifier = new Button[3];
+        	btnQualifier[0] = (Button)result.findViewById(R.id.btnQualifier1);
+        	btnQualifier[1] = (Button)result.findViewById(R.id.btnQualifier2);
+        	btnQualifier[2] = (Button)result.findViewById(R.id.btnQualifier3);
+        	for(int i=0;i<btnQualifier.length; i++){
+        		final int index = i;
+        		btnQualifier[i].setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View arg0) {
+						addItemForOrder(selectedMenuItem, index);
+					}
+				});
+        	}
+        }
+        else if(id == REMOVE_CHOOSE_QUALIFIER_DIALOG){
+        	result = new Dialog(this);
+        	result.setContentView(R.layout.choose_qualifier);
+        	Button[] btnQualifier = new Button[3];
+        	btnQualifier[0] = (Button)result.findViewById(R.id.btnQualifier1);
+        	btnQualifier[1] = (Button)result.findViewById(R.id.btnQualifier2);
+        	btnQualifier[2] = (Button)result.findViewById(R.id.btnQualifier3);
+        	for(int i=0;i<btnQualifier.length; i++){
+        		final int index = i;
+        		btnQualifier[i].setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View arg0) {
+						removeItemFromOrder(selectedMenuItem, index);
+					}
+				});
+        	}
+        }
         else{
             result = super.onCreateDialog(id);
         }
@@ -648,8 +716,8 @@ public class ComandaActivity extends FragmentActivity
     private void refreshTotalAmount(){
         float total = 0;
         if(orderItems != null){
-            for(FoodMenuItem currentItem : orderItems){
-                total = total + currentItem.getPrice() * orderNumbers.get(currentItem);
+            for(OrderElement currentElement : orderItems){
+                total = total + currentElement.menuItem.getPrices().get(currentElement.qualifierIndex) * orderNumbers.get(currentElement);
             }
             if(tvTotalAmount != null){
                 tvTotalAmount.setText(Formatter.money(total));
@@ -679,16 +747,37 @@ public class ComandaActivity extends FragmentActivity
         else if(id == REVIEW_ORDER_DIALOG){
             LayoutHelper.dialog_fill_parent(dialog);
         }
+        else if(id == REMOVE_CHOOSE_QUALIFIER_DIALOG || id == ADD_CHOOSE_QUALIFIER_DIALOG){
+        	TextView tvItemName = (TextView)dialog.findViewById(R.id.tvItemName);
+        	tvItemName.setText(selectedMenuItem.getName());
+        	//FIXME: Do this outside so as to save some time during dialog 
+        	//preparation
+        	Button[] btnQualifier = new Button[3];
+        	btnQualifier[0] = (Button)dialog.findViewById(R.id.btnQualifier1);
+        	btnQualifier[1] = (Button)dialog.findViewById(R.id.btnQualifier2);
+        	btnQualifier[2] = (Button)dialog.findViewById(R.id.btnQualifier3);
+        	final int noOfPrices = selectedMenuItem.getPrices().size();
+        	for(int i = 0;i<btnQualifier.length;i++){
+        		if(i<noOfPrices){
+        			btnQualifier[i].setVisibility(View.VISIBLE);
+        			btnQualifier[i].setText(selectedMenuItem.getQualifiers().get(i));
+        		}
+        		else{
+        			btnQualifier[i].setVisibility(View.GONE);
+        		}
+        	}
+        	
+        }
         else{
             super.onPrepareDialog(id, dialog);
         }
     }
 
 
-    private class ReviewOrderAdapter extends ArrayAdapter<FoodMenuItem>{
+    private class ReviewOrderAdapter extends ArrayAdapter<OrderElement>{
 
         public ReviewOrderAdapter(Context context, int textViewResourceId,
-                List<FoodMenuItem> objects) {
+                List<OrderElement> objects) {
             super(context, textViewResourceId, objects);
         }
 
@@ -699,12 +788,17 @@ public class ComandaActivity extends FragmentActivity
             {
                 LayoutInflater vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 //inflate using res/layout/row.xml
-                v = vi.inflate(R.layout.row, null);
+                v = vi.inflate(R.layout.order_row, null);
             }
-            final FoodMenuItem o = orderItems.get(position);
+            OrderElement o = orderItems.get(position);
             if (o != null) 
             {
-                fillWithMenuItemInfo(v, o);
+                final TextView tvNoOfItems = (TextView)v.findViewById(R.id.no_of_items);
+                final TextView tvItemName = (TextView)v.findViewById(R.id.item_name);
+                final TextView tvPrice = (TextView)v.findViewById(R.id.price);
+                tvItemName.setText(o.menuItem.getName());
+                tvPrice.setText(Formatter.money(o.menuItem.getPrices().get(o.qualifierIndex)));
+                tvNoOfItems.setText(orderNumbers.get(o));
             }
 
             return v;
@@ -712,28 +806,30 @@ public class ComandaActivity extends FragmentActivity
 
     }
 
-    private void addItemForOrder(FoodMenuItem item){
-        if(orderNumbers.containsKey(item)){
+    private void addItemForOrder(FoodMenuItem item, int qualifierIndex){
+    	OrderElement element = new OrderElement(item, qualifierIndex);
+        if(orderNumbers.containsKey(element)){
             int previousnumber = orderNumbers.get(item);
-            orderNumbers.put(item,previousnumber + 1);
+            orderNumbers.put(element,previousnumber + 1);
         }
         else{
-            orderItems.add(item);
-            orderNumbers.put(item,1);
+            orderItems.add(element);
+            orderNumbers.put(element,1);
         }
         reviewOrdersAdapter.notifyDataSetChanged();
         refreshAllTables();
     }
 
-    private void removeItemFromOrder(FoodMenuItem item){
-        if(orderNumbers.containsKey(item)){
-            int previousnumber = orderNumbers.get(item);
+    private void removeItemFromOrder(FoodMenuItem item, int qualifierIndex){
+    	OrderElement element = new OrderElement(item, qualifierIndex);
+        if(orderNumbers.containsKey(element)){
+            int previousnumber = orderNumbers.get(element);
             if(previousnumber > 1){
-                orderNumbers.put(item,previousnumber - 1);
+                orderNumbers.put(element,previousnumber - 1);
             }
             else{
-                orderItems.remove(item);
-                orderNumbers.remove(item);
+                orderItems.remove(element);
+                orderNumbers.remove(element);
             }
             reviewOrdersAdapter.notifyDataSetChanged();
             refreshAllTables();

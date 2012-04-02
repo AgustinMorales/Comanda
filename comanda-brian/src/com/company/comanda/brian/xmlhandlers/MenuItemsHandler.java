@@ -1,6 +1,7 @@
 package com.company.comanda.brian.xmlhandlers;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +30,11 @@ public class MenuItemsHandler extends ComandaXMLHandler<ArrayList<FoodMenuItem>>
     private boolean in_imageString = false;
     private boolean in_categoryId = false;
     private boolean in_price = false;
+    private boolean in_qualifier = false;
 
     private FoodMenuItem item = null;
+    private List<Float> prices = null;
+    private List<String> qualifiers = null;
 
     private ArrayList<FoodMenuItem> items = null;
 
@@ -63,6 +67,8 @@ public class MenuItemsHandler extends ComandaXMLHandler<ArrayList<FoodMenuItem>>
         {
             this.in_item = true;
             item = new FoodMenuItem();
+            prices = new ArrayList<Float>();
+            qualifiers = new ArrayList<String>();
             log.debug("Found an Item");
         }
         else if (localName.equals(NAME)) 
@@ -89,6 +95,10 @@ public class MenuItemsHandler extends ComandaXMLHandler<ArrayList<FoodMenuItem>>
         {
             this.in_price = true;
         }
+        else if (localName.equals(QUALIFIER)) 
+        {
+            this.in_qualifier = true;
+        }
     }
 
     /** Gets be called on closing tags like: 
@@ -99,6 +109,8 @@ public class MenuItemsHandler extends ComandaXMLHandler<ArrayList<FoodMenuItem>>
         if (localName.equals(ITEM)) 
         {
             this.in_item = false;
+            item.setPrices(prices);
+            item.setQualifiers(qualifiers);
             items.add(item);
         }
         else if (localName.equals(NAME)) 
@@ -124,6 +136,10 @@ public class MenuItemsHandler extends ComandaXMLHandler<ArrayList<FoodMenuItem>>
         else if (localName.equals(PRICE)) 
         {
             this.in_price = false;
+        }
+        else if (localName.equals(QUALIFIER)) 
+        {
+            this.in_qualifier = false;
         }
     }
 
@@ -160,7 +176,11 @@ public class MenuItemsHandler extends ComandaXMLHandler<ArrayList<FoodMenuItem>>
             }
             else if(this.in_price){
                 log.debug("Price: {}", textBetween);
-                item.setPrice(Float.parseFloat(textBetween));
+                prices.add(Float.parseFloat(textBetween));
+            }
+            else if(this.in_qualifier){
+                log.debug("Qualifier: {}", textBetween);
+                qualifiers.add(textBetween);
             }
         }
     }

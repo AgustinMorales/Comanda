@@ -54,12 +54,13 @@ public class UserManagerImpl implements UserManager {
 
     @Override
     public String placeOrder(long userId, String password, long restaurantId,
-            List<Long> menuItemIds, List<String> menuItemComments, String address, 
+            List<Long> menuItemIds, 
+            List<Integer> menuItemQualifierIndexes,
+            List<String> menuItemComments, String address, 
             Long tableId,
             String comments,
             BillType type,
-            String billKeyString,
-            int qualifierIndex) {
+            String billKeyString) {
         // TODO Check password
         final Date date = new Date();
         Key<User> userKey = new Key<User>(User.class, userId);
@@ -116,6 +117,7 @@ public class UserManagerImpl implements UserManager {
             
             final Key<MenuItem> menuItemKey = new Key<MenuItem>(restaurantKey,
                     MenuItem.class,menuItemIds.get(i));
+            final int qualifierIndex = menuItemQualifierIndexes.get(i);
             MenuItem menuItem = ofy.get(menuItemKey);
             float price = menuItem.getPrices().get(qualifierIndex);
             Order newOrder = new Order(date, OrderState.ORDERED, 

@@ -55,6 +55,7 @@
     <string name="delvery_address">Dirección envío:</string>
     <string name="items">Elementos:</string>
     <string name="order_details">Detalles del pedido:</string>
+    <string name="choose_qualifier">Seleccione el tamaño:</string>
     
     
 </resources>

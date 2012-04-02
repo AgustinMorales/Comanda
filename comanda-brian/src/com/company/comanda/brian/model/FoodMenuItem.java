@@ -1,5 +1,7 @@
 package com.company.comanda.brian.model;
 
+import java.util.List;
+
 public class FoodMenuItem 
 {
     
@@ -8,7 +10,8 @@ public class FoodMenuItem
     private String keyId;
     private String description;
     private long categoryId;
-    private float price;
+    private List<Float> prices;
+    private List<String> qualifiers;
     
     public FoodMenuItem()
     {
@@ -51,12 +54,19 @@ public class FoodMenuItem
     public void setCategoryId(long categoryId) {
         this.categoryId = categoryId;
     }
-    public float getPrice() {
-        return price;
+    public List<Float> getPrices() {
+        return prices;
     }
-    public void setPrice(float price) {
-        this.price = price;
-    }
+	public List<String> getQualifiers() {
+		return qualifiers;
+	}
+	public void setPrices(List<Float> prices) {
+		this.prices = prices;
+	}
+	public void setQualifiers(List<String> qualifiers) {
+		this.qualifiers = qualifiers;
+	}
+    
     
     
 }

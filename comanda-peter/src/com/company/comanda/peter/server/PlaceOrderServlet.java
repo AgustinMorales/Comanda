@@ -50,6 +50,7 @@ public class PlaceOrderServlet extends HttpServlet
         String address = req.getParameter(PARAM_ADDRESS);
 //        String menuItemComments = req.getParameter(PARAM_MENU_ITEM_COMMENTS);
         String billKeyString = req.getParameter(PARAM_BILL_KEY_STRING);
+        String qualifierIndexesString = req.getParameter(PARAM_QUALIFIERS);
         String comments = req.getParameter(PARAM_COMMENTS);
         Long tableId = null;
         if(tableIdString.length() > 0){
@@ -62,22 +63,29 @@ public class PlaceOrderServlet extends HttpServlet
         
         //FIXME: What happens in case of error?
         String[] items = menuItemIdsString.split(":");
+        String[] indexes = qualifierIndexesString.split(":");
         List<Long> menuItemIds = new ArrayList<Long>(items.length);
         List<String> menuItemComments = new ArrayList<String>(items.length);
-        for (String item : items){
+        List<Integer> qualifierIndexes = new ArrayList<Integer>(items.length);
+        for (int i=0;i<items.length;i++){
+        	String item = items[i];
+        	String qualifierIndex = indexes[i];
             log.debug("Adding item ID: {}", item);
             long menuItemId = Long.parseLong(item);
             menuItemIds.add(menuItemId);
             menuItemComments.add("");
+            qualifierIndexes.add(Integer.parseInt(qualifierIndex));
         }
         //FIXME: User real qualifierIndex
         userManager.placeOrder(userId, password, 
-                restaurantId, menuItemIds, menuItemComments,
+                restaurantId, menuItemIds, 
+                qualifierIndexes,
+                menuItemComments,
                 address,
                 tableId,
                 comments,
                 tableId==null?BillType.DELIVERY:BillType.IN_RESTAURANT,
-                        billKeyString,0);
+                        billKeyString);
         PrintWriter out = ServletHelper.getXmlWriter(resp);
         out.println(enclose(RESULT, "" + true));
     }

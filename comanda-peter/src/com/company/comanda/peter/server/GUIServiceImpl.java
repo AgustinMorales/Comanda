@@ -107,25 +107,25 @@ GUIService {
 			List<String> qualifiers = item.getQualifiers();
 			int pricesSize = prices.size();
 			for(int i = 0;i<pricesSize;i++){
-				if(qualifiers.get(i).equals(Qualifiers.SINGLE)){
+				if(qualifiers.get(i).equals(Qualifiers.SINGLE.toString())){
 					priceValues[0] = prices.get(i);
 				}
-				else if(qualifiers.get(i).equals(Qualifiers.SMALL)){
+				else if(qualifiers.get(i).equals(Qualifiers.SMALL.toString())){
 					priceValues[1] = prices.get(i);
 				}
-				else if(qualifiers.get(i).equals(Qualifiers.MEDIUM)){
+				else if(qualifiers.get(i).equals(Qualifiers.MEDIUM.toString())){
 					priceValues[2] = prices.get(i);
 				}
-				else if(qualifiers.get(i).equals(Qualifiers.LARGE)){
+				else if(qualifiers.get(i).equals(Qualifiers.LARGE.toString())){
 					priceValues[3] = prices.get(i);
 				}
-				else if(qualifiers.get(i).equals(Qualifiers.TAPA)){
+				else if(qualifiers.get(i).equals(Qualifiers.TAPA.toString())){
 					priceValues[4] = prices.get(i);
 				}
-				else if(qualifiers.get(i).equals(Qualifiers.HALF)){
+				else if(qualifiers.get(i).equals(Qualifiers.HALF.toString())){
 					priceValues[5] = prices.get(i);
 				}
-				else if(qualifiers.get(i).equals(Qualifiers.FULL)){
+				else if(qualifiers.get(i).equals(Qualifiers.FULL.toString())){
 					priceValues[6] = prices.get(i);
 				}
 			}
