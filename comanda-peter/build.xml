@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <project name="comanda-peter" default="build" basedir=".">
   <!-- Configure path to GWT SDK -->
-  <property name="gwt.sdk" location="/home/pablo/software/gwt-2.4.0" />
-  <property name="appengine.sdk" location="/home/pablo/software/appengine-java-sdk-1.6.1" />
+	<property file="local.properties"/>
 	<property name="report.dir" location="reports" />
   <import file="${appengine.sdk}/config/user/ant-macros.xml" />
   <condition property="XstartOnFirstThread" value="-XstartOnFirstThread">
@@ -171,6 +170,7 @@
             <path refid="javac.classpath"/>
             <path refid="appengine.test.classpath"/>
 	    	<pathelement location="test-classes"/>
+	    	<pathelement location="lib/junit-4.10.jar"/>
 	    </classpath>
 	    <batchtest fork="yes" todir="${report.dir}/raw/">
 	        <formatter type="xml"/>
