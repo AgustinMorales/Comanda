@@ -34,7 +34,7 @@ public class RestaurantAgentImpl implements RestaurantAgent {
             LoggerFactory.getLogger(RestaurantAgentImpl.class);
     private final Objectify ofy;
     private final Key<Restaurant> restaurantKey;
-    
+
     private ImagesService imagesService;
 
     private Long deliveryTableId;
@@ -93,16 +93,21 @@ public class RestaurantAgentImpl implements RestaurantAgent {
             item.setPrices(prices);
         }
         if(qualifiers != null){
-        	item.setQualifiers(qualifiers);
+            item.setQualifiers(qualifiers);
         }
         if(description != null){
             item.setDescription(description);
         }
         if(imageBlobkey != null){
             BlobKey blobKey = new BlobKey(imageBlobkey);
-            String servingUrl = 
-                    imagesService.getServingUrl(blobKey);
-            item.setImageString(servingUrl);
+            try{
+                String servingUrl = 
+                        imagesService.getServingUrl(blobKey);
+                item.setImageString(servingUrl);
+            }
+            catch(IllegalArgumentException e){
+                log.info("No image found, leaving to previous value...");
+            }
         }
         else{
             item.setImageString("");
@@ -241,7 +246,7 @@ public class RestaurantAgentImpl implements RestaurantAgent {
                 id);
         return ofy.get(key);
     }
-    
+
     @Override
     public List<MenuCategory> getCategories() {
         return ofy.query(MenuCategory.class).
@@ -309,20 +314,20 @@ public class RestaurantAgentImpl implements RestaurantAgent {
 
     @Override
     public void deleteCategories(long[] categoryIds) {
-    	//FIXME: Use transactions
-    	List<Key<MenuCategory>> keys = new ArrayList<Key<MenuCategory>>(categoryIds.length);
-    	for(long currentId : categoryIds){
-    		Key<MenuCategory> key = new Key<MenuCategory>(
+        //FIXME: Use transactions
+        List<Key<MenuCategory>> keys = new ArrayList<Key<MenuCategory>>(categoryIds.length);
+        for(long currentId : categoryIds){
+            Key<MenuCategory> key = new Key<MenuCategory>(
                     restaurantKey,
                     MenuCategory.class,
                     currentId);
-    		keys.add(key);
+            keys.add(key);
             List<Key<MenuItem>> menuItemKeys = 
                     ofy.query(MenuItem.class).filter(
-                    "category", currentId).ancestor(
-                            restaurantKey).listKeys();
+                            "category", currentId).ancestor(
+                                    restaurantKey).listKeys();
             ofy.delete(menuItemKeys);
-    	}
+        }
         ofy.delete(keys);
     }
 
