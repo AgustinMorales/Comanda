@@ -6,8 +6,8 @@ import android.content.DialogInterface;
 
 public class Constants {
 
-    public static final String SERVER_LOCATION = "10.0.2.2";
-//    public static final String SERVER_LOCATION = "pgmdevelopment.appspot.com";
+//    public static final String SERVER_LOCATION = "10.0.2.2";
+    public static final String SERVER_LOCATION = "peterdevelop.comandamobile.com";
     public static final int ORDER_PLACED_RESULT = 345;
 
 
