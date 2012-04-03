@@ -574,19 +574,32 @@ public class ComandaActivity extends FragmentActivity
             }
         });
 
-        TextView no_of_items = (TextView)v.findViewById(R.id.no_of_items);
-        Integer numberOrdered = orderNumbers.get(o);
-        if(numberOrdered != null){
-            no_of_items.setText(numberOrdered.toString());
-            no_of_items.setVisibility(View.VISIBLE);
-            removeButton.setVisibility(View.VISIBLE);
-            removeButton.setEnabled(true);
+        TextView[] no_of_items = new TextView[3];
+        no_of_items[0] = (TextView)v.findViewById(R.id.no_of_items1);
+        no_of_items[1] = (TextView)v.findViewById(R.id.no_of_items2);
+        no_of_items[2] = (TextView)v.findViewById(R.id.no_of_items3);
+        for(int i=0;i<no_of_items.length;i++){
+            if(i<noOfPrices){
+                OrderElement orderElement = new OrderElement(o, i);
+                Integer numberOrdered = orderNumbers.get(orderElement);
+                if(numberOrdered != null){
+                    no_of_items[i].setText(numberOrdered.toString());
+                    no_of_items[i].setVisibility(View.VISIBLE);
+                    removeButton.setVisibility(View.VISIBLE);
+                    removeButton.setEnabled(true);
+                }
+                else{
+                    no_of_items[i].setVisibility(View.INVISIBLE);
+                    removeButton.setVisibility(View.INVISIBLE);
+                    removeButton.setEnabled(false);
+                }
+            }
+            else{
+                no_of_items[i].setVisibility(View.GONE);
+            }
+            
         }
-        else{
-            no_of_items.setVisibility(View.INVISIBLE);
-            removeButton.setVisibility(View.INVISIBLE);
-            removeButton.setEnabled(false);
-        }
+        
 
 
     }
