@@ -2,6 +2,7 @@ package com.company.comanda.peter.server.model;
 
 
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Id;
@@ -22,6 +23,9 @@ public class Restaurant implements LocationCapable{
     private double latitude;
     private double longitude;
     private List<String> geocells;
+    private String phone;
+    private boolean notifying;
+    private Date latestSuccessfulNotification;
     
 
     public Long getId() {
@@ -106,5 +110,30 @@ public class Restaurant implements LocationCapable{
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public boolean isNotifying() {
+        return notifying;
+    }
+
+    public void setNotifying(boolean notifying) {
+        this.notifying = notifying;
+    }
+
+    public Date getLatestSuccessfulNotification() {
+        return latestSuccessfulNotification;
+    }
+
+    public void setLatestSuccessfulNotification(Date latestSuccessfulNotification) {
+        this.latestSuccessfulNotification = latestSuccessfulNotification;
+    }
+    
     
 }

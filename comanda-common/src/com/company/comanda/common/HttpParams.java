@@ -81,4 +81,14 @@ public class HttpParams {
     	public static final String PARAM_USERNAME = "username";
     	public static final String PARAM_PASSWORD = "password";
     }
+    
+    public static class NotifyPendingBills{
+        public static final String SERVICE_NAME = "/notifyPendingBills";
+        public static final String PARAM_RESTAURANT_KEY_STRING = "restKeyString";
+    }
+    
+    public static class BillNotificationEnded{
+        public static final String SERVICE_NAME = "/billNotificationEnded";
+        public static final String PARAM_RESTAURANT_KEY_STRING = "restKeyString";
+    }
 }
