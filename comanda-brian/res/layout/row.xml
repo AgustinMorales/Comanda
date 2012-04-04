@@ -44,10 +44,11 @@
 
     <LinearLayout
         android:id="@+id/item_name_and_price"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/icon"
+        android:layout_toLeftOf="@+id/removeorderbutton"
         android:orientation="vertical" >
 
         <TextView

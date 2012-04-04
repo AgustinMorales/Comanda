@@ -62,5 +62,7 @@
     <string name="qualTapa">Tapa</string>
     <string name="qualHalf">Half</string>
     <string name="qualFull">Full</string>
+    <string name="add">Add</string>
+    <string name="remove">Remove</string>
     
 </resources>

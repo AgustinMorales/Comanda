@@ -62,5 +62,6 @@
     <string name="qualTapa">Tapa</string>
     <string name="qualHalf">Media ración</string>
     <string name="qualFull">Ración</string>
-    
+    <string name="add">Añadir</string>
+    <string name="remove">Eliminar</string>
 </resources>

@@ -588,6 +588,7 @@ public class ComandaActivity extends FragmentActivity
         qualifiers[0] = (TextView)v.findViewById(R.id.labelQualifier1);
         qualifiers[1] = (TextView)v.findViewById(R.id.labelQualifier2);
         qualifiers[2] = (TextView)v.findViewById(R.id.labelQualifier3);
+        boolean showRemoveButton = false;
         for(int i=0;i<no_of_items.length;i++){
             if(i<noOfPrices){
                 OrderElement orderElement = new OrderElement(o, i);
@@ -600,16 +601,16 @@ public class ComandaActivity extends FragmentActivity
                     qualifierText.append(": ");
                 }
                 qualifiers[i].setText(qualifierText);
-                if(numberOrdered != null){
-                    no_of_items[i].setText(numberOrdered.toString());
+                if(numberOrdered != null && numberOrdered.intValue() > 0){
+                    StringBuffer numberText = new StringBuffer("x ");
+                    numberText.append(numberOrdered);
+                    no_of_items[i].setText(numberText);
                     no_of_items[i].setVisibility(View.VISIBLE);
-                    removeButton.setVisibility(View.VISIBLE);
-                    removeButton.setEnabled(true);
+                    showRemoveButton = true;
                 }
                 else{
                     no_of_items[i].setVisibility(View.INVISIBLE);
-                    removeButton.setVisibility(View.INVISIBLE);
-                    removeButton.setEnabled(false);
+                    
                 }
             }
             else{
@@ -617,6 +618,14 @@ public class ComandaActivity extends FragmentActivity
                 qualifiers[i].setVisibility(View.GONE);
             }
             
+        }
+        if(showRemoveButton){
+            removeButton.setVisibility(View.VISIBLE);
+            removeButton.setEnabled(true);
+        }
+        else{
+            removeButton.setVisibility(View.INVISIBLE);
+            removeButton.setEnabled(false);
         }
         
 
@@ -794,7 +803,16 @@ public class ComandaActivity extends FragmentActivity
         }
         else if(id == REMOVE_CHOOSE_QUALIFIER_DIALOG || id == ADD_CHOOSE_QUALIFIER_DIALOG){
         	TextView tvItemName = (TextView)dialog.findViewById(R.id.tvItemName);
-        	tvItemName.setText(selectedMenuItem.getName());
+        	StringBuffer title = new StringBuffer();
+        	if(id == REMOVE_CHOOSE_QUALIFIER_DIALOG){
+        	    title.append(getString(R.string.remove));
+        	}
+        	else{
+        	    title.append(getString(R.string.add));
+        	}
+        	title.append(" ");
+        	title.append(selectedMenuItem.getName());
+        	tvItemName.setText(title);
         	//FIXME: Do this outside so as to save some time during dialog 
         	//preparation
         	Button[] btnQualifier = new Button[3];
@@ -808,6 +826,16 @@ public class ComandaActivity extends FragmentActivity
         			btnQualifier[i].setText(QualifierTranslator.translate(
         			        selectedMenuItem.getQualifiers().get(i),
         			        this));
+        			if(id == REMOVE_CHOOSE_QUALIFIER_DIALOG){
+        			    OrderElement orderElement = new OrderElement(selectedMenuItem, i);
+        			    Integer noOfOrders = orderNumbers.get(orderElement);
+        			    if(noOfOrders != null && noOfOrders.intValue() > 0){
+        			        btnQualifier[i].setEnabled(true);
+        			    }
+        			    else{
+        			        btnQualifier[i].setEnabled(false);
+        			    }
+        			}
         		}
         		else{
         			btnQualifier[i].setVisibility(View.GONE);
