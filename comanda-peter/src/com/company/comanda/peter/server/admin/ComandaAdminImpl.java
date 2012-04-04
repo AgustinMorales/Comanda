@@ -26,16 +26,16 @@ public class ComandaAdminImpl implements ComandaAdmin {
     private static final Logger log = 
             LoggerFactory.getLogger(ComandaAdminImpl.class);
     private Objectify ofy;
-    
+
     private ImagesService imagesService;
-    
+
     @Inject
     public ComandaAdminImpl(Objectify ofy){
         this.ofy = ofy;
         imagesService = ImagesServiceFactory.getImagesService();
     }
-    
-    
+
+
     public long createRestaurant(String name, String login, 
             String password, String description, String imageBlob,
             double latitude, double longitude) {
@@ -44,30 +44,35 @@ public class ComandaAdminImpl implements ComandaAdmin {
             throw new IllegalArgumentException("Duplicate login");
         }
         Restaurant restaurant = new Restaurant();
-        
+
         restaurant.setName(name);
         restaurant.setLogin(login);
         restaurant.setDescription(description);
-        if(imageBlob != null && imageBlob.length() > 0){
-            restaurant.setImageUrl(
-                    imagesService.getServingUrl(
-                            new BlobKey(imageBlob)));
+        try{
+            if(imageBlob != null && imageBlob.length() > 0){
+                restaurant.setImageUrl(
+                        imagesService.getServingUrl(
+                                new BlobKey(imageBlob)));
+            }
+        }
+        catch(IllegalArgumentException e){
+            log.info("Looks like we have no image, leaving to null");
         }
         String hashedPassword = BCrypt.hashpw(password, 
                 BCrypt.gensalt());
-        
+
         restaurant.setHashedPassword(hashedPassword);
-        
+
         Point point = new Point(latitude, longitude);
-        
+
         List<String> cells = GeocellManager.generateGeoCell(point);
-        
+
         restaurant.setLatitude(latitude);
         restaurant.setLongitude(longitude);
         restaurant.setGeoCells(cells);
-        
+
         ofy.put(restaurant);
-        
+
         return restaurant.getId();
 
     }

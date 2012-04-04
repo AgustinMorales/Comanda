@@ -45,6 +45,8 @@ public class UIAdmin extends Composite {
 
     @UiHandler("btnNewRestaurant")
     void onBtnNewRestaurantClick(ClickEvent event) {
+        btnNewRestaurant.setText("Procesando...");
+        btnNewRestaurant.setEnabled(false);
         if(validate()){
             GUIService.getUploadUrlForNewRestaurant(
                     new AsyncCallback<String>() {
@@ -102,5 +104,7 @@ public class UIAdmin extends Composite {
         else{
             Window.alert("Error");
         }
+        btnNewRestaurant.setText("Aceptar");
+        btnNewRestaurant.setEnabled(true);
     }
 }

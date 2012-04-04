@@ -1,32 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
               http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-         version="2.5"
-         xmlns="http://java.sun.com/xml/ns/javaee">
+	version="2.5" xmlns="http://java.sun.com/xml/ns/javaee">
 
-  <!-- Servlets -->
-  
-  
-  <filter>
-    <filter-name>guiceFilter</filter-name>
-    <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
-  </filter>
+	<!-- Servlets -->
 
-  <filter-mapping>
-    <filter-name>guiceFilter</filter-name>
-    <url-pattern>/*</url-pattern>
-  </filter-mapping>
 
-  <listener>
-    <listener-class>com.company.comanda.peter.server.guice.ComandaGuiceServletContextListener</listener-class>
-  </listener>
-  
-  
-  <!-- Default page to serve -->
-  <welcome-file-list>
-    <welcome-file>Comanda_peter.html</welcome-file>
-    <welcome-file>Comanda_peterAdmin.html</welcome-file>
-  </welcome-file-list>
+	<filter>
+		<filter-name>guiceFilter</filter-name>
+		<filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
+	</filter>
 
+	<filter-mapping>
+		<filter-name>guiceFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<listener>
+		<listener-class>com.company.comanda.peter.server.guice.ComandaGuiceServletContextListener
+		</listener-class>
+	</listener>
+
+
+	<!-- Default page to serve -->
+	<welcome-file-list>
+		<welcome-file>Comanda_peter.html</welcome-file>
+	</welcome-file-list>
+	<security-constraint>
+		<web-resource-collection>
+			<url-pattern>/Comanda_peterAdmin.html</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>admin</role-name>
+		</auth-constraint>
+	</security-constraint>
 </web-app>
