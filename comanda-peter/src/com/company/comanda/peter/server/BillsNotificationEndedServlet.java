@@ -9,6 +9,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.company.comanda.peter.server.notification.NotificationManager;
+
 @Singleton
 public class BillsNotificationEndedServlet extends HttpServlet {
 
@@ -17,11 +22,15 @@ public class BillsNotificationEndedServlet extends HttpServlet {
      */
     private static final long serialVersionUID = 2L;
     
+    private static final Logger log = 
+            LoggerFactory.getLogger(BillsNotificationEndedServlet.class);
     
+    private NotificationManager notificationManager;
 
     @Inject
-    public BillsNotificationEndedServlet(){
+    public BillsNotificationEndedServlet(NotificationManager notificationManager){
         super();
+        this.notificationManager = notificationManager;
     }
     
     @Override
@@ -33,8 +42,13 @@ public class BillsNotificationEndedServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        // TODO Auto-generated method stub
-        super.doPost(req, resp);
+        ServletHelper.logParameters(req, log);
+        String callDuration = req.getParameter("CallDuration");
+        String callStatus = req.getParameter("CallStatus");
+        String phone = req.getParameter("To");
+        log.info("Callback for call to {}. Duration: {}. Status: {}",
+                phone, callDuration, callStatus);
+        notificationManager.nofiticationEnded(restaurantKeyString, success)
     }
 
     

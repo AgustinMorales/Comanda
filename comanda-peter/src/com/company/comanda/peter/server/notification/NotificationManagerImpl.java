@@ -1,6 +1,7 @@
 package com.company.comanda.peter.server.notification;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -94,9 +95,13 @@ public class NotificationManagerImpl implements NotificationManager {
     }
 
     @Override
-    public void nofiticationEnded(String restaurantKeyString, boolean success) {
-        final Key<Restaurant> restaurantKey = new Key<Restaurant>(restaurantKeyString);
-        Restaurant restaurant = ofy.get(restaurantKey);
+    public void nofiticationEnded(String phone, boolean success) {
+        List<Restaurant> restaurants = 
+                ofy.query(Restaurant.class).filter("phone", phone).list();
+        if(restaurants.size() != 1){
+            log.error("");
+        }
+        String restaurantKeyString = restaurant.getKeyString();
         if(restaurant.isNotifying() == false){
             log.error("Got notification ending " +
             		"for restaurant not being notified: {}", restaurant.getName());
