@@ -48,6 +48,7 @@ import android.widget.Toast;
 import com.company.comanda.brian.helpers.AsyncGetData;
 import com.company.comanda.brian.helpers.Formatter;
 import com.company.comanda.brian.helpers.LayoutHelper;
+import com.company.comanda.brian.helpers.QualifierTranslator;
 import com.company.comanda.brian.model.Category;
 import com.company.comanda.brian.model.FoodMenuItem;
 import com.company.comanda.brian.model.OrderElement;
@@ -469,7 +470,8 @@ public class ComandaActivity extends FragmentActivity
         }
         Bitmap rawBitMap = null;
         Bitmap finImg = null;
-        if(icon != null && imageString != null && imageString.length() > 0)
+        if(icon != null && imageString != null && imageString.length() > 0
+                && ("null".equals(imageString) == false))
         {
             if(smallBitmaps.containsKey(imageString)){
                 finImg = smallBitmaps.get(imageString);
@@ -527,7 +529,11 @@ public class ComandaActivity extends FragmentActivity
         }
         //returns the view to the Adapter to be displayed
         if(finImg != null){
+            icon.setVisibility(View.VISIBLE);
             icon.setImageBitmap(finImg);
+        }
+        else{
+            icon.setVisibility(View.GONE);
         }
         View.OnClickListener clickListener = new OnClickListener() {
 
@@ -575,13 +581,25 @@ public class ComandaActivity extends FragmentActivity
         });
 
         TextView[] no_of_items = new TextView[3];
+        TextView[] qualifiers = new TextView[3];
         no_of_items[0] = (TextView)v.findViewById(R.id.no_of_items1);
         no_of_items[1] = (TextView)v.findViewById(R.id.no_of_items2);
         no_of_items[2] = (TextView)v.findViewById(R.id.no_of_items3);
+        qualifiers[0] = (TextView)v.findViewById(R.id.labelQualifier1);
+        qualifiers[1] = (TextView)v.findViewById(R.id.labelQualifier2);
+        qualifiers[2] = (TextView)v.findViewById(R.id.labelQualifier3);
         for(int i=0;i<no_of_items.length;i++){
             if(i<noOfPrices){
                 OrderElement orderElement = new OrderElement(o, i);
                 Integer numberOrdered = orderNumbers.get(orderElement);
+                StringBuffer qualifierText = new StringBuffer();
+                qualifierText.append(QualifierTranslator.translate(
+                        o.getQualifiers().get(i),
+                        this));
+                if(qualifierText.length() > 0){
+                    qualifierText.append(": ");
+                }
+                qualifiers[i].setText(qualifierText);
                 if(numberOrdered != null){
                     no_of_items[i].setText(numberOrdered.toString());
                     no_of_items[i].setVisibility(View.VISIBLE);
@@ -596,6 +614,7 @@ public class ComandaActivity extends FragmentActivity
             }
             else{
                 no_of_items[i].setVisibility(View.GONE);
+                qualifiers[i].setVisibility(View.GONE);
             }
             
         }
@@ -616,7 +635,7 @@ public class ComandaActivity extends FragmentActivity
 
 
     @Override
-    protected Dialog onCreateDialog(int id) {
+    protected Dialog onCreateDialog(final int id) {
         Dialog result = null;
         if(id == REVIEW_ORDER_DIALOG){
             result = new Dialog(this);
@@ -698,6 +717,7 @@ public class ComandaActivity extends FragmentActivity
 					@Override
 					public void onClick(View arg0) {
 						addItemForOrder(selectedMenuItem, index);
+						dismissDialog(id);
 					}
 				});
         	}
@@ -716,12 +736,24 @@ public class ComandaActivity extends FragmentActivity
 					@Override
 					public void onClick(View arg0) {
 						removeItemFromOrder(selectedMenuItem, index);
+						dismissDialog(id);
 					}
 				});
         	}
         }
         else{
             result = super.onCreateDialog(id);
+        }
+        if(id == REMOVE_CHOOSE_QUALIFIER_DIALOG || id == ADD_CHOOSE_QUALIFIER_DIALOG){
+            Button btnBack = (Button)result.findViewById(R.id.btnBack);
+            btnBack.setOnClickListener(new OnClickListener() {
+                
+                @Override
+                public void onClick(View v) {
+                    dismissDialog(id);
+                    
+                }
+            });
         }
         return result;
     }
@@ -739,7 +771,7 @@ public class ComandaActivity extends FragmentActivity
     }
 
     @Override
-    protected void onPrepareDialog(int id, Dialog dialog) {
+    protected void onPrepareDialog(final int id, Dialog dialog) {
 
         if(id == ITEM_DETAILS_DIALOG){
             TextView text = (TextView) dialog.findViewById(R.id.contextMenuItemDescription);
@@ -773,12 +805,15 @@ public class ComandaActivity extends FragmentActivity
         	for(int i = 0;i<btnQualifier.length;i++){
         		if(i<noOfPrices){
         			btnQualifier[i].setVisibility(View.VISIBLE);
-        			btnQualifier[i].setText(selectedMenuItem.getQualifiers().get(i));
+        			btnQualifier[i].setText(QualifierTranslator.translate(
+        			        selectedMenuItem.getQualifiers().get(i),
+        			        this));
         		}
         		else{
         			btnQualifier[i].setVisibility(View.GONE);
         		}
         	}
+        	LayoutHelper.dialog_fill_parent(dialog);
         	
         }
         else{
@@ -809,9 +844,17 @@ public class ComandaActivity extends FragmentActivity
                 final TextView tvNoOfItems = (TextView)v.findViewById(R.id.no_of_items);
                 final TextView tvItemName = (TextView)v.findViewById(R.id.item_name);
                 final TextView tvPrice = (TextView)v.findViewById(R.id.price);
-                tvItemName.setText(o.menuItem.getName());
+                StringBuffer elementName = new StringBuffer();
+                elementName.append(o.menuItem.getName());
+                String qualifier = o.menuItem.getQualifiers().get(o.qualifierIndex);
+                if("SINGLE".equals(qualifier) == false){
+                    elementName.append(" (");
+                    elementName.append(QualifierTranslator.translate(qualifier, ComandaActivity.this));
+                    elementName.append(")");
+                }
+                tvItemName.setText(elementName);
                 tvPrice.setText(Formatter.money(o.menuItem.getPrices().get(o.qualifierIndex)));
-                tvNoOfItems.setText(orderNumbers.get(o));
+                tvNoOfItems.setText("" + orderNumbers.get(o));
             }
 
             return v;
@@ -822,7 +865,7 @@ public class ComandaActivity extends FragmentActivity
     private void addItemForOrder(FoodMenuItem item, int qualifierIndex){
     	OrderElement element = new OrderElement(item, qualifierIndex);
         if(orderNumbers.containsKey(element)){
-            int previousnumber = orderNumbers.get(item);
+            int previousnumber = orderNumbers.get(element);
             orderNumbers.put(element,previousnumber + 1);
         }
         else{

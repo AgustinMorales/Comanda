@@ -56,5 +56,11 @@
     <string name="items">Items:</string>
     <string name="order_details">Order details:</string>
     <string name="choose_qualifier">Choose size:</string>
+    <string name="qualSmall">Small</string>
+    <string name="qualMedium">Medium</string>
+    <string name="qualLarge">Large</string>
+    <string name="qualTapa">Tapa</string>
+    <string name="qualHalf">Half</string>
+    <string name="qualFull">Full</string>
     
 </resources>
