@@ -47,8 +47,8 @@ public class BillsNotificationEndedServlet extends HttpServlet {
         String callStatus = req.getParameter("CallStatus");
         String phone = req.getParameter("To");
         log.info("Callback for call to {}. Duration: {}. Status: {}",
-                phone, callDuration, callStatus);
-        notificationManager.nofiticationEnded(restaurantKeyString, success)
+                new Object[]{phone, callDuration, callStatus});
+        notificationManager.nofiticationEnded(phone,"completed".equals(callStatus));
     }
 
     

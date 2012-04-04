@@ -99,8 +99,12 @@ public class NotificationManagerImpl implements NotificationManager {
         List<Restaurant> restaurants = 
                 ofy.query(Restaurant.class).filter("phone", phone).list();
         if(restaurants.size() != 1){
-            log.error("");
+            log.error("Wrong number ({}) of restaurants found for phone {}",
+                    restaurants.size(), phone);
+            throw new IllegalStateException("Wrong " +
+            		"number of restaurants for phone " + phone);
         }
+        Restaurant restaurant = restaurants.get(0);
         String restaurantKeyString = restaurant.getKeyString();
         if(restaurant.isNotifying() == false){
             log.error("Got notification ending " +
