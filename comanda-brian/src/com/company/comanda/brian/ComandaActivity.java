@@ -373,10 +373,11 @@ public class ComandaActivity extends FragmentActivity
             StringBuffer keyIds = new StringBuffer();
             StringBuffer qualifierIds = new StringBuffer();
             for(int i=0;i<orderItems.size();i++){
-                final FoodMenuItem currentItem = orderItems.get(i).menuItem;
-                final int currentQualifierIndex = orderItems.get(i).qualifierIndex;
+                final OrderElement currentOrderElement = orderItems.get(i);
+                final FoodMenuItem currentItem = currentOrderElement.menuItem;
+                final int currentQualifierIndex = currentOrderElement.qualifierIndex;
                 final String currentKeyId = currentItem.getKeyId();
-                for(int j=0;j<orderNumbers.get(currentItem);j++){
+                for(int j=0;j<orderNumbers.get(currentOrderElement);j++){
                     keyIds.append(currentKeyId);
                     keyIds.append(":");
                     qualifierIds.append(currentQualifierIndex);
