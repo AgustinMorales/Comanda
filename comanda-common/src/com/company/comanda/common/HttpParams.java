@@ -89,6 +89,5 @@ public class HttpParams {
     
     public static class BillNotificationEnded{
         public static final String SERVICE_NAME = "/billNotificationEnded";
-        public static final String PARAM_RESTAURANT_KEY_STRING = "restKeyString";
     }
 }
