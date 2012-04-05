@@ -129,21 +129,23 @@ public class UIEditCategories extends Composite {
 		AsyncDataProvider<String[]> provider = new AsyncDataProvider<String[]>() {
 			@Override
 			protected void onRangeChanged(HasData<String[]> display) {
-				AsyncCallback<List<String[]>> callback = new AsyncCallback<List<String[]>>() {
+			    final int start = display.getVisibleRange().getStart();
+                int length = display.getVisibleRange().getLength();
+				AsyncCallback<PagedResult<String[]>> callback = new AsyncCallback<PagedResult<String[]>>() {
 					@Override
 					public void onFailure(Throwable caught) {
 						Window.alert(caught.getMessage());
 					}
 					@Override
-					public void onSuccess(List<String[]> result) {
-						updateRowData(0, result);
-						updateRowCount(result.size(), true);
+					public void onSuccess(PagedResult<String[]> result) {
+						updateRowData(0, result.getList());
+						updateRowCount(result.getTotal(), true);
 						lblLoading.setVisible(false);
 						categoriesPanel.setVisible(true);
 					}
 				};
 				// The remote service that should be implemented
-				GUIService.getCategories(callback);
+				GUIService.getCategories(start, length, callback);
 			}
 		};
 

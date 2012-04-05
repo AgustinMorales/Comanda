@@ -24,6 +24,7 @@ public interface GUIServiceAsync {
 	void login(String username, String password, AsyncCallback<Boolean> callback);
 	void addTable(String tablename, AsyncCallback<Void> callback);
 	void getTables(AsyncCallback<List<String[]>> callback);
+	void getCategories(int start, int length, AsyncCallback<PagedResult<String[]>> callback);
 	void getCategories(AsyncCallback<List<String[]>> callback);
 	void addOrModifyCategory(Long id, String name, AsyncCallback<Void> callback);
 	void removeCategories(long[] ids, AsyncCallback<Void> callback);

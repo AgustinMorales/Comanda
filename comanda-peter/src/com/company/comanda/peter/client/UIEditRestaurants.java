@@ -8,10 +8,12 @@ import com.company.comanda.peter.shared.PagedResult;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
@@ -190,5 +192,11 @@ public class UIEditRestaurants extends Composite {
             Range range = restaurantsTable.getVisibleRange();
             RangeChangeEvent.fire(restaurantsTable, range);
         }
+    }
+    
+    @UiHandler("btnNewRestaurant")
+    void onBtnNewRestaurantClick(ClickEvent event) {
+        editRestaurantPanel.reset();
+        dialogBox.center();
     }
 }

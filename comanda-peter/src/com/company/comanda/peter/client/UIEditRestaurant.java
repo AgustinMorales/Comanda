@@ -80,7 +80,7 @@ public class UIEditRestaurant extends Composite {
                 		restaurantDataFormPanel.setAction("/newRestaurant");
                 	}
                     restaurantDataFormPanel.submit();
-                    
+                    handler.onNewRestaurant();
                 }
             });
         }
@@ -117,5 +117,9 @@ public class UIEditRestaurant extends Composite {
         }
         btnNewRestaurant.setText("Aceptar");
         btnNewRestaurant.setEnabled(true);
+    }
+    
+    public void reset(){
+        restaurantDataFormPanel.clear();
     }
 }

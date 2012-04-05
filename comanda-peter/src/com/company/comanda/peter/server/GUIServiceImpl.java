@@ -38,237 +38,253 @@ import com.googlecode.objectify.Key;
 public class GUIServiceImpl extends RemoteServiceServlet implements
 GUIService {
 
-	private static final Logger log = LoggerFactory.getLogger(GUIServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(GUIServiceImpl.class);
 
-	private BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
+    private BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 
-	private RestaurantManager restaurantManager;
+    private RestaurantManager restaurantManager;
 
-	@Inject
-	public GUIServiceImpl(RestaurantManager restaurantManager){
-		this.restaurantManager = restaurantManager;
-	}
+    @Inject
+    public GUIServiceImpl(RestaurantManager restaurantManager){
+        this.restaurantManager = restaurantManager;
+    }
 
-	@SuppressWarnings("unchecked")
-	public PagedResult<String[]> getOrders(int start, int length, 
-			BillType billType, OrderState state, String tableKeyString, String billKeyString){
+    @SuppressWarnings("unchecked")
+    public PagedResult<String[]> getOrders(int start, int length, 
+            BillType billType, OrderState state, String tableKeyString, String billKeyString){
 
-		int total;
-		List<Order> orders = restaurantManager.getAgent().getOrders(
-				billType,
-				state, tableKeyString,
-				billKeyString);
+        int total;
+        List<Order> orders = restaurantManager.getAgent().getOrders(
+                billType,
+                state, tableKeyString,
+                billKeyString);
 
-		total = orders.size();
-		orders = ListHelper.cutList(orders, start, length);
-		ArrayList<String[]> resultList = new ArrayList<String[]>(orders.size());
-		Map<Key<Bill>, Bill> billMap = new HashMap<Key<Bill>, Bill>();
-		for(Order currentOrder: orders){
-			Bill currentBill = null;
-			Key<Bill> billKey = currentOrder.getBill();
-			if(billMap.containsKey(billKey)){
-				currentBill = billMap.get(billKey);
-			}
-			else{
-				currentBill = restaurantManager.getAgent().getBill(billKey);
-				billMap.put(billKey, currentBill);
-			}
-			resultList.add(new String[]{currentOrder.getMenuItemName(), 
-					currentBill.getTableName(), 
-					currentOrder.getKeyString(),
-					new Integer(currentOrder.getNoOfItems()).toString(),
-					ServerFormatter.money(currentOrder.getPrice())});
-		}
-		log.info("Found {} orders",total);
-		return new PagedResult<String[]>(resultList,total);
-	}
+        total = orders.size();
+        orders = ListHelper.cutList(orders, start, length);
+        ArrayList<String[]> resultList = new ArrayList<String[]>(orders.size());
+        Map<Key<Bill>, Bill> billMap = new HashMap<Key<Bill>, Bill>();
+        for(Order currentOrder: orders){
+            Bill currentBill = null;
+            Key<Bill> billKey = currentOrder.getBill();
+            if(billMap.containsKey(billKey)){
+                currentBill = billMap.get(billKey);
+            }
+            else{
+                currentBill = restaurantManager.getAgent().getBill(billKey);
+                billMap.put(billKey, currentBill);
+            }
+            resultList.add(new String[]{currentOrder.getMenuItemName(), 
+                    currentBill.getTableName(), 
+                    currentOrder.getKeyString(),
+                    new Integer(currentOrder.getNoOfItems()).toString(),
+                    ServerFormatter.money(currentOrder.getPrice())});
+        }
+        log.info("Found {} orders",total);
+        return new PagedResult<String[]>(resultList,total);
+    }
 
-	public PagedResult<String[]> getMenuItems(int start, int length, 
-			Long categoryId){
-		ArrayList<String[]> resultList = new ArrayList<String[]>();
-		int total;
+    public PagedResult<String[]> getMenuItems(int start, int length, 
+            Long categoryId){
+        ArrayList<String[]> resultList = new ArrayList<String[]>();
+        int total;
 
-		List<MenuItem> items = restaurantManager.getAgent().
-				getMenuItems(categoryId);
-		total = items.size();
-		//Implement the paging inside ItemsManager
-		items = ListHelper.cutList(items, start, length);
-		resultList.ensureCapacity(items.size());
+        List<MenuItem> items = restaurantManager.getAgent().
+                getMenuItems(categoryId);
+        total = items.size();
+        //Implement the paging inside ItemsManager
+        items = ListHelper.cutList(items, start, length);
+        resultList.ensureCapacity(items.size());
 
-		for(MenuItem item: items){
-			Float[] priceValues = new Float[Qualifiers.values().length];
-			List<Float> prices = item.getPrices();
-			List<String> qualifiers = item.getQualifiers();
-			int pricesSize = prices.size();
-			for(int i = 0;i<pricesSize;i++){
-				if(qualifiers.get(i).equals(Qualifiers.SINGLE.toString())){
-					priceValues[0] = prices.get(i);
-				}
-				else if(qualifiers.get(i).equals(Qualifiers.SMALL.toString())){
-					priceValues[1] = prices.get(i);
-				}
-				else if(qualifiers.get(i).equals(Qualifiers.MEDIUM.toString())){
-					priceValues[2] = prices.get(i);
-				}
-				else if(qualifiers.get(i).equals(Qualifiers.LARGE.toString())){
-					priceValues[3] = prices.get(i);
-				}
-				else if(qualifiers.get(i).equals(Qualifiers.TAPA.toString())){
-					priceValues[4] = prices.get(i);
-				}
-				else if(qualifiers.get(i).equals(Qualifiers.HALF.toString())){
-					priceValues[5] = prices.get(i);
-				}
-				else if(qualifiers.get(i).equals(Qualifiers.FULL.toString())){
-					priceValues[6] = prices.get(i);
-				}
-			}
-			resultList.add(new String[]{
-					item.getId().toString(),
-					item.getImageString(), 
-					item.getName(), 
-					item.getDescription(),
-					(priceValues[0]!=null?(ServerFormatter.money(priceValues[0])):null),
-					(priceValues[1]!=null?(ServerFormatter.money(priceValues[1])
-					        + QualifierTranslator.translate(Qualifiers.SMALL)):null),
-					(priceValues[2]!=null?(ServerFormatter.money(priceValues[2])
-                            + QualifierTranslator.translate(Qualifiers.MEDIUM)):null),
-					(priceValues[3]!=null?(ServerFormatter.money(priceValues[3])
-                            + QualifierTranslator.translate(Qualifiers.LARGE)):null),
-					(priceValues[4]!=null?(ServerFormatter.money(priceValues[4])
-                            + QualifierTranslator.translate(Qualifiers.TAPA)):null),
-					(priceValues[5]!=null?(ServerFormatter.money(priceValues[5])
-                            + QualifierTranslator.translate(Qualifiers.HALF)):null),
-					(priceValues[6]!=null?(ServerFormatter.money(priceValues[6])
-                            + QualifierTranslator.translate(Qualifiers.FULL)):null),
-			});
-		}
-		return new PagedResult<String[]>(resultList, total);
-	}
+        for(MenuItem item: items){
+            Float[] priceValues = new Float[Qualifiers.values().length];
+            List<Float> prices = item.getPrices();
+            List<String> qualifiers = item.getQualifiers();
+            int pricesSize = prices.size();
+            for(int i = 0;i<pricesSize;i++){
+                if(qualifiers.get(i).equals(Qualifiers.SINGLE.toString())){
+                    priceValues[0] = prices.get(i);
+                }
+                else if(qualifiers.get(i).equals(Qualifiers.SMALL.toString())){
+                    priceValues[1] = prices.get(i);
+                }
+                else if(qualifiers.get(i).equals(Qualifiers.MEDIUM.toString())){
+                    priceValues[2] = prices.get(i);
+                }
+                else if(qualifiers.get(i).equals(Qualifiers.LARGE.toString())){
+                    priceValues[3] = prices.get(i);
+                }
+                else if(qualifiers.get(i).equals(Qualifiers.TAPA.toString())){
+                    priceValues[4] = prices.get(i);
+                }
+                else if(qualifiers.get(i).equals(Qualifiers.HALF.toString())){
+                    priceValues[5] = prices.get(i);
+                }
+                else if(qualifiers.get(i).equals(Qualifiers.FULL.toString())){
+                    priceValues[6] = prices.get(i);
+                }
+            }
+            resultList.add(new String[]{
+                    item.getId().toString(),
+                    item.getImageString(), 
+                    item.getName(), 
+                    item.getDescription(),
+                    (priceValues[0]!=null?(ServerFormatter.money(priceValues[0])):null),
+                    (priceValues[1]!=null?(ServerFormatter.money(priceValues[1])
+                            + QualifierTranslator.translate(Qualifiers.SMALL)):null),
+                            (priceValues[2]!=null?(ServerFormatter.money(priceValues[2])
+                                    + QualifierTranslator.translate(Qualifiers.MEDIUM)):null),
+                                    (priceValues[3]!=null?(ServerFormatter.money(priceValues[3])
+                                            + QualifierTranslator.translate(Qualifiers.LARGE)):null),
+                                            (priceValues[4]!=null?(ServerFormatter.money(priceValues[4])
+                                                    + QualifierTranslator.translate(Qualifiers.TAPA)):null),
+                                                    (priceValues[5]!=null?(ServerFormatter.money(priceValues[5])
+                                                            + QualifierTranslator.translate(Qualifiers.HALF)):null),
+                                                            (priceValues[6]!=null?(ServerFormatter.money(priceValues[6])
+                                                                    + QualifierTranslator.translate(Qualifiers.FULL)):null),
+            });
+        }
+        return new PagedResult<String[]>(resultList, total);
+    }
 
-	/**
-	 * Escape an html string. Escaping data received from the client helps to
-	 * prevent cross-site script vulnerabilities.
-	 * 
-	 * @param html the html string to escape
-	 * @return the escaped string
-	 */
-	private String escapeHtml(String html) {
-		if (html == null) {
-			return null;
-		}
-		return html.replaceAll("&", "&amp;").replaceAll("<", "&lt;")
-				.replaceAll(">", "&gt;");
-	}
+    /**
+     * Escape an html string. Escaping data received from the client helps to
+     * prevent cross-site script vulnerabilities.
+     * 
+     * @param html the html string to escape
+     * @return the escaped string
+     */
+    private String escapeHtml(String html) {
+        if (html == null) {
+            return null;
+        }
+        return html.replaceAll("&", "&amp;").replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;");
+    }
 
-	public String getUploadUrl(){
-		return blobstoreService.createUploadUrl("/newMenuItem");
-	}
+    public String getUploadUrl(){
+        return blobstoreService.createUploadUrl("/newMenuItem");
+    }
 
-	public String getUploadUrlForNewRestaurant(){
-		String uploadUrl = blobstoreService.createUploadUrl("/newRestaurant");
-		log.info("Upload URL for new restaurant: " + uploadUrl);
-		return uploadUrl;
-	}
+    public String getUploadUrlForNewRestaurant(){
+        String uploadUrl = blobstoreService.createUploadUrl("/newRestaurant");
+        log.info("Upload URL for new restaurant: " + uploadUrl);
+        return uploadUrl;
+    }
 
-	@Override
-	public void acceptOrder(String orderKey) {
-		restaurantManager.getAgent().changeOrderState(
-				orderKey, OrderState.ACCEPTED);
-	}
+    @Override
+    public void acceptOrder(String orderKey) {
+        restaurantManager.getAgent().changeOrderState(
+                orderKey, OrderState.ACCEPTED);
+    }
 
-	@Override
-	public void deleteMenuItems(long[] keyIds) {
-		restaurantManager.getAgent().deleteMenuItems(keyIds);
+    @Override
+    public void deleteMenuItems(long[] keyIds) {
+        restaurantManager.getAgent().deleteMenuItems(keyIds);
 
-	}
+    }
 
-	@Override
-	public boolean login(String username, String password) {
-		boolean result = false;
-		try{
-			result = restaurantManager.login(username, password);
-		}
-		catch (IllegalStateException e) {
-			//Try to log in again
-			getThreadLocalRequest().getSession().invalidate();
-			result = restaurantManager.login(username, password);
-		}
-		return result;
-	}
+    @Override
+    public boolean login(String username, String password) {
+        boolean result = false;
+        try{
+            result = restaurantManager.login(username, password);
+        }
+        catch (IllegalStateException e) {
+            //Try to log in again
+            getThreadLocalRequest().getSession().invalidate();
+            result = restaurantManager.login(username, password);
+        }
+        return result;
+    }
 
-	@Override
-	public void addTable(String tablename) {
-		restaurantManager.getAgent().addTable(tablename);
+    @Override
+    public void addTable(String tablename) {
+        restaurantManager.getAgent().addTable(tablename);
 
-	}
+    }
 
-	@Override
-	public List<String[]> getTables() {
-		List<Table> tables = restaurantManager.getAgent().getTables();
-		List<String[]> result = new ArrayList<String[]>(tables.size());
-		for(Table table : tables){
-			result.add(new String[]{table.getKeyString(), 
-					table.getName(), 
-					table.getCode()});
-		}
-		return result;
-	}
+    @Override
+    public List<String[]> getTables() {
+        List<Table> tables = restaurantManager.getAgent().getTables();
+        List<String[]> result = new ArrayList<String[]>(tables.size());
+        for(Table table : tables){
+            result.add(new String[]{table.getKeyString(), 
+                    table.getName(), 
+                    table.getCode()});
+        }
+        return result;
+    }
 
-	@Override
-	public List<String[]> getCategories() {
-		List<MenuCategory> categories = 
-				restaurantManager.getAgent().getCategories();
-		List<String[]> result = 
-				new ArrayList<String[]>(categories.size());
-				for(MenuCategory category : categories){
-					result.add(new String[]{
-							"" + category.getId(),
-							category.getName()
-					});
-				}
-				return result;
-	}
+    @Override
+    public PagedResult<String[]> getCategories(int start, int length) {
+        List<MenuCategory> categories = 
+                restaurantManager.getAgent().getCategories();
+        final int total = categories.size();
+        categories = ListHelper.cutList(categories, start, length);
+        List<String[]> result = 
+                new ArrayList<String[]>(categories.size());
+                for(MenuCategory category : categories){
+                    result.add(new String[]{
+                            "" + category.getId(),
+                            category.getName()
+                    });
+                }
+                return new PagedResult<String[]>(result, total);
+    }
 
-	@Override
-	public PagedResult<String[]> getBills(int start,
-			int length, BillState state, 
-			BillType type) {
-		List<Bill> bills = 
-				restaurantManager.getAgent().getBills(state, type);
-		final int total = bills.size();
-		bills = ListHelper.cutList(bills, start, length);
-		List<String[]> result = new ArrayList<String[]>(bills.size());
+    @Override
+    public List<String[]> getCategories() {
+        List<MenuCategory> categories = 
+                restaurantManager.getAgent().getCategories();
+        List<String[]> result = 
+                new ArrayList<String[]>(categories.size());
+                for(MenuCategory category : categories){
+                    result.add(new String[]{
+                            "" + category.getId(),
+                            category.getName()
+                    });
+                }
+                return result;
+    }
+    @Override
+    public PagedResult<String[]> getBills(int start,
+            int length, BillState state, 
+            BillType type) {
+        List<Bill> bills = 
+                restaurantManager.getAgent().getBills(state, type);
+        final int total = bills.size();
+        bills = ListHelper.cutList(bills, start, length);
+        List<String[]> result = new ArrayList<String[]>(bills.size());
 
-		for(Bill bill: bills){
-			result.add(new String[]{
-					bill.getKeyString(),
-					bill.getAddress(),
-					ServerFormatter.formatToYesterdayOrToday(bill.getOpenDate()),
-					bill.getPhoneNumber(),
-					ServerFormatter.money(bill.getTotalAmount()),
-					bill.getState().toString(),
-			});
-		}
-		return new PagedResult<String[]>(result, total);
-	}
+        for(Bill bill: bills){
+            result.add(new String[]{
+                    bill.getKeyString(),
+                    bill.getAddress(),
+                    ServerFormatter.formatToYesterdayOrToday(bill.getOpenDate()),
+                    bill.getPhoneNumber(),
+                    ServerFormatter.money(bill.getTotalAmount()),
+                    bill.getState().toString(),
+            });
+        }
+        return new PagedResult<String[]>(result, total);
+    }
 
-	@Override
-	public void changeBillState(String billKeyString, BillState newState, 
-			Integer deliveryDelay) {
-		restaurantManager.getAgent().changeBillState(billKeyString, newState, deliveryDelay);
+    @Override
+    public void changeBillState(String billKeyString, BillState newState, 
+            Integer deliveryDelay) {
+        restaurantManager.getAgent().changeBillState(billKeyString, newState, deliveryDelay);
 
-	}
+    }
 
-	@Override
-	public void addOrModifyCategory(Long id, String name) {
-		restaurantManager.getAgent().
-		addOrModifyMenuCategory(id, name);
+    @Override
+    public void addOrModifyCategory(Long id, String name) {
+        restaurantManager.getAgent().
+        addOrModifyMenuCategory(id, name);
 
-	}
+    }
 
-	@Override
-	public void removeCategories(long[] ids) {
-		restaurantManager.getAgent().deleteCategories(ids);
-	}
+    @Override
+    public void removeCategories(long[] ids) {
+        restaurantManager.getAgent().deleteCategories(ids);
+    }
 }

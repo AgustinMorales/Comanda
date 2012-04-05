@@ -25,6 +25,7 @@ public interface GUIService extends RemoteService {
 	boolean login(String username, String password);
 	void addTable(String tablename);
 	List<String[]> getTables();
+	PagedResult<String[]> getCategories(int start, int length);
 	List<String[]> getCategories();
 	void addOrModifyCategory(Long id, String name);
 	void removeCategories(long[] ids);
