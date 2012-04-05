@@ -11,10 +11,16 @@ import com.company.comanda.peter.server.admin.ComandaAdmin;
 import com.company.comanda.peter.server.helper.ListHelper;
 import com.company.comanda.peter.server.model.Restaurant;
 import com.company.comanda.peter.shared.PagedResult;
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 @Singleton
-public class AdminServiceImpl implements AdminService {
+public class AdminServiceImpl extends RemoteServiceServlet 
+implements AdminService {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 4463471686971490574L;
     private ComandaAdmin admin;
     
     @Inject

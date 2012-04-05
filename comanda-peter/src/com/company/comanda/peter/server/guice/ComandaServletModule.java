@@ -9,6 +9,7 @@ import com.company.comanda.common.HttpParams.GetOrders;
 import com.company.comanda.common.HttpParams.PlaceOrder;
 import com.company.comanda.common.HttpParams.RegisterUser;
 import com.company.comanda.common.HttpParams.SearchRestaurants;
+import com.company.comanda.peter.server.AdminServiceImpl;
 import com.company.comanda.peter.server.GUIServiceImpl;
 import com.company.comanda.peter.server.GetBillsServlet;
 import com.company.comanda.peter.server.GetCategoriesServlet;
@@ -30,6 +31,7 @@ class ComandaServletModule extends ServletModule {
     @Override protected void configureServlets() {
         serve("/comanda_peter/greet").with(GUIServiceImpl.class);
         serve("/comanda_peter_admin/greet").with(GUIServiceImpl.class);
+        serve("/comanda_peter_admin/administration").with(AdminServiceImpl.class);
         serve("/comanda_peter/login").with(RestaurantLoginServiceImpl.class);
         serve(GetMenuItems.SERVICE_NAME).with(GetItemsServlet.class);
         serve(PlaceOrder.SERVICE_NAME).with(PlaceOrderServlet.class);
