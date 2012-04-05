@@ -23,6 +23,7 @@ public class RestaurantListHandler extends ComandaXMLHandler<ArrayList<Restauran
     private boolean in_restaurant = false;
     private boolean in_name = false;
     private boolean in_id = false;
+    private boolean in_image = false;
 
     private Restaurant item = null;
 
@@ -68,6 +69,10 @@ public class RestaurantListHandler extends ComandaXMLHandler<ArrayList<Restauran
         {
             this.in_id = true;
         }
+        else if (localName.equals(IMAGE_URL)) 
+        {
+            this.in_image = true;
+        }
     }
 
     /** Gets be called on closing tags like: 
@@ -88,6 +93,10 @@ public class RestaurantListHandler extends ComandaXMLHandler<ArrayList<Restauran
         {
             this.in_id = false;
         }
+        else if (localName.equals(IMAGE_URL)) 
+        {
+            this.in_image = false;
+        }
     }
 
     /** Gets be called on the following structure: 
@@ -106,6 +115,10 @@ public class RestaurantListHandler extends ComandaXMLHandler<ArrayList<Restauran
             else if(this.in_id){
                 log.debug("Id: {}", textBetween);
                 item.id = textBetween;
+            }
+            else if(this.in_image){
+                log.debug("ImageURL: {}", textBetween);
+                item.imageURL = textBetween;
             }
         }
     }
