@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.company.comanda.peter.client.GUIService;
-import com.company.comanda.peter.server.admin.ComandaAdmin;
+import com.company.comanda.peter.server.helper.ListHelper;
 import com.company.comanda.peter.server.helper.QualifierTranslator;
 import com.company.comanda.peter.server.helper.ServerFormatter;
 import com.company.comanda.peter.server.model.Bill;
@@ -60,7 +60,7 @@ GUIService {
 				billKeyString);
 
 		total = orders.size();
-		orders = cutList(orders, start, length);
+		orders = ListHelper.cutList(orders, start, length);
 		ArrayList<String[]> resultList = new ArrayList<String[]>(orders.size());
 		Map<Key<Bill>, Bill> billMap = new HashMap<Key<Bill>, Bill>();
 		for(Order currentOrder: orders){
@@ -83,15 +83,6 @@ GUIService {
 		return new PagedResult<String[]>(resultList,total);
 	}
 
-	protected List cutList(List list, int start, int length){
-		int size = list.size();
-		start = Math.max(0, Math.min(start, size - 1));
-		length = Math.min(length, size - start);
-
-		list = list.subList(start, start + length);
-		return list;
-	}
-
 	public PagedResult<String[]> getMenuItems(int start, int length, 
 			Long categoryId){
 		ArrayList<String[]> resultList = new ArrayList<String[]>();
@@ -101,7 +92,7 @@ GUIService {
 				getMenuItems(categoryId);
 		total = items.size();
 		//Implement the paging inside ItemsManager
-		items = cutList(items, start, length);
+		items = ListHelper.cutList(items, start, length);
 		resultList.ensureCapacity(items.size());
 
 		for(MenuItem item: items){
@@ -246,7 +237,7 @@ GUIService {
 		List<Bill> bills = 
 				restaurantManager.getAgent().getBills(state, type);
 		final int total = bills.size();
-		bills = cutList(bills, start, length);
+		bills = ListHelper.cutList(bills, start, length);
 		List<String[]> result = new ArrayList<String[]>(bills.size());
 
 		for(Bill bill: bills){
