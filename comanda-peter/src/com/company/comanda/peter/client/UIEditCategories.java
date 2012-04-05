@@ -52,6 +52,7 @@ public class UIEditCategories extends Composite {
 	@UiField Label lblLoading;
 	@UiField CellTable categoriesTable;
 	@UiField VerticalPanel categoriesPanel;
+	@UiField SimplePager categoriesPager;
 	private MultiSelectionModel<String[]> selectionModel;
 	private DialogBox dialogBox;
 	private UIEditCategory newCategoryPanel;
@@ -171,6 +172,8 @@ public class UIEditCategories extends Composite {
 			}
 		});
 		
+		categoriesPager.setDisplay(categoriesTable);
+		categoriesPager.setPageSize(PAGE_SIZE);
 		configured = true;
 	}
 
