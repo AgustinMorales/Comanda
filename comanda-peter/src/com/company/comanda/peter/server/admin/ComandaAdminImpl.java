@@ -98,4 +98,10 @@ public class ComandaAdminImpl implements ComandaAdmin {
                 imageBlob, latitude, longitude);
     }
 
+
+    @Override
+    public List<Restaurant> getRestaurants() {
+        return ofy.query(Restaurant.class).list();
+    }
+
 }

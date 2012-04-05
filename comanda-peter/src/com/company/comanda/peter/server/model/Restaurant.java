@@ -26,6 +26,7 @@ public class Restaurant implements LocationCapable{
     private String phone;
     private boolean notifying;
     private Date latestSuccessfulNotification;
+    private String address;
     
 
     public Long getId() {
@@ -133,6 +134,14 @@ public class Restaurant implements LocationCapable{
 
     public void setLatestSuccessfulNotification(Date latestSuccessfulNotification) {
         this.latestSuccessfulNotification = latestSuccessfulNotification;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
     
     
