@@ -22,7 +22,7 @@ public class Comanda_peterAdmin implements EntryPoint {
      */
     public void onModuleLoad() {
         RootLayoutPanel.get().clear();
-        RootLayoutPanel.get().add(new UIAdmin());
+        RootLayoutPanel.get().add(new UIEditRestaurants());
     }
     
     

@@ -17,7 +17,7 @@ import com.google.gwt.user.client.ui.DoubleBox;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
 
-public class UIAdmin extends Composite {
+public class UIEditRestaurant extends Composite {
 
     private static UIAdminUiBinder uiBinder = GWT.create(UIAdminUiBinder.class);
     
@@ -31,11 +31,22 @@ public class UIAdmin extends Composite {
     @UiField TextBox tbLogin;
     @UiField TextArea taDescription;
     @UiField FormPanel restaurantDataFormPanel;
+    
+    private NewRestaurantHandler handler;
 
-    interface UIAdminUiBinder extends UiBinder<Widget, UIAdmin> {
+    interface UIAdminUiBinder extends UiBinder<Widget, UIEditRestaurant> {
     }
 
-    public UIAdmin() {
+    public interface NewRestaurantHandler{
+        void onNewRestaurant();
+        void onCancel();
+    };
+    
+    public void setNewRestaurantHandler(NewRestaurantHandler handler){
+        this.handler = handler;
+    }
+    
+    public UIEditRestaurant() {
         initWidget(uiBinder.createAndBindUi(this));
         restaurantDataFormPanel.setEncoding(
                 FormPanel.ENCODING_MULTIPART);
