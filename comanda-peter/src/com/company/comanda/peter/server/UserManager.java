@@ -26,6 +26,7 @@ public interface UserManager {
             long restaurantId,
             List<Long> menuItemIds, 
             List<Integer> menuItemQualifierIndexes,
+            List<Integer> noOfItems,
             List<String> menuItemComments, 
             String address, Long tableId,
             String comments,

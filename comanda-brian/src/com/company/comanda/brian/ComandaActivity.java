@@ -372,21 +372,27 @@ public class ComandaActivity extends FragmentActivity
             // Add your data
             StringBuffer keyIds = new StringBuffer();
             StringBuffer qualifierIds = new StringBuffer();
+            StringBuffer noOfItems = new StringBuffer();
             for(int i=0;i<orderItems.size();i++){
                 final OrderElement currentOrderElement = orderItems.get(i);
                 final FoodMenuItem currentItem = currentOrderElement.menuItem;
                 final int currentQualifierIndex = currentOrderElement.qualifierIndex;
                 final String currentKeyId = currentItem.getKeyId();
-                for(int j=0;j<orderNumbers.get(currentOrderElement);j++){
-                    keyIds.append(currentKeyId);
-                    keyIds.append(":");
-                    qualifierIds.append(currentQualifierIndex);
-                    qualifierIds.append(":");
-                }
+                final int currentNoOfItems = orderNumbers.get(currentOrderElement);
+                keyIds.append(currentKeyId);
+                keyIds.append(":");
+                qualifierIds.append(currentQualifierIndex);
+                qualifierIds.append(":");
+                noOfItems.append(currentNoOfItems);
+                noOfItems.append(":");
             }
             keyIds.deleteCharAt(keyIds.length() - 1);
             qualifierIds.deleteCharAt(qualifierIds.length() - 1);
+            noOfItems.deleteCharAt(noOfItems.length() - 1);
+            
             log.debug("keyIds: {}", keyIds);
+            log.debug("qualifiers: {}", qualifierIds);
+            log.debug("noOfItems: {}", noOfItems);
             params.add(new BasicNameValuePair(HttpParams.PlaceOrder.PARAM_ITEM_IDS, 
                     keyIds.toString()));
             params.add(new BasicNameValuePair(HttpParams.PlaceOrder.PARAM_QUALIFIERS, 

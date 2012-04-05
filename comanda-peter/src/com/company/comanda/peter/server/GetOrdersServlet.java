@@ -55,7 +55,7 @@ public class GetOrdersServlet extends HttpServlet{
         	out.println(open(ORDER));
         	out.println(enclose(KEY_STRING,order.getKeyString()));
         	out.println(enclose(MENU_ITEM_NAME, order.getMenuItemName()));
-        	out.println(enclose(MENU_ITEM_NUMBER,"" + 1));
+        	out.println(enclose(MENU_ITEM_NUMBER, "" + order.getNoOfItems()));
         	out.println(enclose(PRICE, "" + order.getPrice()));
         	out.println(enclose(COMMENTS, order.getComments()));
         	out.println(close(ORDER));

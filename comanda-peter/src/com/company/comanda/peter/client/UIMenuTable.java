@@ -89,12 +89,13 @@ public class UIMenuTable extends Composite {
             	Qualifiers[] qualifiers = Qualifiers.values();
             	StringBuffer priceString = new StringBuffer();
             	for(int i=0;i<qualifiers.length;i++){
-            		if(object[3+i] != null){
-            			priceString.append(qualifiers[i].toString());
-            			priceString.append(": ");
-            			priceString.append(object[3+i]);
+            		if(object[4+i] != null){
+            			priceString.append(object[4+i]);
+            			priceString.append(", ");
             		}
             	}
+            	int length = priceString.length();
+            	priceString.delete(length - 3, length);
                 return priceString.toString();
             }
         };

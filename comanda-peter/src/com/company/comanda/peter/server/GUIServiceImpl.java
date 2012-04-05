@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import com.company.comanda.peter.client.GUIService;
 import com.company.comanda.peter.server.admin.ComandaAdmin;
+import com.company.comanda.peter.server.helper.QualifierTranslator;
 import com.company.comanda.peter.server.helper.ServerFormatter;
 import com.company.comanda.peter.server.model.Bill;
 import com.company.comanda.peter.server.model.MenuCategory;
@@ -74,7 +75,9 @@ GUIService {
 			}
 			resultList.add(new String[]{currentOrder.getMenuItemName(), 
 					currentBill.getTableName(), 
-					currentOrder.getKeyString()});
+					currentOrder.getKeyString(),
+					new Integer(currentOrder.getNoOfItems()).toString(),
+					ServerFormatter.money(currentOrder.getPrice())});
 		}
 		log.info("Found {} orders",total);
 		return new PagedResult<String[]>(resultList,total);
@@ -134,13 +137,19 @@ GUIService {
 					item.getImageString(), 
 					item.getName(), 
 					item.getDescription(),
-					(priceValues[0]!=null?("" + priceValues[0]):null),
-					(priceValues[1]!=null?("" + priceValues[1]):null),
-					(priceValues[2]!=null?("" + priceValues[2]):null),
-					(priceValues[3]!=null?("" + priceValues[3]):null),
-					(priceValues[4]!=null?("" + priceValues[4]):null),
-					(priceValues[5]!=null?("" + priceValues[5]):null),
-					(priceValues[6]!=null?("" + priceValues[6]):null),
+					(priceValues[0]!=null?(ServerFormatter.money(priceValues[0])):null),
+					(priceValues[1]!=null?(ServerFormatter.money(priceValues[1])
+					        + QualifierTranslator.translate(Qualifiers.SMALL)):null),
+					(priceValues[2]!=null?(ServerFormatter.money(priceValues[2])
+                            + QualifierTranslator.translate(Qualifiers.MEDIUM)):null),
+					(priceValues[3]!=null?(ServerFormatter.money(priceValues[3])
+                            + QualifierTranslator.translate(Qualifiers.LARGE)):null),
+					(priceValues[4]!=null?(ServerFormatter.money(priceValues[4])
+                            + QualifierTranslator.translate(Qualifiers.TAPA)):null),
+					(priceValues[5]!=null?(ServerFormatter.money(priceValues[5])
+                            + QualifierTranslator.translate(Qualifiers.HALF)):null),
+					(priceValues[6]!=null?(ServerFormatter.money(priceValues[6])
+                            + QualifierTranslator.translate(Qualifiers.FULL)):null),
 			});
 		}
 		return new PagedResult<String[]>(resultList, total);

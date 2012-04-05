@@ -19,6 +19,7 @@ public class Order
     private String menuItemName;
     private float price;
     private String comments;
+    private int noOfItems;
     @Parent
     private Key<Bill> bill;
     private Key<MenuItem> menuItemKey;
@@ -152,5 +153,16 @@ public class Order
     public void setBillType(BillType billType) {
         this.billType = billType;
     }
+
+
+    public int getNoOfItems() {
+        return noOfItems;
+    }
+
+
+    public void setNoOfItems(int noOfItems) {
+        this.noOfItems = noOfItems;
+    }
+    
     
 }

@@ -36,6 +36,7 @@ public class HttpParams {
         public static final String PARAM_MENU_ITEM_COMMENTS = "menuItemComments";
         public static final String PARAM_BILL_KEY_STRING = "billKeyString";
         public static final String PARAM_QUALIFIERS = "Qualifiers";
+        public static final String PARAM_NO_OF_ITEMS = "noOfItems";
     }
     
     public static class BlobServer{

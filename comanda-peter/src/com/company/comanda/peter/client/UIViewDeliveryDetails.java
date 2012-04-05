@@ -103,7 +103,27 @@ public class UIViewDeliveryDetails extends Composite {
         };
         
         
-        ordersTable.addColumn(tableNameColumn, "Item");
+        ordersTable.addColumn(tableNameColumn, "Elemento");
+        
+        TextColumn<String[]> tableNumberColumn = new TextColumn<String[]>() {
+            @Override
+            public String getValue(String[] object) {
+                return object[3];
+            }
+        };
+        
+        
+        ordersTable.addColumn(tableNumberColumn, "Unidades");
+        
+        TextColumn<String[]> tablePriceColumn = new TextColumn<String[]>() {
+            @Override
+            public String getValue(String[] object) {
+                return object[4];
+            }
+        };
+        
+        
+        ordersTable.addColumn(tablePriceColumn, "Precio unitario");
 
         ordersPager.setDisplay(ordersTable);
         ordersPager.setPage(PAGE_SIZE);

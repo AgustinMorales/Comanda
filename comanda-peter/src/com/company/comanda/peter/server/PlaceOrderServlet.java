@@ -53,6 +53,7 @@ public class PlaceOrderServlet extends HttpServlet
             //        String menuItemComments = req.getParameter(PARAM_MENU_ITEM_COMMENTS);
             String billKeyString = req.getParameter(PARAM_BILL_KEY_STRING);
             String qualifierIndexesString = req.getParameter(PARAM_QUALIFIERS);
+            String allNoOfItemsString = req.getParameter(PARAM_NO_OF_ITEMS);
             String comments = req.getParameter(PARAM_COMMENTS);
             Long tableId = null;
             if(tableIdString.length() > 0){
@@ -66,22 +67,28 @@ public class PlaceOrderServlet extends HttpServlet
             //FIXME: What happens in case of error?
             String[] items = menuItemIdsString.split(":");
             String[] indexes = qualifierIndexesString.split(":");
+            String[] noOfItemsStrings = allNoOfItemsString.split(":");
             List<Long> menuItemIds = new ArrayList<Long>(items.length);
             List<String> menuItemComments = new ArrayList<String>(items.length);
             List<Integer> qualifierIndexes = new ArrayList<Integer>(items.length);
+            List<Integer> noOfItems = new ArrayList<Integer>(items.length);
             for (int i=0;i<items.length;i++){
                 String item = items[i];
                 String qualifierIndex = indexes[i];
-                log.debug("Adding item ID: {}", item);
+                String noOfItemsString = noOfItemsStrings[i];
+                log.debug("Adding item ID: {}, qualifierIndex: {}, noOfItems: {}", 
+                        new Object[]{item, qualifierIndex, noOfItemsString});
                 long menuItemId = Long.parseLong(item);
                 menuItemIds.add(menuItemId);
                 menuItemComments.add("");
                 qualifierIndexes.add(Integer.parseInt(qualifierIndex));
+                noOfItems.add(Integer.parseInt(noOfItemsString));
             }
             //FIXME: User real qualifierIndex
             userManager.placeOrder(userId, password, 
                     restaurantId, menuItemIds, 
                     qualifierIndexes,
+                    noOfItems,
                     menuItemComments,
                     address,
                     tableId,

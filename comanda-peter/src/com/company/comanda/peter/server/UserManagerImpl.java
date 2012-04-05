@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import com.beoui.geocell.GeocellManager;
 import com.beoui.geocell.LocationCapableRepositorySearch;
 import com.beoui.geocell.model.Point;
+import com.company.comanda.peter.server.helper.QualifierTranslator;
 import com.company.comanda.peter.server.model.Bill;
 import com.company.comanda.peter.server.model.MenuCategory;
 import com.company.comanda.peter.server.model.MenuItem;
@@ -22,6 +23,7 @@ import com.company.comanda.peter.server.model.User;
 import com.company.comanda.peter.shared.BillState;
 import com.company.comanda.peter.shared.BillType;
 import com.company.comanda.peter.shared.OrderState;
+import com.company.comanda.peter.shared.Qualifiers;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.NotFoundException;
 import com.googlecode.objectify.Objectify;
@@ -56,6 +58,7 @@ public class UserManagerImpl implements UserManager {
     public String placeOrder(long userId, String password, long restaurantId,
             List<Long> menuItemIds, 
             List<Integer> menuItemQualifierIndexes,
+            List<Integer> noOfItems,
             List<String> menuItemComments, String address, 
             Long tableId,
             String comments,
@@ -121,12 +124,14 @@ public class UserManagerImpl implements UserManager {
             MenuItem menuItem = ofy.get(menuItemKey);
             float price = menuItem.getPrices().get(qualifierIndex);
             Order newOrder = new Order(date, OrderState.ORDERED, 
-                    menuItem.getName(),
+                    menuItem.getName() + QualifierTranslator.
+                    translate(Qualifiers.valueOf(menuItem.getQualifiers().get(qualifierIndex))),
                     price,
                     menuItemKey,
                             comments, billKey,
                             type);
             newOrder.setTable(tableKey);
+            newOrder.setNoOfItems(noOfItems.get(i));
             newOrders.add(newOrder);
             totalAmount = totalAmount + price;
         }
