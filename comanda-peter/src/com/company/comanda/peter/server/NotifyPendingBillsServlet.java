@@ -47,7 +47,7 @@ public class NotifyPendingBillsServlet extends HttpServlet {
                 HttpParams.NotifyPendingBills.PARAM_RESTAURANT_KEY_STRING);
         log.debug("Scheduling notification for restaurantKeyString: {}", 
                 restaurantKeyString);
-        notificationManager.scheduleNotification(restaurantKeyString);
+        notificationManager.notifyIfNecessary(restaurantKeyString);
     }
 
     

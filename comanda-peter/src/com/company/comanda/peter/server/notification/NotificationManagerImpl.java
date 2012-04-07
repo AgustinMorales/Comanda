@@ -19,7 +19,7 @@ import com.googlecode.objectify.Objectify;
 
 public class NotificationManagerImpl implements NotificationManager {
 
-    private static final int NOTIFICATION_DELAY = 2*60*1000;
+    private static final int NOTIFICATION_DELAY = 10*1000;
     private static final int WARNING_NOTIFICATION_DURATION = 5*60*1000;
     private static final int NOTIFICATION_DURATION_SANITY = 10*60*1000;
 
@@ -116,7 +116,8 @@ public class NotificationManagerImpl implements NotificationManager {
                 log.info("Notification for {} ended successfully", 
                         restaurant.getName());
                 restaurant.setLatestSuccessfulNotification(new Date());
-                
+                //Schedule notification, to ensure bills are addressed
+                scheduleNotification(restaurantKeyString);
             }
             ofy.put(restaurant);
             if(success == false){
@@ -126,6 +127,7 @@ public class NotificationManagerImpl implements NotificationManager {
         }
     }
 
+    //FIXME: Should add notification if there is already a task for it
     @Override
     public void scheduleNotification(String restaurantKeyString) {
         TaskOptions options = TaskOptions.Builder.withUrl(

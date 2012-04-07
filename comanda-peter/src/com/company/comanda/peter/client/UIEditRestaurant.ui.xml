@@ -7,7 +7,7 @@
 	<g:HTMLPanel>
 		<g:FormPanel encoding="ENCODING_MULTIPART" method="METHOD_POST"
 			ui:field="restaurantDataFormPanel">
-			<g:AbsolutePanel height="467px" width="425px">
+			<g:AbsolutePanel height="553px" width="425px">
 				<g:at left="25" top="56">
 					<g:Label text="Nombre" />
 				</g:at>
@@ -18,7 +18,7 @@
 					<g:TextBox ui:field="tbRestaurantName" name="name"
 						tabIndex="1" />
 				</g:at>
-				<g:at left="341" top="428">
+				<g:at left="341" top="479">
 					<g:Button ui:field="btnNewRestaurant" width="74px" height="29px">Aceptar</g:Button>
 				</g:at>
 				<g:at left="105" top="150">
@@ -44,15 +44,27 @@
 				<g:at left="105" top="252">
 					<g:FileUpload name="restaurantImage" />
 				</g:at>
-				<g:at left="105" top="300">
+				<g:at left="105" top="351">
 					<g:TextArea width="298px" height="103px" ui:field="taDescription"
 						name="description" tabIndex="5" />
 				</g:at>
 				<g:at left="25" top="259">
 					<g:Label text="Imagen" />
 				</g:at>
-				<g:at left="25" top="300">
+				<g:at left="25" top="351">
 					<g:Label text="Descripción" />
+				</g:at>
+				<g:at left="105" top="292">
+					<g:TextBox name="phone" ui:field="tbPhone"/>
+				</g:at>
+				<g:at left="25" top="300">
+					<g:Label text="Teléfono"/>
+				</g:at>
+				<g:at left="242" top="10">
+					<g:TextBox ui:field="tbRestaurantKeyString" name="restaurantKeyString" visible="false"/>
+				</g:at>
+				<g:at left="269" top="479">
+					<g:Button ui:field="btnCancel">Cancelar</g:Button>
 				</g:at>
 			</g:AbsolutePanel>
 		</g:FormPanel>

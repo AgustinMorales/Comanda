@@ -53,6 +53,8 @@ public class NewRestaurantServlet extends HttpServlet{
         String password = req.getParameter("password");
         String address = req.getParameter("address");
         String description = req.getParameter("description");
+        String phone = req.getParameter("phone");
+        String restaurantKeyString = req.getParameter("restaurantKeyString");
         String imageBlobKey = null;
         List<BlobKey> blobKeyList = null;
         try{
@@ -66,10 +68,17 @@ public class NewRestaurantServlet extends HttpServlet{
             assert blobKeyList.size() == 1;
             imageBlobKey = blobKeyList.get(0).getKeyString();
         }
-        //persist
-        admin.createRestaurant(name, login, 
+        if(password != null && password.length() == 0){
+            password = null;
+        }
+        if(restaurantKeyString != null && restaurantKeyString.length() == 0){
+            restaurantKeyString = null;
+        }
+        admin.createOrModifyRestaurant(restaurantKeyString,
+                name, login, 
                 password, address, 
-                description, imageBlobKey);
+                description, imageBlobKey,
+                phone);
         
         PrintWriter out = resp.getWriter();
         out.print("SUCCESS");

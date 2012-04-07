@@ -2,29 +2,26 @@ package test;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+import java.net.URLEncoder;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HTTP;
+
 
 
 
 public class TestTwilio {
 
+    
+    private static final String AUTH_USERNAME = "AC1826ab848e014c0b87b815d245af96e2";
+    private static final String AUTH_PASSWORD = "8da7bb628fbc6c80a0c7c667f63f0bd6";
+    
+    private static final String URL = "https://api.twilio.com/2010-04-01/Accounts/" +
+            "AC1826ab848e014c0b87b815d245af96e2/Calls";
     public static void main(String[] args) throws ClientProtocolException, IOException{
 //        try {
 //            URL url = new URL ("https://AC1826ab848e014c0b87b815d245af96e2:8da7bb628fbc6c80a0c7c667f63f0bd6@api.twilio.com/2010-04-01/Accounts/AC1826ab848e014c0b87b815d245af96e2/Calls");
@@ -47,37 +44,46 @@ public class TestTwilio {
 //            e.printStackTrace();
 //        }
 
-        DefaultHttpClient httpClient = new DefaultHttpClient();
-
-        httpClient.getCredentialsProvider().setCredentials(
-                new AuthScope("api.twilio.com", 443),
-                new UsernamePasswordCredentials("AC1826ab848e014c0b87b815d245af96e2",
-                        "8da7bb628fbc6c80a0c7c667f63f0bd6"));
-
-        HttpPost httppost = new HttpPost("https://api.twilio.com/2010-04-01/Accounts/AC1826ab848e014c0b87b815d245af96e2/Calls");
-
-        List <NameValuePair> parameters = new ArrayList <NameValuePair>();
-        parameters.add(new BasicNameValuePair("From", "+34696679754"));
-        parameters.add(new BasicNameValuePair("To", "+34954072259"));
-        parameters.add(new BasicNameValuePair("Url", "http://www.comandamobile.com/twilio.xml"));
+        URL url = new URL(URL);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestProperty("Authorization",
+        "Basic "+new String(Base64.encodeBase64((AUTH_USERNAME + ":" + AUTH_PASSWORD).getBytes())));
+        connection.setRequestMethod("POST");
+        StringBuffer data = new StringBuffer();
+        data.append("From");
+        data.append("=");
+        data.append(URLEncoder.encode("+34696679754", "UTF-8"));
+        data.append("&");
+        data.append("To");
+        data.append("=");
+        data.append(URLEncoder.encode("+34676825652", "UTF-8"));
+        data.append("&");
+        data.append("Url");
+        data.append("=");
+        data.append(URLEncoder.encode("http://www.comandamobile.com/twilio.xml", "UTF-8"));
         
-        UrlEncodedFormEntity sendentity = new UrlEncodedFormEntity(parameters, HTTP.UTF_8);
-        httppost.setEntity(sendentity); 
+
         
-        System.out.println("executing request" + httppost.getRequestLine());
-        HttpResponse response = httpClient.execute(httppost);
-        HttpEntity entity = response.getEntity();
 
-        System.out.println("----------------------------------------");
-        System.out.println(response.getStatusLine());
-        if (entity != null) {
-            System.out.println("Response content length: " + entity.getContentLength());
+        connection.setDoOutput(true);
+        OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
+        
+        //write parameters
+        writer.write(data.toString());
+        writer.flush();
+        
+        // Get the response
+        StringBuffer answer = new StringBuffer();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            answer.append(line);
         }
-        if (entity != null) {
-            entity.consumeContent();
-        }
-
-        httpClient.getConnectionManager().shutdown();
+        writer.close();
+        reader.close();
+        
+        //Output the response
+        System.out.println("Twilio answer: " + answer.toString());
 
 
     }

@@ -9,7 +9,10 @@ import com.company.comanda.common.HttpParams.GetOrders;
 import com.company.comanda.common.HttpParams.PlaceOrder;
 import com.company.comanda.common.HttpParams.RegisterUser;
 import com.company.comanda.common.HttpParams.SearchRestaurants;
+import com.company.comanda.common.HttpParams.NotifyPendingBills;
+import com.company.comanda.common.HttpParams.BillNotificationEnded;
 import com.company.comanda.peter.server.AdminServiceImpl;
+import com.company.comanda.peter.server.BillsNotificationEndedServlet;
 import com.company.comanda.peter.server.GUIServiceImpl;
 import com.company.comanda.peter.server.GetBillsServlet;
 import com.company.comanda.peter.server.GetCategoriesServlet;
@@ -18,6 +21,7 @@ import com.company.comanda.peter.server.GetOrdersServlet;
 import com.company.comanda.peter.server.GetPendingBillsServlet;
 import com.company.comanda.peter.server.NewMenuItemServlet;
 import com.company.comanda.peter.server.NewRestaurantServlet;
+import com.company.comanda.peter.server.NotifyPendingBillsServlet;
 import com.company.comanda.peter.server.PlaceOrderServlet;
 import com.company.comanda.peter.server.QRDecoderServlet;
 import com.company.comanda.peter.server.RegisterUserServlet;
@@ -47,5 +51,7 @@ class ComandaServletModule extends ServletModule {
         serve(GetBills.SERVICE_NAME).with(GetBillsServlet.class);
         serve("/getNumberOfPendingBills").with(GetPendingBillsServlet.class);
         serve("/updateModel").with(UpdateModelServlet.class);
+        serve(NotifyPendingBills.SERVICE_NAME).with(NotifyPendingBillsServlet.class);
+        serve(BillNotificationEnded.SERVICE_NAME).with(BillsNotificationEndedServlet.class);
     }
 }

@@ -42,6 +42,8 @@ implements AdminService {
                     restaurant.getName(),
                     restaurant.getLogin(),
                     restaurant.getAddress(),
+                    restaurant.getPhone(),
+                    restaurant.getDescription(),
             });
         }
         return new PagedResult<String[]>(result, total);

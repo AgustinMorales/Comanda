@@ -101,8 +101,10 @@ public class TestRestaurant {
                 injector.getInstance(RestaurantManager.class);
         admin = injector.getInstance(ComandaAdmin.class);
         
-        restaurantId = admin.createRestaurant("Full name", REST_NAME, REST_PASSWORD,"Puerto de envalira, 1, sevilla","Description",
-                null);
+        restaurantId = admin.createOrModifyRestaurant(null,
+                "Full name", REST_NAME, REST_PASSWORD,
+                "Puerto de envalira, 1, sevilla","Description",
+                null, "678");
         
     }
     @Test

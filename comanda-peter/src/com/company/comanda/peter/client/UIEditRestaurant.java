@@ -30,6 +30,9 @@ public class UIEditRestaurant extends Composite {
     @UiField TextBox tbLogin;
     @UiField TextArea taDescription;
     @UiField FormPanel restaurantDataFormPanel;
+    @UiField TextBox tbPhone;
+    @UiField TextBox tbRestaurantKeyString;
+    @UiField Button btnCancel;
     
     private NewRestaurantHandler handler;
 
@@ -95,8 +98,10 @@ public class UIEditRestaurant extends Composite {
             Window.alert("Debe introducir un login");
             result = false;
         }
-        else if(tbPassword.getText().length() == 0){
-            Window.alert("Debe introducir una contrasegna");
+        else if( (tbRestaurantKeyString.getValue() == null || 
+                tbRestaurantKeyString.getValue().length() == 0) &&
+                tbPassword.getText().length() == 0){
+            Window.alert("Debe introducir una contraseña");
             result = false;
         }
         else if(taDescription.getText().length() == 0){
@@ -119,7 +124,20 @@ public class UIEditRestaurant extends Composite {
         btnNewRestaurant.setEnabled(true);
     }
     
+    public void setData(String[] data){
+        tbRestaurantKeyString.setValue(data[0]);
+        tbRestaurantName.setValue(data[1]);
+        tbLogin.setValue(data[2]);
+        tbAddress.setValue(data[3]);
+        tbPhone.setValue(data[4]);
+        taDescription.setValue(data[5]);
+    }
+    
     public void reset(){
         restaurantDataFormPanel.reset();
+    }
+    @UiHandler("btnCancel")
+    void onBtnCancelClick(ClickEvent event) {
+        handler.onCancel();
     }
 }

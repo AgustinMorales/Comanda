@@ -1,6 +1,7 @@
 package com.company.comanda.peter.client;
 
 import java.util.List;
+import java.util.Set;
 
 import com.company.comanda.peter.client.UIEditCategory.NewCategoryHandler;
 import com.company.comanda.peter.client.UIEditRestaurant.NewRestaurantHandler;
@@ -199,6 +200,15 @@ public class UIEditRestaurants extends Composite {
     @UiHandler("btnNewRestaurant")
     void onBtnNewRestaurantClick(ClickEvent event) {
         editRestaurantPanel.reset();
+        dialogBox.center();
+    }
+    @UiHandler("btnEditRestaurant")
+    void onBtnEditRestaurantClick(ClickEvent event) {
+        editRestaurantPanel.reset();
+        Set<String[]> selected = selectionModel.getSelectedSet();
+        if(selected.size() == 1){
+            editRestaurantPanel.setData(selected.iterator().next());
+        }
         dialogBox.center();
     }
 }

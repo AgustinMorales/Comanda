@@ -401,6 +401,8 @@ public class ComandaActivity extends FragmentActivity
             params.add(new BasicNameValuePair(HttpParams.PlaceOrder.PARAM_RESTAURANT_ID, restId));
             params.add(new BasicNameValuePair(HttpParams.PlaceOrder.PARAM_USER_ID, 
                     prefs.getString(ComandaPreferences.USER_ID, "")));
+            params.add(new BasicNameValuePair(HttpParams.PlaceOrder.PARAM_NO_OF_ITEMS, 
+                    noOfItems.toString()));
             params.add(new BasicNameValuePair(HttpParams.PlaceOrder.PARAM_PASSWORD, 
                     prefs.getString(ComandaPreferences.PASSWORD, "")));
             params.add(new BasicNameValuePair(HttpParams.PlaceOrder.PARAM_ADDRESS, address + " (Detalles: " + addressDetails + ")"));

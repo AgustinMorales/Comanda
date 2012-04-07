@@ -20,12 +20,12 @@ import com.company.comanda.peter.server.model.Order;
 import com.company.comanda.peter.server.model.Restaurant;
 import com.company.comanda.peter.server.model.Table;
 import com.company.comanda.peter.server.model.User;
+import com.company.comanda.peter.server.notification.NotificationManager;
 import com.company.comanda.peter.shared.BillState;
 import com.company.comanda.peter.shared.BillType;
 import com.company.comanda.peter.shared.OrderState;
 import com.company.comanda.peter.shared.Qualifiers;
 import com.googlecode.objectify.Key;
-import com.googlecode.objectify.NotFoundException;
 import com.googlecode.objectify.Objectify;
 
 public class UserManagerImpl implements UserManager {
@@ -34,6 +34,7 @@ public class UserManagerImpl implements UserManager {
             getLogger(UserManagerImpl.class.getName());
     private Objectify ofy;
     private RestaurantAgentFactory agentFactory;
+    private NotificationManager notificationManager;
 
     public class OfyEntityLocationCapableRepositorySearchImpl implements
     LocationCapableRepositorySearch<Restaurant> {
@@ -49,9 +50,11 @@ public class UserManagerImpl implements UserManager {
     }
     @Inject
     public UserManagerImpl(Objectify ofy, 
-            RestaurantAgentFactory agentFactory){
+            RestaurantAgentFactory agentFactory,
+            NotificationManager notificationManager){
         this.ofy = ofy;
         this.agentFactory = agentFactory;
+        this.notificationManager = notificationManager;
     }
 
     @Override
@@ -138,6 +141,7 @@ public class UserManagerImpl implements UserManager {
         bill.setTotalAmount(totalAmount);
         ofy.put(bill);
         ofy.put(newOrders);
+        notificationManager.scheduleNotification(restaurantKey.getString());
 
         return billKeyString;
     }

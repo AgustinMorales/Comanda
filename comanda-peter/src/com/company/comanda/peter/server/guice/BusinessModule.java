@@ -18,6 +18,12 @@ import com.company.comanda.peter.server.model.Order;
 import com.company.comanda.peter.server.model.Restaurant;
 import com.company.comanda.peter.server.model.Table;
 import com.company.comanda.peter.server.model.User;
+import com.company.comanda.peter.server.notification.NotificationManager;
+import com.company.comanda.peter.server.notification.NotificationManagerImpl;
+import com.company.comanda.peter.server.notification.PhoneNotifier;
+import com.company.comanda.peter.server.notification.TwilioPhoneNotifier;
+import com.google.appengine.api.taskqueue.Queue;
+import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
@@ -35,7 +41,8 @@ public class BusinessModule extends AbstractModule {
         bind(RestaurantManager.class).to(
                 RestaurantManagementImpl.class);
         bind(UserManager.class).to(UserManagerImpl.class);
-        
+        bind(NotificationManager.class).to(NotificationManagerImpl.class);
+        bind(PhoneNotifier.class).to(TwilioPhoneNotifier.class);
     }
     
     @Provides @Singleton
@@ -51,4 +58,8 @@ public class BusinessModule extends AbstractModule {
         return ofy;
     }
 
+    @Provides
+    Queue proviveQueue(){
+        return QueueFactory.getDefaultQueue();
+    }
 }

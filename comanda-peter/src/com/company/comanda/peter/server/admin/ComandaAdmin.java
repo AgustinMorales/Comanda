@@ -6,11 +6,14 @@ import com.company.comanda.peter.server.model.Restaurant;
 
 public interface ComandaAdmin {
 
-    long createRestaurant(String name, String login,
+    long createOrModifyRestaurant(
+            String restaurantKeyString,
+            String name, String login,
             String password,
             String address,
             String description,
-            String imageBlob);
+            String imageBlob,
+            String phone);
     
     List<Restaurant> getRestaurants();
 }

@@ -9,7 +9,7 @@
     <string name="comanda_logo_img_desc">Comanda logo</string>
     <string name="at_restaurant">Restaurante:</string>
     <string name="ok">Aceptar</string>
-    <string name="error_while_placing_order">Ocurrió un error al enviar el pedido. Por favor, comprueba la cobetura e inténtalo de nuevo</string>
+    <string name="error_while_placing_order">Ocurrió un error al enviar el pedido. Por favor, comprueba la cobertura e inténtalo de nuevo</string>
     <string name="please_enter_phone">Introduce tu número de teléfono:</string>
     <string name="incorrect_phone_number">El número de teléfono introducido no es válido</string>
     <string name="place_order">Añadir</string>

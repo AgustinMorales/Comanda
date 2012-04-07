@@ -19,6 +19,7 @@ import com.google.code.geocoder.GeocoderRequestBuilder;
 import com.google.code.geocoder.model.GeocodeResponse;
 import com.google.code.geocoder.model.GeocoderRequest;
 import com.google.code.geocoder.model.GeocoderResult;
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
 
 public class ComandaAdminImpl implements ComandaAdmin {
@@ -36,15 +37,30 @@ public class ComandaAdminImpl implements ComandaAdmin {
     }
 
 
-    public long createRestaurant(String name, String login, 
+    public long createOrModifyRestaurant(String restaurantKeyString,
+            String name, String login, 
             String password, String description, String imageBlob,
+            String phone,
+            String address,
             double latitude, double longitude) {
-        if(ofy.query(Restaurant.class).filter("login", login).
-                list().size() > 0){
-            throw new IllegalArgumentException("Duplicate login");
+        Restaurant restaurant = null;
+        if(restaurantKeyString != null){
+            restaurant = ofy.get(new Key<Restaurant>(restaurantKeyString));
+            if(restaurant == null){
+                throw new IllegalArgumentException("Restaurant not found. KeyString: " +
+                        restaurantKeyString);
+            }
         }
-        Restaurant restaurant = new Restaurant();
-
+        else{
+            if(ofy.query(Restaurant.class).filter("login", login).
+                    list().size() > 0){
+                throw new IllegalArgumentException("Duplicate login");
+            }
+            restaurant = new Restaurant();
+            if(password == null){
+                throw new IllegalArgumentException("Password must not be null");
+            }
+        }
         restaurant.setName(name);
         restaurant.setLogin(login);
         restaurant.setDescription(description);
@@ -58,11 +74,12 @@ public class ComandaAdminImpl implements ComandaAdmin {
         catch(IllegalArgumentException e){
             log.info("Looks like we have no image, leaving to null");
         }
-        String hashedPassword = BCrypt.hashpw(password, 
-                BCrypt.gensalt());
-
-        restaurant.setHashedPassword(hashedPassword);
-
+        if(password != null){
+            String hashedPassword = BCrypt.hashpw(password, 
+                    BCrypt.gensalt());
+    
+            restaurant.setHashedPassword(hashedPassword);
+        }
         Point point = new Point(latitude, longitude);
 
         List<String> cells = GeocellManager.generateGeoCell(point);
@@ -70,6 +87,8 @@ public class ComandaAdminImpl implements ComandaAdmin {
         restaurant.setLatitude(latitude);
         restaurant.setLongitude(longitude);
         restaurant.setGeoCells(cells);
+        restaurant.setPhone(phone);
+        restaurant.setAddress(address);
 
         ofy.put(restaurant);
 
@@ -78,9 +97,11 @@ public class ComandaAdminImpl implements ComandaAdmin {
     }
 
     @Override
-    public long createRestaurant(String name, String login,
+    public long createOrModifyRestaurant(
+            String restaurantKeyString, String name, String login,
             String password, String address,
-            String description, String imageBlob) {
+            String description, String imageBlob,
+            String phone) {
         final Geocoder geocoder = new Geocoder();
         GeocoderRequest geocoderRequest = new GeocoderRequestBuilder().setAddress(address).setLanguage("es").getGeocoderRequest();
         GeocodeResponse geocoderResponse = geocoder.geocode(geocoderRequest);
@@ -94,8 +115,9 @@ public class ComandaAdminImpl implements ComandaAdmin {
                 getLocation().getLng().doubleValue();
         log.info("Address geocoded: {} -> lat='{}', long='{}'",
                 new Object[]{address, latitude, longitude});
-        return createRestaurant(name, login, password, description, 
-                imageBlob, latitude, longitude);
+        return createOrModifyRestaurant(restaurantKeyString,
+                name, login, password, description, 
+                imageBlob, phone, address, latitude, longitude);
     }
 
 
