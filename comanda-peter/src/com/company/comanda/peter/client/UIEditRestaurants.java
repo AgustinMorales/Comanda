@@ -89,6 +89,8 @@ public class UIEditRestaurants extends Composite {
     
     public void configureRestaurantsTable(){
         
+        selectionModel = new MultiSelectionModel<String[]>();
+        
         restaurantsTable.setSelectionModel(selectionModel,
                 DefaultSelectionEventManager.<String[]> createCheckboxManager());
         Column<String[], Boolean> checkColumn = new Column<String[], Boolean>(

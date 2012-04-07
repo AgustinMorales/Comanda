@@ -1,25 +1,24 @@
 package com.company.comanda.peter.client;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FormPanel;
-import com.google.gwt.user.client.ui.RootLayoutPanel;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.user.client.ui.DoubleBox;
-import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
+import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Widget;
 
 public class UIEditRestaurant extends Composite {
 
-    private static UIAdminUiBinder uiBinder = GWT.create(UIAdminUiBinder.class);
+    private static UIEditRestaurantUiBinder uiBinder = 
+            GWT.create(UIEditRestaurantUiBinder.class);
     
     private final GUIServiceAsync GUIService = GWT
             .create(GUIService.class);
@@ -34,7 +33,7 @@ public class UIEditRestaurant extends Composite {
     
     private NewRestaurantHandler handler;
 
-    interface UIAdminUiBinder extends UiBinder<Widget, UIEditRestaurant> {
+    interface UIEditRestaurantUiBinder extends UiBinder<Widget, UIEditRestaurant> {
     }
 
     public interface NewRestaurantHandler{
@@ -80,7 +79,7 @@ public class UIEditRestaurant extends Composite {
                 		restaurantDataFormPanel.setAction("/newRestaurant");
                 	}
                     restaurantDataFormPanel.submit();
-                    handler.onNewRestaurant();
+                    
                 }
             });
         }
@@ -111,6 +110,7 @@ public class UIEditRestaurant extends Composite {
         String result = event.getResults();
         if(result != null && result.contains("SUCCESS") == true){
             Window.alert("Creado con éxito");
+            handler.onNewRestaurant();
         }
         else{
             Window.alert("Error");
@@ -120,6 +120,6 @@ public class UIEditRestaurant extends Composite {
     }
     
     public void reset(){
-        restaurantDataFormPanel.clear();
+        restaurantDataFormPanel.reset();
     }
 }
