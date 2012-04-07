@@ -24,9 +24,11 @@ import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Order;
 import com.company.comanda.peter.server.model.Restaurant;
 import com.company.comanda.peter.server.model.Table;
+import com.company.comanda.peter.server.notification.NotificationManager;
 import com.company.comanda.peter.shared.BillState;
 import com.company.comanda.peter.shared.OrderState;
 import com.company.comanda.peter.shared.BillType;
+import com.company.comanda.peter.stubs.NotificationManagerStub;
 import com.company.comanda.peter.stubs.SessionAttributesHashMap;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
@@ -75,7 +77,7 @@ public class TestUserManager {
                     install(new FactoryModuleBuilder()
                     .implement(SessionAttributes.class, SessionAttributesHashMap.class)
                     .build(SessionAttributesFactory.class));
-
+                    bind(NotificationManager.class).to(NotificationManagerStub.class);
                 }
 
             });

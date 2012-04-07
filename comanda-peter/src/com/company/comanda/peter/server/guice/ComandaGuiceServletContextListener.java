@@ -10,6 +10,7 @@ public class ComandaGuiceServletContextListener extends GuiceServletContextListe
     return Guice.createInjector(
         new ComandaServletModule(),
         new BusinessModule(),
-        new SessionModule());
+        new SessionModule(),
+        new NotificationModule());
   }
 }

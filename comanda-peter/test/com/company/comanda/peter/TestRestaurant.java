@@ -25,7 +25,9 @@ import com.company.comanda.peter.server.model.MenuCategory;
 import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Restaurant;
 import com.company.comanda.peter.server.model.Table;
+import com.company.comanda.peter.server.notification.NotificationManager;
 import com.company.comanda.peter.stubs.FirstOperationOnlyPolicy;
+import com.company.comanda.peter.stubs.NotificationManagerStub;
 import com.company.comanda.peter.stubs.SessionAttributesHashMap;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
@@ -66,7 +68,7 @@ public class TestRestaurant {
                     install(new FactoryModuleBuilder()
                     .implement(SessionAttributes.class, SessionAttributesHashMap.class)
                     .build(SessionAttributesFactory.class));
-
+                    bind(NotificationManager.class).to(NotificationManagerStub.class);
                 }
 
             });

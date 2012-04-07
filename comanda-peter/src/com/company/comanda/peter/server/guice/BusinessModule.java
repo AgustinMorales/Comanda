@@ -41,8 +41,6 @@ public class BusinessModule extends AbstractModule {
         bind(RestaurantManager.class).to(
                 RestaurantManagementImpl.class);
         bind(UserManager.class).to(UserManagerImpl.class);
-        bind(NotificationManager.class).to(NotificationManagerImpl.class);
-        bind(PhoneNotifier.class).to(TwilioPhoneNotifier.class);
     }
     
     @Provides @Singleton

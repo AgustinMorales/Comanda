@@ -17,6 +17,8 @@ import com.company.comanda.peter.server.UserManager;
 import com.company.comanda.peter.server.admin.ComandaAdmin;
 import com.company.comanda.peter.server.guice.BusinessModule;
 import com.company.comanda.peter.server.model.Restaurant;
+import com.company.comanda.peter.server.notification.NotificationManager;
+import com.company.comanda.peter.stubs.NotificationManagerStub;
 import com.company.comanda.peter.stubs.SessionAttributesHashMap;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
@@ -46,7 +48,7 @@ public class TestAdmin {
                     install(new FactoryModuleBuilder()
                     .implement(SessionAttributes.class, SessionAttributesHashMap.class)
                     .build(SessionAttributesFactory.class));
-
+                    bind(NotificationManager.class).to(NotificationManagerStub.class);
                 }
 
             });
