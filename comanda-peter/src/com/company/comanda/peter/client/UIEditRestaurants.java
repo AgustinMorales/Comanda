@@ -82,7 +82,7 @@ public class UIEditRestaurants extends Composite {
             @Override
             public void onCancel() {
                 dialogBox.hide();
-                
+                selectionModel.clear();
             }
         });
     }

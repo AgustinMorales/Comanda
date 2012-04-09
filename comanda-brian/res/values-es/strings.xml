@@ -64,4 +64,6 @@
     <string name="qualFull">Ración</string>
     <string name="add">Añadir</string>
     <string name="remove">Eliminar</string>
+    <string name="choose">Escoge</string>
+    <string name="done">Hecho</string>
 </resources>

@@ -56,7 +56,7 @@ public class TwilioPhoneNotifier implements PhoneNotifier {
             data.append("&");
             data.append("StatusCallback");
             data.append("=");
-            data.append(URLEncoder.encode("peter.comandamobile.com" + 
+            data.append(URLEncoder.encode("http://peter.comandamobile.com" + 
             HttpParams.BillNotificationEnded.SERVICE_NAME, "UTF-8"));
 
             

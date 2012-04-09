@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabs;
 import net.peterkuterna.android.apps.swipeytabs.SwipeyTabsAdapter;
@@ -37,6 +38,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -74,6 +78,7 @@ public class ComandaActivity extends FragmentActivity
     private String address;
     private String addressDetails;
 
+    private HashMap<Long, Category> categoriesMap = new HashMap<Long, Category>();
     
     private TextView tvTotalAmount;
 
@@ -95,6 +100,7 @@ public class ComandaActivity extends FragmentActivity
     private static final int ITEM_DETAILS_DIALOG = 2;
     private static final int ADD_CHOOSE_QUALIFIER_DIALOG = 3;
     private static final int REMOVE_CHOOSE_QUALIFIER_DIALOG = 4;
+    private static final int CHOOSE_EXTRA_DIALOG = 5;
 
     private FoodMenuItem selectedMenuItem;
     
@@ -148,9 +154,13 @@ public class ComandaActivity extends FragmentActivity
 
     private class AsyncGetCategories extends AsyncGetData<ArrayList<Category>>{
 
+        
+
         @Override
         public void afterOnUIThread(ArrayList<Category> data,
                 Activity activity) {
+            ComandaActivity local = (ComandaActivity) activity;
+            
             super.afterOnUIThread(data, activity);
             categories = data;
             TextView tableNameTextView = (TextView)findViewById(R.id.tableNametextView);
@@ -164,8 +174,10 @@ public class ComandaActivity extends FragmentActivity
             final int noOfCategories = categories.size();
             adapters = new ItemAdapter[noOfCategories];
             for(int i=0;i<noOfCategories;i++){
+                Category currentCategory = categories.get(i);
                 adapters[i] = new ItemAdapter(ComandaActivity.this, 
-                        R.layout.row, filterMenuItems(categories.get(i).id));
+                        R.layout.row, filterMenuItems(currentCategory.id));
+                local.categoriesMap.put(currentCategory.id, currentCategory);
             }
 
             AsyncGetMenuItems getData = new AsyncGetMenuItems();
@@ -373,26 +385,39 @@ public class ComandaActivity extends FragmentActivity
             StringBuffer keyIds = new StringBuffer();
             StringBuffer qualifierIds = new StringBuffer();
             StringBuffer noOfItems = new StringBuffer();
+            StringBuffer extras = new StringBuffer();
             for(int i=0;i<orderItems.size();i++){
                 final OrderElement currentOrderElement = orderItems.get(i);
                 final FoodMenuItem currentItem = currentOrderElement.menuItem;
                 final int currentQualifierIndex = currentOrderElement.qualifierIndex;
                 final String currentKeyId = currentItem.getKeyId();
                 final int currentNoOfItems = orderNumbers.get(currentOrderElement);
+                final StringBuffer currentExtras = new StringBuffer();
+                if(currentOrderElement.extras != null){
+                    for(int currentExtra : currentOrderElement.extras){
+                        currentExtras.append(currentExtra);
+                        currentExtras.append(",");
+                    }
+                    currentExtras.deleteCharAt(currentExtras.length() - 1);
+                }
                 keyIds.append(currentKeyId);
-                keyIds.append(":");
+                keyIds.append("&");
                 qualifierIds.append(currentQualifierIndex);
-                qualifierIds.append(":");
+                qualifierIds.append("&");
                 noOfItems.append(currentNoOfItems);
-                noOfItems.append(":");
+                noOfItems.append("&");
+                extras.append(currentExtras);
+                extras.append("&");
             }
             keyIds.deleteCharAt(keyIds.length() - 1);
             qualifierIds.deleteCharAt(qualifierIds.length() - 1);
             noOfItems.deleteCharAt(noOfItems.length() - 1);
+            extras.deleteCharAt(extras.length() - 1);
             
             log.debug("keyIds: {}", keyIds);
             log.debug("qualifiers: {}", qualifierIds);
             log.debug("noOfItems: {}", noOfItems);
+            log.debug("extras: {}", extras);
             params.add(new BasicNameValuePair(HttpParams.PlaceOrder.PARAM_ITEM_IDS, 
                     keyIds.toString()));
             params.add(new BasicNameValuePair(HttpParams.PlaceOrder.PARAM_QUALIFIERS, 
@@ -601,7 +626,14 @@ public class ComandaActivity extends FragmentActivity
         for(int i=0;i<no_of_items.length;i++){
             if(i<noOfPrices){
                 OrderElement orderElement = new OrderElement(o, i);
-                Integer numberOrdered = orderNumbers.get(orderElement);
+                Set<OrderElement> orderElements = orderNumbers.keySet();
+                int numberOrdered = 0;
+                for(OrderElement current : orderElements){
+                    if(orderElement.menuItem.equals(current.menuItem) &&
+                            orderElement.qualifierIndex == current.qualifierIndex){
+                        numberOrdered = numberOrdered + orderNumbers.get(current);
+                    }
+                }
                 StringBuffer qualifierText = new StringBuffer();
                 qualifierText.append(QualifierTranslator.translate(
                         o.getQualifiers().get(i),
@@ -610,7 +642,7 @@ public class ComandaActivity extends FragmentActivity
                     qualifierText.append(": ");
                 }
                 qualifiers[i].setText(qualifierText);
-                if(numberOrdered != null && numberOrdered.intValue() > 0){
+                if(numberOrdered > 0){
                     StringBuffer numberText = new StringBuffer("x ");
                     numberText.append(numberOrdered);
                     no_of_items[i].setText(numberText);
@@ -759,6 +791,20 @@ public class ComandaActivity extends FragmentActivity
 				});
         	}
         }
+        else if(id == CHOOSE_EXTRA_DIALOG){
+            result = new Dialog(this);
+            result.setContentView(R.layout.choose_extra);
+            Button btnBack = (Button)result.findViewById(R.id.btnBack);
+            btnBack.setOnClickListener(new OnClickListener() {
+                
+                @Override
+                public void onClick(View arg0) {
+                    dismissDialog(id);
+                    
+                }
+            });
+            
+        }
         else{
             result = super.onCreateDialog(id);
         }
@@ -853,11 +899,91 @@ public class ComandaActivity extends FragmentActivity
         	LayoutHelper.dialog_fill_parent(dialog);
         	
         }
+        else if(id == CHOOSE_EXTRA_DIALOG){
+            TextView tvExtrasName = (TextView)dialog.findViewById(R.id.tvExtrasName);
+            StringBuffer name = new StringBuffer(getString(R.string.choose));
+            name.append(" ");
+            name.append(selectedMenuItem.getExtrasName());
+            tvExtrasName.setText(name);
+            ListView lvExtras = (ListView)dialog.findViewById(R.id.lvExtras);
+            final ExtrasAdapter adapter = new ExtrasAdapter(
+                    this, R.layout.choose_extra_row, selectedMenuItem);
+            lvExtras.setAdapter(adapter);
+            Button btnOK = (Button)dialog.findViewById(R.id.btnOK);
+            btnOK.setOnClickListener(new OnClickListener() {
+                
+                @Override
+                public void onClick(View v) {
+                    doAddItemForOrder(selectedMenuItem, 0, adapter.getSelected());
+                }
+            });
+        }
         else{
             super.onPrepareDialog(id, dialog);
         }
     }
 
+    private class ExtrasAdapter extends ArrayAdapter<String>{
+        
+        private FoodMenuItem item;
+        private boolean[] selected;
+        
+        public ExtrasAdapter(Context context, int textViewResourceId,
+                FoodMenuItem item){
+            super(context, textViewResourceId);
+            this.item = item;
+            selected = new boolean[item.getExtras().size()];
+        }
+        
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            View v = convertView;
+            CheckBox cbExtra = null;
+            if(v == null){
+                LayoutInflater vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                v = vi.inflate(R.layout.choose_extra_row, null);
+                cbExtra = (CheckBox)v.findViewById(R.id.cbExtra);
+                cbExtra.setText(item.getExtras().get(position));
+                cbExtra.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+                    
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        selected[position] = isChecked;
+                        
+                    }
+                });
+                TextView tvPrice = (TextView) v.findViewById(R.id.price);
+                float price = item.getExtrasPrice().get(position);
+                if(price > 0){
+                    tvPrice.setVisibility(View.VISIBLE);
+                    StringBuffer priceSB = new StringBuffer("+");
+                    priceSB.append(Formatter.money(price));
+                    tvPrice.setText(priceSB);
+                }
+                else{
+                    tvPrice.setVisibility(View.INVISIBLE);
+                }
+                
+            }
+            if(cbExtra == null){
+                cbExtra = (CheckBox)v.findViewById(R.id.cbExtra);
+            }
+            cbExtra.setChecked(selected[position]);
+            return v;
+        }
+        
+        public List<Integer> getSelected(){
+            final int totalExtras = selected.length;
+            List<Integer> result = new ArrayList<Integer>(totalExtras);
+            for(int i=0;i<totalExtras;i++){
+                if(selected[i]){
+                    result.add(i);
+                }
+            }
+            return result;
+        }
+        
+    }
 
     private class ReviewOrderAdapter extends ArrayAdapter<OrderElement>{
 
@@ -883,14 +1009,32 @@ public class ComandaActivity extends FragmentActivity
                 final TextView tvPrice = (TextView)v.findViewById(R.id.price);
                 StringBuffer elementName = new StringBuffer();
                 elementName.append(o.menuItem.getName());
+                elementName.append(" (");
+                elementName.append(categoriesMap.get(o.menuItem.getCategoryId()).name);
+                elementName.append(")");
                 String qualifier = o.menuItem.getQualifiers().get(o.qualifierIndex);
                 if("SINGLE".equals(qualifier) == false){
                     elementName.append(" (");
                     elementName.append(QualifierTranslator.translate(qualifier, ComandaActivity.this));
                     elementName.append(")");
                 }
+                float price = o.menuItem.getPrices().get(o.qualifierIndex);
+                if(o.extras != null){
+                    elementName.append(" - ");
+                    elementName.append(o.menuItem.getExtrasName());
+                    elementName.append(": ");
+                    for(int i : o.extras){
+                        elementName.append(o.menuItem.getExtras().get(i));
+                        elementName.append(", ");
+                        price = price + o.menuItem.getExtrasPrice().get(i);
+                    }
+                    elementName.delete(elementName.length() - 2,
+                            elementName.length());
+                    
+                }
                 tvItemName.setText(elementName);
-                tvPrice.setText(Formatter.money(o.menuItem.getPrices().get(o.qualifierIndex)));
+                
+                tvPrice.setText(Formatter.money(price));
                 tvNoOfItems.setText("" + orderNumbers.get(o));
             }
 
@@ -899,8 +1043,10 @@ public class ComandaActivity extends FragmentActivity
 
     }
 
-    private void addItemForOrder(FoodMenuItem item, int qualifierIndex){
-    	OrderElement element = new OrderElement(item, qualifierIndex);
+    
+    private void doAddItemForOrder(FoodMenuItem item, int qualifierIndex, List<Integer> extras){
+        OrderElement element = new OrderElement(item, qualifierIndex);
+        element.extras = extras;
         if(orderNumbers.containsKey(element)){
             int previousnumber = orderNumbers.get(element);
             orderNumbers.put(element,previousnumber + 1);
@@ -911,6 +1057,15 @@ public class ComandaActivity extends FragmentActivity
         }
         reviewOrdersAdapter.notifyDataSetChanged();
         refreshAllTables();
+    }
+    
+    private void addItemForOrder(FoodMenuItem item, int qualifierIndex){
+        if(item.getExtras() != null && item.getExtras().size() > 1){
+            showDialog(CHOOSE_EXTRA_DIALOG);
+        }
+        else{
+            doAddItemForOrder(item, qualifierIndex, null);
+        }
     }
 
     private void removeItemFromOrder(FoodMenuItem item, int qualifierIndex){

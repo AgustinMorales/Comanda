@@ -12,6 +12,10 @@ public class FoodMenuItem
     private long categoryId;
     private List<Float> prices;
     private List<String> qualifiers;
+    private String extrasName;
+    private List<String> extras;
+    private List<Float> extrasPrice;
+    private boolean extrasMultipleChoice;
     
     public FoodMenuItem()
     {
@@ -66,6 +70,30 @@ public class FoodMenuItem
 	public void setQualifiers(List<String> qualifiers) {
 		this.qualifiers = qualifiers;
 	}
+    public String getExtrasName() {
+        return extrasName;
+    }
+    public void setExtrasName(String extrasName) {
+        this.extrasName = extrasName;
+    }
+    public List<String> getExtras() {
+        return extras;
+    }
+    public void setExtras(List<String> extras) {
+        this.extras = extras;
+    }
+    public boolean isExtrasMultipleChoice() {
+        return extrasMultipleChoice;
+    }
+    public void setExtrasMultipleChoice(boolean extrasMultipleChoice) {
+        this.extrasMultipleChoice = extrasMultipleChoice;
+    }
+    public List<Float> getExtrasPrice() {
+        return extrasPrice;
+    }
+    public void setExtrasPrice(List<Float> extrasPrice) {
+        this.extrasPrice = extrasPrice;
+    }
     
     
     

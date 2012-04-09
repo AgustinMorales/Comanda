@@ -22,6 +22,8 @@ public class MenuItem
     private Key<MenuCategory> category;
     private List<Float> prices;
     private List<String> qualifiers;
+    private String extrasName;
+    private List<String> extras;
 
 
     public MenuItem(){
@@ -100,6 +102,22 @@ public class MenuItem
 	public void setQualifiers(List<String> qualifiers) {
 		this.qualifiers = qualifiers;
 	}
+
+    public String getExtrasName() {
+        return extrasName;
+    }
+
+    public void setExtrasName(String extrasName) {
+        this.extrasName = extrasName;
+    }
+
+    public List<String> getExtras() {
+        return extras;
+    }
+
+    public void setExtras(List<String> extras) {
+        this.extras = extras;
+    }
 
 	
     

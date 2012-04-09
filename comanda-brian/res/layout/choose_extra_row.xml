@@ -4,14 +4,6 @@
     android:layout_height="?android:attr/listPreferredItemHeight"
     android:padding="6dip" >
 
-        <TextView
-            android:id="@+id/no_of_items"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:paddingRight="10dip"
-            android:layout_toLeftOf="@+id/price"
-            android:text="3" />
         
         <TextView
             android:id="@+id/price"
@@ -23,15 +15,14 @@
             android:text="23.50"
             android:textColor="#ffc94f00" />
 
-    
-    <TextView
-        android:id="@+id/item_name"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_centerVertical="true"
+
+
+    <CheckBox
+        android:id="@+id/cbExtra"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/price"
         android:layout_alignParentLeft="true"
-        android:gravity="center_vertical"
-        android:layout_toLeftOf="@+id/no_of_items"
-        android:text="Texto de prueba" />
+        android:text="CheckBox" />
 
 </RelativeLayout>

@@ -19,7 +19,7 @@ import com.googlecode.objectify.Objectify;
 
 public class NotificationManagerImpl implements NotificationManager {
 
-    private static final int NOTIFICATION_DELAY = 10*1000;
+    private static final int NOTIFICATION_DELAY = 3*60*1000;
     private static final int WARNING_NOTIFICATION_DURATION = 5*60*1000;
     private static final int NOTIFICATION_DURATION_SANITY = 10*60*1000;
 
@@ -81,7 +81,10 @@ public class NotificationManagerImpl implements NotificationManager {
                                 restaurantKey).count();
                 if(pendingQueries > 0){
                     log.info("Calling {} on phone {}", restaurant.getName(), phone);
+                    restaurant.setNotifying(true);
                     phoneNotifier.call(phone);
+                    scheduleNotification(restaurantKeyString);
+                    ofy.put(restaurant);
                 }
                 else{
                     log.debug("No pending bills for {}, not calling.", 
@@ -116,13 +119,11 @@ public class NotificationManagerImpl implements NotificationManager {
                 log.info("Notification for {} ended successfully", 
                         restaurant.getName());
                 restaurant.setLatestSuccessfulNotification(new Date());
-                //Schedule notification, to ensure bills are addressed
-                scheduleNotification(restaurantKeyString);
+                
             }
             ofy.put(restaurant);
             if(success == false){
                 log.warn("Notification for {} failed. Trying to notify again...");
-                scheduleNotification(restaurantKeyString);
             }
         }
     }
