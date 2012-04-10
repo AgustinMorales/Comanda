@@ -4,8 +4,11 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
+
+import com.company.comanda.peter.server.model.Order;
 
 public class ServerFormatter {
 
@@ -51,5 +54,21 @@ public class ServerFormatter {
     
     public static String money(float amount){
         return String.format("%.2f €", amount);
+    }
+    
+    public static String getExtras(Order order){
+        StringBuffer extrasString = new StringBuffer();
+        List<String> extras = order.getExtras();
+        if(extras.size() > 0){
+            extrasString.append(" - ");
+            extrasString.append(order.getExtrasName());
+            extrasString.append(": ");
+            for(String currentExtra:extras){
+                extrasString.append(currentExtra);
+                extrasString.append(", ");
+            }
+            extrasString.delete(extrasString.length() - 2, extrasString.length());
+        }
+        return extrasString.toString();
     }
 }

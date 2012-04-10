@@ -1,6 +1,5 @@
 package com.company.comanda.peter.server.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +23,7 @@ public class MenuItem
     private List<String> qualifiers;
     private String extrasName;
     private List<String> extras;
+    private List<Float> extrasPrice;
 
 
     public MenuItem(){
@@ -117,6 +117,14 @@ public class MenuItem
 
     public void setExtras(List<String> extras) {
         this.extras = extras;
+    }
+
+    public List<Float> getExtrasPrice() {
+        return extrasPrice;
+    }
+
+    public void setExtrasPrice(List<Float> extrasPrice) {
+        this.extrasPrice = extrasPrice;
     }
 
 	

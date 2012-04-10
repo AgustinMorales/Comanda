@@ -73,11 +73,12 @@ GUIService {
                 currentBill = restaurantManager.getAgent().getBill(billKey);
                 billMap.put(billKey, currentBill);
             }
-            resultList.add(new String[]{currentOrder.getMenuItemName(), 
+            resultList.add(new String[]{currentOrder.getMenuItemName() + 
+                    ServerFormatter.getExtras(currentOrder), 
                     currentBill.getTableName(), 
                     currentOrder.getKeyString(),
                     new Integer(currentOrder.getNoOfItems()).toString(),
-                    ServerFormatter.money(currentOrder.getPrice())});
+                    ServerFormatter.money(currentOrder.getTotalPrice())});
         }
         log.info("Found {} orders",total);
         return new PagedResult<String[]>(resultList,total);

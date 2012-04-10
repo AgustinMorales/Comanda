@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import static com.company.comanda.common.XmlHelper.*;
 import static com.company.comanda.common.XmlTags.Orders.*;
 import com.company.comanda.common.HttpParams.GetOrders;
+import com.company.comanda.peter.server.helper.ServerFormatter;
 import com.company.comanda.peter.server.model.Order;
 
 @Singleton
@@ -52,11 +53,13 @@ public class GetOrdersServlet extends HttpServlet{
         
         out.println(open(ORDER_LIST));
         for(Order order:orders){
+            
         	out.println(open(ORDER));
         	out.println(enclose(KEY_STRING,order.getKeyString()));
-        	out.println(enclose(MENU_ITEM_NAME, order.getMenuItemName()));
+        	out.println(enclose(MENU_ITEM_NAME, order.getMenuItemName() + 
+        	        ServerFormatter.getExtras(order)));
         	out.println(enclose(MENU_ITEM_NUMBER, "" + order.getNoOfItems()));
-        	out.println(enclose(PRICE, "" + order.getPrice()));
+        	out.println(enclose(PRICE, "" + order.getTotalPrice()));
         	out.println(enclose(COMMENTS, order.getComments()));
         	out.println(close(ORDER));
         }

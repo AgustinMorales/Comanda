@@ -422,6 +422,8 @@ public class ComandaActivity extends FragmentActivity
                     keyIds.toString()));
             params.add(new BasicNameValuePair(HttpParams.PlaceOrder.PARAM_QUALIFIERS, 
             		qualifierIds.toString()));
+            params.add(new BasicNameValuePair(HttpParams.PlaceOrder.PARAM_EXTRAS, 
+                    extras.toString()));
             params.add(new BasicNameValuePair(HttpParams.PlaceOrder.PARAM_TABLE_ID, tableId));
             params.add(new BasicNameValuePair(HttpParams.PlaceOrder.PARAM_RESTAURANT_ID, restId));
             params.add(new BasicNameValuePair(HttpParams.PlaceOrder.PARAM_USER_ID, 

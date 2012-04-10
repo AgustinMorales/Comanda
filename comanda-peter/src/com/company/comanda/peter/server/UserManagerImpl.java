@@ -62,7 +62,9 @@ public class UserManagerImpl implements UserManager {
             List<Long> menuItemIds, 
             List<Integer> menuItemQualifierIndexes,
             List<Integer> noOfItems,
-            List<String> menuItemComments, String address, 
+            List<String> menuItemComments,
+            List<List<Integer>> extras,
+            String address, 
             Long tableId,
             String comments,
             BillType type,
@@ -125,7 +127,18 @@ public class UserManagerImpl implements UserManager {
                     MenuItem.class,menuItemIds.get(i));
             final int qualifierIndex = menuItemQualifierIndexes.get(i);
             MenuItem menuItem = ofy.get(menuItemKey);
-            float price = menuItem.getPrices().get(qualifierIndex);
+            final float price = menuItem.getPrices().get(qualifierIndex);
+            List<Integer> currentExtras = extras.get(i);
+            final int noOfExtras = currentExtras.size();
+            List<Float> extrasPrices = new ArrayList<Float>(noOfExtras);
+            List<String> extrasNames = new ArrayList<String>(noOfExtras);
+            float totalPrice = price;
+            for(int extraIndex : currentExtras){
+                float extraPrice = menuItem.getExtrasPrice().get(extraIndex);
+                extrasPrices.add(extraPrice);
+                extrasNames.add(menuItem.getExtras().get(extraIndex));
+                totalPrice = totalPrice + extraPrice;
+            }
             Order newOrder = new Order(date, OrderState.ORDERED, 
                     menuItem.getName() + QualifierTranslator.
                     translate(Qualifiers.valueOf(menuItem.getQualifiers().get(qualifierIndex))),
@@ -135,8 +148,12 @@ public class UserManagerImpl implements UserManager {
                             type);
             newOrder.setTable(tableKey);
             newOrder.setNoOfItems(noOfItems.get(i));
+            newOrder.setExtras(extrasNames);
+            newOrder.setExtrasPrices(extrasPrices);
+            newOrder.setExtrasName(menuItem.getExtrasName());
+            newOrder.setTotalPrice(totalPrice);
             newOrders.add(newOrder);
-            totalAmount = totalAmount + price;
+            totalAmount = totalAmount + totalPrice;
         }
         bill.setTotalAmount(totalAmount);
         ofy.put(bill);

@@ -1,6 +1,7 @@
 package com.company.comanda.peter.server.model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Id;
 
@@ -25,6 +26,10 @@ public class Order
     private Key<MenuItem> menuItemKey;
     private Key<Table> table;
     private BillType billType;
+    private String extrasName;
+    private List<String> extras;
+    private List<Float> extrasPrices;
+    private float totalPrice;
     
     //FIXME: This is here just for objectify (and might not be needed)
     public Order(){
@@ -162,6 +167,46 @@ public class Order
 
     public void setNoOfItems(int noOfItems) {
         this.noOfItems = noOfItems;
+    }
+
+
+    public String getExtrasName() {
+        return extrasName;
+    }
+
+
+    public void setExtrasName(String extrasName) {
+        this.extrasName = extrasName;
+    }
+
+
+    public List<String> getExtras() {
+        return extras;
+    }
+
+
+    public void setExtras(List<String> extras) {
+        this.extras = extras;
+    }
+
+
+    public List<Float> getExtrasPrices() {
+        return extrasPrices;
+    }
+
+
+    public void setExtrasPrices(List<Float> extrasPrices) {
+        this.extrasPrices = extrasPrices;
+    }
+
+
+    public float getTotalPrice() {
+        return totalPrice;
+    }
+
+
+    public void setTotalPrice(float totalPrice) {
+        this.totalPrice = totalPrice;
     }
     
     

@@ -73,11 +73,18 @@ public class GetItemsServlet extends HttpServlet
             out.println(enclose(IMAGE_STRING, i.getImageString()));
             out.println(enclose(CATEGORY_ID, "" + i.getCategory().getId()));
             //TODO: Get all prices
-            for(float price : i.getPrices()){
-            	out.println(enclose(MenuItemList.PRICE, "" + price));
+            for(Float price : i.getPrices()){
+            	out.println(enclose(MenuItemList.PRICE, price.toString()));
             }
             for(String qualifier: i.getQualifiers()){
             	out.println(enclose(MenuItemList.QUALIFIER, qualifier));
+            }
+            out.println(enclose(MenuItemList.EXTRAS_GLOBAL_NAME, i.getExtrasName()));
+            for(String extraName : i.getExtras()){
+                out.println(enclose(MenuItemList.EXTRA_NAME,extraName));
+            }
+            for(Float extraPrice : i.getExtrasPrice()){
+                out.println(enclose(MenuItemList.EXTRA_PRICE, extraPrice.toString()));
             }
             out.println(close(ITEM));
         }

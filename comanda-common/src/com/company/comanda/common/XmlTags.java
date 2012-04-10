@@ -30,6 +30,9 @@ public class XmlTags {
         public static final String CATEGORY_ID = "CategoryId";
         public static final String PRICE = "Price";
         public static final String QUALIFIER = "Qualifier";
+        public static final String EXTRAS_GLOBAL_NAME = "ExtrasGlobalName";
+        public static final String EXTRA_PRICE = "ExtraPrice";
+        public static final String EXTRA_NAME = "ExtraName";
     }
     
     public static class BooleanResult{

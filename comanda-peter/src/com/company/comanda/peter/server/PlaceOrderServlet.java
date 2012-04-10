@@ -50,6 +50,7 @@ public class PlaceOrderServlet extends HttpServlet
             String menuItemIdsString = req.getParameter(PARAM_ITEM_IDS);
             String tableIdString = req.getParameter(PARAM_TABLE_ID);
             String address = req.getParameter(PARAM_ADDRESS);
+            String allExtrasString = req.getParameter(PARAM_EXTRAS);
             //        String menuItemComments = req.getParameter(PARAM_MENU_ITEM_COMMENTS);
             String billKeyString = req.getParameter(PARAM_BILL_KEY_STRING);
             String qualifierIndexesString = req.getParameter(PARAM_QUALIFIERS);
@@ -65,17 +66,28 @@ public class PlaceOrderServlet extends HttpServlet
                     req.getParameter(PARAM_RESTAURANT_ID));
 
             //FIXME: What happens in case of error?
-            String[] items = menuItemIdsString.split(":");
-            String[] indexes = qualifierIndexesString.split(":");
-            String[] noOfItemsStrings = allNoOfItemsString.split(":");
+            String[] items = menuItemIdsString.split("&");
+            String[] indexes = qualifierIndexesString.split("&");
+            String[] noOfItemsStrings = allNoOfItemsString.split("&");
+            String[] extrasStringArray = allExtrasString.split("&");
             List<Long> menuItemIds = new ArrayList<Long>(items.length);
             List<String> menuItemComments = new ArrayList<String>(items.length);
             List<Integer> qualifierIndexes = new ArrayList<Integer>(items.length);
             List<Integer> noOfItems = new ArrayList<Integer>(items.length);
+            List<List<Integer>> extras = new ArrayList<List<Integer>>(items.length);
             for (int i=0;i<items.length;i++){
                 String item = items[i];
                 String qualifierIndex = indexes[i];
                 String noOfItemsString = noOfItemsStrings[i];
+                String extrasString = extrasStringArray[i];
+                List<Integer> currentExtras = new ArrayList<Integer>();
+                if(extrasString.length() > 0){
+                    String[] splittedExtras = extrasString.split(",");
+                    for(String extra : splittedExtras){
+                        currentExtras.add(Integer.parseInt(extra));
+                    }
+                }
+                
                 log.debug("Adding item ID: {}, qualifierIndex: {}, noOfItems: {}", 
                         new Object[]{item, qualifierIndex, noOfItemsString});
                 long menuItemId = Long.parseLong(item);
@@ -83,6 +95,7 @@ public class PlaceOrderServlet extends HttpServlet
                 menuItemComments.add("");
                 qualifierIndexes.add(Integer.parseInt(qualifierIndex));
                 noOfItems.add(Integer.parseInt(noOfItemsString));
+                extras.add(currentExtras);
             }
             //FIXME: User real qualifierIndex
             userManager.placeOrder(userId, password, 
@@ -90,6 +103,7 @@ public class PlaceOrderServlet extends HttpServlet
                     qualifierIndexes,
                     noOfItems,
                     menuItemComments,
+                    extras,
                     address,
                     tableId,
                     comments,
