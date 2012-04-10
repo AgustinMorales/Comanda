@@ -1,5 +1,6 @@
 package com.company.comanda.peter.client;
 
+import com.company.comanda.peter.client.UIRejectReason.RejectHandler;
 import com.company.comanda.peter.shared.BillState;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -43,6 +44,8 @@ public class UIViewDeliveryDetails extends Composite {
     private String billKeyString;
     private DialogBox containerDialog;
     
+    private UIRejectReason rejectReason;
+    private DialogBox rejectDialog;
     
     public static final int PAGE_SIZE = 25;
     
@@ -87,6 +90,39 @@ public class UIViewDeliveryDetails extends Composite {
             btnAcceptBill.setEnabled(false);
             btnReject.setEnabled(false);
         }
+        rejectDialog = new DialogBox();
+        rejectReason = new UIRejectReason();
+        rejectDialog.setWidget(rejectReason);
+        
+        rejectReason.setRejectHandler(new RejectHandler() {
+            
+            @Override
+            public void onReject(BillState newState) {
+                guiSevice.changeBillState(billKeyString, newState, 
+                        null, new AsyncCallback<Void>() {
+                    
+                    @Override
+                    public void onSuccess(Void result) {
+                        doNotChangingStatus();
+                        containerDialog.hide();
+                        
+                    }
+                    
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        Window.alert("Error");
+                        doNotChangingStatus();
+                        containerDialog.hide();
+                    }
+                });
+            }
+            
+            @Override
+            public void onCancel() {
+                rejectDialog.hide();
+                doNotChangingStatus();
+            }
+        });
     }
 
     
@@ -161,23 +197,7 @@ public class UIViewDeliveryDetails extends Composite {
     @UiHandler("btnReject")
     void onBtnRejectClick(ClickEvent event) {
         doChangingStatus();
-        guiSevice.changeBillState(billKeyString, BillState.REJECTED, 
-                null, new AsyncCallback<Void>() {
-            
-            @Override
-            public void onSuccess(Void result) {
-                doNotChangingStatus();
-                containerDialog.hide();
-                
-            }
-            
-            @Override
-            public void onFailure(Throwable caught) {
-                Window.alert("Error");
-                doNotChangingStatus();
-                containerDialog.hide();
-            }
-        });
+        rejectDialog.center();
     }
     
     private void doChangingStatus(){
