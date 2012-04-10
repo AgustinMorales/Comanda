@@ -206,11 +206,11 @@ public class BillsHandler extends ComandaXMLHandler<ArrayList<Bill>> {
             }
             else if(this.in_open_date){
                 log.debug("OpenDate: {}", textBetween);
-                bill.openDate = new Date(textBetween);
+                bill.openDate = new Date(Long.parseLong(textBetween));
             }
             else if(this.in_estimated_delivery_date){
                 log.debug("EstimatedDeliveryDate: {}", textBetween);
-                bill.estimatedDeliveryDate = new Date(textBetween);
+                bill.estimatedDeliveryDate = new Date(Long.parseLong(textBetween));
             }
         }
     }

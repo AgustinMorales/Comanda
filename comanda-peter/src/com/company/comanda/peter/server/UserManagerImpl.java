@@ -147,13 +147,14 @@ public class UserManagerImpl implements UserManager {
                             comments, billKey,
                             type);
             newOrder.setTable(tableKey);
+            int currentNoOfItems = noOfItems.get(i);
             newOrder.setNoOfItems(noOfItems.get(i));
             newOrder.setExtras(extrasNames);
             newOrder.setExtrasPrices(extrasPrices);
             newOrder.setExtrasName(menuItem.getExtrasName());
             newOrder.setTotalPrice(totalPrice);
             newOrders.add(newOrder);
-            totalAmount = totalAmount + totalPrice;
+            totalAmount = totalAmount + totalPrice*currentNoOfItems;
         }
         bill.setTotalAmount(totalAmount);
         ofy.put(bill);

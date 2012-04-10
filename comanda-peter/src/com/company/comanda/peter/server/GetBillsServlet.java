@@ -67,11 +67,11 @@ public class GetBillsServlet extends HttpServlet{
             out.println(enclose(ADDRESS, bill.getAddress()));
             out.println(enclose(RESTAURANT_NAME, bill.getRestaurantName()));
             out.println(enclose(COMMENTS, bill.getComments()));
-            out.println(enclose(OPEN_DATE, bill.getOpenDate().toString()));
+            out.println(enclose(OPEN_DATE, "" + bill.getOpenDate().getTime()));
             Date estimatedDeliveryDate = bill.getEstimatedDeliveryDate();
             if(estimatedDeliveryDate != null){
                 out.println(enclose(ESTIMATED_DELIVERY_DATE, 
-                        estimatedDeliveryDate.toString()));
+                        "" + estimatedDeliveryDate.getTime()));
             }
             out.println(close(BILL));
         }

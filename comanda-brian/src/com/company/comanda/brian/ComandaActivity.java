@@ -627,15 +627,15 @@ public class ComandaActivity extends FragmentActivity
         boolean showRemoveButton = false;
         for(int i=0;i<no_of_items.length;i++){
             if(i<noOfPrices){
-                OrderElement orderElement = new OrderElement(o, i);
-                Set<OrderElement> orderElements = orderNumbers.keySet();
-                int numberOrdered = 0;
-                for(OrderElement current : orderElements){
-                    if(orderElement.menuItem.equals(current.menuItem) &&
-                            orderElement.qualifierIndex == current.qualifierIndex){
-                        numberOrdered = numberOrdered + orderNumbers.get(current);
-                    }
-                }
+//                OrderElement orderElement = new OrderElement(o, i);
+//                Set<OrderElement> orderElements = orderNumbers.keySet();
+//                int numberOrdered = 0;
+//                for(OrderElement current : orderElements){
+//                    if(orderElement.menuItem.equals(current.menuItem) &&
+//                            orderElement.qualifierIndex == current.qualifierIndex){
+//                        numberOrdered = numberOrdered + orderNumbers.get(current);
+//                    }
+//                }
                 StringBuffer qualifierText = new StringBuffer();
                 qualifierText.append(QualifierTranslator.translate(
                         o.getQualifiers().get(i),
@@ -644,22 +644,23 @@ public class ComandaActivity extends FragmentActivity
                     qualifierText.append(": ");
                 }
                 qualifiers[i].setText(qualifierText);
-                if(numberOrdered > 0){
-                    StringBuffer numberText = new StringBuffer("x ");
-                    numberText.append(numberOrdered);
-                    no_of_items[i].setText(numberText);
-                    no_of_items[i].setVisibility(View.VISIBLE);
-                    showRemoveButton = true;
-                }
-                else{
-                    no_of_items[i].setVisibility(View.INVISIBLE);
-
-                }
+//                if(numberOrdered > 0){
+//                    StringBuffer numberText = new StringBuffer("x ");
+//                    numberText.append(numberOrdered);
+//                    no_of_items[i].setText(numberText);
+//                    no_of_items[i].setVisibility(View.VISIBLE);
+//                    showRemoveButton = true;
+//                }
+//                else{
+//                    no_of_items[i].setVisibility(View.INVISIBLE);
+//
+//                }
             }
             else{
-                no_of_items[i].setVisibility(View.GONE);
+                
                 qualifiers[i].setVisibility(View.GONE);
             }
+            no_of_items[i].setVisibility(View.GONE);
 
         }
         if(showRemoveButton){
@@ -828,7 +829,7 @@ public class ComandaActivity extends FragmentActivity
         float total = 0;
         if(orderItems != null){
             for(OrderElement currentElement : orderItems){
-                total = total + currentElement.menuItem.getPrices().get(currentElement.qualifierIndex) * orderNumbers.get(currentElement);
+                total = total + currentElement.toalPrice * orderNumbers.get(currentElement);
             }
             if(tvTotalAmount != null){
                 tvTotalAmount.setText(Formatter.money(total));
@@ -1021,7 +1022,6 @@ public class ComandaActivity extends FragmentActivity
                     elementName.append(QualifierTranslator.translate(qualifier, ComandaActivity.this));
                     elementName.append(")");
                 }
-                float price = o.menuItem.getPrices().get(o.qualifierIndex);
                 if(o.extras != null){
                     elementName.append(" - ");
                     elementName.append(o.menuItem.getExtrasName());
@@ -1029,7 +1029,6 @@ public class ComandaActivity extends FragmentActivity
                     for(int i : o.extras){
                         elementName.append(o.menuItem.getExtras().get(i));
                         elementName.append(", ");
-                        price = price + o.menuItem.getExtrasPrice().get(i);
                     }
                     elementName.delete(elementName.length() - 2,
                             elementName.length());
@@ -1037,7 +1036,7 @@ public class ComandaActivity extends FragmentActivity
                 }
                 tvItemName.setText(elementName);
 
-                tvPrice.setText(Formatter.money(price));
+                tvPrice.setText(Formatter.money(o.toalPrice));
                 tvNoOfItems.setText("" + orderNumbers.get(o));
             }
 
@@ -1055,6 +1054,13 @@ public class ComandaActivity extends FragmentActivity
             orderNumbers.put(element,previousnumber + 1);
         }
         else{
+            float price = item.getPrices().get(qualifierIndex);
+            if(extras != null){
+                for(int i : extras){
+                    price = price + item.getExtrasPrice().get(i);
+                }
+            }
+            element.toalPrice = price;
             orderItems.add(element);
             orderNumbers.put(element,1);
         }

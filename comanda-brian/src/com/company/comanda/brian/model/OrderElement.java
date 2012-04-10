@@ -7,6 +7,7 @@ public class OrderElement {
     public FoodMenuItem menuItem;
     public int qualifierIndex;
     public List<Integer> extras;
+    public float toalPrice;
 
     public OrderElement(FoodMenuItem menuItem, int qualifierIndex){
         this.menuItem = menuItem;
