@@ -104,6 +104,7 @@ public class UIViewDeliveryDetails extends Composite {
                     @Override
                     public void onSuccess(Void result) {
                         doNotChangingStatus();
+                        rejectDialog.hide();
                         containerDialog.hide();
                         
                     }
@@ -112,6 +113,7 @@ public class UIViewDeliveryDetails extends Composite {
                     public void onFailure(Throwable caught) {
                         Window.alert("Error");
                         doNotChangingStatus();
+                        rejectDialog.hide();
                         containerDialog.hide();
                     }
                 });

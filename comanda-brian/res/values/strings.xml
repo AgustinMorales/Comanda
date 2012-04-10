@@ -66,5 +66,11 @@
     <string name="remove">Remove</string>
     <string name="choose">Choose</string>
     <string name="done">Done</string>
+    <string name="orderRejectedOffDuty">Out of schedule</string>
+    <string name="orderRejectedNoDeliveryThere">Out of delivery area</string>
+    <string name="orderRejectedNotEnoughForDelivery">Insufficient amount</string>
+    <string name="orderRejectedUnknownAddress">Unknown address</string>
+    <string name="orderRejectedOutOfSomething">Out of goods</string>
+    <string name="orderRejectedOverload">Restaurant\'s overload</string>
     
 </resources>

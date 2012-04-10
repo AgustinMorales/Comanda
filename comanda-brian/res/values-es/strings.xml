@@ -66,4 +66,10 @@
     <string name="remove">Eliminar</string>
     <string name="choose">Escoge</string>
     <string name="done">Hecho</string>
+    <string name="orderRejectedOffDuty">Rechazado - Fuera de horario</string>
+    <string name="orderRejectedNoDeliveryThere">Rechazado - Fuera de zona de reparto</string>
+    <string name="orderRejectedNotEnoughForDelivery">Rechazado - Pedido insuficiente</string>
+    <string name="orderRejectedUnknownAddress">Rechazado - Dirección desconocida</string>
+    <string name="orderRejectedOutOfSomething">Rechazado - Fuera de existencias</string>
+    <string name="orderRejectedOverload">Rechazado - Sobrecarga temporal</string>
 </resources>

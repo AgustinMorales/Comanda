@@ -343,6 +343,30 @@ public class ReviewBillsActivity extends ListActivity {
             statusString = getString(R.string.orderSent);
             color = Color.YELLOW;
         }
+        else if("REJECTED_OFF_DUTY".equals(bill.state)){
+            statusString = getString(R.string.orderRejectedOffDuty);
+            color = Color.RED;
+        }
+        else if("REJECTED_NO_DELIVERY_THERE".equals(bill.state)){
+            statusString = getString(R.string.orderRejectedNoDeliveryThere);
+            color = Color.RED;
+        }
+        else if("REJECTED_NOT_ENOUGH_FOR_DELIVERY".equals(bill.state)){
+            statusString = getString(R.string.orderRejectedNotEnoughForDelivery);
+            color = Color.RED;
+        }
+        else if("REJECTED_UNKNOWN_ADDRESS".equals(bill.state)){
+            statusString = getString(R.string.orderRejectedUnknownAddress);
+            color = Color.RED;
+        }
+        else if("REJECTED_OUT_OF_SOMETHING".equals(bill.state)){
+            statusString = getString(R.string.orderRejectedOutOfSomething);
+            color = Color.RED;
+        }
+        else if("REJECTED_OVERLOAD".equals(bill.state)){
+            statusString = getString(R.string.orderRejectedOverload);
+            color = Color.RED;
+        }
         else if("REJECTED".equals(bill.state)){
             statusString = getString(R.string.orderRejected);
             color = Color.RED;

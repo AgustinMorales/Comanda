@@ -59,7 +59,7 @@ public class ServerFormatter {
     public static String getExtras(Order order){
         StringBuffer extrasString = new StringBuffer();
         List<String> extras = order.getExtras();
-        if(extras.size() > 0){
+        if(extras != null && extras.size() > 0){
             extrasString.append(" - ");
             extrasString.append(order.getExtrasName());
             extrasString.append(": ");
