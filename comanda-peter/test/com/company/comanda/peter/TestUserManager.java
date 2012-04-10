@@ -131,7 +131,8 @@ public class TestUserManager {
             manager.getAgent().addOrModifyMenuItem(null, 
                     "itemName" + i, "description" + i, 
                     prices, qualifiers, null,
-                    categoryId);
+                    categoryId,
+                    new ArrayList<String>(), new ArrayList<Float>(), null);
         }
     }
     
@@ -163,20 +164,22 @@ public class TestUserManager {
         final ArrayList<String> itemComments = new ArrayList<String>();
         final ArrayList<Integer> qualifiers = new ArrayList<Integer>(1);
         final ArrayList<Integer> noOfItems = new ArrayList<Integer>(1);
+        final ArrayList<List<Integer>> extras = new ArrayList<List<Integer>>(1);
         qualifiers.add(0);
         noOfItems.add(1);
         itemIds.add(itemId);
+        extras.add(new ArrayList<Integer>(0));
         itemComments.add("Comentarios");
         
         final String billKeyString1 = userManager.placeOrder(userId, USER_PASSWORD, 
-                restaurantId, itemIds, qualifiers, noOfItems, itemComments, "Test address", 
+                restaurantId, itemIds, qualifiers, noOfItems, itemComments, extras, "Test address", 
                 null, "Comentarios generales",
                 BillType.DELIVERY,
                 null);
         
         final String billKeyString2 = userManager.placeOrder(userId, USER_PASSWORD, 
                 restaurantId, itemIds, qualifiers, noOfItems,
-                itemComments, "Test address2", 
+                itemComments, extras, "Test address2", 
                 null, "Comentarios generales2",
                 BillType.DELIVERY,
                 null);
@@ -237,14 +240,16 @@ public class TestUserManager {
         final ArrayList<String> itemComments = new ArrayList<String>();
         final ArrayList<Integer> qualifiers = new ArrayList<Integer>(1);
         final ArrayList<Integer> noOfItems = new ArrayList<Integer>(1);
+        final ArrayList<List<Integer>> extras = new ArrayList<List<Integer>>(1);
         
         qualifiers.add(0);
         noOfItems.add(1);
         itemIds.add(itemId);
         itemComments.add("Comentarios");
+        extras.add(new ArrayList<Integer>(0));
         
         final String billKeyString = userManager.placeOrder(userId, USER_PASSWORD, 
-                restaurantId, itemIds, qualifiers, noOfItems, itemComments, null, 
+                restaurantId, itemIds, qualifiers, noOfItems, itemComments, extras, null, 
                 tableId, "Comentarios generales",
                 BillType.IN_RESTAURANT,
                 null);
@@ -287,20 +292,24 @@ public class TestUserManager {
         final ArrayList<String> itemComments = new ArrayList<String>();
         final ArrayList<Integer> qualifiers = new ArrayList<Integer>(1);
         final ArrayList<Integer> noOfItems = new ArrayList<Integer>(1);
+        final ArrayList<List<Integer>> extras = new ArrayList<List<Integer>>(1);
         
         qualifiers.add(0);
         noOfItems.add(1);
         itemIds.add(itemId);
         itemComments.add("Comentarios");
+        extras.add(new ArrayList<Integer>(0));
         
         final String billKeyString = userManager.placeOrder(userId, USER_PASSWORD, 
-                restaurantId, itemIds, qualifiers, noOfItems, itemComments, null, 
+                restaurantId, itemIds, qualifiers, noOfItems, itemComments, extras,
+                null, 
                 tableId, "Comentarios generales",
                 BillType.IN_RESTAURANT,
                 null);
         
         userManager.placeOrder(userId, USER_PASSWORD, 
-                restaurantId, itemIds, qualifiers, noOfItems, itemComments, null, 
+                restaurantId, itemIds, qualifiers, noOfItems, itemComments, extras,
+                null, 
                 tableId, "Comentarios generales2",
                 BillType.IN_RESTAURANT,
                 billKeyString);
@@ -340,20 +349,24 @@ public class TestUserManager {
         final ArrayList<String> itemComments = new ArrayList<String>();
         final ArrayList<Integer> qualifiers = new ArrayList<Integer>(1);
         final ArrayList<Integer> noOfItems = new ArrayList<Integer>(1);
+        final ArrayList<List<Integer>> extras = new ArrayList<List<Integer>>(1);
         
         qualifiers.add(0);
         noOfItems.add(1);
         itemIds.add(itemId);
         itemComments.add("Comentarios");
+        extras.add(new ArrayList<Integer>(0));
         
         final String billKeyString1 = userManager.placeOrder(userId, USER_PASSWORD, 
-                restaurantId, itemIds, qualifiers, noOfItems, itemComments, null, 
+                restaurantId, itemIds, qualifiers, noOfItems, itemComments, extras,
+                null, 
                 tableId, "Comentarios generales",
                 BillType.IN_RESTAURANT,
                 null);
         
         final String billKeyString2 = userManager.placeOrder(userId, USER_PASSWORD, 
-                restaurantId, itemIds, qualifiers, noOfItems, itemComments, null, 
+                restaurantId, itemIds, qualifiers, noOfItems, itemComments, extras,
+                null, 
                 tableId, "Comentarios generales2",
                 BillType.IN_RESTAURANT,
                 null);
@@ -403,16 +416,18 @@ public class TestUserManager {
         final ArrayList<String> itemComments = new ArrayList<String>();
         final ArrayList<Integer> qualifiers = new ArrayList<Integer>(1);
         final ArrayList<Integer> noOfItems = new ArrayList<Integer>(1);
+        final ArrayList<List<Integer>> extras = new ArrayList<List<Integer>>(1);
         
         qualifiers.add(0);
         noOfItems.add(1);
         itemIds.add(itemId);
         itemComments.add("Comentarios");
+        extras.add(new ArrayList<Integer>(0));
         
         userManager.placeOrder(userId, USER_PASSWORD, 
                 restaurantId, itemIds, qualifiers,
                 noOfItems,
-                itemComments, null, 
+                itemComments, extras, null, 
                 tableId, "Comentarios generales",
                 BillType.IN_RESTAURANT, null);
         

@@ -68,7 +68,10 @@ public class RestaurantAgentImpl implements RestaurantAgent {
     public void addOrModifyMenuItem(Long itemId, String itemName,
             String description, List<Float> prices, List<String> qualifiers, 
             String imageBlobkey,
-            Long categoryId) {
+            Long categoryId,
+            List<String> extras,
+            List<Float> extrasPrices,
+            String extrasName) {
         MenuItem item = null;
         if(itemId != null ){
             item = ofy.get(
@@ -109,6 +112,7 @@ public class RestaurantAgentImpl implements RestaurantAgent {
                 log.info("No image found, leaving to previous value...");
             }
         }
+        
         else{
             item.setImageString("");
         }
@@ -118,6 +122,9 @@ public class RestaurantAgentImpl implements RestaurantAgent {
                     MenuCategory.class,
                     categoryId));
         }
+        item.setExtrasName(extrasName);
+        item.setExtras(extras);
+        item.setExtrasPrice(extrasPrices);
         //persist
         ofy.put(item);
 

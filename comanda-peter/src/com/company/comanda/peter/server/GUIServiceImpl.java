@@ -124,6 +124,16 @@ GUIService {
                     priceValues[6] = prices.get(i);
                 }
             }
+            String[] extras = new String[9];
+            int noOfExtras = 0;
+            if(item.getExtras() != null){
+                noOfExtras = item.getExtras().size();
+            }
+            float[] extrasPrices = new float[9];
+            for(int i=0;i<noOfExtras;i++){
+                extras[i] = item.getExtras().get(i);
+                extrasPrices[i] = item.getExtrasPrice().get(i);
+            }
             resultList.add(new String[]{
                     item.getId().toString(),
                     item.getImageString(), 
@@ -142,6 +152,34 @@ GUIService {
                                                             + QualifierTranslator.translate(Qualifiers.HALF)):null),
                                                             (priceValues[6]!=null?(ServerFormatter.money(priceValues[6])
                                                                     + QualifierTranslator.translate(Qualifiers.FULL)):null),
+                    item.getExtrasName(),
+                    extras[0],
+                    extras[1],
+                    extras[2],
+                    extras[3],
+                    extras[4],
+                    extras[5],
+                    extras[6],
+                    extras[7],
+                    extras[8],
+                    "" + extrasPrices[0],
+                    "" + extrasPrices[1],
+                    "" + extrasPrices[2],
+                    "" + extrasPrices[3],
+                    "" + extrasPrices[4],
+                    "" + extrasPrices[5],
+                    "" + extrasPrices[6],
+                    "" + extrasPrices[7],
+                    "" + extrasPrices[8],
+                    "" + priceValues[0],
+                    "" + priceValues[1],
+                    "" + priceValues[2],
+                    "" + priceValues[3],
+                    "" + priceValues[4],
+                    "" + priceValues[5],
+                    "" + priceValues[6],
+                    
+                    
             });
         }
         return new PagedResult<String[]>(resultList, total);

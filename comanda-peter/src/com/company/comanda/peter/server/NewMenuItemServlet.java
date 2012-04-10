@@ -53,9 +53,23 @@ public class NewMenuItemServlet extends HttpServlet{
         String itemName = req.getParameter("itemName");
         String description = req.getParameter("description");
         String pricingScheme = req.getParameter("priceScheme");
+        String extrasName = req.getParameter("extrasName");
+        List<String> extras = new ArrayList<String>();
+        List<Float> extrasPrices = new ArrayList<Float>();
+        for(int i=0;i<9; i++){
+            String currentExtraName = req.getParameter("extra" + (i+1));
+            if(currentExtraName != null && currentExtraName.length() == 0){
+                currentExtraName = null;
+            }
+            if(currentExtraName != null){
+                extras.add(currentExtraName);
+                extrasPrices.add(price(req, "extraPrice" + (i+1)));
+            }
+        }
         Long categoryId = Long.parseLong(req.getParameter("categoryId"));
         List<BlobKey> blobKeyList = null;
         String imageBlobKey = null;
+        
         try{
         	Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(req);
             blobKeyList = blobs.get("itemImage");
@@ -112,9 +126,12 @@ public class NewMenuItemServlet extends HttpServlet{
         		prices.add(price(req,"fullPrice"));
         	}
         }
+        if(extrasName != null && extrasName.length() == 0){
+            extrasName = null;
+        }
         manager.getAgent().addOrModifyMenuItem(itemId, 
                 itemName, description, prices, qualifiers, 
-                imageBlobKey, categoryId);
+                imageBlobKey, categoryId, extras, extrasPrices, extrasName);
         PrintWriter out = resp.getWriter();
         out.println("SUCCESS");
     }

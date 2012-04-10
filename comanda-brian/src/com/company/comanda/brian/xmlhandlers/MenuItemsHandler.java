@@ -31,10 +31,16 @@ public class MenuItemsHandler extends ComandaXMLHandler<ArrayList<FoodMenuItem>>
     private boolean in_categoryId = false;
     private boolean in_price = false;
     private boolean in_qualifier = false;
+    private boolean in_extra_name = false;
+    private boolean in_extra_price = false;
+    private boolean in_extras_global_name = false;
 
     private FoodMenuItem item = null;
     private List<Float> prices = null;
     private List<String> qualifiers = null;
+    private List<String> extras = null;
+    private List<Float> extrasPrices = null;
+    
 
     private ArrayList<FoodMenuItem> items = null;
 
@@ -69,6 +75,8 @@ public class MenuItemsHandler extends ComandaXMLHandler<ArrayList<FoodMenuItem>>
             item = new FoodMenuItem();
             prices = new ArrayList<Float>();
             qualifiers = new ArrayList<String>();
+            extras = new ArrayList<String>();
+            extrasPrices = new ArrayList<Float>();
             log.debug("Found an Item");
         }
         else if (localName.equals(NAME)) 
@@ -99,6 +107,18 @@ public class MenuItemsHandler extends ComandaXMLHandler<ArrayList<FoodMenuItem>>
         {
             this.in_qualifier = true;
         }
+        else if (localName.equals(EXTRA_NAME)) 
+        {
+            this.in_extra_name = true;
+        }
+        else if (localName.equals(EXTRA_PRICE)) 
+        {
+            this.in_extra_price = true;
+        }
+        else if (localName.equals(EXTRAS_GLOBAL_NAME)) 
+        {
+            this.in_extras_global_name = true;
+        }
     }
 
     /** Gets be called on closing tags like: 
@@ -111,6 +131,8 @@ public class MenuItemsHandler extends ComandaXMLHandler<ArrayList<FoodMenuItem>>
             this.in_item = false;
             item.setPrices(prices);
             item.setQualifiers(qualifiers);
+            item.setExtras(extras);
+            item.setExtrasPrice(extrasPrices);
             items.add(item);
         }
         else if (localName.equals(NAME)) 
@@ -140,6 +162,18 @@ public class MenuItemsHandler extends ComandaXMLHandler<ArrayList<FoodMenuItem>>
         else if (localName.equals(QUALIFIER)) 
         {
             this.in_qualifier = false;
+        }
+        else if (localName.equals(EXTRA_NAME)) 
+        {
+            this.in_extra_name = false;
+        }
+        else if (localName.equals(EXTRA_PRICE)) 
+        {
+            this.in_extra_price = false;
+        }
+        else if (localName.equals(EXTRAS_GLOBAL_NAME)) 
+        {
+            this.in_extras_global_name = false;
         }
     }
 
@@ -181,6 +215,18 @@ public class MenuItemsHandler extends ComandaXMLHandler<ArrayList<FoodMenuItem>>
             else if(this.in_qualifier){
                 log.debug("Qualifier: {}", textBetween);
                 qualifiers.add(textBetween);
+            }
+            else if(this.in_extra_name){
+                log.debug("Extra: {}", textBetween);
+                extras.add(textBetween);
+            }
+            else if(this.in_extra_price){
+                log.debug("Extra price: {}", textBetween);
+                extrasPrices.add(Float.parseFloat(textBetween));
+            }
+            else if(this.in_extras_global_name){
+                log.debug("Extras global name: {}", textBetween);
+                item.setExtrasName(textBetween);
             }
         }
     }

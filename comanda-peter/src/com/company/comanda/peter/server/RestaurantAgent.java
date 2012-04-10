@@ -23,7 +23,10 @@ public interface RestaurantAgent {
             List<Float> prices,
             List<String> qualifiers,
             String imageBlobkey,
-            Long categoryId);
+            Long categoryId,
+            List<String> extras,
+            List<Float> extrasPrices,
+            String extrasName);
     
     public void deleteMenuItems(long[] keyIds);
     
