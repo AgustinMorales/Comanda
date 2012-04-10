@@ -99,7 +99,6 @@ public class ComandaActivity extends FragmentActivity
     private static final int REVIEW_ORDER_DIALOG = 1;
     private static final int ITEM_DETAILS_DIALOG = 2;
     private static final int ADD_CHOOSE_QUALIFIER_DIALOG = 3;
-    private static final int REMOVE_CHOOSE_QUALIFIER_DIALOG = 4;
     private static final int CHOOSE_EXTRA_DIALOG = 5;
 
     private FoodMenuItem selectedMenuItem;
@@ -585,20 +584,7 @@ public class ComandaActivity extends FragmentActivity
         itemNameAndPrice.setOnClickListener(clickListener);
         icon.setOnClickListener(clickListener);
 
-        ImageButton removeButton = (ImageButton)v.findViewById(R.id.removeorderbutton);
-        removeButton.setOnClickListener(new OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                if(noOfPrices == 1){
-                    removeItemFromOrder(o,0);
-                }
-                else{
-                    selectedMenuItem = o;
-                    showDialog(REMOVE_CHOOSE_QUALIFIER_DIALOG);
-                }
-            }
-        });
 
         ImageButton placeOrderButton = (ImageButton)v.findViewById(R.id.placeorderbutton);
         placeOrderButton.setOnClickListener(new OnClickListener() {
@@ -624,18 +610,17 @@ public class ComandaActivity extends FragmentActivity
         qualifiers[0] = (TextView)v.findViewById(R.id.labelQualifier1);
         qualifiers[1] = (TextView)v.findViewById(R.id.labelQualifier2);
         qualifiers[2] = (TextView)v.findViewById(R.id.labelQualifier3);
-        boolean showRemoveButton = false;
         for(int i=0;i<no_of_items.length;i++){
             if(i<noOfPrices){
-//                OrderElement orderElement = new OrderElement(o, i);
-//                Set<OrderElement> orderElements = orderNumbers.keySet();
-//                int numberOrdered = 0;
-//                for(OrderElement current : orderElements){
-//                    if(orderElement.menuItem.equals(current.menuItem) &&
-//                            orderElement.qualifierIndex == current.qualifierIndex){
-//                        numberOrdered = numberOrdered + orderNumbers.get(current);
-//                    }
-//                }
+                //                OrderElement orderElement = new OrderElement(o, i);
+                //                Set<OrderElement> orderElements = orderNumbers.keySet();
+                //                int numberOrdered = 0;
+                //                for(OrderElement current : orderElements){
+                //                    if(orderElement.menuItem.equals(current.menuItem) &&
+                //                            orderElement.qualifierIndex == current.qualifierIndex){
+                //                        numberOrdered = numberOrdered + orderNumbers.get(current);
+                //                    }
+                //                }
                 StringBuffer qualifierText = new StringBuffer();
                 qualifierText.append(QualifierTranslator.translate(
                         o.getQualifiers().get(i),
@@ -644,32 +629,24 @@ public class ComandaActivity extends FragmentActivity
                     qualifierText.append(": ");
                 }
                 qualifiers[i].setText(qualifierText);
-//                if(numberOrdered > 0){
-//                    StringBuffer numberText = new StringBuffer("x ");
-//                    numberText.append(numberOrdered);
-//                    no_of_items[i].setText(numberText);
-//                    no_of_items[i].setVisibility(View.VISIBLE);
-//                    showRemoveButton = true;
-//                }
-//                else{
-//                    no_of_items[i].setVisibility(View.INVISIBLE);
-//
-//                }
+                //                if(numberOrdered > 0){
+                //                    StringBuffer numberText = new StringBuffer("x ");
+                //                    numberText.append(numberOrdered);
+                //                    no_of_items[i].setText(numberText);
+                //                    no_of_items[i].setVisibility(View.VISIBLE);
+                //                    showRemoveButton = true;
+                //                }
+                //                else{
+                //                    no_of_items[i].setVisibility(View.INVISIBLE);
+                //
+                //                }
             }
             else{
-                
+
                 qualifiers[i].setVisibility(View.GONE);
             }
             no_of_items[i].setVisibility(View.GONE);
 
-        }
-        if(showRemoveButton){
-            removeButton.setVisibility(View.VISIBLE);
-            removeButton.setEnabled(true);
-        }
-        else{
-            removeButton.setVisibility(View.INVISIBLE);
-            removeButton.setEnabled(false);
         }
 
 
@@ -774,25 +751,15 @@ public class ComandaActivity extends FragmentActivity
                     }
                 });
             }
-        }
-        else if(id == REMOVE_CHOOSE_QUALIFIER_DIALOG){
-            result = new Dialog(this);
-            result.setContentView(R.layout.choose_qualifier);
-            Button[] btnQualifier = new Button[3];
-            btnQualifier[0] = (Button)result.findViewById(R.id.btnQualifier1);
-            btnQualifier[1] = (Button)result.findViewById(R.id.btnQualifier2);
-            btnQualifier[2] = (Button)result.findViewById(R.id.btnQualifier3);
-            for(int i=0;i<btnQualifier.length; i++){
-                final int index = i;
-                btnQualifier[i].setOnClickListener(new OnClickListener() {
+            Button btnBack = (Button)result.findViewById(R.id.btnBack);
+            btnBack.setOnClickListener(new OnClickListener() {
 
-                    @Override
-                    public void onClick(View arg0) {
-                        removeItemFromOrder(selectedMenuItem, index);
-                        dismissDialog(id);
-                    }
-                });
-            }
+                @Override
+                public void onClick(View v) {
+                    dismissDialog(id);
+
+                }
+            });
         }
         else if(id == CHOOSE_EXTRA_DIALOG){
             result = new Dialog(this);
@@ -810,17 +777,6 @@ public class ComandaActivity extends FragmentActivity
         }
         else{
             result = super.onCreateDialog(id);
-        }
-        if(id == REMOVE_CHOOSE_QUALIFIER_DIALOG || id == ADD_CHOOSE_QUALIFIER_DIALOG){
-            Button btnBack = (Button)result.findViewById(R.id.btnBack);
-            btnBack.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    dismissDialog(id);
-
-                }
-            });
         }
         return result;
     }
@@ -859,15 +815,11 @@ public class ComandaActivity extends FragmentActivity
         else if(id == REVIEW_ORDER_DIALOG){
             LayoutHelper.dialog_fill_parent(dialog);
         }
-        else if(id == REMOVE_CHOOSE_QUALIFIER_DIALOG || id == ADD_CHOOSE_QUALIFIER_DIALOG){
+        else if(id == ADD_CHOOSE_QUALIFIER_DIALOG){
             TextView tvItemName = (TextView)dialog.findViewById(R.id.tvItemName);
             StringBuffer title = new StringBuffer();
-            if(id == REMOVE_CHOOSE_QUALIFIER_DIALOG){
-                title.append(getString(R.string.remove));
-            }
-            else{
-                title.append(getString(R.string.add));
-            }
+
+            title.append(getString(R.string.add));
             title.append(" ");
             title.append(selectedMenuItem.getName());
             tvItemName.setText(title);
@@ -884,16 +836,6 @@ public class ComandaActivity extends FragmentActivity
                     btnQualifier[i].setText(QualifierTranslator.translate(
                             selectedMenuItem.getQualifiers().get(i),
                             this));
-                    if(id == REMOVE_CHOOSE_QUALIFIER_DIALOG){
-                        OrderElement orderElement = new OrderElement(selectedMenuItem, i);
-                        Integer noOfOrders = orderNumbers.get(orderElement);
-                        if(noOfOrders != null && noOfOrders.intValue() > 0){
-                            btnQualifier[i].setEnabled(true);
-                        }
-                        else{
-                            btnQualifier[i].setEnabled(false);
-                        }
-                    }
                 }
                 else{
                     btnQualifier[i].setVisibility(View.GONE);
@@ -1003,14 +945,15 @@ public class ComandaActivity extends FragmentActivity
             {
                 LayoutInflater vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 //inflate using res/layout/row.xml
-                v = vi.inflate(R.layout.order_row, null);
+                v = vi.inflate(R.layout.review_order_row, null);
             }
-            OrderElement o = orderItems.get(position);
+            final OrderElement o = orderItems.get(position);
             if (o != null) 
             {
                 final TextView tvNoOfItems = (TextView)v.findViewById(R.id.no_of_items);
                 final TextView tvItemName = (TextView)v.findViewById(R.id.item_name);
                 final TextView tvPrice = (TextView)v.findViewById(R.id.price);
+                final ImageButton removeOrderButton = (ImageButton)v.findViewById(R.id.removeorderbutton);
                 StringBuffer elementName = new StringBuffer();
                 elementName.append(o.menuItem.getName());
                 elementName.append(" (");
@@ -1038,6 +981,13 @@ public class ComandaActivity extends FragmentActivity
 
                 tvPrice.setText(Formatter.money(o.toalPrice));
                 tvNoOfItems.setText("" + orderNumbers.get(o));
+                removeOrderButton.setOnClickListener(new OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        removeItemFromOrder(o);
+                    }
+                });
             }
 
             return v;
@@ -1065,7 +1015,7 @@ public class ComandaActivity extends FragmentActivity
             orderNumbers.put(element,1);
         }
         reviewOrdersAdapter.notifyDataSetChanged();
-        refreshAllTables();
+//        refreshAllTables();
     }
 
     private void addItemForOrder(FoodMenuItem item, int qualifierIndex){
@@ -1078,8 +1028,7 @@ public class ComandaActivity extends FragmentActivity
         }
     }
 
-    private void removeItemFromOrder(FoodMenuItem item, int qualifierIndex){
-        OrderElement element = new OrderElement(item, qualifierIndex);
+    private void removeItemFromOrder(OrderElement element){
         if(orderNumbers.containsKey(element)){
             int previousnumber = orderNumbers.get(element);
             if(previousnumber > 1){
@@ -1090,7 +1039,7 @@ public class ComandaActivity extends FragmentActivity
                 orderNumbers.remove(element);
             }
             reviewOrdersAdapter.notifyDataSetChanged();
-            refreshAllTables();
+//            refreshAllTables();
         }
         else{
             throw new IllegalStateException("Not in the order list");

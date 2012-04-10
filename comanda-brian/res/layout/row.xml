@@ -40,6 +40,7 @@
         android:layout_toLeftOf="@+id/blank"
         android:background="@drawable/button_less"
         android:paddingRight="10dip"
+        android:visibility="invisible"
         android:scaleType="fitCenter" />
 
     <LinearLayout
