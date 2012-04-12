@@ -75,7 +75,11 @@ public class SearchRestaurantsServlet extends HttpServlet
             }
             out.println(enclose(IMAGE_URL, imageURL));
             out.println(enclose(NAME, i.getName()));
+            out.println(enclose(DELIVERY_COST, new Float(i.getDeliveryCost()).toString()));
+            out.println(enclose(MINIMUM_FOR_DELIVERY, 
+                    new Float(i.getMinimumForDelivery()).toString()));
             out.println(close(RESTAURANT));
+            
         }
         out.println(close(RESTAURANT_LIST));
         // Flush writer

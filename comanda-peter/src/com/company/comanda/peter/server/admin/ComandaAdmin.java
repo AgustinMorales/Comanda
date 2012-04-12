@@ -13,7 +13,9 @@ public interface ComandaAdmin {
             String address,
             String description,
             String imageBlob,
-            String phone);
+            String phone,
+            float deliveryCost,
+            float minimumForDelivery);
     
     List<Restaurant> getRestaurants();
 }

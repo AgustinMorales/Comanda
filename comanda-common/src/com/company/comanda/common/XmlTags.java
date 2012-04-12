@@ -11,6 +11,8 @@ public class XmlTags {
         public static final String IMAGE_URL = "imageUrl";
         public static final String ID = "Id";
         public static final String NAME = "Name";
+        public static final String DELIVERY_COST = "DeliveryCost";
+        public static final String MINIMUM_FOR_DELIVERY = "MinimumForDelivery";
     }
     
     public static class CategoryList{

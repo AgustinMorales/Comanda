@@ -42,7 +42,9 @@ public class ComandaAdminImpl implements ComandaAdmin {
             String password, String description, String imageBlob,
             String phone,
             String address,
-            double latitude, double longitude) {
+            double latitude, double longitude,
+            float deliveryCost,
+            float minimumForDelivery) {
         Restaurant restaurant = null;
         if(restaurantKeyString != null){
             restaurant = ofy.get(new Key<Restaurant>(restaurantKeyString));
@@ -89,6 +91,8 @@ public class ComandaAdminImpl implements ComandaAdmin {
         restaurant.setGeoCells(cells);
         restaurant.setPhone(phone);
         restaurant.setAddress(address);
+        restaurant.setDeliveryCost(deliveryCost);
+        restaurant.setMinimumForDelivery(minimumForDelivery);
 
         ofy.put(restaurant);
 
@@ -101,7 +105,9 @@ public class ComandaAdminImpl implements ComandaAdmin {
             String restaurantKeyString, String name, String login,
             String password, String address,
             String description, String imageBlob,
-            String phone) {
+            String phone,
+            float deliveryCost,
+            float minimumForDelivery) {
         final Geocoder geocoder = new Geocoder();
         GeocoderRequest geocoderRequest = new GeocoderRequestBuilder().setAddress(address).setLanguage("es").getGeocoderRequest();
         GeocodeResponse geocoderResponse = geocoder.geocode(geocoderRequest);
@@ -117,7 +123,9 @@ public class ComandaAdminImpl implements ComandaAdmin {
                 new Object[]{address, latitude, longitude});
         return createOrModifyRestaurant(restaurantKeyString,
                 name, login, password, description, 
-                imageBlob, phone, address, latitude, longitude);
+                imageBlob, phone, address, latitude, longitude,
+                deliveryCost,
+                minimumForDelivery);
     }
 
 
