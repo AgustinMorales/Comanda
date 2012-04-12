@@ -350,4 +350,7 @@ public class UIEditMenuItem extends Composite {
         btnCancel.setEnabled(true);
     }
 	
+    public void setCategory(int index){
+        lbCategory.setSelectedIndex(index);
+    }
 }

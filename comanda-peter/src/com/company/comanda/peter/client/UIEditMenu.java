@@ -40,6 +40,7 @@ public class UIEditMenu extends Composite {
     private DialogBox dialogBox;
     private UIEditMenuItem newMenuItemPanel;
     private UIMenuTable[] menuTables;
+    private int selectedCategoryIndex;
 
     interface UIEditMenuUiBinder extends UiBinder<Widget, UIEditMenu> {
     }
@@ -140,7 +141,9 @@ public class UIEditMenu extends Composite {
 	@UiHandler("btnNewItem")
 	void onBtnNewItemClick(ClickEvent event) {
 		newMenuItemPanel.reset();
-        dialogBox.center();
+		dialogBox.center();
+		newMenuItemPanel.setCategory(selectedCategoryIndex);
+        
 	}
 	
 	public void refreshTable(){
@@ -154,6 +157,8 @@ public class UIEditMenu extends Composite {
             newMenuItemPanel.reset();
             newMenuItemPanel.setData(selectedSet.iterator().next());
             dialogBox.center();
+            newMenuItemPanel.setCategory(selectedCategoryIndex);
+            
         }
 	}
 	@UiHandler("btnDeleteItem")
@@ -187,5 +192,6 @@ public class UIEditMenu extends Composite {
     void onTabPanelCategoriesSelection(SelectionEvent<Integer> event) {
         refreshTable();
         selectionModel.clear();
+        selectedCategoryIndex = event.getSelectedItem();
     }
 }
