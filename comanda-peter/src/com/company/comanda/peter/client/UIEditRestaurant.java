@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.DoubleBox;
 
 public class UIEditRestaurant extends Composite {
 
@@ -33,6 +34,8 @@ public class UIEditRestaurant extends Composite {
     @UiField TextBox tbPhone;
     @UiField TextBox tbRestaurantKeyString;
     @UiField Button btnCancel;
+    @UiField DoubleBox dbDeliveryCost;
+    @UiField DoubleBox dbMinimumForDelivery;
     
     private NewRestaurantHandler handler;
 
@@ -131,6 +134,16 @@ public class UIEditRestaurant extends Composite {
         tbAddress.setValue(data[3]);
         tbPhone.setValue(data[4]);
         taDescription.setValue(data[5]);
+        float deliveryCost = 0;
+        if(data[6] != null && data[6].length() > 0){
+            deliveryCost = Float.parseFloat(data[6]);
+        }
+        float minimumForDelivery = 0;
+        if(data[7] != null && data[7].length() > 0){
+            minimumForDelivery = Float.parseFloat(data[7]);
+        }
+        dbDeliveryCost.setValue((double)deliveryCost);
+        dbMinimumForDelivery.setValue((double)minimumForDelivery);
     }
     
     public void reset(){
