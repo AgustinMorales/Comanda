@@ -6,4 +6,6 @@ public class Restaurant {
     public String name;
     public String description;
     public String imageURL;
+    public float deliveryCost;
+    public float minimumForDelivery;
 }

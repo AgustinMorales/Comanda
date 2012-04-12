@@ -24,6 +24,8 @@ public class RestaurantListHandler extends ComandaXMLHandler<ArrayList<Restauran
     private boolean in_name = false;
     private boolean in_id = false;
     private boolean in_image = false;
+    private boolean in_delivery_cost = false;
+    private boolean in_minimum_for_delivery = false;
 
     private Restaurant item = null;
 
@@ -73,6 +75,14 @@ public class RestaurantListHandler extends ComandaXMLHandler<ArrayList<Restauran
         {
             this.in_image = true;
         }
+        else if (localName.equals(DELIVERY_COST)) 
+        {
+            this.in_delivery_cost = true;
+        }
+        else if (localName.equals(MINIMUM_FOR_DELIVERY)) 
+        {
+            this.in_minimum_for_delivery = true;
+        }
     }
 
     /** Gets be called on closing tags like: 
@@ -97,6 +107,14 @@ public class RestaurantListHandler extends ComandaXMLHandler<ArrayList<Restauran
         {
             this.in_image = false;
         }
+        else if (localName.equals(DELIVERY_COST)) 
+        {
+            this.in_delivery_cost = false;
+        }
+        else if (localName.equals(MINIMUM_FOR_DELIVERY)) 
+        {
+            this.in_minimum_for_delivery = false;
+        }
     }
 
     /** Gets be called on the following structure: 
@@ -119,6 +137,14 @@ public class RestaurantListHandler extends ComandaXMLHandler<ArrayList<Restauran
             else if(this.in_image){
                 log.debug("ImageURL: {}", textBetween);
                 item.imageURL = textBetween;
+            }
+            else if(this.in_delivery_cost){
+                log.debug("Delivery cost: {}", textBetween);
+                item.deliveryCost = Float.parseFloat(textBetween);
+            }
+            else if(this.in_minimum_for_delivery){
+                log.debug("Minimum for delivery: {}", textBetween);
+                item.minimumForDelivery = Float.parseFloat(textBetween);
             }
         }
     }

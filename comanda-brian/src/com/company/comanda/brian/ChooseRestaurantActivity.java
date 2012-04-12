@@ -134,6 +134,10 @@ public class ChooseRestaurantActivity extends ListActivity {
                         address);
                 intent.putExtra(ComandaActivity.EXTRA_ADDRESS_DETAILS, 
                         addressDetails);
+                intent.putExtra(ComandaActivity.EXTRA_DELIVERY_COST, 
+                        restaurant.deliveryCost);
+                intent.putExtra(ComandaActivity.EXTRA_MINIMUM_FOR_DELIVERY, 
+                        restaurant.minimumForDelivery);
                 startActivityForResult(intent, PLACE_ORDER_CODE);
             }
         });

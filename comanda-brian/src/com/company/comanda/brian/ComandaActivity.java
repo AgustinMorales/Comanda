@@ -41,6 +41,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -77,6 +78,8 @@ public class ComandaActivity extends FragmentActivity
     private String restId;
     private String address;
     private String addressDetails;
+    private float deliveryCost;
+    private float minimumForDelivery;
 
     private HashMap<Long, Category> categoriesMap = new HashMap<Long, Category>();
 
@@ -215,6 +218,8 @@ public class ComandaActivity extends FragmentActivity
     public static final String EXTRA_REST_ID = "restaurantId";
     public static final String EXTRA_NICE_ADDRESS = "niceAddress";
     public static final String EXTRA_ADDRESS_DETAILS = "addressDetails";
+    public static final String EXTRA_DELIVERY_COST = "deliveryCost";
+    public static final String EXTRA_MINIMUM_FOR_DELIVERY = "minimumForDelivery";
 
 
     SharedPreferences prefs;
@@ -231,6 +236,8 @@ public class ComandaActivity extends FragmentActivity
         restId = extras.getString(EXTRA_REST_ID);
         address = extras.getString(EXTRA_NICE_ADDRESS);
         addressDetails = extras.getString(EXTRA_ADDRESS_DETAILS);
+        deliveryCost = extras.getFloat(EXTRA_DELIVERY_COST);
+        minimumForDelivery = extras.getFloat(EXTRA_MINIMUM_FOR_DELIVERY);
 
         //FIXME: This wouldn't work on not Euro-locales
 
@@ -698,11 +705,16 @@ public class ComandaActivity extends FragmentActivity
                 }
             });
 
+            final TextView tvDeliveryCost = (TextView) result.findViewById(R.id.tvDeliveryCost);
+            final LinearLayout deliveryCostPanel = (LinearLayout) result.findViewById(R.id.deliveryCostPanel);
+            tvDeliveryCost.setText(Formatter.money(deliveryCost));
             if(orderItems.size() == 0){
                 commitOrderButton.setEnabled(false);
+                deliveryCostPanel.setVisibility(View.GONE);
             }
             else{
                 commitOrderButton.setEnabled(true);
+                deliveryCostPanel.setVisibility(View.VISIBLE);
             }
             tvTotalAmount = (TextView)dialog.findViewById(R.id.tvTotalAmount);
             reviewOrdersAdapter.registerDataSetObserver(new DataSetObserver() {
@@ -711,9 +723,11 @@ public class ComandaActivity extends FragmentActivity
                 public void onChanged() {
                     if(orderItems.size() > 0){
                         commitOrderButton.setEnabled(true);
+                        deliveryCostPanel.setVisibility(View.VISIBLE);
                     }
                     else{
                         commitOrderButton.setEnabled(false);
+                        deliveryCostPanel.setVisibility(View.GONE);
                     }
                     refreshTotalAmount();
                 }
@@ -787,6 +801,9 @@ public class ComandaActivity extends FragmentActivity
             for(OrderElement currentElement : orderItems){
                 total = total + currentElement.toalPrice * orderNumbers.get(currentElement);
             }
+            if(orderItems.size() > 0){
+                total = total + deliveryCost;
+            }
             if(tvTotalAmount != null){
                 tvTotalAmount.setText(Formatter.money(total));
             }
@@ -813,6 +830,7 @@ public class ComandaActivity extends FragmentActivity
             LayoutHelper.dialog_fill_parent(dialog);
         }
         else if(id == REVIEW_ORDER_DIALOG){
+            
             LayoutHelper.dialog_fill_parent(dialog);
         }
         else if(id == ADD_CHOOSE_QUALIFIER_DIALOG){
