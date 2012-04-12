@@ -27,9 +27,11 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.company.comanda.brian.helpers.AsyncGetData;
+import com.company.comanda.brian.helpers.Formatter;
 import com.company.comanda.brian.model.Restaurant;
 import com.company.comanda.brian.xmlhandlers.RestaurantListHandler;
 import com.company.comanda.common.HttpParams.SearchRestaurants;
@@ -176,11 +178,29 @@ public class ChooseRestaurantActivity extends ListActivity {
             {
                 //Set all of the UI components 
                 //with the respective Object data
-                TextView tt = (TextView) v.findViewById(R.id.toptext);
+                final TextView tt = (TextView) v.findViewById(R.id.toptext);
+                final TextView tvDeliveryCost = (TextView) v.findViewById(R.id.tvDeliveryCost);
+                final TextView tvMinimumOrder = (TextView) v.findViewById(R.id.tvMinimumOrder);
+                final LinearLayout deliveryCostPanel = (LinearLayout) v.findViewById(R.id.deliveryCostPanel);
+                final LinearLayout minimumOrderPanel = (LinearLayout) v.findViewById(R.id.minimumOrderPanel);
                 final String restaurantName = o.name;
                 if (tt != null)
                 {
                     tt.setText(restaurantName);   
+                }
+                if(o.deliveryCost > 0){
+                    deliveryCostPanel.setVisibility(View.VISIBLE);
+                    tvDeliveryCost.setText(Formatter.money(o.deliveryCost));
+                }
+                else{
+                    deliveryCostPanel.setVisibility(View.GONE);
+                }
+                if(o.minimumForDelivery > 0){
+                    minimumOrderPanel.setVisibility(View.VISIBLE);
+                    tvMinimumOrder.setText(Formatter.money(o.minimumForDelivery));
+                }
+                else{
+                    minimumOrderPanel.setVisibility(View.GONE);
                 }
                 if(o.imageURL != null && o.imageURL.length() > 0){
                     Bitmap bitmap = null;

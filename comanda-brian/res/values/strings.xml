@@ -73,5 +73,6 @@
     <string name="orderRejectedOutOfSomething">Out of goods</string>
     <string name="orderRejectedOverload">Restaurant\'s overload</string>
     <string name="delivery_cost">Delivery cost:</string>
+    <string name="minimum_order">Minimum order:</string>
     
 </resources>
