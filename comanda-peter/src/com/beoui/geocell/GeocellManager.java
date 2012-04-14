@@ -18,6 +18,7 @@ import com.beoui.geocell.model.DefaultCostFunction;
 import com.beoui.geocell.model.LocationCapable;
 import com.beoui.geocell.model.Point;
 import com.beoui.geocell.model.Tuple;
+import com.company.comanda.peter.server.model.Restaurant;
 
 /**
 #
@@ -267,7 +268,9 @@ public class GeocellManager {
             // search center along with the search result itself, in a tuple.
             List<LocationComparableTuple<T>> newResults = new ArrayList<LocationComparableTuple<T>>();
             for(T entity : newResultEntities) {
-                newResults.add(new LocationComparableTuple<T>(entity, GeocellUtils.distance(center, entity.getLocation())));
+                if(closestPossibleNextResultDist < ((Restaurant)entity).getMaxDeliveryDistance()){
+                    newResults.add(new LocationComparableTuple<T>(entity, GeocellUtils.distance(center, entity.getLocation())));
+                }
             }
             // TODO (Alex) we can optimize here. Sort is needed only if new_results.size() > max_results.
             Collections.sort(newResults);

@@ -58,6 +58,7 @@ public class NewRestaurantServlet extends HttpServlet{
         String deliveryCostString = req.getParameter("deliveryCost");
         String minimumForDeliveryString = req.getParameter("minimumForDelivery");
         String copyFromRestKeyString = req.getParameter("copyFromRestKeyString");
+        String maxDeliveryDistanceString = req.getParameter("maxDeliveryDistance");
         String imageBlobKey = null;
         List<BlobKey> blobKeyList = null;
         try{
@@ -80,8 +81,12 @@ public class NewRestaurantServlet extends HttpServlet{
         if(copyFromRestKeyString != null && copyFromRestKeyString.length() == 0){
             copyFromRestKeyString = null;
         }
+        if(maxDeliveryDistanceString == null || maxDeliveryDistanceString.length() == 0){
+            maxDeliveryDistanceString = "0.0";
+        }
         float deliveryCost = Float.parseFloat(deliveryCostString);
         float minimumForDelivery = Float.parseFloat(minimumForDeliveryString);
+        double maxDeliveryDistance = Double.parseDouble(maxDeliveryDistanceString);
         admin.createOrModifyRestaurant(restaurantKeyString,
                 name, login, 
                 password, address, 
@@ -89,6 +94,7 @@ public class NewRestaurantServlet extends HttpServlet{
                 phone,
                 deliveryCost,
                 minimumForDelivery,
+                maxDeliveryDistance,
                 copyFromRestKeyString);
         
         PrintWriter out = resp.getWriter();

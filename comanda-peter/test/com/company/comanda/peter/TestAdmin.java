@@ -86,13 +86,13 @@ public class TestAdmin {
     public void testGeoCreateRestaurant(){
         final long sevillaId = admin.createOrModifyRestaurant(null,"Sevillano",
                 "sevillano", "sevillano", "Puerto de envalira, 1, Sevilla", 
-                "description", null, "678",0,0, null);
+                "description", null, "678",0,0, 10000, null);
         final long madrid1Id = admin.createOrModifyRestaurant(null, "En Madrid",
                 "madrid", "madrid", "Lola Membrives, 13, Madrid", 
-                "Description - Madrid", null, "678",0,3, null);
+                "Description - Madrid", null, "678",0,3, 100000, null);
         final long madrid2Id = admin.createOrModifyRestaurant(null, "Otro de madrid",
                 "madrid2", "madrid", "Lola Membrives, 12, Madrid",
-                "description", null, "678",0,4, null);
+                "description", null, "678",0,4, 100000, null);
         
         final UserManager userManager = 
                 injector.getInstance(UserManager.class);
@@ -126,11 +126,11 @@ public class TestAdmin {
         final long madrid1Id = admin.createOrModifyRestaurant(null,"En Madrid",
                 "madrid", "madrid", "Lola Membrives, 13, Madrid", 
                 "Description - Madrid", null, "678", 10,
-                20, null);
+                20, 0, null);
         try{
             final long madrid2Id = admin.createOrModifyRestaurant(null, "Otro de madrid",
                     "madrid", "madrid", "Lola Membrives, 12, Madrid",
-                    "description", null, "678",1,10, null);
+                    "description", null, "678",1,10, 0, null);
             Assert.fail();
         }
         catch(IllegalArgumentException e){
@@ -140,14 +140,14 @@ public class TestAdmin {
     public void testModify(){
         final long madrid1Id = admin.createOrModifyRestaurant(null,"En Madrid",
                 "madrid", "madrid", "Lola Membrives, 13, Madrid", 
-                "Description - Madrid", null, "678",2,3, null);
+                "Description - Madrid", null, "678",2,3, 0, null);
         List<Restaurant> restaurants = admin.getRestaurants();
         Assert.assertEquals(restaurants.size(), 1);
         Restaurant restaurant = restaurants.get(0);
         Assert.assertEquals(restaurant.getPhone(), "678");
         final long madridId2 = admin.createOrModifyRestaurant(
                 restaurant.getKeyString(), "Otro", "loginOtro", null, "yoquese"
-                , "descriptiooooon", null, "456",3,10, null);
+                , "descriptiooooon", null, "456",3,10, 0, null);
         Assert.assertEquals(madrid1Id, madridId2);
         
         restaurants = admin.getRestaurants();
@@ -159,7 +159,7 @@ public class TestAdmin {
     public void testCopy(){
         final long madridId = admin.createOrModifyRestaurant(null,"En Madrid",
                 "madrid", "madrid", "Lola Membrives, 13, Madrid", 
-                "Description - Madrid", null, "678",2,3, null);
+                "Description - Madrid", null, "678",2,3, 0, null);
         List<Restaurant> restaurants = admin.getRestaurants();
         Assert.assertEquals(restaurants.size(), 1);
         Restaurant madridRestaurant = restaurants.get(0);
@@ -173,7 +173,7 @@ public class TestAdmin {
                 new ArrayList<String>(), new ArrayList<Float>(), null);
         
         final long sevillaId = admin.createOrModifyRestaurant(null, "sevilla", "sevilla", "sevilla", 
-                "Puerto de Envalira, 2, Sevilla", "Description - Sevilla", null, "567", 4, 5,
+                "Puerto de Envalira, 2, Sevilla", "Description - Sevilla", null, "567", 4, 5, 0,
                 madridRestaurant.getKeyString());
         
         Restaurant sevillaRestaurant = ofy.get(new Key<Restaurant>(Restaurant.class, sevillaId));

@@ -118,7 +118,7 @@ public class TestUserManager {
                 "name", REST_NAME, REST_PASSWORD,
                 "Avenida Kansas City, 1, Sevilla",
                 "Description", null,
-                "678",0,0, null);
+                "678",0,0, 10000, null);
         
     }
     
@@ -479,5 +479,23 @@ public class TestUserManager {
                 DOS_HERMANAS_LATITUDE, DOS_HERMANAS_LONGITUDE, 10, 100000);
         
         assertEquals(1, restaurants.size());
+    }
+    
+    @Test
+    public void testSmallDeliveryRadius(){
+        injector.getInstance(ComandaAdmin.class).createOrModifyRestaurant(null, 
+                "Corto radio", "corto", "corto", "Avenida Kansas City, 2, Sevilla",
+                "description", null, "673", 1, 3, 1000, null);
+        List<Restaurant> restaurants = userManager.searchRestaurant(
+                DOS_HERMANAS_LATITUDE, DOS_HERMANAS_LONGITUDE, 10, 100000);
+        
+        assertEquals(1, restaurants.size());
+        assertEquals("name", restaurants.get(0).getName());
+        restaurants = userManager.searchRestaurant(
+                NERVION_LATITUDE, NERVION_LONGITUDE, 10, 100000);
+        
+        assertEquals(2, restaurants.size());
+        Assert.assertNotSame(restaurants.get(0).getName(), 
+                restaurants.get(1).getName());
     }
 }

@@ -29,6 +29,7 @@ public class Restaurant implements LocationCapable{
     private String address;
     private float deliveryCost;
     private float minimumForDelivery;
+    private double maxDeliveryDistance;
     
 
     public Long getId() {
@@ -160,6 +161,14 @@ public class Restaurant implements LocationCapable{
 
     public void setMinimumForDelivery(float minimumForDelivery) {
         this.minimumForDelivery = minimumForDelivery;
+    }
+
+    public double getMaxDeliveryDistance() {
+        return maxDeliveryDistance;
+    }
+
+    public void setMaxDeliveryDistance(double maxDeliveryDistance) {
+        this.maxDeliveryDistance = maxDeliveryDistance;
     }
     
     

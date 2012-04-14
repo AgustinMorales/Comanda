@@ -16,6 +16,7 @@ public interface ComandaAdmin {
             String phone,
             float deliveryCost,
             float minimumForDelivery,
+            double maxDeliveryDistance,
             String copyMenuItemsFromRestKeyString);
     
     List<Restaurant> getRestaurants();

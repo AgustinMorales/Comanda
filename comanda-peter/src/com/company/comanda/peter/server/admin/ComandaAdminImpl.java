@@ -49,6 +49,7 @@ public class ComandaAdminImpl implements ComandaAdmin {
             double latitude, double longitude,
             float deliveryCost,
             float minimumForDelivery,
+            double maxDeliveryDistance,
             String copyMenuItemsFromRestKeyString) {
         Restaurant restaurant = null;
         if(restaurantKeyString != null){
@@ -97,6 +98,7 @@ public class ComandaAdminImpl implements ComandaAdmin {
         restaurant.setPhone(phone);
         restaurant.setAddress(address);
         restaurant.setDeliveryCost(deliveryCost);
+        restaurant.setMaxDeliveryDistance(maxDeliveryDistance);
         restaurant.setMinimumForDelivery(minimumForDelivery);
 
         ofy.put(restaurant);
@@ -116,6 +118,7 @@ public class ComandaAdminImpl implements ComandaAdmin {
             String phone,
             float deliveryCost,
             float minimumForDelivery,
+            double maxDeliveryDistance,
             String copyMenuItemsFromRestKeyString) {
         final Geocoder geocoder = new Geocoder();
         GeocoderRequest geocoderRequest = new GeocoderRequestBuilder().setAddress(address).setLanguage("es").getGeocoderRequest();
@@ -135,6 +138,7 @@ public class ComandaAdminImpl implements ComandaAdmin {
                 imageBlob, phone, address, latitude, longitude,
                 deliveryCost,
                 minimumForDelivery,
+                maxDeliveryDistance,
                 copyMenuItemsFromRestKeyString);
     }
 
