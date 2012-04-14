@@ -37,15 +37,15 @@ public class GetItemsServlet extends HttpServlet
      * 
      */
     private static final long serialVersionUID = 5142871744485848351L;
-    
+
     private static final Logger log = LoggerFactory.getLogger(GetItemsServlet.class);
     private UserManager userManager;
-    
+
     @Inject
     public GetItemsServlet(UserManager userManager){
         this.userManager = userManager;
     }
-    
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -59,7 +59,7 @@ public class GetItemsServlet extends HttpServlet
         ServletHelper.logParameters(req, log);
         String restaurantId = req.getParameter(PARAM_RESTAURANT_ID);
         List<MenuItem> items = userManager.getMenuItems(Long.parseLong(restaurantId));
-        
+
         PrintWriter out = ServletHelper.getXmlWriter(resp);
         out.println(open(ITEM_LIST));
         //loop through items list and print each item
@@ -74,17 +74,19 @@ public class GetItemsServlet extends HttpServlet
             out.println(enclose(CATEGORY_ID, "" + i.getCategory().getId()));
             //TODO: Get all prices
             for(Float price : i.getPrices()){
-            	out.println(enclose(MenuItemList.PRICE, price.toString()));
+                out.println(enclose(MenuItemList.PRICE, price.toString()));
             }
             for(String qualifier: i.getQualifiers()){
-            	out.println(enclose(MenuItemList.QUALIFIER, qualifier));
+                out.println(enclose(MenuItemList.QUALIFIER, qualifier));
             }
             out.println(enclose(MenuItemList.EXTRAS_GLOBAL_NAME, i.getExtrasName()));
-            for(String extraName : i.getExtras()){
-                out.println(enclose(MenuItemList.EXTRA_NAME,extraName));
-            }
-            for(Float extraPrice : i.getExtrasPrice()){
-                out.println(enclose(MenuItemList.EXTRA_PRICE, extraPrice.toString()));
+            if(i.getExtras() != null){
+                for(String extraName : i.getExtras()){
+                    out.println(enclose(MenuItemList.EXTRA_NAME,extraName));
+                }
+                for(Float extraPrice : i.getExtrasPrice()){
+                    out.println(enclose(MenuItemList.EXTRA_PRICE, extraPrice.toString()));
+                }
             }
             out.println(close(ITEM));
         }
