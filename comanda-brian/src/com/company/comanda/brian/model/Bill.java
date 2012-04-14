@@ -14,4 +14,5 @@ public class Bill {
     public String comments;
     public Date openDate;
     public Date estimatedDeliveryDate;
+    public float deliveryCost;
 }

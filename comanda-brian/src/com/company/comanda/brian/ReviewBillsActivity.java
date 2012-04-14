@@ -51,6 +51,7 @@ public class ReviewBillsActivity extends ListActivity {
     private TextView tvState;
     private TextView tvDeliveryAddress;
     private TextView tvTotalAmount;
+    private TextView tvDeliveryCost;
 
     public static final String EXTRA_USER_ID = "userId";
     public static final String EXTRA_PASSWORD = "password";
@@ -394,6 +395,7 @@ public class ReviewBillsActivity extends ListActivity {
             tvState = (TextView)result.findViewById(R.id.tvState);
             tvDeliveryAddress = (TextView)result.findViewById(R.id.tvDeliveryAddress);
             tvTotalAmount = (TextView)result.findViewById(R.id.tvTotalAmount);
+            tvDeliveryCost = (TextView) result.findViewById(R.id.tvDeliveryCost);
             final Button btnClose = (Button)result.findViewById(R.id.btnClose);
             btnClose.setOnClickListener(new OnClickListener() {
 
@@ -422,7 +424,7 @@ public class ReviewBillsActivity extends ListActivity {
                 tvDeliveryAddress.setText(selectedBill.address);
                 tvOrderDate.setText(Formatter.formatToYesterdayOrToday(selectedBill.openDate, this));
                 tvTotalAmount.setText(Formatter.money(selectedBill.totalAmount));
-
+                tvDeliveryCost.setText(Formatter.money(selectedBill.deliveryCost));
                 final ArrayList<Order> orders = ordersMap.get(selectedBillKeyString);
 
                 ArrayAdapter<Order> ordersAdapter = new OrdersAdapter(this, R.layout.order_row, orders);

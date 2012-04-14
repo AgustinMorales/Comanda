@@ -28,6 +28,7 @@ public class Bill {
     private String comments;
     private float totalAmount;
     private String phoneNumber;
+    private float deliveryCost;
    
     
     public Long getId() {
@@ -123,6 +124,12 @@ public class Bill {
     }
     public void setEstimatedDeliveryDate(Date estimatedDeliveryDate) {
         this.estimatedDeliveryDate = estimatedDeliveryDate;
+    }
+    public float getDeliveryCost() {
+        return deliveryCost;
+    }
+    public void setDeliveryCost(float deliveryCost) {
+        this.deliveryCost = deliveryCost;
     }
     
 }

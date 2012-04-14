@@ -81,5 +81,6 @@ public class XmlTags {
         public static final String COMMENTS = "Comments";
         public static final String OPEN_DATE = "OpenDate";
         public static final String ESTIMATED_DELIVERY_DATE = "EstDelivDate";
+        public static final String DELIVERY_COST = "DeliveryCost";
     }
 }

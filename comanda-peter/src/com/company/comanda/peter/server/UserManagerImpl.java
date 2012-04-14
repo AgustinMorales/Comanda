@@ -75,7 +75,8 @@ public class UserManagerImpl implements UserManager {
         User user = ofy.get(userKey);
         final Key<Restaurant> restaurantKey = new Key<Restaurant>(
                 Restaurant.class,restaurantId);
-        final String restaurantName = ofy.get(restaurantKey).getName();
+        Restaurant restaurant = ofy.get(restaurantKey);
+        final String restaurantName = restaurant.getName();
         Key<Table> tableKey = null;
         Table table = null;
         if(type == BillType.IN_RESTAURANT){
@@ -109,6 +110,7 @@ public class UserManagerImpl implements UserManager {
             bill.setRestaurantName(restaurantName);
             bill.setState(BillState.OPEN);
             bill.setPhoneNumber(user.getPhoneNumber());
+            bill.setDeliveryCost(restaurant.getDeliveryCost());
             ofy.put(bill);
         }
         
@@ -156,6 +158,7 @@ public class UserManagerImpl implements UserManager {
             newOrders.add(newOrder);
             totalAmount = totalAmount + totalPrice*currentNoOfItems;
         }
+        totalAmount = totalAmount + restaurant.getDeliveryCost();
         bill.setTotalAmount(totalAmount);
         ofy.put(bill);
         ofy.put(newOrders);
