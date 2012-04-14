@@ -45,7 +45,8 @@ implements AdminService {
                     restaurant.getPhone(),
                     restaurant.getDescription(),
                     "" + restaurant.getDeliveryCost(),
-                    "" + restaurant.getMinimumForDelivery()
+                    "" + restaurant.getMinimumForDelivery(),
+                    "" + restaurant.getMaxDeliveryDistance()
             });
         }
         return new PagedResult<String[]>(result, total);

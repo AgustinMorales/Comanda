@@ -37,6 +37,7 @@ public class UIEditRestaurant extends Composite {
     @UiField DoubleBox dbDeliveryCost;
     @UiField DoubleBox dbMinimumForDelivery;
     @UiField TextBox tbCopyFromRestKeyString;
+    @UiField DoubleBox dbMaxDeliveryDistance;
     
     private NewRestaurantHandler handler;
 
@@ -143,8 +144,13 @@ public class UIEditRestaurant extends Composite {
         if(data[7] != null && data[7].length() > 0){
             minimumForDelivery = Float.parseFloat(data[7]);
         }
+        double maxDeliveryDistance = 0.0;
+        if(data[8] != null && data[8].length() > 0){
+            maxDeliveryDistance = Double.parseDouble(data[8]);
+        }
         dbDeliveryCost.setValue((double)deliveryCost);
         dbMinimumForDelivery.setValue((double)minimumForDelivery);
+        dbMaxDeliveryDistance.setValue(maxDeliveryDistance);
     }
     
     public void reset(){
