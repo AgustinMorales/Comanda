@@ -1,15 +1,19 @@
 package com.company.comanda.peter.server.admin;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import org.junit.experimental.categories.Categories;
 import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.beoui.geocell.GeocellManager;
 import com.beoui.geocell.model.Point;
+import com.company.comanda.peter.server.model.MenuCategory;
+import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Restaurant;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.images.ImagesService;
@@ -44,7 +48,8 @@ public class ComandaAdminImpl implements ComandaAdmin {
             String address,
             double latitude, double longitude,
             float deliveryCost,
-            float minimumForDelivery) {
+            float minimumForDelivery,
+            String copyMenuItemsFromRestKeyString) {
         Restaurant restaurant = null;
         if(restaurantKeyString != null){
             restaurant = ofy.get(new Key<Restaurant>(restaurantKeyString));
@@ -79,7 +84,7 @@ public class ComandaAdminImpl implements ComandaAdmin {
         if(password != null){
             String hashedPassword = BCrypt.hashpw(password, 
                     BCrypt.gensalt());
-    
+
             restaurant.setHashedPassword(hashedPassword);
         }
         Point point = new Point(latitude, longitude);
@@ -96,6 +101,9 @@ public class ComandaAdminImpl implements ComandaAdmin {
 
         ofy.put(restaurant);
 
+        if(copyMenuItemsFromRestKeyString != null){
+            copyFromRestaurant(restaurant, copyMenuItemsFromRestKeyString);
+        }
         return restaurant.getId();
 
     }
@@ -107,7 +115,8 @@ public class ComandaAdminImpl implements ComandaAdmin {
             String description, String imageBlob,
             String phone,
             float deliveryCost,
-            float minimumForDelivery) {
+            float minimumForDelivery,
+            String copyMenuItemsFromRestKeyString) {
         final Geocoder geocoder = new Geocoder();
         GeocoderRequest geocoderRequest = new GeocoderRequestBuilder().setAddress(address).setLanguage("es").getGeocoderRequest();
         GeocodeResponse geocoderResponse = geocoder.geocode(geocoderRequest);
@@ -125,7 +134,8 @@ public class ComandaAdminImpl implements ComandaAdmin {
                 name, login, password, description, 
                 imageBlob, phone, address, latitude, longitude,
                 deliveryCost,
-                minimumForDelivery);
+                minimumForDelivery,
+                copyMenuItemsFromRestKeyString);
     }
 
 
@@ -134,4 +144,36 @@ public class ComandaAdminImpl implements ComandaAdmin {
         return ofy.query(Restaurant.class).list();
     }
 
+    private void copyFromRestaurant(Restaurant to, String fromKeyString){
+        Key<Restaurant> fromKey = new Key<Restaurant>(fromKeyString);
+        Key<Restaurant> toKey = new Key<Restaurant>(Restaurant.class, to.getId());
+        List<MenuCategory> categories = ofy.query(
+                MenuCategory.class).ancestor(fromKey).list();
+        List<MenuItem> menuItems = ofy.query(MenuItem.class).ancestor(fromKey).list();
+        HashMap<Key<MenuCategory>, MenuCategory> categoriesMap = 
+                new HashMap<Key<MenuCategory>, MenuCategory>(categories.size());
+        if(categories.size() == 0){
+            log.warn("Zero categories for source restaurant: {}", fromKeyString);
+        }
+        for(MenuCategory category : categories){
+            Key<MenuCategory> key = new Key<MenuCategory>(fromKey, 
+                    MenuCategory.class, category.getId());
+            category.setId(null);
+            category.setRestaurant(toKey);
+            categoriesMap.put(key, category);
+        }
+        ofy.put(categories);
+        for(MenuItem menuItem : menuItems){
+            menuItem.setId(null);
+            menuItem.setParent(toKey);
+            MenuCategory newCategory = categoriesMap.get(menuItem.getCategory());
+            Key<MenuCategory> categoryKey = 
+                    new Key<MenuCategory>(toKey, MenuCategory.class, newCategory.getId());
+            log.debug("Setting new category: {} for item: {}", 
+                    categoryKey, menuItem.getName());
+            menuItem.setCategory(categoryKey);
+        }
+        ofy.put(menuItems);
+
+    }
 }

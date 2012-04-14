@@ -57,6 +57,7 @@ public class NewRestaurantServlet extends HttpServlet{
         String restaurantKeyString = req.getParameter("restaurantKeyString");
         String deliveryCostString = req.getParameter("deliveryCost");
         String minimumForDeliveryString = req.getParameter("minimumForDelivery");
+        String copyFromRestKeyString = req.getParameter("copyFromRestKeyString");
         String imageBlobKey = null;
         List<BlobKey> blobKeyList = null;
         try{
@@ -76,6 +77,9 @@ public class NewRestaurantServlet extends HttpServlet{
         if(restaurantKeyString != null && restaurantKeyString.length() == 0){
             restaurantKeyString = null;
         }
+        if(copyFromRestKeyString != null && copyFromRestKeyString.length() == 0){
+            copyFromRestKeyString = null;
+        }
         float deliveryCost = Float.parseFloat(deliveryCostString);
         float minimumForDelivery = Float.parseFloat(minimumForDeliveryString);
         admin.createOrModifyRestaurant(restaurantKeyString,
@@ -84,7 +88,8 @@ public class NewRestaurantServlet extends HttpServlet{
                 description, imageBlobKey,
                 phone,
                 deliveryCost,
-                minimumForDelivery);
+                minimumForDelivery,
+                copyFromRestKeyString);
         
         PrintWriter out = resp.getWriter();
         out.print("SUCCESS");

@@ -78,6 +78,9 @@
 				<g:at left="25" top="379">
 					<g:Label text="Pedido mínimo:"/>
 				</g:at>
+				<g:at left="126" top="10">
+					<g:TextBox name="copyFromRestKeyString" ui:field="tbCopyFromRestKeyString" visible="false"/>
+				</g:at>
 			</g:AbsolutePanel>
 		</g:FormPanel>
 	</g:HTMLPanel>

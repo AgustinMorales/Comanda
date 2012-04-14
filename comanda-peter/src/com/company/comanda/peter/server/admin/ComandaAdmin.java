@@ -15,7 +15,8 @@ public interface ComandaAdmin {
             String imageBlob,
             String phone,
             float deliveryCost,
-            float minimumForDelivery);
+            float minimumForDelivery,
+            String copyMenuItemsFromRestKeyString);
     
     List<Restaurant> getRestaurants();
 }

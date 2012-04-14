@@ -118,7 +118,7 @@ public class TestUserManager {
                 "name", REST_NAME, REST_PASSWORD,
                 "Avenida Kansas City, 1, Sevilla",
                 "Description", null,
-                "678",0,0);
+                "678",0,0, null);
         
     }
     

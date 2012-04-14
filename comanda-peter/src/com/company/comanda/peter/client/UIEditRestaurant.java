@@ -36,6 +36,7 @@ public class UIEditRestaurant extends Composite {
     @UiField Button btnCancel;
     @UiField DoubleBox dbDeliveryCost;
     @UiField DoubleBox dbMinimumForDelivery;
+    @UiField TextBox tbCopyFromRestKeyString;
     
     private NewRestaurantHandler handler;
 
@@ -152,5 +153,10 @@ public class UIEditRestaurant extends Composite {
     @UiHandler("btnCancel")
     void onBtnCancelClick(ClickEvent event) {
         handler.onCancel();
+    }
+    
+    public void setCopy(){
+        tbCopyFromRestKeyString.setText(tbRestaurantKeyString.getText());
+        tbRestaurantKeyString.setText("");
     }
 }

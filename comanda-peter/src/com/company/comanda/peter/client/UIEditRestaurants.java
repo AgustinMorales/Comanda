@@ -45,6 +45,7 @@ public class UIEditRestaurants extends Composite {
     @UiField Button btnDeleteRestaurant;
     @UiField CellTable restaurantsTable;
     @UiField SimplePager restaurantsPager;
+    @UiField Button btnCopy;
     private DialogBox dialogBox;
     private UIEditRestaurant editRestaurantPanel;
     private MultiSelectionModel<String[]> selectionModel;
@@ -168,14 +169,17 @@ public class UIEditRestaurants extends Composite {
                 case 0:
                     btnDeleteRestaurant.setEnabled(false);
                     btnEditRestaurant.setEnabled(false);
+                    btnCopy.setEnabled(false);
                     break;
                 case 1:
                     btnDeleteRestaurant.setEnabled(true);
                     btnEditRestaurant.setEnabled(true);
+                    btnCopy.setEnabled(true);
                     break;
                 default:
                     btnDeleteRestaurant.setEnabled(true);
                     btnEditRestaurant.setEnabled(false);
+                    btnCopy.setEnabled(false);
                     break;
                 }
 
@@ -208,7 +212,19 @@ public class UIEditRestaurants extends Composite {
         Set<String[]> selected = selectionModel.getSelectedSet();
         if(selected.size() == 1){
             editRestaurantPanel.setData(selected.iterator().next());
+            dialogBox.center();
         }
-        dialogBox.center();
+        
+    }
+    @UiHandler("btnCopy")
+    void onBtnCopyClick(ClickEvent event) {
+        editRestaurantPanel.reset();
+        Set<String[]> selected = selectionModel.getSelectedSet();
+        if(selected.size() == 1){
+            editRestaurantPanel.setData(selected.iterator().next());
+            editRestaurantPanel.setCopy();
+            dialogBox.center();
+        }
+        
     }
 }

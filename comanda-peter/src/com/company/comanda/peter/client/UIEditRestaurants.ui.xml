@@ -12,6 +12,7 @@
 					<g:Button text="Crear nuevo" ui:field="btnNewRestaurant" />
 					<g:Button text="Editar" ui:field="btnEditRestaurant"
 						enabled="false" />
+					<g:Button ui:field="btnCopy" enabled="false">Copiar</g:Button>
 					<g:Button text="Eliminar" ui:field="btnDeleteRestaurant"
 						enabled="false" />
 				</g:HorizontalPanel>
