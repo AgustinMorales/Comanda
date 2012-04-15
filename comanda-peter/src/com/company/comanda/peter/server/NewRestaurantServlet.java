@@ -52,9 +52,9 @@ public class NewRestaurantServlet extends HttpServlet{
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         ServletHelper.logParameters(req, log);
-        if(userService.isUserAdmin() == false){
-            throw new IllegalStateException("User is not admin");
-        }
+//        if(userService.isUserAdmin() == false){
+//            throw new IllegalStateException("User is not admin");
+//        }
         String name = req.getParameter("name");
         String login = req.getParameter("login");
         String password = req.getParameter("password");

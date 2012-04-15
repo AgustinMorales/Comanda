@@ -23,7 +23,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.company.comanda.brian.helpers.AsyncGetData;
@@ -56,7 +56,7 @@ public class ReviewBillsActivity extends ListActivity {
     public static final String EXTRA_USER_ID = "userId";
     public static final String EXTRA_PASSWORD = "password";
 
-    private ListView ordersListView;
+    private LinearLayout ordersPanel;
     private String displayedBillKeyString;
     private String selectedBillKeyString;
     private Bill selectedBill;
@@ -228,54 +228,6 @@ public class ReviewBillsActivity extends ListActivity {
         btnRefresh.setEnabled(true);
     }
 
-    private class OrdersAdapter extends ArrayAdapter<Order>{
-
-        private ArrayList<Order> items;
-
-        public OrdersAdapter(Context context, int textViewResourceId,
-                ArrayList<Order> items) 
-        {
-            super(context, textViewResourceId, items);
-            this.items = items;// TODO Auto-generated catch block
-        }
-
-        //This method returns the actual view
-        //that is displayed as a row (we will inflate with row.xml)
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) 
-        {
-            View v = convertView;
-            if (v == null) 
-            {
-                LayoutInflater vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                //inflate using res/layout/row.xml
-                v = vi.inflate(R.layout.order_row, null);
-            }
-            //get the FoodMenuItem corresponding to 
-            //the position in the list we are rendering
-            Order o = items.get(position);
-            if (o != null) 
-            {
-                //Set all of the UI components 
-                //with the respective Object data
-                TextView tvMenuItemName = (TextView) v.findViewById(R.id.item_name);
-                final String itemName = o.menuItemName;
-                if (tvMenuItemName != null)
-                {
-                    tvMenuItemName.setText(itemName);   
-                }
-                TextView tvNoOfItems = (TextView) v.findViewById(R.id.no_of_items);
-                tvNoOfItems.setText("" + o.menuItemNumber);
-                TextView tvItemPrice = (TextView) v.findViewById(R.id.price);
-                tvItemPrice.setText(Formatter.money(o.menuItemPrice));
-            }
-
-
-
-
-            return v;
-        }
-    }
 
     /*
      * PRIVATE ADAPTER CLASS. Assigns data to be displayed on the listview
@@ -389,7 +341,7 @@ public class ReviewBillsActivity extends ListActivity {
             result.setTitle(getString(R.string.order_details));
             result.setContentView(R.layout.orders_dialog);
 
-            ordersListView = (ListView)result.findViewById(R.id.listViewOrders);
+            ordersPanel = (LinearLayout)result.findViewById(R.id.ordersPanel);
             tvRestaurantName = (TextView)result.findViewById(R.id.tvRestaurantName);
             tvOrderDate = (TextView)result.findViewById(R.id.tvOrderDate);
             tvState = (TextView)result.findViewById(R.id.tvState);
@@ -427,10 +379,11 @@ public class ReviewBillsActivity extends ListActivity {
                 tvDeliveryCost.setText(Formatter.money(selectedBill.deliveryCost));
                 final ArrayList<Order> orders = ordersMap.get(selectedBillKeyString);
 
-                ArrayAdapter<Order> ordersAdapter = new OrdersAdapter(this, R.layout.order_row, orders);
-
-                ordersListView.setAdapter(ordersAdapter);
-                ordersAdapter.notifyDataSetChanged();
+                
+                ordersPanel.removeAllViews();
+                for(Order order : orders){
+                    ordersPanel.addView(createOrderRow(order));
+                }
                 displayedBillKeyString = selectedBillKeyString;
                 LayoutHelper.dialog_fill_parent(dialog);
             }

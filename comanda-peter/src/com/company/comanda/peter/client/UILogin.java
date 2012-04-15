@@ -1,5 +1,7 @@
 package com.company.comanda.peter.client;
 
+import java.util.Date;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.user.client.Cookies;
@@ -62,7 +64,8 @@ public class UILogin extends Composite {
                         RootLayoutPanel.get().add(new UIMain(tbUsename.getText()));
                         doNotIndicateLogin();
                         if(cbRememberPassword.getValue()){
-                            Cookies.setCookie("comanda_peter_login_token", result);
+                            Cookies.setCookie("comanda_peter_login_token", result, new Date(
+                                    System.currentTimeMillis() + 365*24*60*60*1000));
                         }
                         else{
                             Cookies.removeCookie("comanda_peter_login_token");

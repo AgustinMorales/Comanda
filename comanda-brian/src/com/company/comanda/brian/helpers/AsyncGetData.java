@@ -104,7 +104,7 @@ public abstract class AsyncGetData <T>{
         try 
         {
             // Create a URL we want to load some xml-data from.
-            HttpPost httppost = new HttpPost("http://" + 
+            HttpPost httppost = new HttpPost( 
                     Constants.SERVER_LOCATION + service);
 
             // Add your data

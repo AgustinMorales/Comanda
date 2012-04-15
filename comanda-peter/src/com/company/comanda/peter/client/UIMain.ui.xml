@@ -17,7 +17,7 @@
 			<g:VerticalPanel width="100%" horizontalAlignment="ALIGN_RIGHT">
 				<g:HorizontalPanel verticalAlignment="ALIGN_BOTTOM"
 					spacing="5" width="100%">
-					<g:Label ui:field="lblLogout" text ="Log out"/>
+					<g:Label ui:field="lblLogout" text ="Salir"/>
 					<g:Label ui:field="lblRestaurantName" />
 				</g:HorizontalPanel>
 			</g:VerticalPanel>

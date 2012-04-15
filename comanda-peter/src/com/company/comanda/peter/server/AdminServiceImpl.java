@@ -34,9 +34,9 @@ implements AdminService {
     }
     
     private void login(){
-        if(userService.isUserAdmin() == false){
-            throw new IllegalStateException("User is not admin");
-        }
+//        if(userService.isUserAdmin() == false){
+//            throw new IllegalStateException("User is not admin");
+//        }
     }
     
     @Override

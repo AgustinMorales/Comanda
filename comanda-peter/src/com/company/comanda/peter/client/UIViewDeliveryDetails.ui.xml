@@ -44,7 +44,7 @@
             <g:VerticalPanel width="100%" horizontalAlignment="ALIGN_RIGHT">
             	<g:HorizontalPanel verticalAlignment="ALIGN_MIDDLE">
             	<g:Label text="Tiempo estimado:"/>
-            	<g:ListBox visibleItemCount="1" width="130px" ui:field="lvEstimatedTime"/>
+            	<g:ListBox visibleItemCount="1" width="130px" ui:field="lvEstimatedTime" selectedIndex="2"/>
             </g:HorizontalPanel>
             </g:VerticalPanel>
             <g:HorizontalPanel width="100%">

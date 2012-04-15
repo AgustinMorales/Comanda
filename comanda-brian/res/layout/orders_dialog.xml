@@ -109,15 +109,11 @@
         android:text="@string/items"
         android:textSize="20dp" />
 
-    <ListView
-        android:id="@+id/listViewOrders"
+    <LinearLayout
+        android:id="@+id/ordersPanel"
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:minHeight="100dp"
-        android:background="@drawable/rectangle" >
-
-    </ListView>
+        android:layout_height="wrap_content"
+        android:orientation="vertical"/>
 
     <LinearLayout
         android:id="@+id/linearLayout3"
