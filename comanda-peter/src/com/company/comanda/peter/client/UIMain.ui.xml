@@ -27,18 +27,6 @@
 			height="100%" ui:field="mainTabPanel">
 			<g:tab>
 				<g:header size='7'>
-					Editar menú
-				</g:header>
-				<c:UIEditMenu />
-			</g:tab>
-			<g:tab>
-				<g:header size='7'>
-					Editar categorías
-				</g:header>
-				<c:UIEditCategories />
-			</g:tab>
-			<g:tab>
-				<g:header size='7'>
 					Ver pedidos pendientes (domicilio)
 				</g:header>
 				<c:UIViewPendingDeliveries ui:field="viewDeliveryBills"
@@ -51,6 +39,19 @@
 				<c:UIViewPendingDeliveries ui:field="viewAllDeliveryBills"
 					selectedBillStateString="null" />
 			</g:tab>
+			<g:tab>
+				<g:header size='7'>
+					Editar menú
+				</g:header>
+				<c:UIEditMenu />
+			</g:tab>
+			<g:tab>
+				<g:header size='7'>
+					Editar categorías
+				</g:header>
+				<c:UIEditCategories />
+			</g:tab>
+			
 			<!-- <g:tab> -->
 			<!-- <g:header size='7'> -->
 			<!-- Ver pedidos pendientes (restaurante) -->

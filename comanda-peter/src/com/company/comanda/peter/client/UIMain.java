@@ -30,6 +30,7 @@ public class UIMain extends Composite {
     public UIMain(String restaurantName) {
         initWidget(uiBinder.createAndBindUi(this));
         lblRestaurantName.setText("Restaurante: " + restaurantName);
+        viewDeliveryBills.setAutoUpdate(true);
     }
 
     @UiHandler("mainTabPanel")
@@ -39,10 +40,10 @@ public class UIMain extends Composite {
         viewDeliveryBills.setAutoUpdate(false);
         viewAllDeliveryBills.setAutoUpdate(false);
         switch (event.getSelectedItem()) {
-        case 2:
+        case 0:
             viewDeliveryBills.setAutoUpdate(true);
             break;
-        case 3:
+        case 1:
             viewAllDeliveryBills.setAutoUpdate(true);
             break;
             //        case 3:
