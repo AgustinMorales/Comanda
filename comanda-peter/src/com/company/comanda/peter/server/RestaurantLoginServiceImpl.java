@@ -28,7 +28,7 @@ public class RestaurantLoginServiceImpl extends RemoteServiceServlet implements 
     }
     
     @Override
-    public boolean login(String login, String password) {
+    public String login(String login, String password) {
         return manager.login(login, password);
     }
 

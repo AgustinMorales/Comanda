@@ -6,7 +6,7 @@
 	</ui:style>
 	<ui:with field='res' type='com.company.comanda.peter.client.resources.Resources'/>
 	<g:HTMLPanel>
-		<g:AbsolutePanel height="329px" width="323px">
+		<g:AbsolutePanel height="367px" width="323px">
 			<g:at left="22" top="197">
 				<g:Label text="Usuario"/>
 			</g:at>
@@ -19,11 +19,14 @@
 			<g:at left="119" top="228">
 				<g:PasswordTextBox ui:field="tbPassword" width="171px" height="18px"/>
 			</g:at>
-			<g:at left="208" top="278">
+			<g:at left="208" top="311">
 				<g:Button width="92px" height="29px" ui:field="btnLogin" text="Acceder">Login</g:Button>
 			</g:at>
 			<g:at left="38" top="8">
 				<g:Image resource='{res.login_logo}'/>
+			</g:at>
+			<g:at left="119" top="275">
+				<g:CheckBox text="Recordar contraseña" checked="true" ui:field="cbRememberPassword"/>
 			</g:at>
 		</g:AbsolutePanel>
 	</g:HTMLPanel>

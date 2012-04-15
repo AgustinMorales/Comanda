@@ -18,8 +18,7 @@
 	</filter-mapping>
 
 	<listener>
-		<listener-class>com.company.comanda.peter.server.guice.ComandaGuiceServletContextListener
-		</listener-class>
+		<listener-class>com.company.comanda.peter.server.guice.ComandaGuiceServletContextListener</listener-class>
 	</listener>
 
 
@@ -27,5 +26,14 @@
 	<welcome-file-list>
 		<welcome-file>Comanda_peter.html</welcome-file>
 	</welcome-file-list>
-	
+
+<!-- 	<security-constraint> -->
+<!-- 		<web-resource-collection> -->
+<!-- 			<url-pattern>/Comanda_peterAdmin.html</url-pattern> -->
+<!-- 		</web-resource-collection> -->
+<!-- 		<auth-constraint> -->
+<!-- 			<role-name>admin</role-name> -->
+<!-- 		</auth-constraint> -->
+<!-- 	</security-constraint> -->
+
 </web-app>

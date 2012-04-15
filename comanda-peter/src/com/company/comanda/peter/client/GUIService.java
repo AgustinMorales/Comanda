@@ -22,7 +22,7 @@ public interface GUIService extends RemoteService {
 	public String getUploadUrl();
 	void acceptOrder(String orderKey);
 	void deleteMenuItems(long[] keyIds);
-	boolean login(String username, String password);
+	String login(String username, String password);
 	void addTable(String tablename);
 	List<String[]> getTables();
 	PagedResult<String[]> getCategories(int start, int length);
@@ -34,4 +34,5 @@ public interface GUIService extends RemoteService {
 	void changeBillState(String billKeyString, BillState newState, 
 	        Integer deliveryDelay);
 	String getUploadUrlForNewRestaurant();
+	String login(String token);
 }

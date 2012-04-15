@@ -21,7 +21,7 @@ public interface GUIServiceAsync {
 	void getUploadUrl(AsyncCallback<String> callback);
 	void acceptOrder(String orderKey, AsyncCallback<Void> callback);
 	void deleteMenuItems(long[] keyIds, AsyncCallback<Void> callback);
-	void login(String username, String password, AsyncCallback<Boolean> callback);
+	void login(String username, String password, AsyncCallback<String> callback);
 	void addTable(String tablename, AsyncCallback<Void> callback);
 	void getTables(AsyncCallback<List<String[]>> callback);
 	void getCategories(int start, int length, AsyncCallback<PagedResult<String[]>> callback);
@@ -33,4 +33,5 @@ public interface GUIServiceAsync {
 	void changeBillState(String billKeyString, BillState newState, 
 	        Integer deliveryDelay, AsyncCallback<Void> callback);
 	void getUploadUrlForNewRestaurant(AsyncCallback<String> callback);
+	void login(String token, AsyncCallback<String> callback);
 }

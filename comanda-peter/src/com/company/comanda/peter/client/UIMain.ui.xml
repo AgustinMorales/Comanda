@@ -9,62 +9,69 @@
 
 	<g:HTMLPanel width="1200" height="600">
 
-			<g:HorizontalPanel verticalAlignment="ALIGN_BOTTOM" spacing="5" width="100%">
-				<g:VerticalPanel horizontalAlignment="ALIGN_LEFT">
-					<g:Image resource='{res.banner}' />
-				</g:VerticalPanel>
-				<g:VerticalPanel width="100%" horizontalAlignment="ALIGN_RIGHT">
+		<g:HorizontalPanel verticalAlignment="ALIGN_BOTTOM"
+			spacing="5" width="100%">
+			<g:VerticalPanel horizontalAlignment="ALIGN_LEFT">
+				<g:Image resource='{res.banner}' />
+			</g:VerticalPanel>
+			<g:VerticalPanel width="100%" horizontalAlignment="ALIGN_RIGHT">
+				<g:HorizontalPanel verticalAlignment="ALIGN_BOTTOM"
+					spacing="5" width="100%">
+					<g:Label ui:field="lblLogout" text ="Log out"/>
 					<g:Label ui:field="lblRestaurantName" />
-				</g:VerticalPanel>
-			</g:HorizontalPanel>
-			<br/>
-			<g:TabLayoutPanel barHeight="2" barUnit="EM" width="100%"
-				height="100%" ui:field="mainTabPanel">
-				<g:tab>
-					<g:header size='7'>
-						Editar menú
-					</g:header>
-					<c:UIEditMenu />
-				</g:tab>
-				<g:tab>
-					<g:header size='7'>
-						Editar categorías
-					</g:header>
-					<c:UIEditCategories/>
-				</g:tab>
-				<g:tab>
-					<g:header size='7'>
-						Ver pedidos pendientes (domicilio)
-					</g:header>
-					<c:UIViewPendingDeliveries ui:field="viewDeliveryBills" selectedBillStateString="OPEN"/>
-				</g:tab>
-				<g:tab>
-                    <g:header size='7'>
-                        Ver todos los pedidos
-                    </g:header>
-                    <c:UIViewPendingDeliveries ui:field="viewAllDeliveryBills" selectedBillStateString="null"/>
-                </g:tab>
-				<!-- <g:tab> -->
-				<!-- <g:header size='7'> -->
-				<!-- Ver pedidos pendientes (restaurante) -->
-				<!-- </g:header> -->
-				<!-- <c:UIViewAllOrders ui:field="viewAllOrders"/> -->
-				<!-- </g:tab> -->
-				<!-- <g:tab> -->
-				<!-- <g:header size='7'> -->
-				<!-- Ver mesas -->
-				<!-- </g:header> -->
-				<!-- <c:UISelectAndViewTableOrders -->
-				<!-- ui:field="selectTableAndViewOrders"/> -->
-				<!-- </g:tab> -->
-				<!-- <g:tab> -->
-				<!-- <g:header size='7'> -->
-				<!-- Editar mesas -->
-				<!-- </g:header> -->
-				<!-- <c:UIEditTables -->
-				<!-- ui:field="editTables"/> -->
-				<!-- </g:tab> -->
-			</g:TabLayoutPanel>
+				</g:HorizontalPanel>
+			</g:VerticalPanel>
+		</g:HorizontalPanel>
+		<br />
+		<g:TabLayoutPanel barHeight="2" barUnit="EM" width="100%"
+			height="100%" ui:field="mainTabPanel">
+			<g:tab>
+				<g:header size='7'>
+					Editar menú
+				</g:header>
+				<c:UIEditMenu />
+			</g:tab>
+			<g:tab>
+				<g:header size='7'>
+					Editar categorías
+				</g:header>
+				<c:UIEditCategories />
+			</g:tab>
+			<g:tab>
+				<g:header size='7'>
+					Ver pedidos pendientes (domicilio)
+				</g:header>
+				<c:UIViewPendingDeliveries ui:field="viewDeliveryBills"
+					selectedBillStateString="OPEN" />
+			</g:tab>
+			<g:tab>
+				<g:header size='7'>
+					Ver todos los pedidos
+				</g:header>
+				<c:UIViewPendingDeliveries ui:field="viewAllDeliveryBills"
+					selectedBillStateString="null" />
+			</g:tab>
+			<!-- <g:tab> -->
+			<!-- <g:header size='7'> -->
+			<!-- Ver pedidos pendientes (restaurante) -->
+			<!-- </g:header> -->
+			<!-- <c:UIViewAllOrders ui:field="viewAllOrders"/> -->
+			<!-- </g:tab> -->
+			<!-- <g:tab> -->
+			<!-- <g:header size='7'> -->
+			<!-- Ver mesas -->
+			<!-- </g:header> -->
+			<!-- <c:UISelectAndViewTableOrders -->
+			<!-- ui:field="selectTableAndViewOrders"/> -->
+			<!-- </g:tab> -->
+			<!-- <g:tab> -->
+			<!-- <g:header size='7'> -->
+			<!-- Editar mesas -->
+			<!-- </g:header> -->
+			<!-- <c:UIEditTables -->
+			<!-- ui:field="editTables"/> -->
+			<!-- </g:tab> -->
+		</g:TabLayoutPanel>
 
 	</g:HTMLPanel>
 </ui:UiBinder> 

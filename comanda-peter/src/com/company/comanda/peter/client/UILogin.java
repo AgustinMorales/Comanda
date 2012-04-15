@@ -2,6 +2,7 @@ package com.company.comanda.peter.client;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
@@ -16,6 +17,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.user.client.ui.CheckBox;
 
 public class UILogin extends Composite {
 
@@ -26,6 +28,7 @@ public class UILogin extends Composite {
     @UiField TextBox tbUsename;
     @UiField PasswordTextBox tbPassword;
     @UiField Button btnLogin;
+    @UiField CheckBox cbRememberPassword;
     
     private DialogBox containerDB;
 
@@ -50,14 +53,20 @@ public class UILogin extends Composite {
     private void doLogin(){
         if(validate()){
             doIndicateLogin();
-            GUIService.login(tbUsename.getText(), tbPassword.getText(), new AsyncCallback<Boolean>() {
+            GUIService.login(tbUsename.getText(), tbPassword.getText(), new AsyncCallback<String>() {
                 
                 @Override
-                public void onSuccess(Boolean result) {
-                    if(result){
+                public void onSuccess(String result) {
+                    if(result != null){
                         RootLayoutPanel.get().clear();
                         RootLayoutPanel.get().add(new UIMain(tbUsename.getText()));
                         doNotIndicateLogin();
+                        if(cbRememberPassword.getValue()){
+                            Cookies.setCookie("comanda_peter_login_token", result);
+                        }
+                        else{
+                            Cookies.removeCookie("comanda_peter_login_token");
+                        }
                         containerDB.hide();
                     }
                     else{

@@ -19,6 +19,8 @@ import com.company.comanda.peter.server.admin.ComandaAdmin;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 
 @Singleton
 public class NewRestaurantServlet extends HttpServlet{
@@ -33,10 +35,12 @@ public class NewRestaurantServlet extends HttpServlet{
     private BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
         
     private ComandaAdmin admin;
+    private UserService userService;
     
     @Inject
     public NewRestaurantServlet(ComandaAdmin admin){
         this.admin = admin;
+        userService = UserServiceFactory.getUserService();
     }
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -48,6 +52,9 @@ public class NewRestaurantServlet extends HttpServlet{
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         ServletHelper.logParameters(req, log);
+        if(userService.isUserAdmin() == false){
+            throw new IllegalStateException("User is not admin");
+        }
         String name = req.getParameter("name");
         String login = req.getParameter("login");
         String password = req.getParameter("password");

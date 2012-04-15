@@ -143,28 +143,28 @@ public class TestRestaurant {
     }
     @Test
     public void testLogin(){
-        assertTrue(manager.login(REST_NAME, REST_PASSWORD));
+        assertNotNull(manager.login(REST_NAME, REST_PASSWORD));
         assertNotNull(manager.getAgent());
     }
     
     @Test
     public void testWrongUsername(){
-        assertFalse(manager.login(REST_NAME + ".", REST_PASSWORD));
+        assertNull(manager.login(REST_NAME + ".", REST_PASSWORD));
         assertNull(manager.getAgent());
     }
     @Test
     public void testWrongPassword(){
-        assertFalse(manager.login(REST_NAME, REST_PASSWORD + "."));
+        assertNull(manager.login(REST_NAME, REST_PASSWORD + "."));
         assertNull(manager.getAgent());
     }
     @Test
     public void testWrongUsernameAndPassword(){
-        assertFalse(manager.login(REST_NAME + ".", REST_PASSWORD + "."));
+        assertNull(manager.login(REST_NAME + ".", REST_PASSWORD + "."));
         assertNull(manager.getAgent());
     }
     @Test
     public void testLoginTwice(){
-        assertTrue(manager.login(REST_NAME, REST_PASSWORD));
+        assertNotNull(manager.login(REST_NAME, REST_PASSWORD));
         try{
             manager.login(REST_NAME, REST_PASSWORD);
             fail();

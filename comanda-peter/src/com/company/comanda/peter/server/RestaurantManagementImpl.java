@@ -1,11 +1,15 @@
 package com.company.comanda.peter.server;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.List;
+import java.util.Random;
 
 import javax.inject.Inject;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import com.company.comanda.peter.server.model.LoginToken;
 import com.company.comanda.peter.server.model.Restaurant;
 import com.company.comanda.peter.shared.Constants;
 import com.googlecode.objectify.Objectify;
@@ -15,6 +19,7 @@ public class RestaurantManagementImpl implements RestaurantManager {
     private Objectify ofy;
     private SessionAttributesFactory attributesFactory;
     private RestaurantAgentFactory agentFactory;
+    private SecureRandom random;
 
     @Inject
     public RestaurantManagementImpl(Objectify ofy, 
@@ -23,19 +28,31 @@ public class RestaurantManagementImpl implements RestaurantManager {
         this.ofy = ofy;
         this.attributesFactory = attributesFactory;
         this.agentFactory = agentFactory;
+        this.random = new SecureRandom();
     }
 
     @Override
-    public boolean login(String login, String password){
+    public String login(String login, String password){
         if(attributesFactory.create().getAttribute(Constants.RESTAURANT_ID) != null){
             throw new IllegalStateException("Already logged in");
         }
-        boolean result = false;
+        String result = null;
         Restaurant restaurant = doLogin(login, password);
         if(restaurant != null){
-        	result = true;
-            attributesFactory.create().setAttribute(
-                    Constants.RESTAURANT_ID,restaurant.getId());
+            String tokenString = new BigInteger(130, random).toString(32);
+        	List<LoginToken> tokens = ofy.query(LoginToken.class).filter("login", login).list();
+        	LoginToken token = null;
+        	if(tokens.size() == 1){
+        	    token = tokens.get(0);
+        	}
+        	else{
+        	    token = new LoginToken();
+        	    token.setLogin(login);
+        	}
+        	token.setToken(tokenString);
+        	ofy.put(token);
+        	result = tokenString;
+            validateLogin(restaurant);
         }
         //FIXME: Should be deleted when we can add categories from the interface
         RestaurantAgent agent = getAgent();
@@ -91,4 +108,31 @@ public class RestaurantManagementImpl implements RestaurantManager {
 		}
 		return result;
 	}
+
+    @Override
+    public String login(String tokenString) {
+        if(attributesFactory.create().getAttribute(Constants.RESTAURANT_ID) != null){
+            throw new IllegalStateException("Already logged in");
+        }
+        String result = null;
+        List<LoginToken> tokens = 
+                ofy.query(LoginToken.class).filter("token", tokenString).list();
+        if(tokens.size() == 1){
+            LoginToken token = tokens.get(0);
+            String username = token.getLogin();
+            List<Restaurant> restaurants = 
+                    ofy.query(Restaurant.class).filter("login", username).list();
+            if(restaurants.size() == 1){
+                Restaurant restaurant = restaurants.get(0);
+                validateLogin(restaurant);
+                result = restaurant.getLogin();
+            }
+        }
+        return result;
+    }
+    
+    private void validateLogin(Restaurant restaurant){
+        attributesFactory.create().setAttribute(
+                Constants.RESTAURANT_ID,restaurant.getId());
+    }
 }

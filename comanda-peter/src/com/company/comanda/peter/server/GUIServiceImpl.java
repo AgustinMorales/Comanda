@@ -223,8 +223,8 @@ GUIService {
     }
 
     @Override
-    public boolean login(String username, String password) {
-        boolean result = false;
+    public String login(String username, String password) {
+        String result = null;
         try{
             result = restaurantManager.login(username, password);
         }
@@ -236,6 +236,20 @@ GUIService {
         return result;
     }
 
+    @Override
+    public String login(String token) {
+        String result = null;
+        try{
+            result = restaurantManager.login(token);
+        }
+        catch (IllegalStateException e) {
+            //Try to log in again
+            getThreadLocalRequest().getSession().invalidate();
+            result = restaurantManager.login(token);
+        }
+        return result;
+    }
+    
     @Override
     public void addTable(String tablename) {
         restaurantManager.getAgent().addTable(tablename);
