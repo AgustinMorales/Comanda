@@ -442,5 +442,24 @@ public class ReviewBillsActivity extends ListActivity {
     }
 
 
+    protected View createOrderRow(Order o){
+        View v = null;
+        LayoutInflater vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        //inflate using res/layout/row.xml
+        v = vi.inflate(R.layout.order_row, null);
+        //Set all of the UI components 
+        //with the respective Object data
+        TextView tvMenuItemName = (TextView) v.findViewById(R.id.item_name);
+        final String itemName = o.menuItemName;
+        if (tvMenuItemName != null)
+        {
+            tvMenuItemName.setText(itemName);   
+        }
+        TextView tvNoOfItems = (TextView) v.findViewById(R.id.no_of_items);
+        tvNoOfItems.setText("" + o.menuItemNumber);
+        TextView tvItemPrice = (TextView) v.findViewById(R.id.price);
+        tvItemPrice.setText(Formatter.money(o.menuItemPrice));
+        return v;
+    }
 
 }
