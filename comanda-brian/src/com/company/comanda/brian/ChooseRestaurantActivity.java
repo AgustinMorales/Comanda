@@ -53,7 +53,7 @@ public class ChooseRestaurantActivity extends ListActivity {
     public static final String EXTRA_NICE_ADDRESS = "niceAddress";
     public static final String EXTRA_ADDRESS_DETAILS = "addressDetails";
     
-    private static final int SMALL_IMAGE_SIZE = 50;
+    private static final int SMALL_IMAGE_SIZE = 75;
     
     private static final int PLACE_ORDER_CODE = 1;
     
