@@ -404,7 +404,9 @@ public class ComandaActivity extends FragmentActivity
                         currentExtras.append(currentExtra);
                         currentExtras.append(",");
                     }
-                    currentExtras.deleteCharAt(currentExtras.length() - 1);
+                    if(currentExtras.length() > 0){
+                        currentExtras.deleteCharAt(currentExtras.length() - 1);
+                    }
                 }
                 keyIds.append(currentKeyId);
                 keyIds.append("&");
@@ -830,7 +832,7 @@ public class ComandaActivity extends FragmentActivity
             LayoutHelper.dialog_fill_parent(dialog);
         }
         else if(id == REVIEW_ORDER_DIALOG){
-            
+
             LayoutHelper.dialog_fill_parent(dialog);
         }
         else if(id == ADD_CHOOSE_QUALIFIER_DIALOG){
@@ -1033,7 +1035,7 @@ public class ComandaActivity extends FragmentActivity
             orderNumbers.put(element,1);
         }
         reviewOrdersAdapter.notifyDataSetChanged();
-//        refreshAllTables();
+        //        refreshAllTables();
     }
 
     private void addItemForOrder(FoodMenuItem item, int qualifierIndex){
@@ -1057,7 +1059,7 @@ public class ComandaActivity extends FragmentActivity
                 orderNumbers.remove(element);
             }
             reviewOrdersAdapter.notifyDataSetChanged();
-//            refreshAllTables();
+            //            refreshAllTables();
         }
         else{
             throw new IllegalStateException("Not in the order list");

@@ -66,10 +66,10 @@ public class PlaceOrderServlet extends HttpServlet
                     req.getParameter(PARAM_RESTAURANT_ID));
 
             //FIXME: What happens in case of error?
-            String[] items = menuItemIdsString.split("&");
-            String[] indexes = qualifierIndexesString.split("&");
-            String[] noOfItemsStrings = allNoOfItemsString.split("&");
-            String[] extrasStringArray = allExtrasString.split("&");
+            String[] items = menuItemIdsString.split("&",-2);
+            String[] indexes = qualifierIndexesString.split("&",-2);
+            String[] noOfItemsStrings = allNoOfItemsString.split("&",-2);
+            String[] extrasStringArray = allExtrasString.split("&",-2);
             List<Long> menuItemIds = new ArrayList<Long>(items.length);
             List<String> menuItemComments = new ArrayList<String>(items.length);
             List<Integer> qualifierIndexes = new ArrayList<Integer>(items.length);
