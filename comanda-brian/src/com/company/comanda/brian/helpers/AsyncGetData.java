@@ -1,13 +1,17 @@
 package com.company.comanda.brian.helpers;
 
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.util.List;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.http.Header;
+import org.apache.http.HeaderElement;
 import org.apache.http.NameValuePair;
+import org.apache.http.ParseException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.slf4j.Logger;
@@ -120,8 +124,11 @@ public abstract class AsyncGetData <T>{
             //apply it to the XML-Rea der
             ComandaXMLHandler<T> xmlHandler = handlerClass.newInstance();
             xr.setContentHandler(xmlHandler);
-            InputSource xmlInput = new InputSource(retriever.execute(httppost));
+            InputSource xmlInput = new InputSource(
+                    new BufferedInputStream(
+                    retriever.execute(httppost)));
             xmlInput.setEncoding("ISO-8859-1");
+            
             log.trace("Input Source Defined: {}", 
                     xmlInput.toString());
             /* Parse the xml-data from our URL. */

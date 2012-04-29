@@ -35,6 +35,19 @@ public class MenuItemsHandler extends ComandaXMLHandler<ArrayList<FoodMenuItem>>
     private boolean in_extra_price = false;
     private boolean in_extras_global_name = false;
 
+    
+    private StringBuffer name;
+    private StringBuffer keyId;
+    private StringBuffer description;
+    private StringBuffer imageString;
+    private StringBuffer categoryId;
+    private StringBuffer price;
+    private StringBuffer qualifier;
+    private StringBuffer extra_name;
+    private StringBuffer extra_price;
+    private StringBuffer extras_global_name;
+    
+    
     private FoodMenuItem item = null;
     private List<Float> prices = null;
     private List<String> qualifiers = null;
@@ -82,42 +95,52 @@ public class MenuItemsHandler extends ComandaXMLHandler<ArrayList<FoodMenuItem>>
         else if (localName.equals(NAME)) 
         {
             this.in_name = true;
+            name = new StringBuffer();
         }
         else if (localName.equals(IMAGE_STRING)) 
         {
             this.in_imageString = true;
+            imageString = new StringBuffer();
         }
         else if (localName.equals(ID)) 
         {
             this.in_keyId = true;
+            keyId = new StringBuffer();
         }
         else if (localName.equals(DESCRIPTION)) 
         {
             this.in_description = true;
+            description = new StringBuffer();
         }
         else if (localName.equals(CATEGORY_ID)) 
         {
             this.in_categoryId = true;
+            categoryId = new StringBuffer();
         }
         else if (localName.equals(PRICE)) 
         {
             this.in_price = true;
+            price = new StringBuffer();
         }
         else if (localName.equals(QUALIFIER)) 
         {
             this.in_qualifier = true;
+            qualifier = new StringBuffer();
         }
         else if (localName.equals(EXTRA_NAME)) 
         {
             this.in_extra_name = true;
+            extra_name = new StringBuffer();
         }
         else if (localName.equals(EXTRA_PRICE)) 
         {
             this.in_extra_price = true;
+            extra_price = new StringBuffer();
         }
         else if (localName.equals(EXTRAS_GLOBAL_NAME)) 
         {
             this.in_extras_global_name = true;
+            extras_global_name = new StringBuffer();
         }
     }
 
@@ -138,42 +161,52 @@ public class MenuItemsHandler extends ComandaXMLHandler<ArrayList<FoodMenuItem>>
         else if (localName.equals(NAME)) 
         {
             this.in_name = false;
+            item.setName(name.toString());
         }
         else if (localName.equals(IMAGE_STRING)) 
         {
             this.in_imageString = false;
+            item.setImageString(imageString.toString());
         }
         else if (localName.equals(ID)) 
         {
             this.in_keyId = false;
+            item.setKeyId(keyId.toString());
         }
         else if (localName.equals(DESCRIPTION)) 
         {
             this.in_description = false;
+            item.setDescription(description.toString());
         }
         else if (localName.equals(CATEGORY_ID)) 
         {
             this.in_categoryId = false;
+            item.setCategoryId(Long.parseLong(categoryId.toString()));
         }
         else if (localName.equals(PRICE)) 
         {
             this.in_price = false;
+            prices.add(Float.parseFloat(price.toString()));
         }
         else if (localName.equals(QUALIFIER)) 
         {
             this.in_qualifier = false;
+            qualifiers.add(qualifier.toString());
         }
         else if (localName.equals(EXTRA_NAME)) 
         {
             this.in_extra_name = false;
+            extras.add(extra_name.toString());
         }
         else if (localName.equals(EXTRA_PRICE)) 
         {
             this.in_extra_price = false;
+            extrasPrices.add(Float.parseFloat(extra_price.toString()));
         }
         else if (localName.equals(EXTRAS_GLOBAL_NAME)) 
         {
             this.in_extras_global_name = false;
+            item.setExtrasName(extras_global_name.toString());
         }
     }
 
@@ -188,45 +221,45 @@ public class MenuItemsHandler extends ComandaXMLHandler<ArrayList<FoodMenuItem>>
             String textBetween = new String(ch, start, length);
             if(this.in_name){
                 log.debug("Name: {}", textBetween);
-                item.setName(textBetween);
+                name.append(textBetween);
             }
             else if(this.in_imageString){
                 log.debug("ImageString: {}", textBetween);
-                item.setImageString(textBetween);
+                imageString.append(textBetween);
             }
                 
             else if(this.in_description){
                 log.debug("Description: {}", textBetween);
-                item.setDescription(textBetween);
+                description.append(textBetween);
             }
             else if(this.in_keyId){
                 log.debug("KeyId: {}", textBetween);
                 //We are not parsing the long here. What for?
-                item.setKeyId(textBetween);
+                keyId.append(textBetween);
             }
             else if(this.in_categoryId){
                 log.debug("CategoryId: {}", textBetween);
-                item.setCategoryId(Long.parseLong(textBetween));
+                categoryId.append(textBetween);
             }
             else if(this.in_price){
                 log.debug("Price: {}", textBetween);
-                prices.add(Float.parseFloat(textBetween));
+                price.append(textBetween);
             }
             else if(this.in_qualifier){
                 log.debug("Qualifier: {}", textBetween);
-                qualifiers.add(textBetween);
+                qualifier.append(textBetween);
             }
             else if(this.in_extra_name){
                 log.debug("Extra: {}", textBetween);
-                extras.add(textBetween);
+                extra_name.append(textBetween);
             }
             else if(this.in_extra_price){
                 log.debug("Extra price: {}", textBetween);
-                extrasPrices.add(Float.parseFloat(textBetween));
+                extra_price.append(textBetween);
             }
             else if(this.in_extras_global_name){
                 log.debug("Extras global name: {}", textBetween);
-                item.setExtrasName(textBetween);
+                extras_global_name.append(textBetween);
             }
         }
     }
