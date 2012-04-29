@@ -10,9 +10,20 @@ public interface ComandaAdmin {
             String restaurantKeyString,
             String name, String login,
             String password,
-            String address,
             String description,
             String imageBlob,
+            String phone,
+            String address,
+            double latitude, double longitude,
+            float deliveryCost,
+            float minimumForDelivery,
+            double maxDeliveryDistance,
+            String copyMenuItemsFromRestKeyString);
+    
+    long createOrModifyRestaurant(
+            String restaurantKeyString, String name, String login,
+            String password, String address,
+            String description, String imageBlob,
             String phone,
             float deliveryCost,
             float minimumForDelivery,

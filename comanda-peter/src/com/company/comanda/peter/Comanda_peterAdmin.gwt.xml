@@ -16,6 +16,10 @@
 
 	<!-- Specify the app entry point class.                         -->
 	<entry-point class='com.company.comanda.peter.client.Comanda_peterAdmin' />
+	
+	<inherits name='com.google.gwt.maps.GoogleMaps' />
+	<inherits name='com.google.gwt.ajaxloader.AjaxLoader' />
+	
 
 	<!-- Specify the paths for translatable code                    -->
 	<source path='client' />

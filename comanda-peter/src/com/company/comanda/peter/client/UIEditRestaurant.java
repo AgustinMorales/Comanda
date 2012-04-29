@@ -1,7 +1,11 @@
 package com.company.comanda.peter.client;
 
+import com.google.gwt.ajaxloader.client.AjaxLoader;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.maps.client.geocode.Geocoder;
+import com.google.gwt.maps.client.geocode.LatLngCallback;
+import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -38,6 +42,8 @@ public class UIEditRestaurant extends Composite {
     @UiField DoubleBox dbMinimumForDelivery;
     @UiField TextBox tbCopyFromRestKeyString;
     @UiField DoubleBox dbMaxDeliveryDistance;
+    @UiField DoubleBox dbLatitude;
+    @UiField DoubleBox dbLongitude;
     
     private NewRestaurantHandler handler;
 
@@ -54,6 +60,12 @@ public class UIEditRestaurant extends Composite {
     }
     
     public UIEditRestaurant() {
+        AjaxLoader.init();
+        AjaxLoader.loadApi("maps", "2", new Runnable() { 
+            public void run() { 
+                //action to perform after api is loaded 
+            } 
+        }, null);
         initWidget(uiBinder.createAndBindUi(this));
         restaurantDataFormPanel.setEncoding(
                 FormPanel.ENCODING_MULTIPART);
@@ -86,7 +98,25 @@ public class UIEditRestaurant extends Composite {
                 		restaurantDataFormPanel.setEncoding(FormPanel.METHOD_GET);
                 		restaurantDataFormPanel.setAction("/newRestaurant");
                 	}
-                    restaurantDataFormPanel.submit();
+                	Geocoder geocoder = new Geocoder();
+                	geocoder.getLatLng(tbAddress.getValue(), new LatLngCallback() {
+                        
+                        @Override
+                        public void onSuccess(LatLng point) {
+                            double latitude = point.getLatitude();
+                            double longitude = point.getLongitude();
+                            dbLatitude.setValue(latitude);
+                            dbLongitude.setValue(longitude);
+                            restaurantDataFormPanel.submit();
+                        }
+                        
+                        @Override
+                        public void onFailure() {
+                            Window.alert("Error while geocoding");
+                            btnNewRestaurant.setText("Aceptar");
+                            btnNewRestaurant.setEnabled(true);
+                        }
+                    });
                     
                 }
             });

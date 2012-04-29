@@ -87,6 +87,12 @@
 				<g:at left="25" top="424">
 					<g:Label text="Radio de envío:"/>
 				</g:at>
+				<g:at left="262" top="337">
+					<g:DoubleBox ui:field="dbLatitude" name="latitude" visible="false"/>
+				</g:at>
+				<g:at left="269" top="387">
+					<g:DoubleBox ui:field="dbLongitude" name="longitude" visible="false"/>
+				</g:at>
 			</g:AbsolutePanel>
 		</g:FormPanel>
 	</g:HTMLPanel>

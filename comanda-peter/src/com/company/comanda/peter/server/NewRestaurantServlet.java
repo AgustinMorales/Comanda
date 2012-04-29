@@ -66,6 +66,8 @@ public class NewRestaurantServlet extends HttpServlet{
         String minimumForDeliveryString = req.getParameter("minimumForDelivery");
         String copyFromRestKeyString = req.getParameter("copyFromRestKeyString");
         String maxDeliveryDistanceString = req.getParameter("maxDeliveryDistance");
+        double latitude = Double.parseDouble(req.getParameter("latitude"));
+        double longitude = Double.parseDouble(req.getParameter("longitude"));
         String imageBlobKey = null;
         List<BlobKey> blobKeyList = null;
         try{
@@ -96,9 +98,12 @@ public class NewRestaurantServlet extends HttpServlet{
         double maxDeliveryDistance = Double.parseDouble(maxDeliveryDistanceString);
         admin.createOrModifyRestaurant(restaurantKeyString,
                 name, login, 
-                password, address, 
+                password, 
                 description, imageBlobKey,
                 phone,
+                address, 
+                latitude,
+                longitude,
                 deliveryCost,
                 minimumForDelivery,
                 maxDeliveryDistance,

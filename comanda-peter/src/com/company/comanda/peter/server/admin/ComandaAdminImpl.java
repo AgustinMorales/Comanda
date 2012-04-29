@@ -40,7 +40,7 @@ public class ComandaAdminImpl implements ComandaAdmin {
         imagesService = ImagesServiceFactory.getImagesService();
     }
 
-
+    @Override
     public long createOrModifyRestaurant(String restaurantKeyString,
             String name, String login, 
             String password, String description, String imageBlob,
@@ -110,7 +110,7 @@ public class ComandaAdminImpl implements ComandaAdmin {
 
     }
 
-    @Override
+    
     public long createOrModifyRestaurant(
             String restaurantKeyString, String name, String login,
             String password, String address,
@@ -124,7 +124,7 @@ public class ComandaAdminImpl implements ComandaAdmin {
         GeocoderRequest geocoderRequest = new GeocoderRequestBuilder().setAddress(address).setLanguage("es").getGeocoderRequest();
         GeocodeResponse geocoderResponse = geocoder.geocode(geocoderRequest);
         if(geocoderResponse.getResults().size() == 0){
-            throw new IllegalArgumentException("Could not geocode address");
+            throw new IllegalArgumentException("Could not geocode address: [" + address + "]"  + geocoderResponse.getStatus());
         }
         GeocoderResult result = geocoderResponse.getResults().get(0);
         double latitude = result.getGeometry().

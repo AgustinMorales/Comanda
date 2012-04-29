@@ -37,6 +37,8 @@
   <path id="project.class.path">
     <path refid="gwt.classpath"/>
     <path refid="javac.classpath"/>
+  	<pathelement location="lib/gwt-maps.jar"/>
+  	<pathelement location="lib/gwt-ajaxloader.jar"/>
   </path>
 
   <target name="libs" description="Copy libs to WEB-INF/lib">
