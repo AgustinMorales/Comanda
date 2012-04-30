@@ -73,6 +73,7 @@ public class NotificationManagerImpl implements NotificationManager {
                         log.debug("Restaurant {} is already being notified, skipping...", 
                                 restaurant.getName());
                     }
+                    scheduleNotification(restaurantKeyString);
                 }
             }
             if(restaurant.isNotifying() == false){
@@ -87,7 +88,7 @@ public class NotificationManagerImpl implements NotificationManager {
                     ofy.put(restaurant);
                 }
                 else{
-                    log.debug("No pending bills for {}, not calling.", 
+                    log.info("No pending bills for {}, not calling.", 
                             restaurant.getName());
                 }
             }
