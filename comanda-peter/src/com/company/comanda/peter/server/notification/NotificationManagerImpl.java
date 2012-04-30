@@ -41,11 +41,14 @@ public class NotificationManagerImpl implements NotificationManager {
 
     @Override
     public void notifyIfNecessary(String restaurantKeyString) {
+        log.info("notifyIfNecessary");
         final Key<Restaurant> restaurantKey = new Key<Restaurant>(restaurantKeyString);
         Restaurant restaurant = ofy.get(restaurantKey);
         String phone = restaurant.getPhone();
         if(phone != null){
+            log.info("phone != null");
             if(restaurant.isNotifying() == true){
+                log.info("Restaurant is notifying");
                 Date latestDate = restaurant.getLatestSuccessfulNotification();
                 boolean failure = false;
                 boolean sanity = true;
@@ -54,14 +57,21 @@ public class NotificationManagerImpl implements NotificationManager {
                     long ellapsed = System.currentTimeMillis() - latest;
                     if(ellapsed > NOTIFICATION_DURATION_SANITY){
                         sanity = false;
-                        log.error("Notification exceeded duration sanity check. " +
+                        log.info("Notification exceeded duration sanity check. " +
                         		"Notifying anyway. Restaurant: {}", restaurant.getName());
                         restaurant.setNotifying(false);
                         ofy.put(restaurant);
                     }
                     if(ellapsed > WARNING_NOTIFICATION_DURATION){
+                        log.info("WARNING_NOTIFICATION_DURATION");
                         failure = true;
                     }
+                }
+                else{
+                    sanity = false;
+                    log.info("Notifying anyway. Restaurant: {}", restaurant.getName());
+                    restaurant.setNotifying(false);
+                    ofy.put(restaurant);
                 }
                 if(sanity){
                     if(failure){
@@ -70,15 +80,18 @@ public class NotificationManagerImpl implements NotificationManager {
                                 restaurant.getName(), latestDate);
                     }
                     else{
-                        log.debug("Restaurant {} is already being notified, skipping...", 
+                        log.info("Restaurant {} is already being notified, skipping...", 
                                 restaurant.getName());
                     }
+                    scheduleNotification(restaurantKeyString);
                 }
             }
             if(restaurant.isNotifying() == false){
+                log.info("Restaurant is not notifying");
                 final int pendingQueries = ofy.query(Bill.class).filter(
                         "state", BillState.OPEN).ancestor(
                                 restaurantKey).count();
+                log.info("Pending queries: {}", pendingQueries);
                 if(pendingQueries > 0){
                     log.info("Calling {} on phone {}", restaurant.getName(), phone);
                     restaurant.setNotifying(true);
@@ -87,13 +100,13 @@ public class NotificationManagerImpl implements NotificationManager {
                     ofy.put(restaurant);
                 }
                 else{
-                    log.debug("No pending bills for {}, not calling.", 
+                    log.info("No pending bills for {}, not calling.", 
                             restaurant.getName());
                 }
             }
         }
         else{
-            log.error("Cannot notify restaurant {}. Phone is null", restaurant);
+            log.info("Cannot notify restaurant {}. Phone is null", restaurant);
         }
     }
 
