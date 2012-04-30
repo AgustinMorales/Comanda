@@ -41,6 +41,7 @@ public class NotificationManagerImpl implements NotificationManager {
 
     @Override
     public void notifyIfNecessary(String restaurantKeyString) {
+        log.info("notifyIfNecessary");
         final Key<Restaurant> restaurantKey = new Key<Restaurant>(restaurantKeyString);
         Restaurant restaurant = ofy.get(restaurantKey);
         String phone = restaurant.getPhone();
