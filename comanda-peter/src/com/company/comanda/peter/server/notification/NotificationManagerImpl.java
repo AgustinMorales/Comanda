@@ -67,6 +67,12 @@ public class NotificationManagerImpl implements NotificationManager {
                         failure = true;
                     }
                 }
+                else{
+                    sanity = false;
+                    log.info("Notifying anyway. Restaurant: {}", restaurant.getName());
+                    restaurant.setNotifying(false);
+                    ofy.put(restaurant);
+                }
                 if(sanity){
                     if(failure){
                         log.warn("Notifying {} since {}. It's taking too long. " +
