@@ -83,12 +83,12 @@ public abstract class AsyncGetData <T>{
 
                     @Override
                     public void run() {
-                        m_ProgressDialog.dismiss();
                         afterOnUIThread(finalData,activity);
                     }
                 };
                 //This executes returnRes (see above) which will use the 
                 //ItemAdapter to display the contents of m_items
+                m_ProgressDialog.dismiss();
                 activity.runOnUiThread(onUIRunnable);
             }
         };
