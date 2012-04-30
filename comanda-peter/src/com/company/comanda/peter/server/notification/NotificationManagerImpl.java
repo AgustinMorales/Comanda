@@ -46,6 +46,7 @@ public class NotificationManagerImpl implements NotificationManager {
         Restaurant restaurant = ofy.get(restaurantKey);
         String phone = restaurant.getPhone();
         if(phone != null){
+            log.info("phone != null");
             if(restaurant.isNotifying() == true){
                 log.info("Restaurant is notifying");
                 Date latestDate = restaurant.getLatestSuccessfulNotification();
@@ -80,6 +81,7 @@ public class NotificationManagerImpl implements NotificationManager {
                 }
             }
             if(restaurant.isNotifying() == false){
+                log.info("Restaurant is not notifying");
                 final int pendingQueries = ofy.query(Bill.class).filter(
                         "state", BillState.OPEN).ancestor(
                                 restaurantKey).count();
