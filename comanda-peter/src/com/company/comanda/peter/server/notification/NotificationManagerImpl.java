@@ -19,7 +19,8 @@ import com.googlecode.objectify.Objectify;
 
 public class NotificationManagerImpl implements NotificationManager {
 
-    private static final int NOTIFICATION_DELAY = 3*60*1000;
+    private static final int NOTIFICATION_DELAY = 5*1000;
+    private static final int REPEAT_NOTIFICATION_DELAY = 3*60*1000;
     private static final int WARNING_NOTIFICATION_DURATION = 5*60*1000;
     private static final int NOTIFICATION_DURATION_SANITY = 10*60*1000;
 
@@ -83,7 +84,7 @@ public class NotificationManagerImpl implements NotificationManager {
                         log.info("Restaurant {} is already being notified, skipping...", 
                                 restaurant.getName());
                     }
-                    scheduleNotification(restaurantKeyString);
+                    scheduleNotification(restaurantKeyString, REPEAT_NOTIFICATION_DELAY);
                 }
             }
             if(restaurant.isNotifying() == false){
@@ -96,7 +97,7 @@ public class NotificationManagerImpl implements NotificationManager {
                     log.info("Calling {} on phone {}", restaurant.getName(), phone);
                     restaurant.setNotifying(true);
                     phoneNotifier.call(phone);
-                    scheduleNotification(restaurantKeyString);
+                    scheduleNotification(restaurantKeyString, REPEAT_NOTIFICATION_DELAY);
                     ofy.put(restaurant);
                 }
                 else{
@@ -144,13 +145,16 @@ public class NotificationManagerImpl implements NotificationManager {
     //FIXME: Should add notification if there is already a task for it
     @Override
     public void scheduleNotification(String restaurantKeyString) {
+        scheduleNotification(restaurantKeyString, NOTIFICATION_DELAY);
+    }
+    
+    protected void scheduleNotification(String restaurantKeyString, int delay) {
         TaskOptions options = TaskOptions.Builder.withUrl(
                 HttpParams.NotifyPendingBills.SERVICE_NAME).param(
                         HttpParams.NotifyPendingBills.
                         PARAM_RESTAURANT_KEY_STRING, 
                         restaurantKeyString);
-        options.countdownMillis(NOTIFICATION_DELAY);
+        options.countdownMillis(delay);
         queue.add(options);
     }
-    
 }
