@@ -45,8 +45,9 @@ public class NotifyPendingBillsServlet extends HttpServlet {
         ServletHelper.logParameters(req, log);
         final String restaurantKeyString = req.getParameter(
                 HttpParams.NotifyPendingBills.PARAM_RESTAURANT_KEY_STRING);
-        log.debug("Scheduling notification for restaurantKeyString: {}", 
+        log.info("Scheduling notification for restaurantKeyString: {}", 
                 restaurantKeyString);
+        log.info("NotificationManager: {}", notificationManager.getClass());
         notificationManager.notifyIfNecessary(restaurantKeyString);
     }
 
