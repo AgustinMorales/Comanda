@@ -52,7 +52,7 @@ public class TwilioPhoneNotifier implements PhoneNotifier {
             data.append("&");
             data.append("Url");
             data.append("=");
-            data.append(URLEncoder.encode("http://www.comandamobile.com/twilio.xml", "UTF-8"));
+            data.append(URLEncoder.encode("http://www.comandamobile.com/phone/pending_bills.xml", "UTF-8"));
             data.append("&");
             data.append("StatusCallback");
             data.append("=");
