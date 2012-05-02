@@ -510,6 +510,7 @@ public class ComandaActivity extends FragmentActivity
         for(int i=0;i<tvPrice.length;i++){
             if(i<noOfPrices){
                 tvPrice[i].setText(Formatter.money(o.getPrices().get(i)));
+                tvPrice[i].setVisibility(View.VISIBLE);
             }
             else{
                 tvPrice[i].setVisibility(View.GONE);
@@ -653,6 +654,7 @@ public class ComandaActivity extends FragmentActivity
                 //                    no_of_items[i].setVisibility(View.INVISIBLE);
                 //
                 //                }
+                qualifiers[i].setVisibility(View.VISIBLE);
             }
             else{
 
