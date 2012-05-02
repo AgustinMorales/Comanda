@@ -74,5 +74,8 @@
     <string name="orderRejectedOverload">Restaurant\'s overload</string>
     <string name="delivery_cost">Delivery cost:</string>
     <string name="minimum_order">Minimum order:</string>
+    <string name="cannotPlaceOrder">Could not place order</string>
+    <string name="underMinimumForDelivery1">The minimum amount for delivery is</string>
+    
     
 </resources>

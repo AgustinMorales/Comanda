@@ -18,8 +18,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.LabeledIntent;
 import android.database.DataSetObserver;
@@ -84,6 +86,7 @@ public class ComandaActivity extends FragmentActivity
     private HashMap<Long, Category> categoriesMap = new HashMap<Long, Category>();
 
     private TextView tvTotalAmount;
+    private float totalAmount;
 
     private static final int BIG_IMAGE_SIZE = 100;
     private static final int SMALL_IMAGE_SIZE = 50;
@@ -103,6 +106,7 @@ public class ComandaActivity extends FragmentActivity
     private static final int ITEM_DETAILS_DIALOG = 2;
     private static final int ADD_CHOOSE_QUALIFIER_DIALOG = 3;
     private static final int CHOOSE_EXTRA_DIALOG = 5;
+    private static final int UNDER_MINIMUM_FOR_DELIVERY = 6;
 
     private FoodMenuItem selectedMenuItem;
 
@@ -690,11 +694,28 @@ public class ComandaActivity extends FragmentActivity
 
                 @Override
                 public void onClick(View v) {
-                    (new PlaceOrderTask()).execute(
-                            ComandaActivity.this,
-                            HttpParams.PlaceOrder.SERVICE_NAME,
-                            new ArrayList<NameValuePair>(),
-                            BooleanHandler.class);
+                    if(totalAmount >= minimumForDelivery){
+                        (new PlaceOrderTask()).execute(
+                                ComandaActivity.this,
+                                HttpParams.PlaceOrder.SERVICE_NAME,
+                                new ArrayList<NameValuePair>(),
+                                BooleanHandler.class);
+                    }
+                    else{
+                        final AlertDialog alertDialog = new AlertDialog.Builder(
+                                ComandaActivity.this).create();
+                        alertDialog.setTitle(R.string.cannotPlaceOrder);
+                        StringBuffer message = new StringBuffer(getString(R.string.underMinimumForDelivery1));
+                        message.append(" ");
+                        message.append(Formatter.money(minimumForDelivery));
+                        alertDialog.setMessage(message);
+                        alertDialog.setButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                           public void onClick(DialogInterface dialog, int which) {
+                              alertDialog.dismiss();
+                           }
+                        });
+                        alertDialog.show();
+                    }
                 }
             });
 
@@ -809,6 +830,7 @@ public class ComandaActivity extends FragmentActivity
             if(tvTotalAmount != null){
                 tvTotalAmount.setText(Formatter.money(total));
             }
+            totalAmount = total;
         }
     }
 

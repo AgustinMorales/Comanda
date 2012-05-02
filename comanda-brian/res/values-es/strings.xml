@@ -74,5 +74,8 @@
     <string name="orderRejectedOverload">Rechazado - Sobrecarga temporal</string>
     <string name="delivery_cost">Coste envío:</string>
     <string name="minimum_order">Pedido mínimo:</string>
+    <string name="cannotPlaceOrder">Error al tramitar pedido</string>
+    <string name="underMinimumForDelivery1">La cantidad total debe ser como mínimo</string>
+    
     
 </resources>
