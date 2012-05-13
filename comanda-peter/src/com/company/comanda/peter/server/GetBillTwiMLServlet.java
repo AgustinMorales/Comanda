@@ -79,7 +79,7 @@ public class GetBillTwiMLServlet extends HttpServlet{
         for(int i=0;i<phoneString.length();i++){
             out.println(enclose(SAY, attsSay, "" + phoneString.charAt(i)));
         }
-        
+        out.println(close(GATHER));
         out.println(close(RESPONSE));
     }
 
