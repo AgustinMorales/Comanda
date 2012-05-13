@@ -1,20 +1,31 @@
 package com.company.comanda.peter.server.notification;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
 import javax.inject.Inject;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.DefaultHandler;
 
 import com.company.comanda.common.HttpParams;
+import com.company.comanda.peter.server.model.Bill;
+import com.company.comanda.peter.server.model.PhoneNotification;
+import com.googlecode.objectify.Key;
+import com.googlecode.objectify.Objectify;
 
 
 public class TwilioPhoneNotifier implements PhoneNotifier {
@@ -27,13 +38,16 @@ public class TwilioPhoneNotifier implements PhoneNotifier {
     
     private static final Logger log = LoggerFactory.
             getLogger(TwilioPhoneNotifier.class);
+    
+    private Objectify ofy;
 
     @Inject
-    public TwilioPhoneNotifier(){
+    public TwilioPhoneNotifier(Objectify ofy){
         super();
+        this.ofy = ofy;
     }
     @Override
-    public boolean call(String phone) {
+    public boolean call(String phone, String billKeyString) {
         boolean result = true;
         try{
             URL url = new URL(URL);
@@ -69,18 +83,68 @@ public class TwilioPhoneNotifier implements PhoneNotifier {
             writer.flush();
             
             // Get the response
-            StringBuffer answer = new StringBuffer();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                answer.append(line);
+            InputStream in = connection.getInputStream();
+            
+            
+            InputSource responseXML = new InputSource(in);
+            final StringBuffer callSid = new StringBuffer();
+            DefaultHandler handler = new DefaultHandler(){
+
+                private boolean inSid;
+                @Override
+                public void characters(char[] arg0, int arg1, int arg2)
+                        throws SAXException {
+                    if(inSid){
+                        callSid.append(new String(arg0, arg1, arg2));
+                    }
+                }
+
+                @Override
+                public void endElement(String namespaceURI, String localName,
+                        String qName)
+                        throws SAXException {
+                    if(qName.equals("Sid")){
+                        inSid = false;
+                    }
+                }
+
+                @Override
+                public void startElement(String namespaceURI, 
+                        String localName, String qName, 
+                        Attributes atts) throws SAXException {
+                    if(qName.equals("Sid")){
+                        inSid = true;
+                    }
+                }
+                
+                
+            };
+            
+            SAXParserFactory factory = SAXParserFactory.newInstance();
+            try {
+                    SAXParser parser = factory.newSAXParser();
+                    XMLReader xr = parser.getXMLReader();
+                    xr.setContentHandler(handler);
+                    xr.parse(responseXML);
+            } catch (ParserConfigurationException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+            } catch (SAXException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
             }
+
+
             writer.close();
-            reader.close();
+            in.close();
             
             //Output the response
-            log.info("Twilio answer: {}", answer.toString());
+            log.info("Call SID: {}", callSid);
 
+            PhoneNotification notification = new PhoneNotification();
+            notification.setCallSid(callSid.toString());
+            notification.setBill(new Key<Bill>(billKeyString));
+            ofy.put(notification);
         }
         catch(IOException e){
             log.error("Could not complete phone call request for phone {}", phone, e);

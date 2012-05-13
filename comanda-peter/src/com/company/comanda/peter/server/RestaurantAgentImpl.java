@@ -13,6 +13,7 @@ import com.company.comanda.peter.server.model.Bill;
 import com.company.comanda.peter.server.model.MenuCategory;
 import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Order;
+import com.company.comanda.peter.server.model.PhoneNotification;
 import com.company.comanda.peter.server.model.Restaurant;
 import com.company.comanda.peter.server.model.Table;
 import com.company.comanda.peter.shared.BillState;
@@ -337,6 +338,8 @@ public class RestaurantAgentImpl implements RestaurantAgent {
         }
         ofy.delete(keys);
     }
+
+    
 
 
 }

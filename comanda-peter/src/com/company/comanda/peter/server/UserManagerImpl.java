@@ -17,6 +17,7 @@ import com.company.comanda.peter.server.model.Bill;
 import com.company.comanda.peter.server.model.MenuCategory;
 import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Order;
+import com.company.comanda.peter.server.model.PhoneNotification;
 import com.company.comanda.peter.server.model.Restaurant;
 import com.company.comanda.peter.server.model.Table;
 import com.company.comanda.peter.server.model.User;
@@ -162,7 +163,7 @@ public class UserManagerImpl implements UserManager {
         bill.setTotalAmount(totalAmount);
         ofy.put(bill);
         ofy.put(newOrders);
-        notificationManager.scheduleNotification(restaurantKey.getString());
+        notificationManager.scheduleNotification(restaurantKey.getString(), bill.getKeyString());
 
         return billKeyString;
     }
@@ -242,4 +243,31 @@ public class UserManagerImpl implements UserManager {
         return ofy.query(Order.class).ancestor(billKey).list();
     }
 
+    @Override
+    public Bill getBill(String phone, String callSid) {
+        Bill result = null;
+        List<Restaurant> restaurants = 
+                ofy.query(Restaurant.class).filter("phone", phone).list();
+        if(restaurants.size() != 1){
+            log.error("Wrong number ({}) of restaurants found for phone {}",
+                    restaurants.size(), phone);
+            throw new IllegalStateException("Wrong " +
+                    "number of restaurants for phone " + phone);
+        }
+        Restaurant restaurant = restaurants.get(0);
+        
+        List<PhoneNotification> notificationList = 
+                ofy.query(PhoneNotification.class).filter("callSid", callSid).ancestor(restaurant).list();
+        
+        if(notificationList.size() != 1){
+            log.error("Wrong number ({}) of notifications found for callSid {}",
+                    notificationList.size(), callSid);
+            throw new IllegalStateException("Wrong " +
+                    "number of notifications for callSid " + callSid);
+        }
+        
+        result = ofy.get(notificationList.get(0).getBill());
+        return result;
+        
+    }
 }

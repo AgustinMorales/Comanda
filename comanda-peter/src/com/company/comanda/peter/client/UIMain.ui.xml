@@ -18,6 +18,7 @@
 				<g:HorizontalPanel verticalAlignment="ALIGN_BOTTOM"
 					spacing="5" width="100%">
 					<g:Label ui:field="lblLogout" text ="Salir"/>
+					<g:HTMLPanel><a href="http://www.comandamobile.com/help.html" target="_blank">Ayuda</a></g:HTMLPanel>
 					<g:Label ui:field="lblRestaurantName" />
 				</g:HorizontalPanel>
 			</g:VerticalPanel>

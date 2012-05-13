@@ -14,6 +14,7 @@ import com.company.comanda.common.HttpParams.BillNotificationEnded;
 import com.company.comanda.peter.server.AdminServiceImpl;
 import com.company.comanda.peter.server.BillsNotificationEndedServlet;
 import com.company.comanda.peter.server.GUIServiceImpl;
+import com.company.comanda.peter.server.GetBillTwiMLServlet;
 import com.company.comanda.peter.server.GetBillsServlet;
 import com.company.comanda.peter.server.GetCategoriesServlet;
 import com.company.comanda.peter.server.GetItemsServlet;
@@ -53,5 +54,6 @@ class ComandaServletModule extends ServletModule {
         serve("/updateModel").with(UpdateModelServlet.class);
         serve(NotifyPendingBills.SERVICE_NAME).with(NotifyPendingBillsServlet.class);
         serve(BillNotificationEnded.SERVICE_NAME).with(BillsNotificationEndedServlet.class);
+        serve("/getBillTwiML").with(GetBillTwiMLServlet.class);
     }
 }

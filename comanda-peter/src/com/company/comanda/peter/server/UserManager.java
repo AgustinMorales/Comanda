@@ -46,4 +46,6 @@ public interface UserManager {
     List<Bill> getBills(long userId, String password);
     
     List<Order> getOrders(long userId, String password, String billKeyString);
+    
+    public Bill getBill(String phone, String callSid);
 }

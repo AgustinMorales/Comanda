@@ -16,6 +16,7 @@ import com.company.comanda.peter.server.model.LoginToken;
 import com.company.comanda.peter.server.model.MenuCategory;
 import com.company.comanda.peter.server.model.MenuItem;
 import com.company.comanda.peter.server.model.Order;
+import com.company.comanda.peter.server.model.PhoneNotification;
 import com.company.comanda.peter.server.model.Restaurant;
 import com.company.comanda.peter.server.model.Table;
 import com.company.comanda.peter.server.model.User;
@@ -55,6 +56,7 @@ public class BusinessModule extends AbstractModule {
         ObjectifyService.register(MenuCategory.class);
         ObjectifyService.register(Bill.class);
         ObjectifyService.register(LoginToken.class);
+        ObjectifyService.register(PhoneNotification.class);
         return ofy;
     }
 

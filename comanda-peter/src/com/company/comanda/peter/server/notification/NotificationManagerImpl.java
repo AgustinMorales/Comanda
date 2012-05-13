@@ -41,7 +41,7 @@ public class NotificationManagerImpl implements NotificationManager {
     }
 
     @Override
-    public void notifyIfNecessary(String restaurantKeyString) {
+    public void notifyIfNecessary(String restaurantKeyString, String billKeyString) {
         log.info("notifyIfNecessary");
         final Key<Restaurant> restaurantKey = new Key<Restaurant>(restaurantKeyString);
         Restaurant restaurant = ofy.get(restaurantKey);
@@ -84,20 +84,20 @@ public class NotificationManagerImpl implements NotificationManager {
                         log.info("Restaurant {} is already being notified, skipping...", 
                                 restaurant.getName());
                     }
-                    scheduleNotification(restaurantKeyString, REPEAT_NOTIFICATION_DELAY);
+                    scheduleNotification(restaurantKeyString,
+                            billKeyString, REPEAT_NOTIFICATION_DELAY);
                 }
             }
             if(restaurant.isNotifying() == false){
                 log.info("Restaurant is not notifying");
-                final int pendingQueries = ofy.query(Bill.class).filter(
-                        "state", BillState.OPEN).ancestor(
-                                restaurantKey).count();
-                log.info("Pending queries: {}", pendingQueries);
-                if(pendingQueries > 0){
+                final BillState billState  = ofy.get(new Key<Bill>(billKeyString)).getState();
+                log.info("Bill state: {}", billState);
+                if(billState == BillState.OPEN){
                     log.info("Calling {} on phone {}", restaurant.getName(), phone);
                     restaurant.setNotifying(true);
-                    phoneNotifier.call(phone);
-                    scheduleNotification(restaurantKeyString, REPEAT_NOTIFICATION_DELAY);
+                    phoneNotifier.call(phone, billKeyString);
+                    scheduleNotification(restaurantKeyString,
+                            billKeyString, REPEAT_NOTIFICATION_DELAY);
                     ofy.put(restaurant);
                 }
                 else{
@@ -144,16 +144,18 @@ public class NotificationManagerImpl implements NotificationManager {
 
     //FIXME: Should add notification if there is already a task for it
     @Override
-    public void scheduleNotification(String restaurantKeyString) {
-        scheduleNotification(restaurantKeyString, NOTIFICATION_DELAY);
+    public void scheduleNotification(String restaurantKeyString, String billKeyString) {
+        scheduleNotification(restaurantKeyString, billKeyString, NOTIFICATION_DELAY);
     }
     
-    protected void scheduleNotification(String restaurantKeyString, int delay) {
+    protected void scheduleNotification(String restaurantKeyString, String billKeyString, int delay) {
         TaskOptions options = TaskOptions.Builder.withUrl(
                 HttpParams.NotifyPendingBills.SERVICE_NAME).param(
                         HttpParams.NotifyPendingBills.
                         PARAM_RESTAURANT_KEY_STRING, 
-                        restaurantKeyString);
+                        restaurantKeyString).param(
+                                HttpParams.NotifyPendingBills.
+                                PARAM_BILL_KEY_STRING, billKeyString);
         options.countdownMillis(delay);
         queue.add(options);
     }

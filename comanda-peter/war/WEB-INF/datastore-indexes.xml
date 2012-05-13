@@ -28,6 +28,10 @@
         <property name="openDate" direction="desc"/>
     </datastore-index>
     
+    <datastore-index kind="PhoneNotification" ancestor="true" source="manual">
+        <property name="callSid" direction="asc"/>
+    </datastore-index>
+    
     <datastore-index kind="Bill" ancestor="true" source="manual">
         <property name="state" direction="asc"/>
         <property name="type" direction="asc"/>

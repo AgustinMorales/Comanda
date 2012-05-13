@@ -5,7 +5,7 @@ import com.company.comanda.peter.server.notification.NotificationManager;
 public class NotificationManagerStub implements NotificationManager {
 
     @Override
-    public void notifyIfNecessary(String restaurantKeyString) {
+    public void notifyIfNecessary(String restaurantKeyString, String billKeyString) {
         // TODO Auto-generated method stub
 
     }
@@ -17,7 +17,7 @@ public class NotificationManagerStub implements NotificationManager {
     }
 
     @Override
-    public void scheduleNotification(String restaurantKeyString) {
+    public void scheduleNotification(String restaurantKeyString, String billKeyString) {
         // TODO Auto-generated method stub
 
     }
