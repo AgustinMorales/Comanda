@@ -9,4 +9,6 @@ public interface RestaurantManager {
     RestaurantAgent getAgent();
     
     RestaurantAgent getAgent(String login, String password);
+    
+    RestaurantAgent getAgent(long restaurantId);
 }

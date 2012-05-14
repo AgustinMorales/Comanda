@@ -77,7 +77,8 @@ public class RestaurantManagementImpl implements RestaurantManager {
         return result;
     }
 
-    private RestaurantAgent getAgent(long restaurantId){
+    @Override
+    public RestaurantAgent getAgent(long restaurantId){
     	return agentFactory.create(restaurantId);
     }
     
