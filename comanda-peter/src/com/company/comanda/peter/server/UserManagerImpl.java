@@ -243,31 +243,5 @@ public class UserManagerImpl implements UserManager {
         return ofy.query(Order.class).ancestor(billKey).list();
     }
 
-    @Override
-    public Bill getBill(String phone, String callSid) {
-        Bill result = null;
-        List<Restaurant> restaurants = 
-                ofy.query(Restaurant.class).filter("phone", phone).list();
-        if(restaurants.size() != 1){
-            log.error("Wrong number ({}) of restaurants found for phone {}",
-                    restaurants.size(), phone);
-            throw new IllegalStateException("Wrong " +
-                    "number of restaurants for phone " + phone);
-        }
-        Restaurant restaurant = restaurants.get(0);
-        
-        List<PhoneNotification> notificationList = 
-                ofy.query(PhoneNotification.class).filter("callSid", callSid).ancestor(restaurant).list();
-        
-        if(notificationList.size() != 1){
-            log.error("Wrong number ({}) of notifications found for callSid {}",
-                    notificationList.size(), callSid);
-            throw new IllegalStateException("Wrong " +
-                    "number of notifications for callSid " + callSid);
-        }
-        
-        result = ofy.get(notificationList.get(0).getBill());
-        return result;
-        
-    }
+    
 }

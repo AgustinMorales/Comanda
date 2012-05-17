@@ -24,6 +24,7 @@ import com.company.comanda.peter.server.NewMenuItemServlet;
 import com.company.comanda.peter.server.NewRestaurantServlet;
 import com.company.comanda.peter.server.NotifyPendingBillsServlet;
 import com.company.comanda.peter.server.PlaceOrderServlet;
+import com.company.comanda.peter.server.ProcessNotificationResponseServlet;
 import com.company.comanda.peter.server.QRDecoderServlet;
 import com.company.comanda.peter.server.RegisterUserServlet;
 import com.company.comanda.peter.server.RestaurantLoginServiceImpl;
@@ -55,5 +56,6 @@ class ComandaServletModule extends ServletModule {
         serve(NotifyPendingBills.SERVICE_NAME).with(NotifyPendingBillsServlet.class);
         serve(BillNotificationEnded.SERVICE_NAME).with(BillsNotificationEndedServlet.class);
         serve("/getBillTwiML").with(GetBillTwiMLServlet.class);
+        serve("/notificationResponse").with(ProcessNotificationResponseServlet.class);
     }
 }

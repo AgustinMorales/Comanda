@@ -22,6 +22,9 @@ public class XmlHelper {
             result.append("\"");
             result.append(" ");
         }
+        if(keys.size() > 0){
+            result.deleteCharAt(result.length() - 1);
+        }
         result.append(">");
         return result.toString();
     }

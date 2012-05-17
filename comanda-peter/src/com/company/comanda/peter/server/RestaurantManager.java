@@ -11,4 +11,6 @@ public interface RestaurantManager {
     RestaurantAgent getAgent(String login, String password);
     
     RestaurantAgent getAgent(long restaurantId);
+    
+    RestaurantAgent getAgent(String phone);
 }

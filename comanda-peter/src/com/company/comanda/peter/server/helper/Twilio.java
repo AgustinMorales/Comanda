@@ -6,4 +6,6 @@ public class Twilio {
     public static final String GATHER = "Gather";
     public static final String RESPONSE = "Response";
     public static final String PAUSE = "Pause";
+    public static final String REDIRECT = "Redirect";
+    public static final String HANGUP = "Hangup";
 }

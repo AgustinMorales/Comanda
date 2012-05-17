@@ -339,7 +339,24 @@ public class RestaurantAgentImpl implements RestaurantAgent {
         ofy.delete(keys);
     }
 
-    
+    @Override
+    public Bill getBill(String callSid) {
+        Bill result = null;
+        
+        List<PhoneNotification> notificationList = 
+                ofy.query(PhoneNotification.class).filter("callSid", callSid).ancestor(restaurantKey).list();
+        
+        if(notificationList.size() != 1){
+            log.error("Wrong number ({}) of notifications found for callSid {}",
+                    notificationList.size(), callSid);
+            throw new IllegalStateException("Wrong " +
+                    "number of notifications for callSid " + callSid);
+        }
+        
+        result = ofy.get(notificationList.get(0).getBill());
+        return result;
+        
+    }
 
 
 }

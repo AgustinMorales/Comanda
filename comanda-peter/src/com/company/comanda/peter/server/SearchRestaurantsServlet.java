@@ -52,7 +52,7 @@ public class SearchRestaurantsServlet extends HttpServlet
 
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException
     {
-        log.info("Parameters: {}", req.getParameterMap());
+        ServletHelper.logParameters(req, log);
         final double latitude = Double.parseDouble(req.getParameter(PARAM_LATITUDE));
         final double longitude = Double.parseDouble(req.getParameter(PARAM_LONGITUDE));
         final int maxResults = defaultMaxResults;

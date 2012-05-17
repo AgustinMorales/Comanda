@@ -82,6 +82,7 @@ public class ComandaActivity extends FragmentActivity
     private String addressDetails;
     private float deliveryCost;
     private float minimumForDelivery;
+    private String city;
 
     private HashMap<Long, Category> categoriesMap = new HashMap<Long, Category>();
 
@@ -221,6 +222,7 @@ public class ComandaActivity extends FragmentActivity
     public static final String EXTRA_REST_NAME = "restaurantName";
     public static final String EXTRA_REST_ID = "restaurantId";
     public static final String EXTRA_NICE_ADDRESS = "niceAddress";
+    public static final String EXTRA_CITY = "city";
     public static final String EXTRA_ADDRESS_DETAILS = "addressDetails";
     public static final String EXTRA_DELIVERY_COST = "deliveryCost";
     public static final String EXTRA_MINIMUM_FOR_DELIVERY = "minimumForDelivery";
@@ -239,6 +241,7 @@ public class ComandaActivity extends FragmentActivity
         restName = extras.getString(EXTRA_REST_NAME);
         restId = extras.getString(EXTRA_REST_ID);
         address = extras.getString(EXTRA_NICE_ADDRESS);
+        city = extras.getString(EXTRA_CITY);
         addressDetails = extras.getString(EXTRA_ADDRESS_DETAILS);
         deliveryCost = extras.getFloat(EXTRA_DELIVERY_COST);
         minimumForDelivery = extras.getFloat(EXTRA_MINIMUM_FOR_DELIVERY);
@@ -444,7 +447,7 @@ public class ComandaActivity extends FragmentActivity
                     noOfItems.toString()));
             params.add(new BasicNameValuePair(HttpParams.PlaceOrder.PARAM_PASSWORD, 
                     prefs.getString(ComandaPreferences.PASSWORD, "")));
-            params.add(new BasicNameValuePair(HttpParams.PlaceOrder.PARAM_ADDRESS, address + " (Detalles: " + addressDetails + ")"));
+            params.add(new BasicNameValuePair(HttpParams.PlaceOrder.PARAM_ADDRESS, address + ", " + addressDetails + ", " + city));
         }
 
     }

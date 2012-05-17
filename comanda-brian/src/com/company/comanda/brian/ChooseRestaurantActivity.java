@@ -45,12 +45,14 @@ public class ChooseRestaurantActivity extends ListActivity {
     private double longitude;
     private String address;
     private String addressDetails;
+    private String city;
     
     private ArrayList<Restaurant> restaurants;
     
     public static final String EXTRA_LATITUDE = "latitude";
     public static final String EXTRA_LONGITUDE = "longitude";
     public static final String EXTRA_NICE_ADDRESS = "niceAddress";
+    public static final String EXTRA_CITY = "city";
     public static final String EXTRA_ADDRESS_DETAILS = "addressDetails";
     
     private static final int SMALL_IMAGE_SIZE = 75;
@@ -99,6 +101,7 @@ public class ChooseRestaurantActivity extends ListActivity {
         this.longitude = extras.getDouble(EXTRA_LONGITUDE);
         this.address = extras.getString(EXTRA_NICE_ADDRESS);
         this.addressDetails = extras.getString(EXTRA_ADDRESS_DETAILS);
+        this.city = extras.getString(EXTRA_CITY);
         
         smallBitmaps = new WeakHashMap<String, Bitmap>();
         setContentView(R.layout.choose_restaurant);
@@ -134,6 +137,8 @@ public class ChooseRestaurantActivity extends ListActivity {
                         "");
                 intent.putExtra(ComandaActivity.EXTRA_NICE_ADDRESS, 
                         address);
+                intent.putExtra(ComandaActivity.EXTRA_CITY, 
+                        city);
                 intent.putExtra(ComandaActivity.EXTRA_ADDRESS_DETAILS, 
                         addressDetails);
                 intent.putExtra(ComandaActivity.EXTRA_DELIVERY_COST, 

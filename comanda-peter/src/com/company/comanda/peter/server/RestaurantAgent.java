@@ -65,5 +65,6 @@ public interface RestaurantAgent {
     public void changeBillState(String billKeyString,
             BillState newState, Integer deliveryDelay);
     
+    public Bill getBill(String callSid);
     
 }

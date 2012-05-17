@@ -87,6 +87,7 @@ public class ChooseAddressActivity extends ListActivity {
                 final String additionalData = item.getString(2);
                 final double latitude = item.getDouble(3);
                 final double longitude = item.getDouble(4);
+                final String city = item.getString(5);
                 Intent intent = new Intent(
                         getApplicationContext(), 
                         ChooseRestaurantActivity.class);
@@ -98,6 +99,8 @@ public class ChooseAddressActivity extends ListActivity {
                         additionalData);
                 intent.putExtra(ChooseRestaurantActivity.EXTRA_NICE_ADDRESS, 
                         niceAddress);
+                intent.putExtra(ChooseRestaurantActivity.EXTRA_CITY, 
+                        city);
                 startActivityForResult(intent, CHOOSE_RESTAURANT_CODE);
             }
         });
@@ -117,7 +120,8 @@ public class ChooseAddressActivity extends ListActivity {
                         AddressOpenHelper.COLUMN_NICE_STRING,
                         AddressOpenHelper.COLUMN_ADDITIONAL_DATA,
                         AddressOpenHelper.COLUMN_LATITUDE,
-                        AddressOpenHelper.COLUMN_LONGITUDE
+                        AddressOpenHelper.COLUMN_LONGITUDE,
+                        AddressOpenHelper.COLUMN_CITY,
                 },
                 null, null, null, null, null);
     }
@@ -148,8 +152,9 @@ public class ChooseAddressActivity extends ListActivity {
             TextView textView = (TextView)v.findViewById(
                     R.id.textViewAddressNiceString);
             final String niceAddress = cursor.getString(1);
+            final String city = cursor.getString(5);
             
-            textView.setText(niceAddress);
+            textView.setText(niceAddress + ", " + city) ;
             
         }
     }
@@ -192,10 +197,8 @@ public class ChooseAddressActivity extends ListActivity {
                     StringBuffer address = new StringBuffer(etStreetName.getText());
                     address.append(", ");
                     address.append(etNumber.getText());
-                    address.append(", ");
-                    address.append(etCity.getText());
                     if(addNewAddress(address.toString(), 
-                            etAdditionalData.getText().toString())){
+                            etAdditionalData.getText().toString(), etCity.getText().toString())){
                     
                         dismissDialog(NEW_ADDRESS_DIALOG);
                     }
@@ -235,26 +238,30 @@ public class ChooseAddressActivity extends ListActivity {
     }
 
     private boolean addNewAddress(String niceAddress, 
-            String additionalDetails){
+            String additionalDetails, String city){
         boolean result = false;
         Geocoder coder = new Geocoder(this);
 
         try {
-            List<Address>address = coder.getFromLocationName(niceAddress,5);
+            List<Address>address = coder.getFromLocationName(niceAddress + ", " + city,5);
             if (address != null) {
                 Address location = address.get(0);
                 double latitude = location.getLatitude();
                 double longitude = location.getLongitude();
                 SQLiteDatabase database = openHelper.getWritableDatabase();
-                ContentValues values = new ContentValues(4);
+                ContentValues values = new ContentValues(5);
                 values.put(AddressOpenHelper.COLUMN_NICE_STRING, 
                         niceAddress);
                 values.put(AddressOpenHelper.COLUMN_ADDITIONAL_DATA, 
                         additionalDetails);
+                values.put(AddressOpenHelper.COLUMN_ADDITIONAL_DATA, 
+                        city);
                 values.put(AddressOpenHelper.COLUMN_LATITUDE, 
                         latitude);
                 values.put(AddressOpenHelper.COLUMN_LONGITUDE, 
                         longitude);
+                values.put(AddressOpenHelper.COLUMN_CITY, 
+                        city);
                 database.insert(AddressOpenHelper.ADDRESS_TABLE_NAME, 
                         null, values);
                 database.close();

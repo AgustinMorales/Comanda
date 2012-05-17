@@ -127,9 +127,11 @@
     </java>
   </target>
 
-  <target name="build" depends="gwtc,unittest" description="Build this project" />
-	<!--<target name="build" depends="unittest" description="Build this project" />-->
+	
+	<target name="buildserver" depends="unittest" description="Build server" />
 
+	<target name="buildclient" depends="gwtc" description="Build client"/>
+	<target name="build" depends="buildserver,buildclient" description="Build this project" />
   <target name="clean" description="Cleans this project">
     <delete dir="war/WEB-INF/classes" failonerror="false" />
     <delete dir="war/comanda_peter" failonerror="false" />
@@ -143,6 +145,11 @@
 	      description="Uploads the application to App Engine.">
 	    <appcfg action="update" war="war" />
 	  </target>
+	
+	<target name="updateserver" depends="buildserver"
+		      description="Uploads just the server to App Engine.">
+		    <appcfg action="update" war="war" />
+		  </target>
 
 	  <target name="update_indexes" depends="build"
 	      description="Uploads just the datastore index configuration to App Engine.">
