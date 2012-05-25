@@ -28,11 +28,13 @@ import static com.company.comanda.peter.server.helper.Twilio.*;
 @Singleton
 public class GetBillTwiMLServlet extends HttpServlet{
 
-    
+
     /**
      * 
      */
     private static final long serialVersionUID = -6628492120040209853L;
+
+    private static final int REPEAT = 1;
 
     private static final Logger log = 
             LoggerFactory.getLogger(GetBillTwiMLServlet.class);
@@ -61,7 +63,7 @@ public class GetBillTwiMLServlet extends HttpServlet{
 
         RestaurantAgent agent = manager.getAgent(phone);
         Bill bill = agent.getBill(callSid);
-        
+
         out.println(open(RESPONSE));
         Map<String, String> atts = new HashMap<String, String>(2);
         atts.put("action", "https://comandapeter.appspot.com/notificationResponse");
@@ -70,42 +72,84 @@ public class GetBillTwiMLServlet extends HttpServlet{
         Map<String, String> attsSay = new HashMap<String, String>(2);
         attsSay.put("voice", "woman");
         attsSay.put("language", "es");
-        out.println(enclose(SAY, attsSay, "Dirección"));
-        out.println(enclose(SAY, attsSay, bill.getAddress()));
-        out.println(enclose(PAUSE, ""));
-        out.println(enclose(SAY, attsSay, "Teléfono"));
+
+        StringBuilder sb = new StringBuilder();
+        String address = bill.getAddress().replaceAll("(?<=[0-9])(?=[A-Za-z])", ", ");
+        address = address.replaceAll("(?<=[0-9]) (?=[A-Za-z])", ", ");
+        //Phonetic alphabet
+        address = address.replaceAll(", \\bb\\b", ", b, de burro");
+        address = address.replaceAll(", \\bc\\b", ", c, de casa");
+        address = address.replaceAll(", \\bd\\b", ", d, de dromedario");
+        sb.append("Dirección: ");
+        sb.append(address);
+        sb.append(". ");
+        sb.append("Repito dirección: ");
+        sb.append(address);
+        sb.append(". ");
+        sb.append("Teléfono: ");
         String phoneString = bill.getPhoneNumber();
+        StringBuilder phoneSb = new StringBuilder();
         for(int i=0;i<phoneString.length();i++){
-            out.println(enclose(SAY, attsSay, "" + phoneString.charAt(i)));
+            phoneSb.append(phoneString.charAt(i));
+            if(i<phoneString.length() - 1){
+                phoneSb.append(", ");
+            }
         }
-        out.println(enclose(SAY, attsSay, "Elementos del pedido"));
+        sb.append(phoneSb);
+        sb.append(".");
+        out.println(enclose(SAY, attsSay, sb.toString()));
+        
+        sb = new StringBuilder();
+        sb.append("Elementos del pedido: ");
         List<Order> orders = agent.getOrders(null, null, null, bill.getKeyString());
         for(Order order : orders){
-            out.println(enclose(SAY, attsSay, order.getMenuItemName()));
+            if(order.getNoOfItems() > 1){
+                sb.append(order.getNoOfItems());
+                sb.append(" unidades de ");
+            }
+            else{
+                sb.append(" una unidad de ");
+            }
+            sb.append(order.getMenuItemName());
+            sb.append(". siguiente elemento, ");
             List<String> extras = order.getExtras();
-            if(extras.size() > 0){
-                out.println(enclose(SAY, attsSay, order.getExtrasName()));
-                StringBuilder sb = new StringBuilder();
+            if(extras != null && extras.size() > 0){
+                sb.append(" con ");
+                sb.append(order.getExtrasName());
+                sb.append(": ");
+                StringBuilder sbExtras = new StringBuilder();
                 final int extrasSize = extras.size();
                 for(int i=0;i<extrasSize; i++){
-                    sb.append(extras.get(i));
+                    sbExtras.append(extras.get(i));
                     if(extrasSize > 1){
                         if(i < extrasSize - 2){
-                            sb.append(", ");
+                            sbExtras.append(", ");
                         }
                         else if(i == extrasSize - 2){
-                            sb.append(" y ");
+                            sbExtras.append(" y ");
                         }
                     }
                 }
-                out.println(enclose(SAY, attsSay, sb.toString()));
+                sb.append(sbExtras);
             }
-            
+            sb.append(".");
         }
+        out.println(enclose(SAY, attsSay, sb.toString()));
+        sb = new StringBuilder();
+        for(int i=0;i<REPEAT;i++){
+            sb.append("Para volver a escuchar el pedido, pulse 2. ");
+            sb.append("Para aceptar el pedido, pulse 3. ");
+            sb.append("Para rechazar por fuera de zona de reparto, pulse 4. ");
+            sb.append("Si quiere rechazar el pedido por falta de existencias, pulse 5. ");
+            sb.append("Para rechazar el pedido por causas de horario, pulse 6. ");
+            sb.append("Si desea rechazar el pedido por dirección incorrecta, pulse 7. ");
+            sb.append("Para rechazar el pedido por otras causas, pulse 8.");
+        }
+        out.println(enclose(SAY, attsSay, sb.toString()));
         out.println(close(GATHER));
         out.println(enclose(REDIRECT, "https://comandapeter.appspot.com/getBillTwiML"));
         out.println(close(RESPONSE));
-        
+
     }
 
 }

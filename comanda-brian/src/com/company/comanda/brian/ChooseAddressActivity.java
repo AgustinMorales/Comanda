@@ -195,7 +195,8 @@ public class ChooseAddressActivity extends ListActivity {
                 @Override
                 public void onClick(View v) {
                     StringBuffer address = new StringBuffer(etStreetName.getText());
-                    address.append(", ");
+                    address.append(getString(R.string.numberForAddress));
+                    address.append(" ");
                     address.append(etNumber.getText());
                     if(addNewAddress(address.toString(), 
                             etAdditionalData.getText().toString(), etCity.getText().toString())){
@@ -254,8 +255,6 @@ public class ChooseAddressActivity extends ListActivity {
                         niceAddress);
                 values.put(AddressOpenHelper.COLUMN_ADDITIONAL_DATA, 
                         additionalDetails);
-                values.put(AddressOpenHelper.COLUMN_ADDITIONAL_DATA, 
-                        city);
                 values.put(AddressOpenHelper.COLUMN_LATITUDE, 
                         latitude);
                 values.put(AddressOpenHelper.COLUMN_LONGITUDE, 

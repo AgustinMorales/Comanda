@@ -76,6 +76,6 @@
     <string name="minimum_order">Minimum order:</string>
     <string name="cannotPlaceOrder">Could not place order</string>
     <string name="underMinimumForDelivery1">The minimum amount for delivery is</string>
-    
+    <string name="numberForAddress">, numero</string>
     
 </resources>

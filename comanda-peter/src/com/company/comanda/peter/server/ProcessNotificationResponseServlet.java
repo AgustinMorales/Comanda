@@ -28,22 +28,25 @@ import static com.company.comanda.peter.server.helper.Twilio.*;
 @Singleton
 public class ProcessNotificationResponseServlet extends HttpServlet{
 
-    
+
     /**
      * 
      */
     private static final long serialVersionUID = -6628492120040209853L;
-    
+
     private static final int DEFAULT_DELIVERY_DELAY = 30;
 
     private static final Logger log = 
             LoggerFactory.getLogger(ProcessNotificationResponseServlet.class);
 
     private RestaurantManager manager;
+    private GetBillTwiMLServlet getBillTwiMLServlet;
 
     @Inject
-    public ProcessNotificationResponseServlet(RestaurantManager manager){
+    public ProcessNotificationResponseServlet(RestaurantManager manager, 
+            GetBillTwiMLServlet getBillTwiMLServlet){
         this.manager = manager;
+        this.getBillTwiMLServlet = getBillTwiMLServlet;
     }
 
     @Override
@@ -63,44 +66,49 @@ public class ProcessNotificationResponseServlet extends HttpServlet{
         RestaurantAgent agent = manager.getAgent(phone);
 
         Bill bill = agent.getBill(callSid);
-        
-        BillState newState = null;
-        
-        if("3".equals(digits)){
-            newState = BillState.DELIVERED;
-        }
-        else if("4".equals(digits)){
-            newState = BillState.REJECTED_NO_DELIVERY_THERE;
-        }
-        else if("5".equals(digits)){
-            newState = BillState.REJECTED_OUT_OF_SOMETHING;
-        }
-        else if("6".equals(digits)){
-            newState = BillState.REJECTED_OFF_DUTY;
-        }
-        else if("7".equals(digits)){
-            newState = BillState.REJECTED_UNKNOWN_ADDRESS;
-        }
-        else if("8".equals(digits)){
-            newState = BillState.REJECTED;
-        }
-        agent.changeBillState(bill.getKeyString(), newState, DEFAULT_DELIVERY_DELAY);
-        
-        PrintWriter out = ServletHelper.getXmlWriter(resp);
 
-        
-        out.println(open(RESPONSE));
-        Map<String, String> attsSay = new HashMap<String, String>(2);
-        attsSay.put("voice", "woman");
-        attsSay.put("language", "es");
-        if(newState == BillState.DELIVERED){
-            out.println(enclose(SAY, attsSay, "El pedido ha sido aceptado"));
+        BillState newState = null;
+
+        if("2".equals(digits)){
+            getBillTwiMLServlet.doPost(req, resp);
         }
         else{
-            out.println(enclose(SAY, attsSay, "El pedido ha sido rechazado"));
+            if("3".equals(digits)){
+                newState = BillState.DELIVERED;
+            }
+            else if("4".equals(digits)){
+                newState = BillState.REJECTED_NO_DELIVERY_THERE;
+            }
+            else if("5".equals(digits)){
+                newState = BillState.REJECTED_OUT_OF_SOMETHING;
+            }
+            else if("6".equals(digits)){
+                newState = BillState.REJECTED_OFF_DUTY;
+            }
+            else if("7".equals(digits)){
+                newState = BillState.REJECTED_UNKNOWN_ADDRESS;
+            }
+            else if("8".equals(digits)){
+                newState = BillState.REJECTED;
+            }
+            agent.changeBillState(bill.getKeyString(), newState, DEFAULT_DELIVERY_DELAY);
+
+            PrintWriter out = ServletHelper.getXmlWriter(resp);
+
+
+            out.println(open(RESPONSE));
+            Map<String, String> attsSay = new HashMap<String, String>(2);
+            attsSay.put("voice", "woman");
+            attsSay.put("language", "es");
+            if(newState == BillState.DELIVERED){
+                out.println(enclose(SAY, attsSay, "El pedido ha sido aceptado"));
+            }
+            else{
+                out.println(enclose(SAY, attsSay, "El pedido ha sido rechazado"));
+            }
+            out.println(enclose(HANGUP, ""));
+            out.println(close(RESPONSE));
         }
-        out.println(enclose(HANGUP, ""));
-        out.println(close(RESPONSE));
     }
 
 }
