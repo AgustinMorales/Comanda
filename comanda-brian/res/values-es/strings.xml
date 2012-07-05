@@ -76,6 +76,7 @@
     <string name="minimum_order">Pedido mínimo:</string>
     <string name="cannotPlaceOrder">Error al tramitar pedido</string>
     <string name="underMinimumForDelivery1">La cantidad total debe ser como mínimo</string>
+    <string name="numberForAddress">, numero</string>
     
     
 </resources>
