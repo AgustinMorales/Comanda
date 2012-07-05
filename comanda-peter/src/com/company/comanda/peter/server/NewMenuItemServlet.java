@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.company.comanda.peter.shared.Constants;
 import com.company.comanda.peter.shared.Qualifiers;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
@@ -56,7 +57,7 @@ public class NewMenuItemServlet extends HttpServlet{
         String extrasName = req.getParameter("extrasName");
         List<String> extras = new ArrayList<String>();
         List<Float> extrasPrices = new ArrayList<Float>();
-        for(int i=0;i<9; i++){
+        for(int i=0;i<Constants.NO_OF_EXTRAS_IN_UI; i++){
             String currentExtraName = req.getParameter("extra" + (i+1));
             if(currentExtraName != null && currentExtraName.length() == 0){
                 currentExtraName = null;
@@ -143,6 +144,11 @@ public class NewMenuItemServlet extends HttpServlet{
     }
 
     private float price(HttpServletRequest req, String name){
-    	return Float.parseFloat(req.getParameter(name));
+        String priceString = req.getParameter(name);
+        float price = 0;
+        if(priceString != null && priceString.length() > 0){
+            price = Float.parseFloat(req.getParameter(name));
+        }
+    	return price;
     }
 }

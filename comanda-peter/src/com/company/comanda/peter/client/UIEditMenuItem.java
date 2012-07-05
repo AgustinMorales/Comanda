@@ -2,6 +2,7 @@ package com.company.comanda.peter.client;
 
 import java.util.List;
 
+import com.company.comanda.peter.shared.Constants;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -76,6 +77,31 @@ public class UIEditMenuItem extends Composite {
     @UiField DoubleBox tbExtraPrice8;
     @UiField DoubleBox tbExtraPrice9;
     @UiField TextBox tbExtrasName;
+    @UiField TextBox tbExtra10;
+    @UiField TextBox tbExtra11;
+    @UiField TextBox tbExtra12;
+    @UiField TextBox tbExtra13;
+    @UiField TextBox tbExtra14;
+    @UiField TextBox tbExtra15;
+    @UiField TextBox tbExtra16;
+    @UiField TextBox tbExtra17;
+    @UiField TextBox tbExtra18;
+    @UiField TextBox tbExtra19;
+    @UiField TextBox tbExtra20;
+    @UiField TextBox tbExtra21;
+    @UiField DoubleBox tbExtraPrice10;
+    @UiField DoubleBox tbExtraPrice11;
+    @UiField DoubleBox tbExtraPrice12;
+    @UiField DoubleBox tbExtraPrice13;
+    @UiField DoubleBox tbExtraPrice14;
+    @UiField DoubleBox tbExtraPrice15;
+    @UiField DoubleBox tbExtraPrice16;
+    @UiField DoubleBox tbExtraPrice17;
+    @UiField DoubleBox tbExtraPrice18;
+    @UiField DoubleBox tbExtraPrice19;
+    @UiField DoubleBox tbExtraPrice20;
+    @UiField DoubleBox tbExtraPrice21;
+    
 
     private TextBox[] tbExtras;
     private DoubleBox[] tbExtrasPrices;
@@ -91,26 +117,50 @@ public class UIEditMenuItem extends Composite {
         initWidget(uiBinder.createAndBindUi(this));
         itemDataFormPanel.setEncoding(FormPanel.ENCODING_MULTIPART);
         itemDataFormPanel.setMethod(FormPanel.METHOD_POST);
-        tbExtras = new TextBox[9];
-        tbExtrasPrices = new DoubleBox[9];
+        tbExtras = new TextBox[Constants.NO_OF_EXTRAS_IN_UI];
+        tbExtrasPrices = new DoubleBox[Constants.NO_OF_EXTRAS_IN_UI];
         tbExtras[0] = tbExtra1;
         tbExtras[1] = tbExtra2;
         tbExtras[2] = tbExtra3;
         tbExtras[3] = tbExtra4;
         tbExtras[4] = tbExtra5;
         tbExtras[5] = tbExtra6;
-        tbExtras[6] = tbExtra6;
-        tbExtras[7] = tbExtra6;
-        tbExtras[8] = tbExtra6;
+        tbExtras[6] = tbExtra7;
+        tbExtras[7] = tbExtra8;
+        tbExtras[8] = tbExtra9;
+        tbExtras[9] = tbExtra10;
+        tbExtras[10] = tbExtra11;
+        tbExtras[11] = tbExtra12;
+        tbExtras[12] = tbExtra13;
+        tbExtras[13] = tbExtra14;
+        tbExtras[14] = tbExtra15;
+        tbExtras[15] = tbExtra16;
+        tbExtras[16] = tbExtra17;
+        tbExtras[17] = tbExtra18;
+        tbExtras[18] = tbExtra19;
+        tbExtras[19] = tbExtra20;
+        tbExtras[20] = tbExtra21;
         tbExtrasPrices[0] = tbExtraPrice1;
         tbExtrasPrices[1] = tbExtraPrice2;
         tbExtrasPrices[2] = tbExtraPrice3;
         tbExtrasPrices[3] = tbExtraPrice4;
         tbExtrasPrices[4] = tbExtraPrice5;
         tbExtrasPrices[5] = tbExtraPrice6;
-        tbExtrasPrices[6] = tbExtraPrice6;
-        tbExtrasPrices[7] = tbExtraPrice6;
-        tbExtrasPrices[8] = tbExtraPrice6;
+        tbExtrasPrices[6] = tbExtraPrice7;
+        tbExtrasPrices[7] = tbExtraPrice8;
+        tbExtrasPrices[8] = tbExtraPrice9;
+        tbExtrasPrices[9] = tbExtraPrice10;
+        tbExtrasPrices[10] = tbExtraPrice11;
+        tbExtrasPrices[11] = tbExtraPrice12;
+        tbExtrasPrices[12] = tbExtraPrice13;
+        tbExtrasPrices[13] = tbExtraPrice14;
+        tbExtrasPrices[14] = tbExtraPrice15;
+        tbExtrasPrices[15] = tbExtraPrice16;
+        tbExtrasPrices[16] = tbExtraPrice17;
+        tbExtrasPrices[17] = tbExtraPrice18;
+        tbExtrasPrices[18] = tbExtraPrice19;
+        tbExtrasPrices[19] = tbExtraPrice20;
+        tbExtrasPrices[20] = tbExtraPrice21;
     }
 
     @UiHandler("btnSaveChanges")
@@ -155,6 +205,9 @@ public class UIEditMenuItem extends Composite {
     }
 
     public void setData(String[] data){
+        final int baseName = 12;
+        final int basePrice = baseName + Constants.NO_OF_EXTRAS_IN_UI;
+        final int basePriceValue = basePrice + Constants.NO_OF_EXTRAS_IN_UI;
         tbKeyId.setText(data[0]);
         String imageKey = data[1];
         if(imageKey != null){
@@ -167,42 +220,41 @@ public class UIEditMenuItem extends Composite {
         if(data[4] != null){
         	rbSinglePrice.setValue(true);
         	rbSinglePrice.setFormValue("single");
-        	dbSinglePrice.setValue(Double.parseDouble(data[30]));
+        	dbSinglePrice.setValue(Double.parseDouble(data[basePriceValue]));
         }
         else{
         	rbMultiplePrice.setValue(true);
         	rbMultiplePrice.setFormValue("multiple");
         	if(data[5] != null){
             	cbSmall.setValue(true);
-            	dbSmallPrice.setValue(Double.parseDouble(data[31]));
+            	dbSmallPrice.setValue(Double.parseDouble(data[basePriceValue + 1]));
             }
             if(data[6] != null){
             	cbMedium.setValue(true);
-            	dbMediumPrice.setValue(Double.parseDouble(data[32]));
+            	dbMediumPrice.setValue(Double.parseDouble(data[basePriceValue + 2]));
             }
             if(data[7] != null){
             	cbLarge.setValue(true);
-            	dbLargePrice.setValue(Double.parseDouble(data[33]));
+            	dbLargePrice.setValue(Double.parseDouble(data[basePriceValue + 3]));
             }
             if(data[8] != null){
             	cbTapa.setValue(true);
-            	dbTapaPrice.setValue(Double.parseDouble(data[34]));
+            	dbTapaPrice.setValue(Double.parseDouble(data[basePriceValue + 4]));
             }
             if(data[9] != null){
             	cbHalf.setValue(true);
-            	dbHalfPrice.setValue(Double.parseDouble(data[35]));
+            	dbHalfPrice.setValue(Double.parseDouble(data[basePriceValue + 5]));
             }
             if(data[10] != null){
             	cbFull.setValue(true);
-            	dbFullPrice.setValue(Double.parseDouble(data[36]));
+            	dbFullPrice.setValue(Double.parseDouble(data[basePriceValue + 6]));
             }
         }
         if(data[11] != null){
             tbExtrasName.setText(data[11]);
         }
-        final int baseName = 12;
-        final int basePrice = 21;
-        for(int i=0;i<9;i++){
+        
+        for(int i=0;i<Constants.NO_OF_EXTRAS_IN_UI;i++){
             String name = data[baseName + i];
             if(name != null){
                 tbExtras[i].setText(name);

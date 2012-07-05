@@ -22,6 +22,7 @@ import com.company.comanda.peter.server.model.Order;
 import com.company.comanda.peter.server.model.Table;
 import com.company.comanda.peter.shared.BillState;
 import com.company.comanda.peter.shared.BillType;
+import com.company.comanda.peter.shared.Constants;
 import com.company.comanda.peter.shared.OrderState;
 import com.company.comanda.peter.shared.PagedResult;
 import com.company.comanda.peter.shared.Qualifiers;
@@ -124,12 +125,12 @@ GUIService {
                     priceValues[6] = prices.get(i);
                 }
             }
-            String[] extras = new String[9];
+            String[] extras = new String[Constants.NO_OF_EXTRAS_IN_UI];
             int noOfExtras = 0;
             if(item.getExtras() != null){
                 noOfExtras = item.getExtras().size();
             }
-            float[] extrasPrices = new float[9];
+            float[] extrasPrices = new float[Constants.NO_OF_EXTRAS_IN_UI];
             for(int i=0;i<noOfExtras;i++){
                 extras[i] = item.getExtras().get(i);
                 extrasPrices[i] = item.getExtrasPrice().get(i);
@@ -162,6 +163,18 @@ GUIService {
                     extras[6],
                     extras[7],
                     extras[8],
+                    extras[9],
+                    extras[10],
+                    extras[11],
+                    extras[12],
+                    extras[13],
+                    extras[14],
+                    extras[15],
+                    extras[16],
+                    extras[17],
+                    extras[18],
+                    extras[19],
+                    extras[20],
                     "" + extrasPrices[0],
                     "" + extrasPrices[1],
                     "" + extrasPrices[2],
@@ -171,6 +184,18 @@ GUIService {
                     "" + extrasPrices[6],
                     "" + extrasPrices[7],
                     "" + extrasPrices[8],
+                    "" + extrasPrices[9],
+                    "" + extrasPrices[10],
+                    "" + extrasPrices[11],
+                    "" + extrasPrices[12],
+                    "" + extrasPrices[13],
+                    "" + extrasPrices[14],
+                    "" + extrasPrices[15],
+                    "" + extrasPrices[16],
+                    "" + extrasPrices[17],
+                    "" + extrasPrices[18],
+                    "" + extrasPrices[19],
+                    "" + extrasPrices[20],
                     "" + priceValues[0],
                     "" + priceValues[1],
                     "" + priceValues[2],
