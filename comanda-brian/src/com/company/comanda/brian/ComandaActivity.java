@@ -110,6 +110,7 @@ public class ComandaActivity extends FragmentActivity
     private static final int UNDER_MINIMUM_FOR_DELIVERY = 6;
 
     private FoodMenuItem selectedMenuItem;
+    private int selectedQualifier;
 
 
     private static class AsyncGetMenuItems extends AsyncGetData<ArrayList<FoodMenuItem>>{
@@ -907,7 +908,7 @@ public class ComandaActivity extends FragmentActivity
 
                 @Override
                 public void onClick(View v) {
-                    doAddItemForOrder(selectedMenuItem, 0, adapter.getSelected());
+                    doAddItemForOrder(selectedMenuItem, selectedQualifier, adapter.getSelected());
                     dismissDialog(id);
                 }
             });
@@ -1068,6 +1069,7 @@ public class ComandaActivity extends FragmentActivity
     private void addItemForOrder(FoodMenuItem item, int qualifierIndex){
         if(item.getExtras() != null && item.getExtras().size() > 1){
             selectedMenuItem = item;
+            selectedQualifier = qualifierIndex;
             showDialog(CHOOSE_EXTRA_DIALOG);
         }
         else{
