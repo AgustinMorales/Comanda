@@ -1,0 +1,11 @@
+.gwt
+war/WEB-INF/classes
+war/WEB-INF/deploy
+war/WEB-INF/appengine-generated
+war/comanda_peter
+war/comanda_peter_admin
+war/com.company.comanda.peter.ComandaPeterViewOrders
+test-classes
+gwt-unitCache
+reports
+local.properties

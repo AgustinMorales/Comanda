@@ -1,0 +1,33 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		
+	</ui:style>
+	<ui:with field='res' type='com.company.comanda.peter.client.resources.Resources'/>
+	<g:HTMLPanel>
+		<g:AbsolutePanel height="367px" width="323px">
+			<g:at left="22" top="197">
+				<g:Label text="Usuario"/>
+			</g:at>
+			<g:at left="23" top="236">
+				<g:Label text="Contraseña"/>
+			</g:at>
+			<g:at left="119" top="189">
+				<g:TextBox ui:field="tbUsename" width="171px" height="18px"/>
+			</g:at>
+			<g:at left="119" top="228">
+				<g:PasswordTextBox ui:field="tbPassword" width="171px" height="18px"/>
+			</g:at>
+			<g:at left="208" top="311">
+				<g:Button width="92px" height="29px" ui:field="btnLogin" text="Acceder">Login</g:Button>
+			</g:at>
+			<g:at left="38" top="8">
+				<g:Image resource='{res.login_logo}'/>
+			</g:at>
+			<g:at left="119" top="275">
+				<g:CheckBox text="Recordar contraseña" checked="true" ui:field="cbRememberPassword"/>
+			</g:at>
+		</g:AbsolutePanel>
+	</g:HTMLPanel>
+</ui:UiBinder> 

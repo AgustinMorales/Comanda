@@ -1,0 +1,45 @@
+<!-- Indices written at Tue, 21 Feb 2012 18:37:36 UTC -->
+
+<datastore-indexes autoGenerate="false">
+
+    <!-- Used 3 times in query history -->
+    <datastore-index kind="Order" ancestor="true" source="manual">
+        <property name="state" direction="asc"/>
+        <property name="table" direction="asc"/>
+        <property name="date" direction="desc"/>
+        <property name="billType" direction="asc"/>
+    </datastore-index>
+
+    <datastore-index kind="Order" ancestor="true" source="manual">
+        <property name="billType" direction="asc"/>
+        <property name="date" direction="desc"/>
+    </datastore-index>
+    
+    <datastore-index kind="Order" ancestor="true" source="manual">
+        <property name="date" direction="desc"/>
+    </datastore-index>
+    
+    <datastore-index kind="Bill" ancestor="true" source="manual">
+        <property name="openDate" direction="desc"/>
+    </datastore-index>
+    
+    <datastore-index kind="Bill" ancestor="false" source="manual">
+        <property name="user" direction="asc"/>
+        <property name="openDate" direction="desc"/>
+    </datastore-index>
+    
+    <datastore-index kind="PhoneNotification" ancestor="true" source="manual">
+        <property name="callSid" direction="asc"/>
+    </datastore-index>
+    
+    <datastore-index kind="Bill" ancestor="true" source="manual">
+        <property name="state" direction="asc"/>
+        <property name="type" direction="asc"/>
+        <property name="openDate" direction="desc"/>
+    </datastore-index>
+    
+    <datastore-index kind="Bill" ancestor="true" source="manual">
+        <property name="type" direction="asc"/>
+        <property name="openDate" direction="desc"/>
+    </datastore-index>
+</datastore-indexes>

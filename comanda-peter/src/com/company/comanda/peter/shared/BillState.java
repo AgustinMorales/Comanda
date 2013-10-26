@@ -1,0 +1,15 @@
+package com.company.comanda.peter.shared;
+
+public enum BillState {
+
+    OPEN,
+    DELIVERED,
+    CLOSED,
+    REJECTED,
+    REJECTED_OFF_DUTY,
+    REJECTED_NO_DELIVERY_THERE,
+    REJECTED_NOT_ENOUGH_FOR_DELIVERY,
+    REJECTED_UNKNOWN_ADDRESS,
+    REJECTED_OUT_OF_SOMETHING,
+    REJECTED_OVERLOAD,
+}

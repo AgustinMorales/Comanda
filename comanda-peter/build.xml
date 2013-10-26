@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="comanda-peter" default="build" basedir=".">
+  <!-- Configure path to GWT SDK -->
+	<property file="local.properties"/>
+	<property name="report.dir" location="reports" />
+  <import file="${appengine.sdk}/config/user/ant-macros.xml" />
+  <condition property="XstartOnFirstThread" value="-XstartOnFirstThread">
+    <os family="mac"/>
+  </condition>
+  <condition property="XstartOnFirstThread" value="">
+    <not><os family="mac"/></not>
+  </condition>
+
+	  <path id="tools.class.path">
+	    <path refid="project.class.path"/>
+	    <pathelement location="${appengine.sdk}/lib/appengine-tools-api.jar"/>
+	    <fileset dir="${appengine.sdk}/lib/tools">
+	      <include name="**/asm-*.jar"/>
+	    </fileset>
+	  </path>
+	<path id="appengine.test.classpath">
+        <pathelement location="${appengine.sdk}/lib/impl/appengine-api-labs.jar"/>
+        <pathelement location="${appengine.sdk}/lib/impl/appengine-api-stubs.jar"/>
+        <pathelement location="${appengine.sdk}/lib/testing/appengine-testing.jar"/>
+	      </path>
+
+	  <path id="javac.classpath">
+	    <pathelement location="war/WEB-INF/classes"/>
+	    <fileset dir="war/WEB-INF/lib" includes="**/*.jar"/>
+	  </path>
+	
+	  <path id="gwt.classpath">
+	    <pathelement location="${gwt.sdk}/gwt-user.jar"/>
+	    <fileset dir="${gwt.sdk}" includes="gwt-dev*.jar"/>
+	  </path>
+	
+  <path id="project.class.path">
+    
+    <path refid="javac.classpath"/>
+  	<pathelement location="lib/gwt-maps.jar"/>
+  	<pathelement location="lib/gwt-ajaxloader.jar"/>
+    <path refid="gwt.classpath"/>
+  </path>
+
+  <target name="libs" description="Copy libs to WEB-INF/lib">
+    <mkdir dir="war/WEB-INF/lib" />
+    <copy todir="war/WEB-INF/lib" file="${gwt.sdk}/gwt-servlet.jar" />
+    <!-- Add any additional server libs that need to be copied -->
+  </target>
+
+  <target name="javac" depends="libs" description="Compile java source">
+    <mkdir dir="war/WEB-INF/classes"/>
+    <javac srcdir="src" includes="**" encoding="utf-8"
+        destdir="war/WEB-INF/classes"
+        source="1.5" target="1.5" nowarn="true"
+        debug="true" debuglevel="lines,vars,source">
+      <classpath refid="project.class.path"/>
+    </javac>
+    <copy todir="war/WEB-INF/classes">
+      <fileset dir="src" excludes="**/*.java"/>
+    </copy>
+  </target>
+	
+	<target name="compile-tests" depends="libs" description="Compile test classes">
+	    <mkdir dir="test-classes"/>
+	    <javac srcdir="test" includes="**" encoding="utf-8"
+	        destdir="test-classes"
+	        source="1.5" target="1.5" nowarn="true"
+	        debug="true" debuglevel="lines,vars,source">
+	    	<classpath>
+	    		<path refid="project.class.path"/>
+	    		<path refid="appengine.test.classpath"/>
+	    		<pathelement location="lib/junit-4.10.jar"/>
+	    	</classpath>
+	      <classpath refid="project.class.path"/>
+	    </javac>
+	    <copy todir="war/WEB-INF/classes">
+	      <fileset dir="src" excludes="**/*.java"/>
+	    </copy>
+	  </target>
+
+  <target name="gwtc-user" depends="javac" description="GWT compile to JavaScript">
+    <java failonerror="true" fork="true" classname="com.google.gwt.dev.Compiler">
+      <classpath>
+        <pathelement location="src"/>
+        <path refid="project.class.path"/>
+      </classpath>
+      <!-- add jvmarg -Xss16M or similar if you see a StackOverflowError -->
+      <jvmarg value="-Xmx256M"/>
+      <jvmarg line="${XstartOnFirstThread}"/>
+      <!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
+      <arg value="com.company.comanda.peter.Comanda_peter"/>
+    </java>
+  </target>
+	
+	<target name="gwtc-admin" depends="javac" description="GWT compile to JavaScript">
+	    <java failonerror="true" fork="true" classname="com.google.gwt.dev.Compiler">
+	      <classpath>
+	        <pathelement location="src"/>
+	        <path refid="project.class.path"/>
+	      </classpath>
+	      <!-- add jvmarg -Xss16M or similar if you see a StackOverflowError -->
+	      <jvmarg value="-Xmx256M"/>
+	      <jvmarg line="${XstartOnFirstThread}"/>
+	      <!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
+	      <arg value="com.company.comanda.peter.Comanda_peterAdmin"/>
+	    </java>
+	  </target>
+
+	<target name="gwtc" depends="gwtc-user,gwtc-admin">
+		</target>
+  <target name="hosted" depends="javac" description="Run hosted mode">
+    <java failonerror="true" fork="true" classname="com.google.gwt.dev.HostedMode">
+      <classpath>
+        <pathelement location="src"/>
+        <path refid="project.class.path"/>
+      	<path refid="tools.class.path"/>
+      </classpath>
+      <jvmarg value="-Xmx256M"/>
+      <jvmarg line="${XstartOnFirstThread}"/>
+      <arg value="-startupUrl"/>
+      <arg value="StockWatcher.html"/>
+      <!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
+      <arg value="-server"/>
+      <arg value="com.google.appengine.tools.development.gwt.AppEngineLauncher"/>
+      <arg value="com.company.comanda.peter.Comanda_peter"/>
+    </java>
+  </target>
+
+	
+	<target name="buildserver" depends="unittest" description="Build server" />
+
+	<target name="buildclient" depends="gwtc" description="Build client"/>
+	<target name="build" depends="buildserver,buildclient" description="Build this project" />
+  <target name="clean" description="Cleans this project">
+    <delete dir="war/WEB-INF/classes" failonerror="false" />
+    <delete dir="war/comanda_peter" failonerror="false" />
+  </target>
+	  <target name="runserver" depends="build"
+	      description="Starts the development server.">
+	    <dev_appserver war="war" />
+	  </target>
+
+	  <target name="update" depends="build"
+	      description="Uploads the application to App Engine.">
+	    <appcfg action="update" war="war" />
+	  </target>
+	
+	<target name="updateserver" depends="buildserver"
+		      description="Uploads just the server to App Engine.">
+		    <appcfg action="update" war="war" />
+		  </target>
+
+	  <target name="update_indexes" depends="build"
+	      description="Uploads just the datastore index configuration to App Engine.">
+	    <appcfg action="update_indexes" war="war" />
+	  </target>
+
+	  <target name="rollback" depends="build"
+	      description="Rolls back an interrupted application update.">
+	    <appcfg action="rollback" war="war" />
+	  </target>
+
+	  <target name="request_logs"
+	      description="Downloads log data from App Engine for the application.">
+	    <appcfg action="request_logs" war="war">
+	      <options>
+	        <arg value="--num_days=5"/>
+	      </options>
+	      <args>
+	        <arg value="logs.txt"/>
+	      </args>
+	    </appcfg>
+	  </target>
+	
+	<target name="unittest" description="Run tests" depends="javac,compile-tests">
+		<mkdir dir="${report.dir}/raw"/>
+	<junit printsummary="yes" haltonfailure="yes" showoutput="yes" >
+	    <classpath>
+            <path refid="javac.classpath"/>
+            <path refid="appengine.test.classpath"/>
+	    	<pathelement location="test-classes"/>
+	    	<pathelement location="lib/junit-4.10.jar"/>
+	    </classpath>
+	    <batchtest fork="yes" todir="${report.dir}/raw/">
+	        <formatter type="xml"/>
+	        <fileset dir="test">
+	            <include name="**/*Test*.java"/>
+	        </fileset>
+	    </batchtest>
+	</junit>
+		</target>
+</project>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:padding="6dip" >
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_marginRight="6dip"
+        android:layout_alignParentLeft="true"
+        android:contentDescription="@string/menu_item_image"
+        android:src="@drawable/ic_launcher" />
+
+        
+
+        <TextView
+            android:id="@+id/total_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:paddingRight="10dip"
+            android:textSize="18dp"
+            android:layout_alignParentRight="true"
+            android:text="23.50 €" />
+        
+
+
+    <View
+     android:id="@+id/blank"
+     android:layout_height="2dp"
+     android:layout_width="15dip"
+     android:background="#00DDFFDD"
+     android:layout_marginTop="5dip"
+     android:layout_toLeftOf="@+id/placeorderbutton"
+     android:layout_marginBottom="5dip"/>
+    
+    <LinearLayout
+        android:id="@+id/name_and_date"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/icon"
+        android:layout_toLeftOf="@+id/total_amount"
+        android:gravity="center_vertical"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/restaurant_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="Texto de prueba" />
+        
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="23:15"
+            android:textColor="#ffff6400" />
+
+    </LinearLayout>
+
+</RelativeLayout>

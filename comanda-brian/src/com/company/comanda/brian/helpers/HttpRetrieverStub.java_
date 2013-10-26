@@ -1,0 +1,245 @@
+package com.company.comanda.brian.helpers;
+
+import static com.company.comanda.common.XmlHelper.close;
+import static com.company.comanda.common.XmlHelper.enclose;
+import static com.company.comanda.common.XmlHelper.open;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Date;
+
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpPost;
+
+import com.company.comanda.common.HttpParams.GetBills;
+import com.company.comanda.common.HttpParams.GetCategories;
+import com.company.comanda.common.HttpParams.GetMenuItems;
+import com.company.comanda.common.HttpParams.GetOrders;
+import com.company.comanda.common.HttpParams.PlaceOrder;
+import com.company.comanda.common.HttpParams.SearchRestaurants;
+import com.company.comanda.common.XmlTags;
+import com.company.comanda.common.XmlTags.CategoryList;
+import com.company.comanda.common.XmlTags.MenuItemList;
+import com.company.comanda.common.XmlTags.Restaurantlist;
+
+public class HttpRetriever {
+
+    private static final String DECODE_QR_RESPONSE = 
+            "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n" +
+                "<Data>\n" + 
+                "\t<Restaurant>\n" + 
+                "\t\t<Name>Restaurant name</Name>\n" + 
+                "\t\t<Id>Restaurant ID</Id>\n" + 
+                "\t</Restaurant>\n" + 
+                "\t<Table>\n" + 
+                "\t\t<Name>Table name</Name>\n" + 
+                "\t\t<Id>Table ID</Id>\n" + 
+                "\t</Table>\n" + 
+                "</Data>";
+    
+    private static final String SEARCH_RESTAURANTS_RESPONSE = 
+            XmlTags.HEADER +
+                open(Restaurantlist.RESTAURANT_LIST) + 
+                open(Restaurantlist.RESTAURANT) + 
+                enclose(Restaurantlist.NAME, "Casa Manuela") + 
+                enclose(Restaurantlist.ID, "123") + 
+                close(Restaurantlist.RESTAURANT) + 
+                open(Restaurantlist.RESTAURANT) + 
+                enclose(Restaurantlist.NAME, "La Tagliatella") + 
+                enclose(Restaurantlist.ID, "1234") + 
+                close(Restaurantlist.RESTAURANT) + 
+                open(Restaurantlist.RESTAURANT) + 
+                enclose(Restaurantlist.NAME, "Ginos") + 
+                enclose(Restaurantlist.ID, "12345") + 
+                close(Restaurantlist.RESTAURANT) + 
+                close(Restaurantlist.RESTAURANT_LIST);
+    
+    private static final String GET_CATEGORIES_RESPONSE = 
+            XmlTags.HEADER +
+                    open(CategoryList.CATEGORY_LIST) + 
+                    open(CategoryList.CATEGORY) + 
+                    enclose(CategoryList.NAME, "Entrantes") + 
+                    enclose(CategoryList.ID, "1") + 
+                    close(CategoryList.CATEGORY) + 
+                    open(CategoryList.CATEGORY) + 
+                    enclose(CategoryList.NAME, "Primeros") + 
+                    enclose(CategoryList.ID, "2") + 
+                    close(CategoryList.CATEGORY) + 
+                    open(CategoryList.CATEGORY) + 
+                    enclose(CategoryList.NAME, "Segundos") + 
+                    enclose(CategoryList.ID, "3") + 
+                    close(CategoryList.CATEGORY) + 
+                    open(CategoryList.CATEGORY) + 
+                    enclose(CategoryList.NAME, "Bebidas") + 
+                    enclose(CategoryList.ID, "4") + 
+                    close(CategoryList.CATEGORY) + 
+                    close(CategoryList.CATEGORY_LIST);
+    
+    private static final String GET_MENU_ITEMS_RESPONSE = 
+            XmlTags.HEADER +
+                    open(MenuItemList.ITEM_LIST) + 
+                    open(MenuItemList.ITEM) + 
+                    enclose(MenuItemList.NAME, "Nachos") + 
+                    enclose(MenuItemList.ID, "1") + 
+                    enclose(MenuItemList.DESCRIPTION, "Unos buenos nachos") + 
+                    enclose(MenuItemList.IMAGE_STRING, "") + 
+                    enclose(MenuItemList.CATEGORY_ID, "1") + 
+                    close(MenuItemList.ITEM) + 
+                    open(MenuItemList.ITEM) + 
+                    enclose(MenuItemList.NAME, "Cosas") + 
+                    enclose(MenuItemList.ID, "2") + 
+                    enclose(MenuItemList.DESCRIPTION, "Cosas") + 
+                    enclose(MenuItemList.IMAGE_STRING, "") + 
+                    enclose(MenuItemList.CATEGORY_ID, "1") + 
+                    close(MenuItemList.ITEM) + 
+                    open(MenuItemList.ITEM) + 
+                    enclose(MenuItemList.NAME, "Otros nachos") + 
+                    enclose(MenuItemList.ID, "3") + 
+                    enclose(MenuItemList.DESCRIPTION, "...") + 
+                    enclose(MenuItemList.IMAGE_STRING, "") + 
+                    enclose(MenuItemList.CATEGORY_ID, "1") + 
+                    close(MenuItemList.ITEM) + 
+                    open(MenuItemList.ITEM) + 
+                    enclose(MenuItemList.NAME, "Comida") + 
+                    enclose(MenuItemList.ID, "4") + 
+                    enclose(MenuItemList.DESCRIPTION, "Unos buenos nachos") + 
+                    enclose(MenuItemList.IMAGE_STRING, "") + 
+                    enclose(MenuItemList.CATEGORY_ID, "1") + 
+                    close(MenuItemList.ITEM) + 
+                    open(MenuItemList.ITEM) + 
+                    enclose(MenuItemList.NAME, "Algo distinto") + 
+                    enclose(MenuItemList.ID, "5") + 
+                    enclose(MenuItemList.DESCRIPTION, "Unos buenos nachos") + 
+                    enclose(MenuItemList.IMAGE_STRING, "") + 
+                    enclose(MenuItemList.CATEGORY_ID, "1") + 
+                    close(MenuItemList.ITEM) + 
+                    open(MenuItemList.ITEM) + 
+                    enclose(MenuItemList.NAME, "Otro entrante") + 
+                    enclose(MenuItemList.ID, "6") + 
+                    enclose(MenuItemList.DESCRIPTION, "Unos buenos nachos") + 
+                    enclose(MenuItemList.IMAGE_STRING, "") + 
+                    enclose(MenuItemList.CATEGORY_ID, "1") + 
+                    close(MenuItemList.ITEM) + 
+                    open(MenuItemList.ITEM) + 
+                    enclose(MenuItemList.NAME, "Esto no se acaba nunca") + 
+                    enclose(MenuItemList.ID, "7") + 
+                    enclose(MenuItemList.DESCRIPTION, "Unos buenos nachos") + 
+                    enclose(MenuItemList.IMAGE_STRING, "") + 
+                    enclose(MenuItemList.CATEGORY_ID, "1") + 
+                    close(MenuItemList.ITEM) + 
+                    open(MenuItemList.ITEM) + 
+                    enclose(MenuItemList.NAME, "Nachos") + 
+                    enclose(MenuItemList.ID, "8") + 
+                    enclose(MenuItemList.DESCRIPTION, "Unos buenos nachos") + 
+                    enclose(MenuItemList.IMAGE_STRING, "") + 
+                    enclose(MenuItemList.CATEGORY_ID, "1") + 
+                    close(MenuItemList.ITEM) + 
+                    open(MenuItemList.ITEM) + 
+                    enclose(MenuItemList.NAME, "Nachos9") + 
+                    enclose(MenuItemList.ID, "9") + 
+                    enclose(MenuItemList.DESCRIPTION, "Unos buenos nachos") + 
+                    enclose(MenuItemList.IMAGE_STRING, "") + 
+                    enclose(MenuItemList.CATEGORY_ID, "1") + 
+                    close(MenuItemList.ITEM) + 
+                    open(MenuItemList.ITEM) + 
+                    enclose(MenuItemList.NAME, "Nachos10") + 
+                    enclose(MenuItemList.ID, "10") + 
+                    enclose(MenuItemList.DESCRIPTION, "Unos buenos nachos") + 
+                    enclose(MenuItemList.IMAGE_STRING, "") + 
+                    enclose(MenuItemList.CATEGORY_ID, "1") + 
+                    close(MenuItemList.ITEM) + 
+                    open(MenuItemList.ITEM) + 
+                    enclose(MenuItemList.NAME, "Nachos11") + 
+                    enclose(MenuItemList.ID, "11") + 
+                    enclose(MenuItemList.DESCRIPTION, "Unos buenos nachos") + 
+                    enclose(MenuItemList.IMAGE_STRING, "") + 
+                    enclose(MenuItemList.CATEGORY_ID, "1") + 
+                    close(MenuItemList.ITEM) + 
+                    open(MenuItemList.ITEM) + 
+                    enclose(MenuItemList.NAME, "Pizza") + 
+                    enclose(MenuItemList.ID, "12") + 
+                    enclose(MenuItemList.DESCRIPTION, "Una pizza") + 
+                    enclose(MenuItemList.IMAGE_STRING, "") + 
+                    enclose(MenuItemList.CATEGORY_ID, "2") + 
+                    close(MenuItemList.ITEM) + 
+                    close(MenuItemList.ITEM_LIST);
+    
+    public static final String PLACE_ORDER_RESPONSE = 
+            XmlTags.HEADER + 
+            enclose(XmlTags.BooleanResult.RESULT, "" + true);
+    
+    public static final String GET_BILLS_RESPONSE = 
+            XmlTags.HEADER + 
+            open(XmlTags.Bills.BILL_LIST) + 
+            open(XmlTags.Bills.BILL) + 
+            enclose(XmlTags.Bills.KEY_STRING, "telepi") + 
+            enclose(XmlTags.Bills.TOTAL_AMOUNT, "23.45") + 
+            enclose(XmlTags.Bills.STATE, "ACCEPTED") + 
+            enclose(XmlTags.Bills.TYPE, "DELIVERY") + 
+            enclose(XmlTags.Bills.TABLE_NAME, "null") + 
+            enclose(XmlTags.Bills.ADDRESS, "Puerto de Envalira, 1") + 
+            enclose(XmlTags.Bills.RESTAURANT_NAME, "Telepizza") +
+            enclose(XmlTags.Bills.COMMENTS, "Sin comentarios") + 
+            enclose(XmlTags.Bills.OPEN_DATE, (new Date()).toString()) +
+            close(XmlTags.Bills.BILL) +  
+            open(XmlTags.Bills.BILL) + 
+            enclose(XmlTags.Bills.KEY_STRING, "bk") + 
+            enclose(XmlTags.Bills.TOTAL_AMOUNT, "3.50") + 
+            enclose(XmlTags.Bills.STATE, "ACCEPTED") + 
+            enclose(XmlTags.Bills.TYPE, "DELIVERY") + 
+            enclose(XmlTags.Bills.TABLE_NAME, "null") + 
+            enclose(XmlTags.Bills.ADDRESS, "Leon XIII, 19") + 
+            enclose(XmlTags.Bills.RESTAURANT_NAME, "Burguer King") +
+            enclose(XmlTags.Bills.COMMENTS, "Sin comentarios2") + 
+            enclose(XmlTags.Bills.OPEN_DATE, (new Date()).toString()) +
+            close(XmlTags.Bills.BILL) +  
+            close(XmlTags.Bills.BILL_LIST);
+    
+    
+    public static final String GET_ORDERS_RESPONSE = 
+            XmlTags.HEADER + 
+            open(XmlTags.Orders.ORDER_LIST) + 
+            open(XmlTags.Orders.ORDER) + 
+            enclose(XmlTags.Orders.KEY_STRING, "yoquese") + 
+            enclose(XmlTags.Orders.MENU_ITEM_NAME, "Carbonara") + 
+            enclose(XmlTags.Orders.MENU_ITEM_NUMBER, "2") + 
+            enclose(XmlTags.Orders.PRICE, "9.99") + 
+            enclose(XmlTags.Orders.COMMENTS, "Sin comentarios") + 
+            close(XmlTags.Orders.ORDER) +  
+            open(XmlTags.Orders.ORDER) + 
+            enclose(XmlTags.Orders.KEY_STRING, "bk") + 
+            enclose(XmlTags.Orders.MENU_ITEM_NAME, "Barbacoa") + 
+            enclose(XmlTags.Orders.MENU_ITEM_NUMBER, "1") + 
+            enclose(XmlTags.Orders.PRICE, "10.50") + 
+            enclose(XmlTags.Orders.COMMENTS, "Sin comentarios2") + 
+            close(XmlTags.Orders.ORDER) +  
+            close(XmlTags.Orders.ORDER_LIST);
+    
+    public InputStream execute(HttpPost httpPost) throws IllegalStateException,
+            ClientProtocolException, IOException {
+        final String uri = httpPost.getURI().toString();
+        String response = "";
+        if(uri.contains(SearchRestaurants.SERVICE_NAME)){
+            response = SEARCH_RESTAURANTS_RESPONSE;
+        }
+        else if(uri.contains(GetCategories.SERVICE_NAME)){
+            response = GET_CATEGORIES_RESPONSE;
+        }
+        else if(uri.contains(GetMenuItems.SERVICE_NAME)){
+            response = GET_MENU_ITEMS_RESPONSE;
+        }
+        else if(uri.contains(PlaceOrder.SERVICE_NAME)){
+            response = PLACE_ORDER_RESPONSE;
+        }
+        else if(uri.contains(GetBills.SERVICE_NAME)){
+            response = GET_BILLS_RESPONSE;
+        }
+        else if(uri.contains(GetOrders.SERVICE_NAME)){
+            response = GET_ORDERS_RESPONSE;
+        }
+        return new ByteArrayInputStream(
+                response.getBytes("ISO-8859-1"));
+    }
+
+}

@@ -1,0 +1,63 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+    xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:p1="urn:import:com.google.gwt.user.cellview.client">
+    <ui:style>
+        
+    </ui:style>
+    <g:HTMLPanel>
+        <g:VerticalPanel width="550px">
+        	<g:AbsolutePanel height="118px">
+        		<g:at left="10" top="10">
+        			<g:Label text="Dirección:"/>
+        		</g:at>
+        		<g:at left="81" top="10">
+        			<g:Label text="New Label" ui:field="lblAddress"/>
+        		</g:at>
+        		<g:at left="10" top="33">
+        			<g:Label text="Teléfono:"/>
+        		</g:at>
+        		<g:at left="10" top="56">
+        			<g:Label text="Estado:"/>
+        		</g:at>
+        		<g:at left="10" top="91">
+        			<g:Label text="Importe:"/>
+        		</g:at>
+        		<g:at left="81" top="33">
+        			<g:Label text="New Label" ui:field="lblPhone"/>
+        		</g:at>
+        		<g:at left="81" top="56">
+        			<g:Label text="New Label" ui:field="lblState"/>
+        		</g:at>
+        		<g:at left="81" top="91">
+        			<g:Label text="New Label" ui:field="lblTotalAmount"/>
+        		</g:at>
+        	</g:AbsolutePanel>
+            <g:VerticalPanel width="100%" ui:field="ordersTableContainer">
+                <g:ScrollPanel height="290px">
+                <p1:CellTable ui:field="ordersTable" width="100%" height="100%"/>
+            </g:ScrollPanel>
+                <g:HorizontalPanel horizontalAlignment="ALIGN_CENTER" width="100%">
+                <p1:SimplePager location="CENTER" ui:field="ordersPager"/>
+            </g:HorizontalPanel>
+            </g:VerticalPanel>
+            <g:Label text="Loading..." ui:field="lblMessage" visible="false"/>
+            <g:VerticalPanel width="100%" horizontalAlignment="ALIGN_RIGHT">
+            	<g:HorizontalPanel verticalAlignment="ALIGN_MIDDLE">
+            	<g:Label text="Tiempo estimado:"/>
+            	<g:ListBox visibleItemCount="1" width="130px" ui:field="lvEstimatedTime" selectedIndex="2"/>
+            </g:HorizontalPanel>
+            </g:VerticalPanel>
+            <g:HorizontalPanel width="100%">
+            	<g:HorizontalPanel spacing="5">
+            			<g:Button ui:field="btnBack">Atrás</g:Button>
+            		</g:HorizontalPanel>
+            	<g:VerticalPanel width="100%" horizontalAlignment="ALIGN_RIGHT">
+            		<g:HorizontalPanel spacing="5">
+            		<g:Button ui:field="btnReject">Rechazar pedido</g:Button>
+            		<g:Button ui:field="btnAcceptBill">Aceptar pedido</g:Button>
+            	</g:HorizontalPanel>
+            	</g:VerticalPanel>
+            </g:HorizontalPanel>
+        </g:VerticalPanel>
+    </g:HTMLPanel>
+</ui:UiBinder>

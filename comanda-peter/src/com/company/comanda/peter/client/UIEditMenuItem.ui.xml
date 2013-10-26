@@ -1,0 +1,263 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		
+	</ui:style>
+	<g:HTMLPanel>
+		<g:ScrollPanel width="653px" height="1354px">
+			<g:FormPanel encoding="ENCODING_MULTIPART" method="METHOD_POST"
+				ui:field="itemDataFormPanel" width="652px" height="1382px">
+				<g:VerticalPanel width="615px" height="100%">
+					<g:HorizontalPanel horizontalAlignment="ALIGN_RIGHT"
+						width="100%" verticalAlignment="ALIGN_BOTTOM">
+						<g:HorizontalPanel width="100%" spacing="10"
+							horizontalAlignment="ALIGN_RIGHT">
+							<g:HorizontalPanel width="100%" height="">
+								<g:AbsolutePanel height="274px" width="466px">
+									<g:at left="10" top="26">
+										<g:Label text="Nombre:" />
+									</g:at>
+									<g:at left="93" top="15">
+										<g:TextBox ui:field="tbName" name="itemName" />
+									</g:at>
+									<g:at left="93" top="105">
+										<g:FileUpload width="177px" height="26px"
+											ui:field="fuImageFile" name="itemImage" />
+									</g:at>
+									<g:at left="10" top="110">
+										<g:Label text="Imagen:" />
+									</g:at>
+									<g:at left="336" top="15">
+										<g:TextBox visible="false" name="keyId" ui:field="tbKeyId" />
+									</g:at>
+									<g:at left="10" top="69">
+										<g:Label text="Categoría:" />
+									</g:at>
+									<g:at left="93" top="64">
+										<g:ListBox visibleItemCount="1" name="categoryId"
+											width="177px" height="27px" ui:field="lbCategory" enabled="false" />
+									</g:at>
+									<g:at left="10" top="137">
+										<g:Label text="Descripción:" />
+									</g:at>
+									<g:at left="10" top="161">
+										<g:TextArea width="436px" height="93px" ui:field="taDescription"
+											name="description" />
+									</g:at>
+								</g:AbsolutePanel>
+							</g:HorizontalPanel>
+							<g:Image width="155px" height="155px" ui:field="imgItem" />
+						</g:HorizontalPanel>
+					</g:HorizontalPanel>
+					<g:VerticalPanel width="100%" spacing="10" height="895px">
+						<g:Label text="Precios:" />
+						<g:AbsolutePanel height="179px" width="632px">
+							<g:at left="10" top="10">
+								<g:RadioButton name="priceScheme" text="Único"
+									formValue="single" checked="true" ui:field="rbSinglePrice" />
+							</g:at>
+							<g:at left="10" top="35">
+								<g:RadioButton name="priceScheme" text="Varios"
+									formValue="multiple" ui:field="rbMultiplePrice" />
+							</g:at>
+							<g:at left="10" top="60">
+								<g:AbsolutePanel width="612px" height="110px">
+									<g:at left="10" top="13">
+										<g:CheckBox text="Pequeña" ui:field="cbSmall" name="cbSmall" />
+									</g:at>
+									<g:at left="10" top="45">
+										<g:CheckBox text="Mediana" ui:field="cbMedium"
+											name="cbMedium" />
+									</g:at>
+									<g:at left="10" top="77">
+										<g:CheckBox text="Grande" ui:field="cbLarge" name="cbLarge" />
+									</g:at>
+									<g:at left="88" top="11">
+										<g:DoubleBox ui:field="dbSmallPrice" name="smallPrice" />
+									</g:at>
+									<g:at left="88" top="43">
+										<g:DoubleBox ui:field="dbMediumPrice" name="mediumPrice" />
+									</g:at>
+									<g:at left="88" top="75">
+										<g:DoubleBox ui:field="dbLargePrice" name="largePrice" />
+									</g:at>
+									<g:at left="331" top="13">
+										<g:CheckBox text="Tapa" ui:field="cbTapa" name="cbTapa" />
+									</g:at>
+									<g:at left="331" top="45">
+										<g:CheckBox text="1/2 Ración" ui:field="cbHalf"
+											name="cbHalf" />
+									</g:at>
+									<g:at left="331" top="77">
+										<g:CheckBox text="Ración" ui:field="cbFull" name="cbFull" />
+									</g:at>
+									<g:at left="428" top="9">
+										<g:DoubleBox ui:field="dbTapaPrice" name="tapaPrice" />
+									</g:at>
+									<g:at left="428" top="45">
+										<g:DoubleBox ui:field="dbHalfPrice" name="halfPrice" />
+									</g:at>
+									<g:at left="428" top="77">
+										<g:DoubleBox ui:field="dbFullPrice" name="fullPrice" />
+									</g:at>
+								</g:AbsolutePanel>
+							</g:at>
+							<g:at left="96" top="8">
+								<g:DoubleBox ui:field="dbSinglePrice" name="singlePrice" />
+							</g:at>
+						</g:AbsolutePanel>
+						<g:Label text="Extras:"/>
+						<g:AbsolutePanel height="582px">
+							<g:at left="10" top="30">
+								<g:TextBox width="159px" height="7px" name="extra1" ui:field="tbExtra1"/>
+							</g:at>
+							<g:at left="10" top="6">
+								<g:Label text="Nombre"/>
+							</g:at>
+							<g:at left="189" top="6">
+								<g:Label text="Precio"/>
+							</g:at>
+							<g:at left="10" top="57">
+								<g:TextBox width="159px" height="7px" name="extra2" ui:field="tbExtra2"/>
+							</g:at>
+							<g:at left="189" top="57">
+								<g:DoubleBox width="123px" height="13px" ui:field="tbExtraPrice2" name="extraPrice2"/>
+							</g:at>
+							<g:at left="10" top="84">
+								<g:TextBox width="159px" height="7px" ui:field="tbExtra3" name="extra3"/>
+							</g:at>
+							<g:at left="189" top="84">
+								<g:DoubleBox width="123px" height="13px" ui:field="tbExtraPrice3" name="extraPrice3"/>
+							</g:at>
+							<g:at left="189" top="30">
+								<g:DoubleBox width="123px" height="13px" ui:field="tbExtraPrice1" name="extraPrice1"/>
+							</g:at>
+							<g:at left="10" top="109">
+								<g:TextBox width="159px" height="7px" ui:field="tbExtra4" name="extra4"/>
+							</g:at>
+							<g:at left="189" top="109">
+								<g:DoubleBox width="123px" height="13px" ui:field="tbExtraPrice4" name="extraPrice4"/>
+							</g:at>
+							<g:at left="10" top="136">
+								<g:TextBox width="159px" height="7px" ui:field="tbExtra5" name="extra5"/>
+							</g:at>
+							<g:at left="189" top="136">
+								<g:DoubleBox width="123px" height="13px" ui:field="tbExtraPrice5" name="extraPrice5"/>
+							</g:at>
+							<g:at left="10" top="163">
+								<g:TextBox width="159px" height="7px" ui:field="tbExtra6" name="extra6"/>
+							</g:at>
+							<g:at left="189" top="163">
+								<g:DoubleBox width="123px" height="13px" ui:field="tbExtraPrice6" name="extraPrice6"/>
+							</g:at>
+							<g:at left="10" top="188">
+								<g:TextBox width="159px" height="7px" ui:field="tbExtra7" name="extra7"/>
+							</g:at>
+							<g:at left="189" top="188">
+								<g:DoubleBox width="123px" height="13px" ui:field="tbExtraPrice7" name="extraPrice7"/>
+							</g:at>
+							<g:at left="10" top="215">
+								<g:TextBox width="159px" height="7px" ui:field="tbExtra8" name="extra8"/>
+							</g:at>
+							<g:at left="189" top="215">
+								<g:DoubleBox width="123px" height="13px" ui:field="tbExtraPrice8" name="extraPrice8"/>
+							</g:at>
+							<g:at left="10" top="242">
+								<g:TextBox width="159px" height="7px" ui:field="tbExtra9" name="extra9"/>
+							</g:at>
+							<g:at left="189" top="242">
+								<g:DoubleBox width="123px" height="13px" ui:field="tbExtraPrice9" name="extraPrice9"/>
+							</g:at>
+							<g:at left="359" top="10">
+								<g:Label text="Tipo:"/>
+							</g:at>
+							<g:at left="408" top="6">
+								<g:TextBox ui:field="tbExtrasName" name="extrasName"/>
+							</g:at>
+							<g:at left="10" top="267">
+								<g:TextBox width="159px" height="7px" name="extra10" ui:field="tbExtra10"/>
+							</g:at>
+							<g:at left="10" top="292">
+								<g:TextBox width="159px" height="7px" name="extra11" ui:field="tbExtra11"/>
+							</g:at>
+							<g:at left="10" top="317">
+								<g:TextBox width="159px" height="7px" name="extra12" ui:field="tbExtra12"/>
+							</g:at>
+							<g:at left="10" top="342">
+								<g:TextBox width="159px" height="7px" name="extra13" ui:field="tbExtra13"/>
+							</g:at>
+							<g:at left="10" top="367">
+								<g:TextBox width="159px" height="7px" name="extra14" ui:field="tbExtra14"/>
+							</g:at>
+							<g:at left="10" top="392">
+								<g:TextBox width="159px" height="7px" name="extra15" ui:field="tbExtra15"/>
+							</g:at>
+							<g:at left="10" top="417">
+								<g:TextBox width="159px" height="7px" name="extra16" ui:field="tbExtra16"/>
+							</g:at>
+							<g:at left="10" top="442">
+								<g:TextBox width="159px" height="7px" name="extra17" ui:field="tbExtra17"/>
+							</g:at>
+							<g:at left="10" top="467">
+								<g:TextBox width="159px" height="7px" name="extra18" ui:field="tbExtra18"/>
+							</g:at>
+							<g:at left="10" top="492">
+								<g:TextBox width="159px" height="7px" name="extra19" ui:field="tbExtra19"/>
+							</g:at>
+							<g:at left="10" top="517">
+								<g:TextBox width="159px" height="7px" name="extra20" ui:field="tbExtra20"/>
+							</g:at>
+							<g:at left="10" top="542">
+								<g:TextBox width="159px" height="7px" name="extra21" ui:field="tbExtra21"/>
+							</g:at>
+							<g:at left="189" top="267">
+								<g:DoubleBox width="123px" height="13px" name="extraPrice10" ui:field="tbExtraPrice10"/>
+							</g:at>
+							<g:at left="189" top="292">
+								<g:DoubleBox width="123px" height="13px" name="extraPrice11" ui:field="tbExtraPrice11"/>
+							</g:at>
+							<g:at left="189" top="317">
+								<g:DoubleBox width="123px" height="13px" name="extraPrice12" ui:field="tbExtraPrice12"/>
+							</g:at>
+							<g:at left="189" top="342">
+								<g:DoubleBox width="123px" height="13px" name="extraPrice13" ui:field="tbExtraPrice13"/>
+							</g:at>
+							<g:at left="189" top="367">
+								<g:DoubleBox width="123px" height="13px" name="extraPrice14" ui:field="tbExtraPrice14"/>
+							</g:at>
+							<g:at left="189" top="392">
+								<g:DoubleBox width="123px" height="13px" name="extraPrice15" ui:field="tbExtraPrice15"/>
+							</g:at>
+							<g:at left="189" top="417">
+								<g:DoubleBox width="123px" height="13px" name="extraPrice16" ui:field="tbExtraPrice16"/>
+							</g:at>
+							<g:at left="189" top="442">
+								<g:DoubleBox width="123px" height="13px" name="extraPrice17" ui:field="tbExtraPrice17"/>
+							</g:at>
+							<g:at left="189" top="467">
+								<g:DoubleBox width="123px" height="13px" name="extraPrice18" ui:field="tbExtraPrice18"/>
+							</g:at>
+							<g:at left="189" top="492">
+								<g:DoubleBox width="123px" height="13px" name="extraPrice19" ui:field="tbExtraPrice19"/>
+							</g:at>
+							<g:at left="189" top="517">
+								<g:DoubleBox width="123px" height="13px" name="extraPrice20" ui:field="tbExtraPrice20"/>
+							</g:at>
+							<g:at left="189" top="542">
+								<g:DoubleBox width="123px" height="13px" name="extraPrice21" ui:field="tbExtraPrice21"/>
+							</g:at>
+						</g:AbsolutePanel>
+						<g:HorizontalPanel width="100%"
+							horizontalAlignment="ALIGN_RIGHT">
+							<g:HorizontalPanel spacing="10">
+								<g:Button ui:field="btnCancel">Cancelar</g:Button>
+								<g:Button text="Guardar cambios" ui:field="btnSaveChanges" />
+							</g:HorizontalPanel>
+						</g:HorizontalPanel>
+					</g:VerticalPanel>
+				</g:VerticalPanel>
+			</g:FormPanel>
+		</g:ScrollPanel>
+	</g:HTMLPanel>
+</ui:UiBinder> 

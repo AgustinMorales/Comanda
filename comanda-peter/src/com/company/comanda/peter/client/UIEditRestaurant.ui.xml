@@ -1,0 +1,99 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		
+	</ui:style>
+	<g:HTMLPanel>
+		<g:FormPanel encoding="ENCODING_MULTIPART" method="METHOD_POST"
+			ui:field="restaurantDataFormPanel">
+			<g:AbsolutePanel height="627px" width="425px">
+				<g:at left="25" top="56">
+					<g:Label text="Nombre" />
+				</g:at>
+				<g:at left="10" top="10">
+					<g:Label text="Nuevo restaurante" />
+				</g:at>
+				<g:at left="105" top="48">
+					<g:TextBox ui:field="tbRestaurantName" name="name"
+						tabIndex="1" />
+				</g:at>
+				<g:at left="341" top="587">
+					<g:Button ui:field="btnNewRestaurant" width="74px" height="29px">Aceptar</g:Button>
+				</g:at>
+				<g:at left="105" top="150">
+					<g:TextBox ui:field="tbPassword" name="password"
+						tabIndex="3" />
+				</g:at>
+				<g:at left="25" top="158">
+					<g:Label text="Contraseña" />
+				</g:at>
+				<g:at left="25" top="207">
+					<g:Label text="Dirección" />
+				</g:at>
+				<g:at left="105" top="201">
+					<g:TextBox ui:field="tbAddress" width="296px" height="17px"
+						name="address" tabIndex="4" />
+				</g:at>
+				<g:at left="105" top="99">
+					<g:TextBox ui:field="tbLogin" name="login" tabIndex="2" />
+				</g:at>
+				<g:at left="25" top="107">
+					<g:Label text="Login" />
+				</g:at>
+				<g:at left="105" top="252">
+					<g:FileUpload name="restaurantImage" />
+				</g:at>
+				<g:at left="105" top="459">
+					<g:TextArea width="298px" height="103px" ui:field="taDescription"
+						name="description" tabIndex="5" />
+				</g:at>
+				<g:at left="25" top="259">
+					<g:Label text="Imagen" />
+				</g:at>
+				<g:at left="25" top="459">
+					<g:Label text="Descripción" />
+				</g:at>
+				<g:at left="105" top="292">
+					<g:TextBox name="phone" ui:field="tbPhone"/>
+				</g:at>
+				<g:at left="25" top="300">
+					<g:Label text="Teléfono"/>
+				</g:at>
+				<g:at left="242" top="10">
+					<g:TextBox ui:field="tbRestaurantKeyString" name="restaurantKeyString" visible="false"/>
+				</g:at>
+				<g:at left="269" top="587">
+					<g:Button ui:field="btnCancel">Cancelar</g:Button>
+				</g:at>
+				<g:at left="115" top="332">
+					<g:DoubleBox name="deliveryCost" ui:field="dbDeliveryCost"/>
+				</g:at>
+				<g:at left="115" top="374">
+					<g:DoubleBox name="minimumForDelivery" ui:field="dbMinimumForDelivery"/>
+				</g:at>
+				<g:at left="25" top="337">
+					<g:Label text="Coste envío:"/>
+				</g:at>
+				<g:at left="25" top="379">
+					<g:Label text="Pedido mínimo:"/>
+				</g:at>
+				<g:at left="126" top="10">
+					<g:TextBox name="copyFromRestKeyString" ui:field="tbCopyFromRestKeyString" visible="false"/>
+				</g:at>
+				<g:at left="115" top="419">
+					<g:DoubleBox name="maxDeliveryDistance" ui:field="dbMaxDeliveryDistance"/>
+				</g:at>
+				<g:at left="25" top="424">
+					<g:Label text="Radio de envío:"/>
+				</g:at>
+				<g:at left="262" top="337">
+					<g:DoubleBox ui:field="dbLatitude" name="latitude" visible="false"/>
+				</g:at>
+				<g:at left="269" top="387">
+					<g:DoubleBox ui:field="dbLongitude" name="longitude" visible="false"/>
+				</g:at>
+			</g:AbsolutePanel>
+		</g:FormPanel>
+	</g:HTMLPanel>
+</ui:UiBinder> 

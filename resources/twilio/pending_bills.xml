@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Response>
+    <Gather action="https://comandapeter.appspot.com/getBillTwiML" numDigits="1">
+        <Say voice="woman" language="es" loop="10">Tiene un pedido nuevo. Para escucharlo pulse 1</Say>
+    </Gather>
+</Response>
